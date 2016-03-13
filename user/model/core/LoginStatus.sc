@@ -1,0 +1,4 @@
+enum LoginStatus{
+    LoggedIn, 
+    NotLoggedIn;
+}
