@@ -1,4 +1,0 @@
-class DigitalProduct extends Product {
-}
-
-
