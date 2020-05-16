@@ -1,8 +1,10 @@
 class CatalogElement extends ManagedResource {
    /* The external name */
    String name;
-   /* The name to use in URLs to identify this element */
+   @DBPropertySettings(indexed=true)
+
    String pathName;
+
    String shortDesc, longDesc;
 
    boolean visible; 
@@ -15,7 +17,12 @@ class CatalogElement extends ManagedResource {
    /** Used as page meta data for SEO */
    List<String> altKeywords;
 
-   ManagedImage productImage;
-   ManagedImage navImage;
-   List<ManagedMedia> altViews;
+   /** For the primary display for this element (images, video, etc) */
+   ManagedMedia mainMedia;
+
+   /** Primary display when navigating to this element */
+   ManagedMedia navMedia;
+
+   /** Alternative displays */
+   List<ManagedMedia> altMedia;
 }

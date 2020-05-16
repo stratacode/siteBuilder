@@ -2,6 +2,7 @@
 @DBTypeSettings
 class Storefront {
    String storeName;
+   @FindBy
    String storePathName;
    Currency defaultCurrency;
    Category root;

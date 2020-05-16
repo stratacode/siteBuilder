@@ -1,4 +1,5 @@
 class ProductOption {
-   String optionName;
-   List<Object> optionValues;
+   String optionName; // e.g. size, color
+   List<OptionValue> optionValues; // e.g. large, medium
+   OptionValue defaultValue;
 }

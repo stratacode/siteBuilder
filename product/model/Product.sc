@@ -65,4 +65,29 @@ class Product extends CatalogElement {
    List<Product> productCrossSells;
 
    List<Product> productUpSells;
+
+   override @FindBy(paged=true,orderBy="-lastModified") pathName;
+
+   Sku getSkuForOptionsWith(List<OptionValue> optValues, int overrideIx, OptionValue overrideVal) {
+      if (skuOptions == null) {
+         return null;
+      }
+      int numOptions = optValues.size();
+      for (Sku sku:skuOptions) {
+         for (OptionValue skuOpt:sku.options) {
+            boolean matched = true;
+            for (int i = 0; i < numOptions; i++) {
+               OptionValue toCompare = i == overrideIx ? overrideVal : sku.options.get(i);
+               if (!toCompare.name.equals(skuOpt.name)) {
+                  matched = false;
+                  break;
+               }
+            }
+            if (matched) {
+               return sku;
+            }
+         }
+      }
+      return null;
+   }
 }

@@ -13,5 +13,17 @@ class Sku {
    BigDecimal discountPrice;
 
    /* One value for each of the options for the product */
-   List<Object> options;
+   List<OptionValue> options;
+
+   boolean getInStock() {
+      return true;
+   }
+
+   Sku createTempSku() {
+      Sku res = new Sku();
+      res.price = price;
+      res.discountPrice = discountPrice;
+      res.barCode = barCode;
+      return res;
+   }
 }

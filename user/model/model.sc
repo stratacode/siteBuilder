@@ -6,7 +6,7 @@ import java.util.Date;
 public user.model extends util, jdbc.pgsql {
    object userDataSource extends DBDataSource {
       provider = "postgresql";
-      jndiName = "jdbc/sctest";
+      jndiName = "jdbc/scecom";
       dbName = "scecom";
       userName = "sctest";
       password = "sctest";

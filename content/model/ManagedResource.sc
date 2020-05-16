@@ -16,6 +16,11 @@ class ManagedResource {
    // List<Role> viewRoles, List<Role> editRoles;
 
    // Also add 'boolean viewAllowed(User)' hook for overriding basic logic
+
+   public boolean isAvailable() {
+      long now = System.currentTimeMillis();
+      return (validStart == null || now > validStart.getTime()) && (notValidAfter == null || now < notValidAfter.getTime());
+   }
 }
 
 

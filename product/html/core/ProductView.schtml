@@ -1,0 +1,38 @@
+<div class="productView">
+   <div id="categoryNavView" class="categoryNavView">
+      <%! int lastPath := categoryPath.size() - 1; %>
+      <span id="categoryPathView" class="categoryPath" repeat=":= categoryPath" repeatVarName="category">
+         <a href='= "/category/" + category.pathName' class="categoryLink"><%= category.name %></a>
+         <span visible=":= lastPath != categoryPathView.this.repeatIndex">›</span>
+      </span>
+   </div>
+   <div id="productDetailView" class="productDetailView">
+      <div id="imageView" class="imageView">
+         <img class="imageViewImage" id="productImage" src=":= currentMedia.url"/>
+         <div id="thumbNailsView" class="thumbNailsView">
+            <div id="altMediaView" repeat=":= product.altMedia" repeatVarName="altMedia"
+                 class='= "thumbView" + (altMediaIndex == repeatIndex ? " thumbViewSelected" : "")' >
+               <img src=":= altMedia.thumbUrl" clickEvent="=: altMediaIndex = altMediaView.this.repeatIndex"/>
+            </div>
+         </div>
+      </div>
+      <div id="productInfoView" class="productInfoView">
+         <div id="productNameView" class="productNameView"><%= product.name %></div>
+         <span id="priceView" class="priceView" visible=":= currentSku.discountPrice != null">
+            <span id="discountPrice" class="price"><%= currencySymbol %><%= currentSku.discountPrice %></span>
+            <span id="beforePrice" class="beforePrice"><%= currencySymbol %><%= currentSku.price %></span>
+            <span id="alt" class="price"><%= currencySymbol %><%= currentSku.price %></span>
+         </span>
+         <div id="optionsTagView" class="optionsTagView">
+            <div id="optionViewList" class="optionView" repeat="= optionViews" repeatVarName="optionView">
+               <span class="optionName"><%= optionView.option.optionName %></span>
+               <select id="optionSelect" optionDataSource=":= optionView.values" selectedIndex=":=: optionView.selectedIndex">
+                  <option class=':= ((OptionValueView) optionData).enabled ? "" : "optionDisabled"'><%= ((OptionValueView)optionData).value.name %></option>
+               </select>
+            </div>
+         </div>
+         <div id="longDesc" class="longDesc"><%= product.longDesc %></div>
+         <div id="skuCode" class="skuCode">SKU: <%= currentSku.skuCode %></div>
+      </div>
+   </div>
+</div>
