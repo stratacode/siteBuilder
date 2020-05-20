@@ -1,0 +1,13 @@
+<div visible=":= currentUserView.loginStatus==LoginStatus.NotLoggedIn">
+   <div id="formFields">
+      <input type="text" placeholder="email address" value=":=: currentUserView.emailAddress"/>
+      <input type="text" placeholder="password" value=":=: currentUserView.password"/>
+      <input type="text" placeholder="first name" value=":=: currentUserView.user.firstName"/>
+      <input type="text" placeholder="last name" value=":=: currentUserView.user.lastName"/>
+      <input type="submit" value="Register" clickEvent="=: currentUserView.register()"/>
+   </div>
+   <div class="formError"><%= currentUserView.userViewError %></div>
+   <div id="alt">
+      <input type="submit" value="Sign out" clickEvent="=: currentUserView.logout()">
+   </div>
+</div>

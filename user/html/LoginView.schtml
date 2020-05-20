@@ -1,8 +1,0 @@
-<div id=" visible=":= CurrentUser.loginStatus==LoginStatus.NotLoggedIn">
-   <input type="text" placeholder="user name" value=":=: CurrentUser.userName">
-   <input type="text" placeholder="password" value=":=: CurrentUser.password">
-   <input type="submit" value="Log in" clickEvent="=: CurrentUser.login()">
-   <div id="alt">
-      <input type="submit" value="Log out" clickEvent="=: CurrentUser.logout()">
-   </div>
-</div>

@@ -5,14 +5,24 @@ class UserProfileStats {
 
    Date registered;
    Date lastLogin;
-   Date lastUpdated;
-   Date lastPasswordFail;
+   Date lastModified;
+   Date lastLoginFailed;
 
    int loginCt;
-   int passwordFailedCt;
+   int loginFailedCt;
 
-   String remoteIp;
+   String lastRemoteIp;
 
-   String[] trustedIps;
-   String[] trustedCookies;
+   // We record some fixed number of these each time the remoteIp changes
+   List<UserProfileEvent> profileEvents;
+
+   void loginSuccess() {
+      lastLogin = new Date();
+      loginCt++;
+   }
+
+   void loginFailed() {
+      lastLoginFailed = new Date();
+      loginFailedCt++;
+   }
 }
