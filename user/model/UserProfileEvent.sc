@@ -8,4 +8,6 @@ class UserProfileEvent {
       this.remoteIp = remoteIp;
       this.eventCount = eventCount;
    }
+
+   UserProfileEvent() {}
 }
