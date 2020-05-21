@@ -1,6 +1,6 @@
 @DBTypeSettings
 class UserProfileStats {
-   @DBPropertySettings(reverseProperty="userProfileStats")
+   @DBPropertySettings(reverseProperty="userProfileStats", required=true)
    UserProfile userProfile;
 
    Date registered;

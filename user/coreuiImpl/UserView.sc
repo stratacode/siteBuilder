@@ -14,6 +14,10 @@ UserView {
          userAuthToken = user.createAuthToken();
          persistAuthToken(userAuthToken);
       }
+
+      if (user != null && user.registered) {
+         loginStatus = LoginStatus.LoggedIn;
+      }
    }
 
    void resetUser() {
@@ -38,7 +42,7 @@ UserView {
       if (userViewError == null) {
          UserProfile loginUser = UserProfile.findByUserName(mgr, userName);
          if (loginUser != null) {
-            if (loginUser.active) {
+            if (!loginUser.active) {
                priorityError("Account is not active - contact support for assistance");
                return false;
             }
@@ -46,9 +50,12 @@ UserView {
                String salt = loginUser.salt;
                String hashedPassword = DBUtil.hashPassword(salt, password);
                if (loginUser.password != null && loginUser.password.equals(hashedPassword)) {
-                  loginStatus = LoginStatus.LoggedIn;
                   if (userAuthToken != null)
                      user.deleteAuthToken(user, userAuthToken);
+
+                  user = loginUser;
+                  loginStatus = LoginStatus.LoggedIn;
+
                   userAuthToken = user.createAuthToken();
                   persistAuthToken(userAuthToken);
                   user.loginSuccess(remoteIp);
@@ -66,6 +73,7 @@ UserView {
    void logout() {
       loginStatus = LoginStatus.NotLoggedIn;
       clearAuthToken();
+      userAuthToken = null;
       if (user != null)
          DynUtil.dispose(user);
       resetUser();
@@ -131,7 +139,7 @@ UserView {
 
       try {
          if (insert)
-            user.dbInsert();
+            user.dbInsert(false);
          else
             user.dbUpdate();
       }

@@ -5,7 +5,7 @@ UserProfile {
          Date now = new Date();
          if (authToken.expireDate != null && authToken.expireDate.getTime() < now.getTime()) {
             System.err.println("*** Auth token expired");
-            authToken.dbDelete();
+            authToken.dbDelete(false);
             return null;
          }
          return authToken.user;
@@ -22,7 +22,7 @@ UserProfile {
       //newToken.token = UUID.randomUUID().toString();
       // More compact and with more bits of randomness
       newToken.token = DBUtil.createSecureUniqueToken();
-      newToken.dbInsert();
+      newToken.dbInsert(true);
       return newToken.token;
    }
 
@@ -30,7 +30,7 @@ UserProfile {
       UserAuthToken token = UserAuthToken.findByToken(tokenStr);
       try {
          if (token != null && token.user == user)
-            token.dbDelete();
+            token.dbDelete(false);
          else
             System.err.println("*** Warning - did not find token to delete");
       }
@@ -50,7 +50,8 @@ UserProfile {
    UserProfileStats getOrCreateStats() {
       if (userProfileStats == null) {
          userProfileStats = new UserProfileStats();
-         userProfileStats.dbInsert();
+         userProfileStats.userProfile = this;
+         //userProfileStats.dbInsert();
       }
       return userProfileStats;
    }
@@ -77,7 +78,7 @@ UserProfile {
 
    void profileEvent(String eventName, String prevRemoteIp, String newRemoteIp, int count) {
       // Adding a new event only when the remoteIp has changed since we keep counts at a higher level
-      if (mgr.recordEvents && !prevRemoteIp.equals(newRemoteIp)) {
+      if (mgr.recordEvents && !DynUtil.equalObjects(prevRemoteIp, newRemoteIp)) {
          UserProfileStats stats = userProfileStats;
          List<UserProfileEvent> events = stats.profileEvents;
          if (events == null) {

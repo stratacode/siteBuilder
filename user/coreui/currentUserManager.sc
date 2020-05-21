@@ -10,7 +10,7 @@ object currentUserManager {
          System.out.println("*** Created default UserManager");
          mgr = new UserManager();
          mgr.appName = defaultAppName;
-         mgr.dbInsert();
+         mgr.dbInsert(false);
       }
    }
 }
