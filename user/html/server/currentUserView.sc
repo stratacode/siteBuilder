@@ -44,6 +44,9 @@ currentUserView {
       resp.addCookie(cookie);
    }
    void clearAuthToken() {
-      persistAuthToken("");
+      persistAuthToken(""); // Clear our cookie
+      Context ctx = Context.getCurrentContext();
+      if (ctx != null)
+         ctx.markSessionInvalid();
    }
 }

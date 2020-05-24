@@ -1,0 +1,7 @@
+<html extends="PageLayout">
+<body>
+   <div id="pageBody">
+      <div id="registerView" extends="RegisterView"/>
+   </div>
+</body>
+</html>

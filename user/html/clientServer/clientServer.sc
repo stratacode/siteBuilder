@@ -1,2 +1,2 @@
-public user.html.clientServer extends user.html.coreuiImpl, js.schtml, jetty.schtml {
+public user.html.clientServer extends user.html.server, js.schtml, jetty.schtml {
 }

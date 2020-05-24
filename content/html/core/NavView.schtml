@@ -1,0 +1,15 @@
+<div>
+   <div id="mainMenuRepeat" class="menuItem" repeat=":= currentNavMenu.menuItems" repeatVarName="menuItem"
+        visible=":= menuItem.visible">
+      <a    id="menuItemlink" class=':= (menuItem.menuItems != null ? "subMenuLink" : "menuItemLink") + (!menuItem.enabled ? " menuItemDisabled" : "")'
+            clickEvent="=: menuItem.itemSelected()" >
+         <img visible=":= menuItem.icon != null" src=":= menuItem.icon"/>
+         <span><%= menuItem.name %></span>
+      </a>
+      <div id="subMenuBox" class="subMenuBox" visible=":= menuItem.subMenuVisible">
+         <div id="subMenuRepeat" class="subMenuItem" repeat=":= menuItem.menuItems" repeatVarName="subMenuItem" visible=":= subMenuItem.visible">
+            <a id="subMenuItemLink" class="subMenuItemLink" clickEvent="=: subMenuItem.itemSelected()"><%= subMenuItem.name %></a>
+         </div>
+      </div>
+   </div>
+</div>

@@ -1,5 +1,0 @@
-<html>
-<body>
-   <div id="registerView" extends="RegisterView"/>
-</body>
-</html>

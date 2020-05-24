@@ -1,0 +1,7 @@
+<html extends="PageLayout">
+<body>
+   <div id="pageBody">
+      <div id="loginView" extends="LoginView"/>
+   </div>
+</body>
+</html>

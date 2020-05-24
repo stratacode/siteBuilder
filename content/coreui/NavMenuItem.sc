@@ -1,0 +1,2 @@
+class NavMenuItem extends BaseMenuItem {
+}

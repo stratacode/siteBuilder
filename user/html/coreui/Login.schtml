@@ -1,5 +1,0 @@
-<html>
-<body>
-   <div id="loginView" extends="LoginView"/>
-</body>
-</html>

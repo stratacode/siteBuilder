@@ -1,0 +1,3 @@
+scope<appSession>
+currentNavMenu {
+}

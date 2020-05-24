@@ -1,2 +1,2 @@
-public product.html.core extends product.coreui, html.schtml {
+public product.html.core extends product.coreui, user.html.server, html.schtml {
 }
