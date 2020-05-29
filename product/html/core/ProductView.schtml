@@ -24,7 +24,7 @@
             <span id="alt" class="price"><%= currencySymbol %><%= currentSku.price %></span>
          </span>
          <div id="optionsTagView" class="optionsTagView">
-            <div id="optionViewList" class="optionView" repeat="= optionViews" repeatVarName="optionView">
+            <div id="optionViewList" class="optionView" repeat=":= optionViews" repeatVarName="optionView">
                <span class="optionName"><%= optionView.option.optionName %></span>
                <select id="optionSelect" optionDataSource=":= optionView.values" selectedIndex=":=: optionView.selectedIndex">
                   <option class=':= ((OptionValueView) optionData).enabled ? "" : "optionDisabled"'><%= ((OptionValueView)optionData).value.name %></option>
@@ -33,6 +33,10 @@
          </div>
          <div id="longDesc" class="longDesc"><%= product.longDesc %></div>
          <div id="skuCode" class="skuCode">SKU: <%= currentSku.skuCode %></div>
+         <div id="addToCartForm">
+            <input type="button" value="Add to cart" id="addToCartButton" clickEvent="=: addToCart()"/>
+            <input type="text" id="quantityField" value=":=: currentQuantityStr"/>
+         </div>
       </div>
    </div>
 </div>

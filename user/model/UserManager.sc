@@ -17,7 +17,7 @@ class UserManager {
    int maxProfileEvents = 20;
    // 30 days
    int cookieDurationSeconds = 30*24*60*60;
-   int authTokenDurationMillis = 30*24*60*60*1000;
+   long authTokenDurationMillis = 30*24*60*60*1000L;
 
    int passwordMinLen = 6;
    boolean passwordRequireUpperAndLower = false;
@@ -28,5 +28,5 @@ class UserManager {
 
    boolean secureCookie = false;
    String cookieDomain = null;
-   String cookiePath = null;
+   String cookiePath = "/";
 }

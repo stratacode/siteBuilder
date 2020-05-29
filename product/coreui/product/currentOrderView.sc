@@ -1,0 +1,2 @@
+object currentOrderView extends OrderView {
+}

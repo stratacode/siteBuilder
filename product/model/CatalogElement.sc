@@ -1,8 +1,8 @@
 class CatalogElement extends ManagedResource {
    /* The external name */
    String name;
-   @DBPropertySettings(indexed=true)
 
+   @DBPropertySettings(indexed=true)
    String pathName;
 
    String shortDesc, longDesc;
@@ -10,6 +10,9 @@ class CatalogElement extends ManagedResource {
    boolean visible; 
 
    Category parentCategory;
+
+   @DBPropertySettings(indexed=true)
+   Storefront store;
 
    /** Used for the direct linking URL */
    String primaryKeywords;

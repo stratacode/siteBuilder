@@ -1,7 +1,68 @@
 .categoryNavView {
    margin-top: 25px;
-   margin-left: 25px;
+   margin-left: 35px;
    margin-bottom: 25px;
+}
+
+.cartTitle {
+   font-size: 140%;
+}
+
+.cartContents {
+  display: flex;
+  flex-direction: column;
+}
+
+.cartLineItem {
+  display: flex;
+  flex-direction: row;
+  padding-top: 10px;
+  align-items: center;
+}
+
+.cartProductThumb, .cartLineItemQuantity, .cartProductInfo, .cartStatus, .cartPrice {
+   margin-right: 10px;
+}
+
+.cartProductThumb {
+   flex-grow: 0;
+}
+
+.cartOption {
+   padding-right: 10px;
+}
+
+.cartOptions {
+   display: flex;
+   flex-direction: row;
+}
+
+.cartLineItemQuantity {
+   flex-grow: 0;
+   width: 35px;
+   height: fit-content;
+}
+
+.cartDeleteItem {
+   cursor: pointer;
+}
+
+.cartProductInfo {
+   max-width: 300px;
+   display: flex;
+   flex-direction: column;
+   flex-grow: 2;
+}
+
+.categoryLink {
+  text-decoration: none;
+  font-size: 120%;
+  color: #000;
+}
+
+.cartTotalPrice {
+   padding-top: 10px;
+   font-size: 120%;
 }
 
 .productView {
@@ -10,7 +71,7 @@
 }
 
 .productDetailView {
-   margin-top: 100px;
+   margin-top: 25px;
    margin-left: 25px;
    display: flex;
    flex-direction: row;
@@ -32,6 +93,7 @@
 }
 
 .thumbView {
+   cursor: pointer;
 }
 
 .thumbViewSelected {
@@ -46,7 +108,7 @@
 }
 
 .productNameView {
-   font-size: 200%;
+   font-size: 150%;
    font-weight: bold;
 }
 

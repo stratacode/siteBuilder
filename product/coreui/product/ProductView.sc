@@ -1,11 +1,13 @@
 @Component
 class ProductView {
    Product product;
-   String pathName; 
+   String pathName;
+
+   Storefront store = StoreView.store;
 
    String currencySymbol;
 
-   pathName =: validate();
+   pathName =: validateProduct();
 
    ManagedMedia currentMedia;
 
@@ -27,25 +29,15 @@ class ProductView {
    List<OptionView> optionViews;
    boolean optionsValid = false;
 
+   object quantityConverter extends IntConverter {
+   }
+
+   String currentQuantityStr :=: quantityConverter.intToString(currentQuantity);
+   int currentQuantity;
+
    void init() {
       validateProduct();
-      currencySymbol = StoreView.store.defaultCurrency.symbol;
-      categoryPath = new ArrayList<Category>();
-      if (product.parentCategory != null) {
-         for (Category parent = product.parentCategory; parent != null; parent = parent.parentCategory)
-            categoryPath.add(0, parent);
-      }
-      available = product.available;
-      if (available) {
-         if (!(currentSku instanceof PhysicalSku))
-            inStock = true;
-         else
-            inStock = currentSku.inStock;
-      }
-      else
-         inStock = false;
-
-      initOptions();
+      currencySymbol = store.defaultCurrency.symbol;
    }
 
 
@@ -54,9 +46,11 @@ class ProductView {
          return;
 
       if (product == null || !product.pathName.equals(pathName)) {
-         List<Product> prods = Product.findByPathName(pathName, 0, 1);
+         optionsValid = false;
+         List<Product> prods = Product.findByPathName(pathName, store, 0, 1);
          if (prods.size() > 0) {
             product = prods.get(0);
+            currentQuantity = product.defaultQuantity;
             ManagedMedia mainMedia = product.mainMedia;
             if (product.altMedia != null) {
                altMedia = new ArrayList<ManagedMedia>();
@@ -72,6 +66,25 @@ class ProductView {
             productViewError = "No product found for: " + pathName;
          }
       }
+
+      categoryPath = new ArrayList<Category>();
+      if (product != null) {
+         if (product.parentCategory != null) {
+            for (Category parent = product.parentCategory; parent != null; parent = parent.parentCategory)
+               categoryPath.add(0, parent);
+         }
+         available = product.available;
+      }
+      if (available) {
+         if (!(currentSku instanceof PhysicalSku))
+            inStock = true;
+         else
+            inStock = currentSku.inStock;
+      }
+      else
+         inStock = false;
+
+      initOptions();
    }
 
    void validateCurrentMedia() {
@@ -79,6 +92,8 @@ class ProductView {
    }
 
    void initOptions() {
+      if (product == null)
+         return;
       options = product.options;
       ProductOptions productOptions = options;
       if (productOptions != null) {
@@ -132,8 +147,11 @@ class ProductView {
             optionViews.add(optionView);
          }
       }
-      else
+      else {
          productOptions = null;
+         currentSku = product.sku;
+         optionViews = new ArrayList<OptionView>();
+      }
       optionsValid = true;
    }
 
@@ -213,5 +231,10 @@ class ProductView {
 
       }
       optionsValid = true;
+   }
+
+   void addToCart() {
+      OrderView orderView = currentOrderView;
+      orderView.addLineItem(product, currentSku, product.skuParts, currentQuantity);
    }
 }

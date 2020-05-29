@@ -41,6 +41,8 @@ class Product extends CatalogElement {
    String specs;
    String vendor;
 
+   int defaultQuantity = 1;
+
    List<RelatedProduct> relatedProducts;
 
    Brand brand;
@@ -66,7 +68,7 @@ class Product extends CatalogElement {
 
    List<Product> productUpSells;
 
-   override @FindBy(paged=true,orderBy="-lastModified") pathName;
+   override @FindBy(paged=true,orderBy="-lastModified",with="store") pathName;
 
    Sku getSkuForOptionsWith(List<OptionValue> optValues, int overrideIx, OptionValue overrideVal) {
       if (skuOptions == null) {

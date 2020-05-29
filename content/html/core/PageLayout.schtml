@@ -1,6 +1,6 @@
 <html abstract="true">
    <head>
-      <link id="contentStyle" rel="stylesheet" href="style.css" type="text/css"/>
+      <link id="contentStyle" rel="stylesheet" href="/pageStyle.css" type="text/css"/>
    </head>
    <body>
       <div id="navbar" extends="NavView"/>

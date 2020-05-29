@@ -1,8 +1,5 @@
-<%@ @URL(pattern="/product/{pathName=identifier}", testURLs={"/product/prod1"}) %>
-<html>
-   <head exec="server">
-      <link id="docStyle" rel="stylesheet" href="productStyle.css" type="text/css"/>
-   </head>
+<%@ @URL(pattern="/product/{pathName=urlString}", testURLs={"/product/surly", "/product/maverick", "/product/four-corners"}) %>
+<html extends="BaseStorePage">
    <%! String pathName; %>
    <body>
       <div id="productView" extends="ProductView" pathName=":=: ProductPage.this.pathName"/>

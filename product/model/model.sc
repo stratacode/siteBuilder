@@ -5,6 +5,7 @@ import java.util.Date;
 
 import sc.obj.Constant;
 
+import sc.product.Storefront;
 import sc.product.Product;
 import sc.product.Category;
 import sc.product.Sku;

@@ -26,4 +26,8 @@ class Sku {
       res.barCode = barCode;
       return res;
    }
+
+   BigDecimal getPriceToUse() {
+      return discountPrice == null ? price : discountPrice;
+   }
 }

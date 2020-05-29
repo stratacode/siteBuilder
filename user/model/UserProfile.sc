@@ -21,6 +21,8 @@ class UserProfile {
    String firstName, lastName, salutation;
    boolean emailVerified;
 
+   Date lastModified;
+
    boolean locked;
    boolean limitExceeded;
    Date limitRestoreDate;

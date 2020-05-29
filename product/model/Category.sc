@@ -17,5 +17,5 @@ class Category extends CatalogElement {
 
    List<Category> categoryUpSells;
 
-   override @FindBy(paged=true,orderBy="-lastModified") pathName;
+   override @FindBy(paged=true,orderBy="-lastModified",with="store") pathName;
 }

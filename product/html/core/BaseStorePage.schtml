@@ -1,0 +1,9 @@
+<html extends="PageLayout" abstract="true">
+   <%!
+      //String storePathName;
+      //StoreView storeView := StoreView.getForPathName(storePathName);
+   %>
+   <head exec="server">
+      <link id="docStyle" rel="stylesheet" href="/productStyle.css" type="text/css"/>
+   </head>
+</html>

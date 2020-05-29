@@ -1,0 +1,24 @@
+.subMenuBox {
+   position: absolute;
+   z-index: 5;
+   padding: 3px;
+   background-color: #fff;
+}
+
+.subMenuItem {
+   padding: 3px;
+}
+
+.subMenuLink, .menuItemLink {
+   padding-left: 10px;
+   padding-right: 25px;
+   display: flex;
+   flex-direction: column;
+   text-decoration: none;
+   color: #000;
+}
+
+#navbar {
+   display: inline-flex;
+   padding-bottom: 20px;
+}

@@ -1,0 +1,39 @@
+<div>
+   <%!
+      Order order := currentOrderView.order;
+      object quantityConverter extends IntConverter {
+      }
+   %>
+   <div id="title" class="cartTitle">Shopping cart</div>
+   <div id="cartWrapper" visible=":= currentOrderView.numLineItems != 0">
+      <div id="cartContents" class="cartContents">
+         <div id="lineItemRepeat" repeat=":= order.lineItems" repeatVarName="lineItem" class="cartLineItem">
+            <img class="cartProductThumb" src="= lineItem.product.mainMedia.thumbUrl"/>
+            <div class="cartProductInfo">
+               <div id="productName"><%= lineItem.product.name %> - <%= lineItem.product.shortDesc %></div>
+               <div id="cartOptions" class="cartOptions">
+                  <div id="cartOption" repeat=":= lineItem.product.options.options" repeatVarName="option" class="cartOption">
+                     <span><%= option.optionName %>: </span>
+                     <span><%= lineItem.sku.options.get(cartOption.this.repeatIndex).name %></span>
+                  </div>
+               </div>
+            </div>
+            <input type="text" class="cartLineItemQuantity"
+                   value=":= quantityConverter.intToString(lineItem.quantity)"
+                   changeEvent="=: currentOrderView.changeQuantity(lineItem, value)"/>
+            <div id="cartStatus" class="cartStatus"><%= lineItem.sku.inStock ? "in stock" : "backordered" %></div>
+            <div id="price" class="cartPrice"><%= lineItem.totalPrice %></div>
+            <img class="cartDeleteItem" id="deleteIcon" src="/icons/x-square.svg" clickEvent="=: currentOrderView.deleteLineItem(lineItem)"/>
+         </div>
+         <div id="totalPrice" class="cartTotalPrice">
+            Total:
+            <span id="cartPrice">
+                <%= order.currency.symbol %><%= order.totalPrice %>
+            </span>
+         </div>
+      </div>
+      <div id="alt" class="cartMessage">
+         Cart is empty
+      </div>
+   </div>
+</div>

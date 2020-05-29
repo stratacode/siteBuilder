@@ -1,0 +1,4 @@
+<%@ @URL(pattern="/cart") %>
+<html extends="BaseStorePage">
+  <body><div id="cartView" extends="CartView"></div></body>
+</html>
