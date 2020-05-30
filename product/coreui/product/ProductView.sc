@@ -1,27 +1,14 @@
-@Component
-class ProductView {
+class ProductView extends CatalogElementView {
    Product product;
-   String pathName;
-
-   Storefront store = StoreView.store;
 
    String currencySymbol;
 
    pathName =: validateProduct();
 
-   ManagedMedia currentMedia;
-
    Sku currentSku;
 
    boolean available;
    boolean inStock;
-
-   List<ManagedMedia> altMedia;
-   int altMediaIndex;
-
-   altMediaIndex =: validateCurrentMedia();
-
-   List<Category> categoryPath;
 
    String productViewError;
 
@@ -40,6 +27,9 @@ class ProductView {
       currencySymbol = store.defaultCurrency.symbol;
    }
 
+   CatalogElement getCatalogElement() {
+      return product;
+   }
 
    void validateProduct() {
       if (pathName == null)
@@ -51,13 +41,7 @@ class ProductView {
          if (prods.size() > 0) {
             product = prods.get(0);
             currentQuantity = product.defaultQuantity;
-            ManagedMedia mainMedia = product.mainMedia;
-            if (product.altMedia != null) {
-               altMedia = new ArrayList<ManagedMedia>();
-               if (!product.altMedia.contains(mainMedia))
-                  altMedia.add(mainMedia);
-               altMedia.addAll(product.altMedia);
-            }
+            altMediaIndex = 0;
             validateCurrentMedia();
 
             productViewError = null;
@@ -67,12 +51,8 @@ class ProductView {
          }
       }
 
-      categoryPath = new ArrayList<Category>();
+      validateCatalogElement();
       if (product != null) {
-         if (product.parentCategory != null) {
-            for (Category parent = product.parentCategory; parent != null; parent = parent.parentCategory)
-               categoryPath.add(0, parent);
-         }
          available = product.available;
       }
       if (available) {
@@ -85,10 +65,6 @@ class ProductView {
          inStock = false;
 
       initOptions();
-   }
-
-   void validateCurrentMedia() {
-      currentMedia = altMediaIndex < altMedia.size() ? altMedia.get(altMediaIndex) : product.mainMedia;
    }
 
    void initOptions() {

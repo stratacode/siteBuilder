@@ -61,8 +61,11 @@ class OrderView {
             deleteLineItem(lineItem);
          else if (quantity > Storefront.MaxQuantity)
             orderError = "Quantity is greater than the max: " + Storefront.MaxQuantity;
-         else
+         else {
             lineItem.quantity = quantity;
+            lineItem.refreshLineItemPrice();
+            order.refreshTotalPrice();
+         }
       }
    }
 

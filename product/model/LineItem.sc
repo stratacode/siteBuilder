@@ -15,6 +15,10 @@ class LineItem {
    BigDecimal totalPrice;
 
    static LineItem create(Order order, Product product, Sku sku, List<Sku> skuParts, int quantity) {
+      if (quantity == 0)
+         return null;
+      if (quantity < 0)
+         throw new IllegalArgumentException("Invalid quantity for line item");
       LineItem res = new LineItem();
       res.order = order;
       res.product = product;
@@ -22,12 +26,17 @@ class LineItem {
       res.quantity = quantity;
       res.dbInsert(false);
       res.skuParts = skuParts;
-      res.totalPrice = sku.priceToUse;
+      res.refreshLineItemPrice();
+      return res;
+   }
+
+   void refreshLineItemPrice() {
+      BigDecimal itemPrice = sku.priceToUse;
       if (skuParts != null) {
          for (Sku skuPart:skuParts) {
-            res.totalPrice = skuPart.priceToUse.add(res.totalPrice);
+            itemPrice = skuPart.priceToUse.add(itemPrice);
          }
       }
-      return res;
+      totalPrice = itemPrice.multiply(new BigDecimal(quantity));
    }
 }

@@ -1,0 +1,27 @@
+<div class="categoryView">
+   <div id="categoryNavView" extends="CategoryNavView" categoryPath=":= CategoryView.this.categoryPath"/>
+   <div id="categoryDetailView" class="categoryDetailView">
+      <div id="categoryDesc" class="categoryDesc"><%= category.longDesc %></div>
+      <div id="categoryViewImage" class="categoryViewImage">
+         <img class="viewImage" id="categoryImage" src=":= currentMedia.url"/>
+      </div>
+      <div id="subCategoriesView" class="subCategoriesView" visible=":= category.subCategories != null">
+         <div id="subCategoryView" repeat=":= category.subCategories" repeatVarName="subCategory" class="thumbView">
+            <a href=':= "/category/" + subCategory.pathName' class="thumbNavLink">
+               <img class="thumbImage" src=":= subCategory.mainMedia.thumbUrl"/>
+               <span><%= subCategory.name %></span>
+               <span><%= subCategory.shortDesc %></span>
+            </a>
+         </div>
+      </div>
+      <div id="productsView" class="productsView" visible=":= category.products != null">
+         <div id="productView" repeat=":= category.products" repeatVarName="product" class="thumbView">
+            <a href=':= "/product/" + product.pathName' class="thumbNavLink">
+               <img class="thumbImage" src=":= product.mainMedia.thumbUrl"/>
+               <span><%= product.name %></span>
+               <span><%= product.shortDesc %></span>
+            </a>
+         </div>
+      </div>
+   </div>
+</div>

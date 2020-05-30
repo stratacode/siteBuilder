@@ -1,14 +1,8 @@
 <div class="productView">
-   <div id="categoryNavView" class="categoryNavView">
-      <%! int lastPath := categoryPath.size() - 1; %>
-      <span id="categoryPathView" class="categoryPath" repeat=":= categoryPath" repeatVarName="category">
-         <a href='= "/category/" + category.pathName' class="categoryLink"><%= category.name %></a>
-         <span visible=":= lastPath != categoryPathView.this.repeatIndex">›</span>
-      </span>
-   </div>
+   <div id="categoryNavView" extends="CategoryNavView" categoryPath=":= ProductView.this.categoryPath"/>
    <div id="productDetailView" class="productDetailView">
-      <div id="imageView" class="imageView">
-         <img class="imageViewImage" id="productImage" src=":= currentMedia.url"/>
+      <div id="productViewImage" class="productViewImage">
+         <img class="viewImage" id="productViewImage" src=":= currentMedia.url"/>
          <div id="thumbNailsView" class="thumbNailsView">
             <div id="altMediaView" repeat=":= product.altMedia" repeatVarName="altMedia"
                  class='= "thumbView" + (altMediaIndex == repeatIndex ? " thumbViewSelected" : "")' >

@@ -1,6 +1,6 @@
 .categoryNavView {
    margin-top: 25px;
-   margin-left: 35px;
+   margin-left: 15px;
    margin-bottom: 25px;
 }
 
@@ -83,7 +83,7 @@
    align-items: center;
 }
 
-.imageViewImage {
+.viewImage, .thumbImage {
   width: fit-content;
 }
 
@@ -100,7 +100,7 @@
    border: solid 3px #dc4f44;
 }
 
-.productInfoView, .thumbView, .imageView {
+.productInfoView, .thumbView, .productImageView, .categoryDesc, .categoryViewImage {
    margin-top: 10px;
    margin-left: 10px;
    margin-right: 10px;
@@ -133,3 +133,12 @@
    padding: 10px;
 }
 
+.thumbNavLink {
+   text-decoration: none;
+   display: flex;
+   flex-direction: column;
+}
+
+.productsView, .subCategoriesView {
+   display: flex;
+}

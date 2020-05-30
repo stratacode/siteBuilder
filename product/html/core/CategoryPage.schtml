@@ -1,0 +1,7 @@
+<%@ @URL(pattern="/category/{pathName=urlString}", testURLs={"/category/bikes", "/category/road-bikes", "/category/mountain-bikes"}) %>
+<html extends="BaseStorePage">
+   <%! String pathName = null; %>
+   <body>
+      <div id="categoryView" extends="CategoryView" pathName=":=: CategoryPage.this.pathName"/>
+   </body>
+</html>
