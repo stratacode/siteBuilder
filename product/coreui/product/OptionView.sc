@@ -1,49 +1,29 @@
 @Sync
 class OptionView {
+   @Sync(syncMode=SyncMode.Disabled)
+   ProductView productView;
+
    @Sync(initDefault=true)
    ProductOption option;
 
-   @Sync(initDefault=true)
-   List<OptionValueView> values;
+   int selectedIndex;
 
-   public void setSelectedIndex(int ix) {
-      if (values != null) {
-         for (int i = 0; i < values.size(); i++) {
-            OptionValueView view = values.get(i);
-            boolean newSel = ix == i;
-            if (view.selected != newSel)
-               view.selected = newSel;
-         }
-      }
-      else if (ix != -1)
-         System.err.println("*** setSelectedIndex - with no values");
-   }
-
-   public int getSelectedIndex() {
-      if (values != null) {
-         for (int i = 0; i < values.size(); i++) {
-            OptionValueView view = values.get(i);
-            if (view.selected)
-               return i;
-         }
-      }
-      return -1;
-   }
-
-   public OptionValueView getSelectedOptionView() {
-      if (values != null) {
-         for (int i = 0; i < values.size(); i++) {
-            OptionValueView view = values.get(i);
-            if (view.selected)
-               return view;
-         }
-      }
-      return null;
-   }
+   List<Boolean> enabled;
 
    public OptionValue getSelectedOption() {
-      OptionValueView selView = getSelectedOptionView();
-      return selView == null ? null : selView.value;
+      List<OptionValue> optionValues = option.optionValues;
+      if (selectedIndex == -1 || selectedIndex >= optionValues.size())
+         return null;
+      return optionValues.get(selectedIndex);
+   }
+
+   public boolean isEnabled(OptionValue value) {
+      if (enabled == null)
+         return true;
+      int optIx = option.optionValues.indexOf(value);
+      if (optIx == -1)
+         return false;
+      return enabled.get(optIx);
    }
 
    public String toString() {

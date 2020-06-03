@@ -1,0 +1,3 @@
+OptionView {
+   selectedIndex =: productView.invalidateOptions();
+}

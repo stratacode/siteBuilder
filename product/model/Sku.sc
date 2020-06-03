@@ -21,7 +21,7 @@ class Sku {
       return true;
    }
 
-   Sku createTempSku() {
+   Sku createOptionSku() {
       Sku res = new Sku();
       res.price = price;
       res.discountPrice = discountPrice;

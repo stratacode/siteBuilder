@@ -59,13 +59,11 @@ ProductView {
             }
          }
 
-
-
          List<OptionValue> defaultOptions = defaultSku != null ? defaultSku.options : options.defaultOptions;
 
          int numOptions = options.options.size();
          if (defaultSku == null) {
-            defaultSku = createTempOptionSku(defaultOptions);
+            defaultSku = createOptionSku(defaultOptions);
          }
 
          currentSku = defaultSku;
@@ -79,22 +77,26 @@ ProductView {
          for (int i = 0; i < numOptions; i++) {
             ProductOption opt = options.options.get(i);
             OptionView optionView = new OptionView();
+            optionView.productView = this;
             optionView.option = opt;
-            optionView.values = new ArrayList<OptionValueView>();
+            optionView.enabled = new ArrayList<Boolean>();
             OptionValue defaultValue = defaultOptions.get(i);
+            int selIndex = -1;
+            int ix = 0;
             for (OptionValue optValue:opt.optionValues) {
-               OptionValueView valueView = new OptionValueView();
-               valueView.productView = this;
-               valueView.value = optValue;
-               valueView.selected = optValue.name.equals(defaultValue.name);
+               boolean enabled;
                if (product.skuOptions != null) {
                   Sku optionSku = product.getSkuForOptionsWith(defaultOptions, i, optValue);
-                  valueView.enabled = optionSku != null && optionSku.inStock;
+                  enabled = optionSku != null && optionSku.inStock;
                }
                else
-                  valueView.enabled = true;
-               optionView.values.add(valueView);
+                  enabled = true;
+               optionView.enabled.add(enabled);
+               if (optValue.name.equals(defaultValue.name))
+                  selIndex = ix;
+               ix++;
             }
+            optionView.selectedIndex = selIndex == -1 ? 0 : selIndex;
             optionViews.add(optionView);
          }
       }
@@ -106,9 +108,9 @@ ProductView {
       optionsValid = true;
    }
 
-   Sku createTempOptionSku(List<OptionValue> skuOptions) {
+   Sku createOptionSku(List<OptionValue> skuOptions) {
       Sku mainSku = product.sku;
-      Sku tempSku = mainSku.createTempSku();
+      Sku optionSku = mainSku.createOptionSku();
       StringBuilder skuCode = new StringBuilder();
       skuCode.append(mainSku.skuCode);
       int numOptions = options.options.size();
@@ -116,10 +118,11 @@ ProductView {
          skuCode.append("-");
          skuCode.append(skuOptions.get(i).skuPart);
       }
-      tempSku.skuCode = skuCode.toString();
-      tempSku.options = skuOptions;
+      optionSku.skuCode = skuCode.toString();
+      optionSku.options = skuOptions;
+      optionSku.dbInsert(false);
 
-      return tempSku;
+      return optionSku;
    }
 
    void invalidateOptions() {
@@ -153,23 +156,26 @@ ProductView {
                System.err.println("*** Mismatching option");
                return;
             }
+            List<OptionValue> optValues = optionView.option.optionValues;
             int selIndex = optionView.getSelectedIndex();
-            for (int j = 0; j < optionView.values.size(); j++) {
-               OptionValueView valueView = optionView.values.get(j);
+            for (int j = 0; j < optValues.size(); j++) {
+               OptionValue optValue = optValues.get(j);
+               boolean enabled = true;;
                if (product.skuOptions != null) {
-                  Sku optionSku = product.getSkuForOptionsWith(selectedOptions, j, valueView.value);
-                  valueView.enabled = optionSku != null && optionSku.inStock;
+                  Sku optionSku = product.getSkuForOptionsWith(selectedOptions, j, optValue);
+                  enabled = optionSku != null && optionSku.inStock;
                }
-               valueView.selected = j == selIndex;
+               optionView.enabled.set(j, enabled);
             }
          }
 
          List<OptionValue> selectedOptions = getSelectedOptions();
          if (product.skuOptions != null)
             currentSku = product.getSkuForOptionsWith(selectedOptions, -1, null);
+         // No sku exists for this collection of options so creating it here - ideally this would be part of the
+         // management UI since some combination of these options might not exist or for inventory
          else
-            currentSku = createTempOptionSku(selectedOptions);
-
+            currentSku = createOptionSku(selectedOptions);
       }
       optionsValid = true;
    }
