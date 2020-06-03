@@ -43,29 +43,38 @@ class Product extends CatalogElement {
 
    int defaultQuantity = 1;
 
+   @Sync(onDemand=true)
    List<RelatedProduct> relatedProducts;
 
    Brand brand;
 
    /** The main SKU for the product */
+   @Sync(onDemand=true)
    Sku sku;
 
    /* List of parts for this product */
+   @Sync(onDemand=true)
    List<Sku> skuParts;
 
    /* Used for when there are options to hold the sku's for each available option combination */
+   @Sync(onDemand=true)
    List<Sku> skuOptions;
 
    /** Reference to the list of options for this product (if any).  */
+   @Sync(onDemand=true)
    ProductOptions options;
 
    // Could be in a promotions layer but also pretty basic so might be best left in the core model but enabled in various layer configurations.
+   @Sync(onDemand=true)
    List<Promotion> promotions;
 
+   @Sync(onDemand=true)
    List<Product> accessories;
 
+   @Sync(onDemand=true)
    List<Product> productCrossSells;
 
+   @Sync(onDemand=true)
    List<Product> productUpSells;
 
    override @FindBy(paged=true,orderBy="-lastModified",with="store") pathName;

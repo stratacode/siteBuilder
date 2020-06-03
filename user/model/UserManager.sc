@@ -3,6 +3,7 @@
  * these for each tenant but for many applications, there's one per process 
  */
 @DBTypeSettings
+@Sync(syncMode=SyncMode.Disabled)
 class UserManager {
    @FindBy
    @DBPropertySettings(unique=true, required=true, indexed=true)

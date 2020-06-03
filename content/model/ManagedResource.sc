@@ -1,4 +1,4 @@
-class ManagedResource {
+abstract class ManagedResource {
    Date lastModified;
    //UserProfile lastUpdatedBy;
    Date validStart;

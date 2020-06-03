@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 @FindBy(name="userNamePassword", with="mgr,userName,password",findOne=true)
 @FindBy(name="userName", with="mgr,userName",findOne=true)
 class UserProfile {
+   @Sync(syncMode=SyncMode.Disabled)
    @DBPropertySettings(required=true)
    UserManager mgr;
 

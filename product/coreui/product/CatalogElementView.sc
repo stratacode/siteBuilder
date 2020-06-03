@@ -1,14 +1,20 @@
 @Component
 abstract class CatalogElementView {
-   String pathName = null;
+   @Sync(syncMode=SyncMode.Disabled)
+   String pathName;
 
+   @Constant
    Storefront store = StoreView.store;
 
+   @Sync
    List<Category> categoryPath;
 
+   @Sync(initDefault=true)
    ManagedMedia currentMedia;
 
+   @Sync
    List<ManagedMedia> altMedia;
+   @Sync
    int altMediaIndex;
 
    altMediaIndex =: validateCurrentMedia();

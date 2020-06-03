@@ -1,7 +1,7 @@
 <%@ @URL(pattern="/product/{pathName=urlString}", testURLs={"/product/surly", "/product/maverick", "/product/four-corners"}) %>
 <html extends="BaseStorePage">
-   <%! String pathName; %>
+<%! String pathName; %>
    <body>
-      <div id="productView" extends="ProductView" pathName=":=: ProductPage.this.pathName"/>
+      <div id="productView" extends="ProductView" pathName=":= ProductPage.this.pathName"/>
    </body>
 </html>

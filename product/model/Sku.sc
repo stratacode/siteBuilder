@@ -1,4 +1,5 @@
 @DBTypeSettings(typeId=1)
+@Sync(onDemand=true)
 class Sku {
    // TODO: might be convenient to have a read-only backptr to the product here?
    // It would be a reverse from multiple lists though which is not supported yet and 
@@ -13,6 +14,7 @@ class Sku {
    BigDecimal discountPrice;
 
    /* One value for each of the options for the product */
+   @Sync(initDefault=true)
    List<OptionValue> options;
 
    boolean getInStock() {

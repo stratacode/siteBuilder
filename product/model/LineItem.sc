@@ -4,6 +4,7 @@ class LineItem {
    Order order;
 
    Product product;
+   @Sync(initDefault=true)
    Sku sku;
    int quantity;
    Date lastModified;

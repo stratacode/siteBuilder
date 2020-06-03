@@ -42,7 +42,14 @@ class Order {
       List<LineItem> items = lineItems;
       if (items != null) {
          for (LineItem lineItem:items) {
-            res = res.add(lineItem.totalPrice);
+            if (lineItem.totalPrice == null) {
+               System.out.println("*** Warning - no saved totalPrice for lineItem - refreshing");
+               lineItem.refreshLineItemPrice();
+            }
+            if (lineItem.totalPrice != null)
+               res = res.add(lineItem.totalPrice);
+            else
+               System.err.println("*** Invalid line item - no total price");
          }
       }
       totalPrice = res;

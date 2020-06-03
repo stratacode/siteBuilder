@@ -7,10 +7,12 @@ import sc.user.LoginStatus;
 
 import java.util.Date;
 
+import sc.obj.SyncMode;
+import sc.obj.Sync;
+
 @Sync(syncMode=SyncMode.Automatic)
 public user.model extends util, db.model {
    object userDataSource extends DBDataSource {
-      provider = "postgresql";
       jndiName = "jdbc/scecom";
       dbName = "scecom";
       userName = "sctest";

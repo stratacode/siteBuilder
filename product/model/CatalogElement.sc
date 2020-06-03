@@ -1,4 +1,4 @@
-class CatalogElement extends ManagedResource {
+abstract class CatalogElement extends ManagedResource {
    /* The external name */
    String name;
 
@@ -7,8 +7,9 @@ class CatalogElement extends ManagedResource {
 
    String shortDesc, longDesc;
 
-   boolean visible; 
+   boolean visible;
 
+   @sc.obj.Sync(onDemand=true)
    Category parentCategory;
 
    @DBPropertySettings(indexed=true)

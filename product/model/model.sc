@@ -10,5 +10,6 @@ import sc.product.Product;
 import sc.product.Category;
 import sc.product.Sku;
 
+@Sync(syncMode=SyncMode.Automatic)
 public product.model extends util, user.model, content.model  {
 }

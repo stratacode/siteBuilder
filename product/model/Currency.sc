@@ -1,6 +1,7 @@
 import java.util.HashMap;
 
-class Currency {
+@Sync(constant=true)
+class Currency implements sc.obj.IObjectId {
    String currencyName;
    String symbol;
 
@@ -9,20 +10,20 @@ class Currency {
       symbol = sym;
    }
 
-   static HashMap<String,Currency> currencyForLanguageTag = new HashMap<String,Currency>();
-   static HashMap<String,Currency> currencyForName = new HashMap<String,Currency>();
+   final static HashMap<String,Currency> currencyForLanguageTag = new HashMap<String,Currency>();
+   final static HashMap<String,Currency> currencyForName = new HashMap<String,Currency>();
 
    static void addCurrency(Currency c, String languageTag) {
       currencyForLanguageTag.put(languageTag, c);
       currencyForName.put(c.currencyName, c);
    }
 
-   static Currency usDollars = new Currency("USD", "$");
-   static Currency caDollars = new Currency("CA", "$");
-   static Currency euro = new Currency("EU", "€");
-   static Currency englishPound = new Currency("GDP", "£");
-   static Currency australianDollar = new Currency("AUD", "$");
-   static Currency newZealandDollar = new Currency("NZD", "$");
+   final static Currency usDollars = new Currency("USD", "$");
+   final static Currency caDollars = new Currency("CA", "$");
+   final static Currency euro = new Currency("EU", "€");
+   final static Currency englishPound = new Currency("GDP", "£");
+   final static Currency australianDollar = new Currency("AUD", "$");
+   final static Currency newZealandDollar = new Currency("NZD", "$");
 
    static {
       addCurrency(usDollars, "en-US");
@@ -40,5 +41,9 @@ class Currency {
       if (res == null)
          res = usDollars;
       return res;
+   }
+
+   public String getObjectId() {
+      return "Current_" + currencyName;
    }
 }

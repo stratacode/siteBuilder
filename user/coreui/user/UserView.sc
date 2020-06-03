@@ -6,18 +6,21 @@ import sc.util.StringUtil;
 @Component
 @CompilerSettings(constructorProperties="mgr")
 class UserView {
+   @Sync(syncMode=SyncMode.Disabled)
    UserManager mgr;
 
    String emailAddress = "";
    String userName = "";
    String password = "";
 
+   @Sync(syncMode=SyncMode.Disabled)
    String userAuthToken;
-   boolean persistAuthToken;
-   int authTokenMinutes;
 
+   @Sync(syncMode=SyncMode.Disabled)
    String remoteIp;
+   @Sync(syncMode=SyncMode.Disabled)
    String acceptLanguage;
+   @Sync(syncMode=SyncMode.Disabled)
    String userAgent;
 
    // Stores the current user profile associated with this view. For anonymous users
@@ -25,6 +28,7 @@ class UserView {
    // the register form.
    UserProfile user;
 
+   @Sync(syncMode=SyncMode.ServerToClient)
    LoginStatus loginStatus = LoginStatus.NotLoggedIn;
    // The main error if there are more than one  
    String userViewError;
