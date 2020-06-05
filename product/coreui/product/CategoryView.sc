@@ -9,4 +9,9 @@ class CategoryView extends CatalogElementView {
       return category;
    }
 
+   category =: validateCategory();
+
+   void validateCategory() {
+      validateCurrentMedia();
+   }
 }

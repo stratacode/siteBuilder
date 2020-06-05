@@ -1,12 +1,13 @@
 CategoryView {
    // This binding is only on the server so that we don't run it more than once
-   pathName =: validateCategory();
+   pathName =: validateCategoryPath();
 
    void init() {
-      validateCategory();
+      super.init();
+      validateCategoryPath();
    }
 
-   void validateCategory() {
+   void validateCategoryPath() {
       String path = pathName;
       if (path == null)
          path = "/";

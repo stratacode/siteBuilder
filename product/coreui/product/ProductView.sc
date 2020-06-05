@@ -2,10 +2,11 @@ class ProductView extends CatalogElementView {
    @Sync(initDefault=true)
    Product product;
 
+   product =: validateProduct();
+
    @Sync
    String currencySymbol;
 
-   pathName =: validateProduct();
 
    @Sync(initDefault=true)
    Sku currentSku;
@@ -22,6 +23,11 @@ class ProductView extends CatalogElementView {
    ProductOptions options;
    @Sync(initDefault=true)
    List<OptionView> optionViews;
+
+   // This method runs on both client and server so the inputs are synchronized, but not the outputs
+   void validateProduct() {
+      validateCurrentMedia();
+   }
 
    object quantityConverter extends IntConverter {
    }

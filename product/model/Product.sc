@@ -43,8 +43,11 @@ class Product extends CatalogElement {
 
    int defaultQuantity = 1;
 
+   /*
    @Sync(onDemand=true)
+   @DBPropertySettings(columnType="jsonb")
    List<RelatedProduct> relatedProducts;
+   */
 
    Brand brand;
 
@@ -54,10 +57,12 @@ class Product extends CatalogElement {
 
    /* List of parts for this product */
    @Sync(onDemand=true)
+   @DBPropertySettings(columnType="jsonb")
    List<Sku> skuParts;
 
    /* Used for when there are options to hold the sku's for each available option combination */
    @Sync(onDemand=true)
+   @DBPropertySettings(columnType="jsonb")
    List<Sku> skuOptions;
 
    /** Reference to the list of options for this product (if any).  */
@@ -66,15 +71,19 @@ class Product extends CatalogElement {
 
    // Could be in a promotions layer but also pretty basic so might be best left in the core model but enabled in various layer configurations.
    @Sync(onDemand=true)
+   @DBPropertySettings(columnType="jsonb")
    List<Promotion> promotions;
 
    @Sync(onDemand=true)
+   @DBPropertySettings(columnType="jsonb")
    List<Product> accessories;
 
    @Sync(onDemand=true)
+   @DBPropertySettings(columnType="jsonb")
    List<Product> productCrossSells;
 
    @Sync(onDemand=true)
+   @DBPropertySettings(columnType="jsonb")
    List<Product> productUpSells;
 
    override @FindBy(paged=true,orderBy="-lastModified",with="store") pathName;
@@ -84,20 +93,22 @@ class Product extends CatalogElement {
          return null;
       }
       int numOptions = optValues.size();
-      for (Sku sku:skuOptions) {
-         for (OptionValue skuOpt:sku.options) {
-            boolean matched = true;
-            for (int i = 0; i < numOptions; i++) {
-               OptionValue toCompare = i == overrideIx ? overrideVal : sku.options.get(i);
-               if (!toCompare.name.equals(skuOpt.name)) {
-                  matched = false;
-                  break;
-               }
-            }
-            if (matched) {
-               return sku;
+      List<Sku> productSkus = skuOptions;
+      for (int sx = 0; sx < productSkus.size(); sx++) {
+         Sku sku = productSkus.get(sx);
+
+         boolean matched = true;
+         List<OptionValue> skuVals = sku.options;
+         for (int vx = 0; vx < skuVals.size(); vx++) {
+            OptionValue skuVal = skuVals.get(vx);
+            OptionValue findVal = vx == overrideIx ? overrideVal : optValues.get(vx);
+            if (!findVal.name.equals(skuVal.name)) {
+               matched = false;
+               break;
             }
          }
+         if (matched)
+            return sku;
       }
       return null;
    }

@@ -4,6 +4,8 @@ class Order {
    List<LineItem> lineItems;
    BigDecimal totalPrice;
    int numLineItems;
+
+   @DBPropertySettings(columnType="jsonb")
    List<Coupon> cartCoupons;
 
    UserProfile user;

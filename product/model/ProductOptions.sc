@@ -3,6 +3,7 @@
 class ProductOptions {
    /* Name of this group of product options */
    String optionTypeName;
+   @DBPropertySettings(columnType="jsonb")
    List<ProductOption> options;
 
    List<OptionValue> getDefaultOptions() {

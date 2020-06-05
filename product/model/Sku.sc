@@ -15,6 +15,7 @@ class Sku {
 
    /* One value for each of the options for the product */
    @Sync(initDefault=true)
+   @DBPropertySettings(columnType="jsonb")
    List<OptionValue> options;
 
    boolean getInStock() {
@@ -32,4 +33,17 @@ class Sku {
    BigDecimal getPriceToUse() {
       return discountPrice == null ? price : discountPrice;
    }
+
+   static Sku findSkuForOptions(List<Sku> skuOptions, List<OptionValue> opts) {
+      for (Sku sku:skuOptions) {
+         if (sku.options.equals(opts))
+            return sku;
+      }
+      return null;
+   }
+
+   String toString() {
+      return skuCode;
+   }
+
 }

@@ -28,5 +28,6 @@ abstract class CatalogElement extends ManagedResource {
    ManagedMedia navMedia;
 
    /** Alternative displays */
+   @DBPropertySettings(columnType="jsonb")
    List<ManagedMedia> altMedia;
 }

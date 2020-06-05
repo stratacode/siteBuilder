@@ -9,8 +9,10 @@ class LineItem {
    int quantity;
    Date lastModified;
 
+   @DBPropertySettings(columnType="jsonb")
    List<Sku> skuParts;
 
+   @DBPropertySettings(columnType="jsonb")
    List<Coupon> lineItemCoupons;
 
    BigDecimal totalPrice;
