@@ -5,7 +5,6 @@ ProductView {
    pathName =: validateProductPath();
 
    void init() {
-      super.init();
       validateProductPath();
       currencySymbol = store.defaultCurrency.symbol;
    }
@@ -19,6 +18,10 @@ ProductView {
          List<Product> prods = Product.findByPathName(pathName, store, 0, 1);
          if (prods.size() > 0) {
             product = prods.get(0);
+
+            if (PTypeUtil.testMode)
+               DBUtil.addTestIdInstance(product, "product/" + pathName);
+
             currentQuantity = product.defaultQuantity;
             altMediaIndex = 0;
             validateCurrentMedia();
@@ -91,6 +94,10 @@ ProductView {
          optionViews = new ArrayList<OptionView>();
          for (int i = 0; i < numOptions; i++) {
             ProductOption opt = options.options.get(i);
+
+            if (PTypeUtil.testMode)
+               DBUtil.addTestIdInstance(opt, "prodOpt-" + opt.optionName);
+
             OptionView optionView = new OptionView();
             optionView.productView = this;
             optionView.option = opt;
@@ -100,6 +107,10 @@ ProductView {
             int ix = 0;
             for (OptionValue optValue:opt.optionValues) {
                boolean enabled;
+
+               if (PTypeUtil.testMode)
+                  DBUtil.addTestIdInstance(optValue, "optVal-" + optValue.name);
+
                if (skuOptions != null) {
                   Sku optionSku = product.getSkuForOptionsWith(defaultOptions, i, optValue);
                   enabled = optionSku != null && optionSku.inStock;

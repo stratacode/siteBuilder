@@ -1,7 +1,8 @@
+<%@ @URL(pattern="/logout", realTime=false) %>
 <html extends="PageLayout" pageVisitCount="=: currentUserView.logout()">
 <body>
    <div id="pageBody">
-      <div id="loginView" extends="LoginView"/>
+      You have been signed out. <a href="/login">Login</a>
    </div>
 </body>
 </html>

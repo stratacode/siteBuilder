@@ -10,13 +10,16 @@ OrderView {
          order = Order.findByUserAndStatus(user, OrderStatus.Draft);
 
          if (order != null) {
-            for (LineItem lineItem:order.lineItems) {
-               if (lineItem.product != null) {
-                  SyncContext syncCtx = SyncManager.getSyncContextForInst(lineItem.product);
-                  if (syncCtx == null) {
-                     SyncManager.addSyncInst(lineItem.product, false, false, "appSession", null);
+            List<LineItem> lineItems = order.lineItems;
+            if (lineItems != null) {
+               for (LineItem lineItem:order.lineItems) {
+                  if (lineItem.product != null) {
+                     SyncContext syncCtx = SyncManager.getSyncContextForInst(lineItem.product);
+                     if (syncCtx == null) {
+                        SyncManager.addSyncInst(lineItem.product, false, false, "appSession", null);
+                     }
+                     SyncManager.startSync(lineItem.product, "options");
                   }
-                  SyncManager.startSync(lineItem.product, "options");
                }
             }
          }

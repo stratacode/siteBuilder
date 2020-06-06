@@ -3,7 +3,6 @@ CategoryView {
    pathName =: validateCategoryPath();
 
    void init() {
-      super.init();
       validateCategoryPath();
    }
 
@@ -15,6 +14,9 @@ CategoryView {
          List<Category> cats = Category.findByPathName(path, store, 0, 1);
          if (cats.size() > 0) {
             category = cats.get(0);
+            if (PTypeUtil.testMode)
+               DBUtil.addTestIdInstance(category, "category/" + pathName);
+
             ManagedMedia mainMedia = category.mainMedia;
             if (category.altMedia != null) {
                altMedia = new ArrayList<ManagedMedia>();
@@ -26,6 +28,7 @@ CategoryView {
 
             categoryViewError = null;
             startCategorySync();;
+
          }
          else {
             categoryViewError = "No category found for: " + (pathName == null ? "(root)" : pathName);

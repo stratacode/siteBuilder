@@ -24,6 +24,8 @@ UserView {
       user = new UserProfile();
       user.mgr = mgr;
       user.initDefaultFields();
+
+      DBUtil.addTestIdInstance(user, "new-anon-profile");
    }
 
    boolean login() {
@@ -59,6 +61,8 @@ UserView {
                   userAuthToken = user.createAuthToken();
                   persistAuthToken(userAuthToken);
                   user.loginSuccess(remoteIp);
+
+                  DBUtil.addTestIdInstance(user, "logged-in-as-" + user.userName);
                   return true;
                }
                else
@@ -118,6 +122,7 @@ UserView {
       if (user == null) {
          user = new UserProfile();
          insert = true;
+
       }
       else if (user.registered) {
          priorityError("User already registered");
@@ -149,6 +154,8 @@ UserView {
          exc.printStackTrace();
          return false;
       }
+
+      DBUtil.addTestIdInstance(user, "new-registered-user");
 
       loginStatus = LoginStatus.LoggedIn;
 
