@@ -29,6 +29,7 @@
  */
 
 @DBTypeSettings(typeId=1)
+@Sync(onDemand=true)
 class Product extends CatalogElement {
    override @DBPropertySettings(reverseProperty="products") parentCategory;
 

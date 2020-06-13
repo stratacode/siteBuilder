@@ -1,5 +1,5 @@
 @DBTypeSettings
-@FindBy(name="userAndStatus", with="user,status", findOne=true)
+@FindBy(name="userPending", with="user,pending", orderBy="-lastModified")
 class Order {
    List<LineItem> lineItems;
    BigDecimal totalPrice;
@@ -9,7 +9,9 @@ class Order {
    List<Coupon> cartCoupons;
 
    UserProfile user;
+   Storefront store;
 
+   String emailAddress;
    Address shippingAddress;
    Address billingAddress;
 
@@ -19,14 +21,18 @@ class Order {
       return Currency.getForName(currencyName);
    }
 
-   OrderStatus status;
+   boolean checkoutStarted;
+   String orderNumber;
+   boolean pending := orderNumber == null;
 
+   Date submittedOn;
+   Date deliveredOn;
    Date lastModified;
 
    static Order createDraft(Storefront store, UserProfile user) {
       Order order = new Order();
       order.user = user;
-      order.status = OrderStatus.Draft;
+      order.store = store;
       Currency currency = Currency.currencyForLanguageTag.get(user.localeTag);
       if (currency == null || !store.supportsCurrency(currency))
          currency = store.defaultCurrency;
@@ -34,6 +40,10 @@ class Order {
       if (user.homeAddress != null) {
          order.shippingAddress = user.homeAddress;
          order.billingAddress = user.homeAddress;
+      }
+      else {
+         order.shippingAddress = new Address();
+         order.billingAddress = order.shippingAddress;
       }
       order.dbInsert(false);
       return order;
@@ -56,4 +66,9 @@ class Order {
       }
       totalPrice = res;
    }
+
+   String validateEmailAddress(String emailAddress) {
+      return TextUtil.validateEmailAddress(emailAddress);
+   }
+
 }

@@ -1,6 +1,7 @@
 <div class="categoryView">
    <div id="categoryNavView" extends="CategoryNavView" categoryPath=":= CategoryView.this.categoryPath"/>
    <div id="categoryDetailView" class="categoryDetailView">
+      <div id="categoryNameView" class="categoryNameView"><%= category.name %></div>
       <div id="categoryDesc" class="categoryDesc"><%= category.longDesc %></div>
       <div id="categoryViewImage" class="categoryViewImage">
          <img class="viewImage" id="categoryImage" src=":= currentMedia.url"/>

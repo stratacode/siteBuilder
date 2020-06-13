@@ -1,7 +1,9 @@
 import java.util.Locale;
 import javax.servlet.http.Cookie;
 
-scope<appSession>
+// TODO: this should be per-user manager where we pull the user manager out of a
+// a global Site object (broken out of Storefront)
+scope<session>
 currentUserView {
    void init() {
       Context ctx = Context.getCurrentContext();

@@ -7,8 +7,8 @@ CatalogElementView {
             for (Category parent = elem.parentCategory; parent != null; parent = parent.parentCategory)
                newCategoryPath.add(0, parent);
          }
-         if (elem instanceof Category)
-            newCategoryPath.add((Category)elem);
+         //if (elem instanceof Category)
+         //   newCategoryPath.add((Category)elem);
       }
       if (categoryPath == null || !DynUtil.equalObjects(categoryPath, newCategoryPath))
          categoryPath = newCategoryPath;

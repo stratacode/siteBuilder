@@ -1,4 +1,4 @@
-<html extends="PageLayout" abstract="true">
+<html extends="PageLayout" abstract="true" pageVisitCount="=: currentOrderView.refresh()">
    <%!
       //String storePathName;
       //StoreView storeView := StoreView.getForPathName(storePathName);

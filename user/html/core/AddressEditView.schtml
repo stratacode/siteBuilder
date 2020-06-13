@@ -1,0 +1,37 @@
+<div id="AddressEditView" class="addressEditView">
+   <div><%= addressName %></div>
+   <select id="countrySelect" optionDataSource=":= countryNames" selectedValue=":= address.country == null ? defaultCountry : address.country"
+           selectedValue="=: address.country"/>
+   <div id="addrNameFieldBox">
+      <input type="text" value=":=: address.name" placeholder="name" liveEdit="off"/>
+      <div id="addrNameError" class="fieldError"
+           visible=':= TextUtil.hasMapEntry(address.propErrors, "name")'><%= address.propErrors.get("name") %></div>
+   </div>
+   <div id="addressFieldBox">
+      <input type="text" value=":=: address.address1" placeholder="address" liveEdit="off"/>
+      <div class="fieldError"
+           visible=':= TextUtil.hasMapEntry(address.propErrors, "address1")'><%= address.propErrors.get("address1") %></div>
+   </div>
+   <div id="address2FieldBox">
+      <input type="text" value=":=: address.address2" placeholder="address line 2 (optional)" liveEdit="off"/>
+      <div class="fieldError"
+           visible=':= TextUtil.hasMapEntry(address.propErrors, "address2")'><%= address.propErrors.get("address2") %></div>
+   </div>
+   <div class="formFieldRow">
+      <div id="zipFieldBox">
+         <input type="text" value=":= address.postalCode" value="=: updatePostalCode(value)" placeholder="postalCode" liveEdit="change"/>
+         <div class="fieldError"
+              visible=':= TextUtil.hasMapEntry(address.propErrors, "postalCode")'><%= address.propErrors.get("postalCode") %></div>
+      </div>
+      <div id="cityBox">
+         <input type="text" value=":=: address.city" placeholder="city" liveEdit="off"/>
+         <div class="fieldError"
+              visible=':= TextUtil.hasMapEntry(address.propErrors, "city")'><%= address.propErrors.get("city") %></div>
+      </div>
+      <div id="stateFieldBox">
+         <input type="text" value=":=: address.state" placeholder="state" liveEdit="off"/>
+         <div class="fieldError"
+              visible=':= TextUtil.hasMapEntry(address.propErrors, "state")'><%= address.propErrors.get("state") %></div>
+      </div>
+   </div>
+</div>

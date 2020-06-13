@@ -1,11 +1,42 @@
 <div>
    <%!
+      UserProfile user := currentUserView.user;
       Order order := currentOrderView.order;
-      object quantityConverter extends IntConverter {
-      }
+
+      object quantityConverter extends IntConverter {}
    %>
-   <div id="title" class="cartTitle">Shopping cart</div>
-   <div id="cartWrapper" visible=":= currentOrderView.numLineItems != 0">
+   <div id="title" class="cartTitle"><%= StoreView.store.storeName %></div>
+   <div id="cartWrapper" visible=":= order.numLineItems != 0">
+      <div id="checkoutView" visible=":= order.orderNumber == null && order.checkoutStarted">
+         <div id="guestCheckoutBox" visible=":= currentUserView.loginStatus == LoginStatus.NotLoggedIn">
+            Guest checkout
+            <div id="orderErrorView" visible=":= currentOrderView.orderError != null">
+               Please correct these errors: <%= currentOrderView.orderError %>
+            </div>
+            <input id="emailAddrField" type="text" value=":= order.emailAddress" placeholder="email address" changeEvent="=: currentOrderView.updateEmailAddress(value)"/>
+            <div id="emailErrorBox">
+               <div id="emailError" visible=":= TextUtil.hasMapEntry(currentOrderView.propErrors, "emailAddress")">
+                  <%= currentOrderView.propErrors.get("emailAddress") %>
+               </div>
+            </div>
+            <div id="shippingAddressView" extends="AddressEditView"
+                 address=":= order.shippingAddress"
+                 defaultCountry=":= StoreView.store.defaultCountry"
+                 countryNames=":= StoreView.store.countryNames"
+                 addressName="Shipping address"/>
+            <div><input id="billToShippingField" type="checkbox" checked=":=: currentOrderView.billToShipping">Bill to shipping address?</div>
+            <div id="billingAddressView" extends="AddressEditView"
+                 visible=":= !currentOrderView.billToShipping"
+                 address=":= order.billingAddress"
+                 defaultCountry=":= StoreView.store.defaultCountry"
+                 countryNames=":= StoreView.store.countryNames"
+                 addressName="Billing address"/>
+         </div>
+         <div id="registeredCheckout" visible=":= currentUserView.loginStatus == LoginStatus.LoggedIn">
+            Order for <%= user.displayName %> with <%= user.emailAddress %>
+            Shipping to: <span id="shipAddressBox" extends="AddressDisplayView" address=":= order.shippingAddress"/>
+         </div>
+      </div>
       <div id="cartContents" class="cartContents">
          <div id="lineItemRepeat" repeat=":= order.lineItems" repeatVarName="lineItem" class="cartLineItem">
             <img class="cartProductThumb" src="= lineItem.product.mainMedia.thumbUrl"/>
@@ -30,10 +61,28 @@
             <span id="cartPrice">
                 <%= order.currency.symbol %><%= order.totalPrice %>
             </span>
+            <div id="actionButtonBox">
+               <input id="actionButton" type="button"
+                      value=':= order.checkoutStarted ? "Submit order" : "Checkout"'
+                      clickEvent="=: currentOrderView.performAction()"/>
+            </div>
          </div>
       </div>
       <div id="alt" class="cartMessage">
          Cart is empty
+      </div>
+   </div>
+   <div id="completedOrderView">
+      <div id="submittedOrderView" visible=":= currentOrderView.completedOrder != null">
+         <p>
+         <hr>
+         Order <%= currentOrderView.completedOrder.orderNumber %> submitted on <%= currentOrderView.completedOrder.submittedOn %>
+         <p>
+         Ship to: <div id="completedShipTo" extends="AddressDisplayView" address=":= currentOrderView.completedOrder.shippingAddress"/>
+         <p>
+         Total: <%= currentOrderView.completedOrder.totalPrice %>
+         <p>
+         Bill to: <div id="completedShipTo" extends="AddressDisplayView" address=":= currentOrderView.completedOrder.billingAddress"/>
       </div>
    </div>
 </div>

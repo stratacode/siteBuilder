@@ -107,7 +107,7 @@
    padding: 0px;
 }
 
-.productNameView {
+.productNameView, .categoryNameView {
    font-size: 150%;
    font-weight: bold;
 }
@@ -129,7 +129,7 @@
    display: flex;
 }
 
-.optionView, .longDesc, .skuCode, .priceView, .productNameView {
+.optionView, .longDesc, .skuCode, .priceView, .productNameView, .categoryNameView {
    padding: 10px;
 }
 
@@ -140,5 +140,15 @@
 }
 
 .productsView, .subCategoriesView {
+   display: flex;
+}
+
+.addressEditView {
+   display: flex;
+   flex-direction: column;
+   width: 450px;
+}
+
+.formFieldRow {
    display: flex;
 }

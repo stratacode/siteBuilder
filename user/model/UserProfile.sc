@@ -59,69 +59,8 @@ class UserProfile {
       return null;
    }
 
-   private final static String allowedEmailChars = "+_!%#$&'*/=^`{}|~;";
-
    String validateEmailAddress(String emailAddress) {
-      if (emailAddress == null || emailAddress.length() == 0)
-         return "Empty email address";
-      if (emailAddress.length() > 256)
-         return "Email address is too long";
-
-      int atIx = emailAddress.indexOf('@');
-      if (atIx == -1 || emailAddress.length() - atIx < 5)
-         return "Email address invalid";
-      String local = emailAddress.substring(0, atIx);
-      String domain = emailAddress.substring(atIx+1);
-      int lastDot = -1;
-      int i;
-      int localLen = local.length();
-      boolean quoted = false;
-      for (i = 0; i < localLen; i++) {
-         char l = local.charAt(i);
-         if (l == '.') {
-            if (i == 0 || i == localLen - 1)
-               break;
-            if (lastDot == i - 1)
-               break;
-            lastDot = l;
-         }
-         else if (l == '-') {
-            if (i == 0 || i == localLen - 1)
-               break;
-         }
-         else if (l == '"') {
-            if (i == 0)
-               quoted = true;
-            else if (quoted && l != localLen - 1)
-               break;
-         }
-         else if (Character.isWhitespace(l)) {
-            if (!quoted)
-              break;
-         }
-         else if (!Character.isLetterOrDigit(l)) {
-            if (allowedEmailChars.indexOf(l) == -1)
-               break;
-         }
-      }
-      if (i != localLen) 
-         return "Invalid email name: expected name@server.domain";
-
-      int domainLen = domain.length();
-      boolean foundDot = false;
-      for (i = 0; i < domainLen; i++) {
-         char d = domain.charAt(i);
-         if (d == '.') {
-            if (i == domainLen - 1)
-               break;
-            foundDot = true;
-         }
-         else if (!Character.isLetterOrDigit(d) && d != '-')
-            break;
-      }
-      if (i != domainLen || !foundDot) 
-         return "Invalid email server: expected name@server.domain";
-      return null;
+      return TextUtil.validateEmailAddress(emailAddress);
    }
 
    String validatePassword(String password) {
@@ -184,4 +123,11 @@ class UserProfile {
       if (emailAddress == null)
          emailAddress = "";
    }
+
+   String getDisplayName() {
+      if (firstName != null && lastName != null)
+         return firstName + " " + lastName;
+      return userName;
+   }
+
 }

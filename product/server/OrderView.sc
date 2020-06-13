@@ -7,7 +7,17 @@ OrderView {
       UserProfile user = currentUserView.user;
       orderError = null;
       if (user != null && !user.getDBObject().isTransient()) {
-         order = Order.findByUserAndStatus(user, OrderStatus.Draft);
+         List<Order> userOrders = Order.findByUserPending(user, true);
+         // TODO: should we have a pendingOrderId in the UserProfile to identify this without a general query?
+         if (userOrders != null && userOrders.size() > 0) {
+            if (userOrders.size() > 1)
+               System.err.println("*** Warning - more than one unsubmitted order for user: " + user);
+
+            Order newOrder = userOrders.get(0);
+            if (newOrder != order) {
+               order = userOrders.get(0);
+            }
+         }
 
          if (order != null) {
             List<LineItem> lineItems = order.lineItems;
@@ -22,6 +32,8 @@ OrderView {
                   }
                }
             }
+
+            billToShipping = order.billingAddress == order.shippingAddress;
          }
       }
    }
@@ -82,5 +94,80 @@ OrderView {
          orderError = "Line item not found for delete";
       order.lineItems.remove(lineItem);
       refreshLineItems();
+   }
+
+   void performAction() {
+      clearErrors();
+      if (order != null) {
+         if (!order.checkoutStarted)
+            startCheckout();
+         else if (order.orderNumber == null)
+            submitOrder();
+         else
+            orderError = "Order has already been submitted: " + order.orderNumber;
+      }
+   }
+
+   void startCheckout() {
+      Map<String,String> propErrors = order.dbValidate();
+      if (propErrors == null) {
+         orderError = order.validateForCheckout();
+         if (orderError == null) {
+            order.checkoutStarted = true;
+            try {
+               order.dbUpdate();
+            }
+            catch (RuntimeException exc) {
+               orderError = "Software error starting checkout - please try again or contact us";
+               order.checkoutStarted = false;
+               DBUtil.error("Error updating order for startCheckout: " + exc);
+            }
+         }
+      }
+   }
+
+   void validateProperties() {
+      propErrors = DynUtil.validateProperties(order, null);
+   }
+
+   void submitOrder() {
+      validateProperties();
+      order.shippingAddress.validateAddress();
+      if (order.shippingAddress != order.billingAddress)
+         order.billingAddress.validateAddress();
+      orderError = order.validateForSubmit();
+      if (propErrors == null && order.billingAddress.propErrors == null && order.shippingAddress.propErrors == null && orderError == null) {
+         order.orderNumber = order.store.makeOrderNumber(order);
+         order.submittedOn = new Date();
+         try {
+            order.dbUpdate();
+
+            completedOrder = order;
+            order = Order.createDraft(StoreView.store, currentUserView.user);
+         }
+         catch (RuntimeException exc) {
+            orderError = "Software error submitting order - please try again or contact us";
+            order.orderNumber = null;
+            DBUtil.error("Error submitting order: " + exc);
+         }
+      }
+   }
+
+   void billToShippingChanged() {
+      if (billToShipping) {
+         if (order.shippingAddress != order.billingAddress)
+            order.billingAddress = order.shippingAddress;
+      }
+      else {
+         if (order.billingAddress == order.shippingAddress) {
+            order.billingAddress = new Address();
+            order.billingAddress.dbInsert(true);
+         }
+      }
+   }
+
+   void updateEmailAddress(String email) {
+      order.emailAddress = email;
+      validateProperties();
    }
 }

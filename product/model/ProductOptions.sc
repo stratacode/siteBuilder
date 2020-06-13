@@ -1,5 +1,6 @@
 /** Stores a set of options for a given product, possibly shared by more than one product  */
 @DBTypeSettings
+@Sync(onDemand=true)
 class ProductOptions {
    /* Name of this group of product options */
    String optionTypeName;
