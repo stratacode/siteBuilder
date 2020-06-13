@@ -132,9 +132,14 @@ OrderView {
 
    void submitOrder() {
       validateProperties();
+      if (order.shippingAddress.country == null)
+         order.shippingAddress.country = StoreView.store.defaultCountry;
       order.shippingAddress.validateAddress();
-      if (order.shippingAddress != order.billingAddress)
+      if (order.shippingAddress != order.billingAddress) {
+         if (order.billingAddress.country == null)
+            order.billingAddress.country = StoreView.store.defaultCountry;
          order.billingAddress.validateAddress();
+      }
       orderError = order.validateForSubmit();
       if (propErrors == null && order.billingAddress.propErrors == null && order.shippingAddress.propErrors == null && orderError == null) {
          order.orderNumber = order.store.makeOrderNumber(order);

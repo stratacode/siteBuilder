@@ -1,6 +1,6 @@
 <div id="AddressEditView" class="addressEditView">
    <div><%= addressName %></div>
-   <select id="countrySelect" optionDataSource=":= countryNames" selectedValue=":= address.country == null ? defaultCountry : address.country"
+   <select id="countrySelect" optionDataSource=":= countryNames" selectedIndex=":= countryNames.indexOf(address.country == null ? defaultCountry : address.country)"
            selectedValue="=: address.country"/>
    <div id="addrNameFieldBox">
       <input type="text" value=":=: address.name" placeholder="name" liveEdit="off"/>
