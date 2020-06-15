@@ -15,6 +15,7 @@ class LineItem {
    @DBPropertySettings(columnType="jsonb")
    List<Coupon> lineItemCoupons;
 
+   BigDecimal tax;
    BigDecimal totalPrice;
 
    static LineItem create(Order order, Product product, Sku sku, List<Sku> skuParts, int quantity) {

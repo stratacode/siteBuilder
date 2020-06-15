@@ -2,6 +2,7 @@
 @FindBy(name="userPending", with="user,pending", orderBy="-lastModified")
 class Order {
    List<LineItem> lineItems;
+   BigDecimal tax;
    BigDecimal totalPrice;
    int numLineItems;
 
@@ -29,25 +30,7 @@ class Order {
    Date deliveredOn;
    Date lastModified;
 
-   static Order createDraft(Storefront store, UserProfile user) {
-      Order order = new Order();
-      order.user = user;
-      order.store = store;
-      Currency currency = Currency.currencyForLanguageTag.get(user.localeTag);
-      if (currency == null || !store.supportsCurrency(currency))
-         currency = store.defaultCurrency;
-      order.currencyName = currency.currencyName;
-      if (user.homeAddress != null) {
-         order.shippingAddress = user.homeAddress;
-         order.billingAddress = user.homeAddress;
-      }
-      else {
-         order.shippingAddress = new Address();
-         order.billingAddress = order.shippingAddress;
-      }
-      order.dbInsert(false);
-      return order;
-   }
+   PaymentInfo paymentInfo;
 
    void refreshTotalPrice() {
       BigDecimal res = new BigDecimal("0.00");

@@ -11,6 +11,9 @@ import sc.product.Category;
 import sc.product.Sku;
 import sc.product.Currency;
 
+import sc.product.PaymentInfo;
+import sc.product.PaymentTransaction;
+
 @Sync(syncMode=SyncMode.Automatic)
 public product.model extends util, user.model, content.model  {
 }
