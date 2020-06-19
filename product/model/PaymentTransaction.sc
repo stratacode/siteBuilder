@@ -2,7 +2,7 @@
 class PaymentTransaction {
   PaymentTransactionType type; 
 
-  User user;
+  UserProfile user;
   Order order;
   Date timestamp;
 

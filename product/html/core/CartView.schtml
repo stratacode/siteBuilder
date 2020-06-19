@@ -31,6 +31,33 @@
                  defaultCountry=":= StoreView.store.defaultCountry"
                  countryNames=":= StoreView.store.countryNames"
                  addressName="Billing address"/>
+            <div id="paymentView">
+               <div id="cardHolderFieldBox">
+                  <input type="text" placeholder="Name on card" value=":=: order.paymentInfo.cardHolder" liveEdit="off"/>
+                  <div class="fieldError"
+                       visible=':= TextUtil.hasMapEntry(order.paymentInfo.propErrors, "cardHolder")'><%= order.paymentInfo.propErrors.get("cardHolder") %></div>
+               </div>
+               <div id="cardNumberFieldBox">
+                  <input type="text" placeholder="Card number" value=":= order.paymentInfo.cardNumberDisplay"
+                         value="=: order.paymentInfo.updateCardNumber(value)"/>
+                  <div class="fieldError"
+                       visible=':= TextUtil.hasMapEntry(order.paymentInfo.propErrors, "cardNumber")'><%= order.paymentInfo.propErrors.get("cardNumber") %></div>
+               </div>
+               <div id="expDateFieldBox">
+                  <input type="text" placeholder="MM / YY " value=":= order.paymentInfo.expDateString"
+                         value="=: order.paymentInfo.updateExpireDate(value)"/>
+                  <div class="fieldError"
+                       visible=':= TextUtil.hasMapEntry(order.paymentInfo.propErrors, "expMonth")'><%= order.paymentInfo.propErrors.get("expMonth") %></div>
+                  <div class="fieldError"
+                       visible=':= TextUtil.hasMapEntry(order.paymentInfo.propErrors, "expYear")'><%= order.paymentInfo.propErrors.get("expYear") %></div>
+               </div>
+               <div id="cvvFieldBox">
+                  <input type="password" placeholder="123" value=":= order.paymentInfo.cvv" size="4" maxlength="4"
+                         value="=: order.paymentInfo.updateCvv(value)" pattern="\\d*"/>
+                  <div class="fieldError"
+                       visible=':= TextUtil.hasMapEntry(order.paymentInfo.propErrors, "cvv")'><%= order.paymentInfo.propErrors.get("cvv") %></div>
+               </div>
+            </div>
          </div>
          <div id="registeredCheckout" visible=":= currentUserView.loginStatus == LoginStatus.LoggedIn">
             Order for <%= user.displayName %> with <%= user.emailAddress %>

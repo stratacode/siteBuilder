@@ -140,8 +140,10 @@ OrderView {
             order.billingAddress.country = StoreView.store.defaultCountry;
          order.billingAddress.validateAddress();
       }
+      order.paymentInfo.validatePaymentInfo();
       orderError = order.validateForSubmit();
-      if (propErrors == null && order.billingAddress.propErrors == null && order.shippingAddress.propErrors == null && orderError == null) {
+      if (propErrors == null && order.billingAddress.propErrors == null && order.shippingAddress.propErrors == null &&
+          orderError == null && order.paymentInfo.propErrors == null) {
          order.orderNumber = order.store.makeOrderNumber(order);
          order.submittedOn = new Date();
          try {

@@ -124,9 +124,16 @@ class UserProfile {
          emailAddress = "";
    }
 
-   String getDisplayName() {
-      if (firstName != null && lastName != null)
+   String getName() {
+      if (firstName != null && firstName.length() > 0 && lastName != null && lastName.length() > 0)
          return firstName + " " + lastName;
+      return null;
+   }
+
+   String getDisplayName() {
+      String name = getName();
+      if (name != null)
+         return name;
       return userName;
    }
 

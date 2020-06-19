@@ -25,8 +25,10 @@ Order {
          order.shippingAddress = new Address();
          order.billingAddress = order.shippingAddress;
       }
-      if (user.paymentInfo == null)
+      if (user.paymentInfo == null) {
          order.paymentInfo = new PaymentInfo();
+         order.paymentInfo.cardHolder = user.name;
+      }
       else
          order.paymentInfo = user.paymentInfo;
       order.dbInsert(false);
