@@ -5,17 +5,22 @@
 
       object quantityConverter extends IntConverter {}
    %>
-   <div id="title" class="cartTitle"><%= StoreView.store.storeName %></div>
+   <div id="title" class="cartTitle"><%= StoreView.store.storeName %> - checkout</div>
    <div id="cartWrapper" visible=":= order.numLineItems != 0">
       <div id="checkoutView" visible=":= order.orderNumber == null && order.checkoutStarted">
          <div id="guestCheckoutBox" visible=":= currentUserView.loginStatus == LoginStatus.NotLoggedIn">
-            Guest checkout
+            <div class="viewTitle">Continue as a guest or <a href="/login">login</a></div>
             <div id="orderErrorView" visible=":= currentOrderView.orderError != null">
                Please correct these errors: <%= currentOrderView.orderError %>
             </div>
-            <input id="emailAddrField" type="text" value=":= order.emailAddress" placeholder="email address" changeEvent="=: currentOrderView.updateEmailAddress(value)"/>
-            <div id="emailErrorBox">
-               <div id="emailError" visible=":= TextUtil.hasMapEntry(currentOrderView.propErrors, "emailAddress")">
+            <div id="emailFieldBox" class="fieldBox">
+               <%!
+                  boolean hasError := TextUtil.hasMapEntry(currentOrderView.propErrors, "emailAddress");
+               %>
+               <label for="emailAddrField" class="fieldLabel">Email address</label>
+               <input id="emailAddrField" class=':= hasError ? "fieldInputError" : "fieldInput"' type="email"
+                      value=":= order.emailAddress" changeEvent="=: currentOrderView.updateEmailAddress(value)"/>
+               <div id="emailError" class="fieldError" visible=":= hasError">
                   <%= currentOrderView.propErrors.get("emailAddress") %>
                </div>
             </div>
@@ -31,31 +36,44 @@
                  defaultCountry=":= StoreView.store.defaultCountry"
                  countryNames=":= StoreView.store.countryNames"
                  addressName="Billing address"/>
-            <div id="paymentView">
-               <div id="cardHolderFieldBox">
-                  <input type="text" placeholder="Name on card" value=":=: order.paymentInfo.cardHolder" liveEdit="off"/>
-                  <div class="fieldError"
-                       visible=':= TextUtil.hasMapEntry(order.paymentInfo.propErrors, "cardHolder")'><%= order.paymentInfo.propErrors.get("cardHolder") %></div>
+            <div id="paymentView" class="paymentView">
+               <div class="viewTitle">Payment info</div>
+               <div id="cardHolderFieldBox" class="fieldBox">
+                  <%! boolean hasError := TextUtil.hasMapEntry(order.paymentInfo.propErrors, "cardHolder"); %>
+                  <label for="cardHolderField">Name on card</label>
+                  <input id="cardHolderField" class=':= hasError ? "fieldInputError" : "fieldInput"'
+                         type="text" value=":=: order.paymentInfo.cardHolder" liveEdit="off"/>
+                  <div class="fieldError" visible=':= hasError'>
+                     <%= order.paymentInfo.propErrors.get("cardHolder") %>
+                  </div>
                </div>
-               <div id="cardNumberFieldBox">
-                  <input type="text" placeholder="Card number" value=":= order.paymentInfo.cardNumberDisplay"
+               <div id="cardNumberFieldBox" class="fieldBox">
+                  <%! boolean hasError := TextUtil.hasMapEntry(order.paymentInfo.propErrors, "cardNumber"); %>
+                  <label for="cardNumberField" class="fieldLabel">Card number</label>
+                  <input type="text" class=':= hasError ? "fieldInputError" : "fieldInput"'
+                         value=":= order.paymentInfo.cardNumberDisplay"
                          value="=: order.paymentInfo.updateCardNumber(value)"/>
-                  <div class="fieldError"
-                       visible=':= TextUtil.hasMapEntry(order.paymentInfo.propErrors, "cardNumber")'><%= order.paymentInfo.propErrors.get("cardNumber") %></div>
+                  <div class="fieldError" visible=':= hasError'>
+                     <%= order.paymentInfo.propErrors.get("cardNumber") %>
+                  </div>
                </div>
-               <div id="expDateFieldBox">
-                  <input type="text" placeholder="MM / YY " value=":= order.paymentInfo.expDateString"
+               <div id="expDateFieldBox" class="fieldBox">
+                   <%! boolean hasError := TextUtil.hasMapEntry(order.paymentInfo.propErrors, "expMonth") ||
+                                           TextUtil.hasMapEntry(order.paymentInfo.propErrors, "expYear"); %>
+                  <label for="expDateField" class="fieldLabel">Expiration date</label>
+                  <input type="text" id="expDateField"
+                         class=':= hasError ? "fieldInputError" : "fieldInput"' placeholder="MM / YY " value=":= order.paymentInfo.expDateString"
                          value="=: order.paymentInfo.updateExpireDate(value)"/>
-                  <div class="fieldError"
-                       visible=':= TextUtil.hasMapEntry(order.paymentInfo.propErrors, "expMonth")'><%= order.paymentInfo.propErrors.get("expMonth") %></div>
-                  <div class="fieldError"
-                       visible=':= TextUtil.hasMapEntry(order.paymentInfo.propErrors, "expYear")'><%= order.paymentInfo.propErrors.get("expYear") %></div>
+                  <div class="fieldError" visible=':= hasError'>
+                     <%= order.paymentInfo.propErrors.get("expMonth") %><%= order.paymentInfo.propErrors.get("expYear") %>
+                  </div>
                </div>
-               <div id="cvvFieldBox">
-                  <input type="password" placeholder="123" value=":= order.paymentInfo.cvv" size="4" maxlength="4"
+               <div id="cvvFieldBox" class="fieldBox">
+                  <%! boolean hasError := TextUtil.hasMapEntry(order.paymentInfo.propErrors, "cvv"); %>
+                  <label for="cvvField" class="fieldLabel">Security code</label>
+                  <input type="text" id="cvvField" placeholder="123" value=":= order.paymentInfo.cvv" size="4" minlength="3" maxlength="4"
                          value="=: order.paymentInfo.updateCvv(value)" pattern="\\d*"/>
-                  <div class="fieldError"
-                       visible=':= TextUtil.hasMapEntry(order.paymentInfo.propErrors, "cvv")'><%= order.paymentInfo.propErrors.get("cvv") %></div>
+                  <div class="fieldError" visible=':= hasError'><%= order.paymentInfo.propErrors.get("cvv") %></div>
                </div>
             </div>
          </div>

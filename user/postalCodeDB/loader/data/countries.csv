@@ -1,249 +1,249 @@
-Afghanistan	AF
-Åland Islands	AX
-Albania	AL
-Algeria	DZ
-American Samoa	AS
-Andorra	AD
-Angola	AO
-Anguilla	AI
-Antarctica	AQ
-Antigua and Barbuda	AG
-Argentina	AR
-Armenia	AM
-Aruba	AW
-Australia	AU
-Austria	AT
-Azerbaijan	AZ
-Bahamas	BS
-Bahrain	BH
-Bangladesh	BD
-Barbados	BB
-Belarus	BY
-Belgium	BE
-Belize	BZ
-Benin	BJ
-Bermuda	BM
-Bhutan	BT
-Bolivia	BO
-Bonaire Sint Eustatius and Saba	BQ
-Bosnia and Herzegovina	BA
-Botswana	BW
-Bouvet Island	BV
-Brazil	BR
-British Indian Ocean Territory	IO
-Brunei Darussalam	BN
-Bulgaria	BG
-Burkina Faso	BF
-Burundi	BI
-Cambodia	KH
-Cameroon	CM
-Canada	CA
-Cape Verde	CV
-Cayman Islands	KY
-Central African Republic	CF
-Chad	TD
-Chile	CL
-China	CN
-Christmas Island	CX
-Cocos (Keeling) Islands	CC
-Colombia	CO
-Comoros	KM
-Congo	CG
-Congo, the Democratic Republic of the	CD
-Cook Islands	CK
-Costa Rica	CR
-Côte d'Ivoire	CI
-Croatia	HR
-Cuba	CU
-Curaçao	CW
-Cyprus	CY
-Czech Republic	CZ
-Denmark	DK
-Djibouti	DJ
-Dominica	DM
-Dominican Republic	DO
-Ecuador	EC
-Egypt	EG
-El Salvador	SV
-Equatorial Guinea	GQ
-Eritrea	ER
-Estonia	EE
-Ethiopia	ET
-Falkland Islands 	FK
-Faroe Islands	FO
-Fiji	FJ
-Finland	FI
-France	FR
-French Guiana	GF
-French Polynesia	PF
-French Southern Territories	TF
-Gabon	GA
-Gambia	GM
-Georgia	GE
-Germany	DE
-Ghana	GH
-Gibraltar	GI
-Greece	GR
-Greenland	GL
-Grenada	GD
-Guadeloupe	GP
-Guam	GU
-Guatemala	GT
-Guernsey	GG
-Guinea	GN
-Guinea-Bissau	GW
-Guyana	GY
-Haiti	HT
-Heard Island and McDonald Islands	HM
-Holy See (Vatican City State)	VA
-Honduras	HN
-Hong Kong	HK
-Hungary	HU
-Iceland	IS
-India	IN
-Indonesia	ID
-Iran Islamic Republic of	IR
-Iraq	IQ
-Ireland	IE
-Isle of Man	IM
-Israel	IL
-Italy	IT
-Jamaica	JM
-Japan	JP
-Jersey	JE
-Jordan	JO
-Kazakhstan	KZ
-Kenya	KE
-Kiribati	KI
-Korea Democratic People's Republic of	KP
-Korea Republic of	KR
-Kuwait	KW
-Kyrgyzstan	KG
-Lao People's Democratic Republic	LA
-Latvia	LV
-Lebanon	LB
-Lesotho	LS
-Liberia	LR
-Libya	LY
-Liechtenstein	LI
-Lithuania	LT
-Luxembourg	LU
-Macao	MO
-Macedonia	MK
-Madagascar	MG
-Malawi	MW
-Malaysia	MY
-Maldives	MV
-Mali	ML
-Malta	MT
-Marshall Islands	MH
-Martinique	MQ
-Mauritania	MR
-Mauritius	MU
-Mayotte	YT
-Mexico	MX
-Micronesia	FM
-Moldova 	MD
-Monaco	MC
-Mongolia	MN
-Montenegro	ME
-Montserrat	MS
-Morocco	MA
-Mozambique	MZ
-Myanmar	MM
-Namibia	NA
-Nauru	NR
-Nepal	NP
-Netherlands	NL
-New Caledonia	NC
-New Zealand	NZ
-Nicaragua	NI
-Niger	NE
-Nigeria	NG
-Niue	NU
-Norfolk Island	NF
-Northern Mariana Islands	MP
-Norway	NO
-Oman	OM
-Pakistan	PK
-Palau	PW
-Palestine	PS
-Panama	PA
-Papua New Guinea	PG
-Paraguay	PY
-Peru	PE
-Philippines	PH
-Pitcairn	PN
-Poland	PL
-Portugal	PT
-Puerto Rico	PR
-Qatar	QA
-Réunion	RE
-Romania	RO
-Russian Federation	RU
-Rwanda	RW
-Saint Barthélemy	BL
-Saint Helena, Ascension and Tristan da Cunha	SH
-Saint Kitts and Nevis	KN
-Saint Lucia	LC
-Saint Martin (French part)	MF
-Saint Pierre and Miquelon	PM
-Saint Vincent and the Grenadines	VC
-Samoa	WS
-San Marino	SM
-Sao Tome and Principe	ST
-Saudi Arabia	SA
-Senegal	SN
-Serbia	RS
-Seychelles	SC
-Sierra Leone	SL
-Singapore	SG
-Sint Maarten (Dutch part)	SX
-Slovakia	SK
-Slovenia	SI
-Solomon Islands	SB
-Somalia	SO
-South Africa	ZA
-South Georgia and the South Sandwich Islands	GS
-South Sudan	SS
-Spain	ES
-Sri Lanka	LK
-Sudan	SD
-Suriname	SR
-Svalbard and Jan Mayen	SJ
-Swaziland	SZ
-Sweden	SE
-Switzerland	CH
-Syrian Arab Republic	SY
-Taiwan, Province of China	TW
-Tajikistan	TJ
-Tanzania	TZ
-Thailand	TH
-Timor-Leste	TL
-Togo	TG
-Tokelau	TK
-Tonga	TO
-Trinidad and Tobago	TT
-Tunisia	TN
-Turkey	TR
-Turkmenistan	TM
-Turks and Caicos Islands	TC
-Tuvalu	TV
-Uganda	UG
-Ukraine	UA
-United Arab Emirates	AE
-United Kingdom	GB
-United States	US
-United States Minor Outlying Islands	UM
-Uruguay	UY
-Uzbekistan	UZ
-Vanuatu	VU
-Venezuela	VE
-Viet Nam	VN
-British Virgin Islands	VG
-U.S. Virgin Islands	VI
-Wallis and Futuna	WF
-Western Sahara	EH
-Yemen	YE
-Zambia	ZM
-Zimbabwe	ZW
+Afghanistan	AF	0
+Albania	AL	0
+Angola	AO	0
+Anguilla	AI	0
+Antarctica	AQ	0
+Antigua and Barbuda	AG	0
+Armenia	AM	0
+Aruba	AW	0
+Bahamas	BS	0
+Bahrain	BH	0
+Barbados	BB	0
+Belize	BZ	0
+Benin	BJ	0
+Bhutan	BT	0
+Bolivia	BO	0
+Bonaire Sint Eustatius and Saba	BQ	0
+Bosnia and Herzegovina	BA	0
+Botswana	BW	0
+Bouvet Island	BV	0
+British Indian Ocean Territory	IO	0
+Brunei Darussalam	BN	0
+Burkina Faso	BF	0
+Burundi	BI	0
+Cambodia	KH	0
+Cameroon	CM	0
+Cape Verde	CV	0
+Cayman Islands	KY	0
+Central African Republic	CF	0
+Chad	TD	0
+China	CN	0
+Christmas Island	CX	0
+Cocos (Keeling) Islands	CC	0
+Comoros	KM	0
+Congo	CG	0
+Congo, the Democratic Republic of the	CD	0
+Cook Islands	CK	0
+Côte d'Ivoire	CI	0
+France	FR	11
+Italy	IT	5
+United Kingdom	GB	4
+French Guiana	GF	5
+Guernsey	GG	3
+Greenland	GL	4
+Guadeloupe	GP	11
+Guatemala	GT	5
+Guam	GU	5
+Macao	MO	0
+Madagascar	MG	0
+Maldives	MV	0
+Mali	ML	0
+Mauritania	MR	0
+Mauritius	MU	0
+Mongolia	MN	0
+Montenegro	ME	0
+Montserrat	MS	0
+Morocco	MA	0
+Mozambique	MZ	0
+Myanmar	MM	0
+Namibia	NA	0
+Nauru	NR	0
+Nepal	NP	0
+Nicaragua	NI	0
+Niger	NE	0
+Nigeria	NG	0
+Niue	NU	0
+Norfolk Island	NF	0
+Oman	OM	0
+Palestine	PS	0
+Panama	PA	0
+Papua New Guinea	PG	0
+Paraguay	PY	0
+Pitcairn	PN	0
+Qatar	QA	0
+Rwanda	RW	0
+Saint Barthélemy	BL	0
+Saint Helena, Ascension and Tristan da Cunha	SH	0
+Saint Kitts and Nevis	KN	0
+Saint Lucia	LC	0
+Saint Martin (French part)	MF	0
+Saint Vincent and the Grenadines	VC	0
+Samoa	WS	0
+Sao Tome and Principe	ST	0
+Saudi Arabia	SA	0
+Senegal	SN	0
+Croatia	HR	5
+Hungary	HU	4
+Ireland	IE	3
+Isle of Man	IM	3
+India	IN	6
+Iceland	IS	3
+Mexico	MX	5
+Jersey	JE	3
+Japan	JP	8
+Korea Republic of	KR	5
+Liechtenstein	LI	4
+Sri Lanka	LK	5
+Lithuania	LT	5
+Luxembourg	LU	6
+Latvia	LV	7
+Monaco	MC	5
+Moldova 	MD	7
+Marshall Islands	MH	5
+Macedonia	MK	4
+Northern Mariana Islands	MP	5
+Martinique	MQ	5
+Malta	MT	3
+Malawi	MW	6
+Poland	PL	6
+Malaysia	MY	5
+New Caledonia	NC	5
+Netherlands	NL	4
+Norway	NO	4
+New Zealand	NZ	4
+Peru	PE	5
+Philippines	PH	4
+Pakistan	PK	5
+Portugal	PT	8
+Saint Pierre and Miquelon	PM	5
+Puerto Rico	PR	5
+Turkey	TR	5
+Palau	PW	5
+Réunion	RE	11
+Romania	RO	6
+Serbia	RS	5
+Russian Federation	RU	6
+Sweden	SE	6
+Singapore	SG	6
+Slovenia	SI	4
+Svalbard and Jan Mayen	SJ	4
+Slovakia	SK	6
+San Marino	SM	5
+Thailand	TH	5
+Ukraine	UA	5
+United States	US	5
+Uruguay	UY	5
+Holy See (Vatican City State)	VA	5
+U.S. Virgin Islands	VI	5
+Wallis and Futuna	WF	5
+Mayotte	YT	5
+South Africa	ZA	4
+Argentina	AR	4
+Andorra	AD	5
+American Samoa	AS	5
+Austria	AT	4
+Azerbaijan	AZ	7
+Australia	AU	4
+Åland Islands	AX	5
+Bangladesh	BD	4
+Belarus	BY	6
+Belgium	BE	4
+Bulgaria	BG	4
+Bermuda	BM	5
+Brazil	BR	9
+Algeria	DZ	5
+Canada	CA	3
+Switzerland	CH	4
+Colombia	CO	6
+Chile	CL	7
+Costa Rica	CR	5
+Czech Republic	CZ	6
+Germany	DE	5
+Faroe Islands	FO	3
+Dominican Republic	DO	5
+Denmark	DK	4
+Estonia	EE	5
+Spain	ES	5
+Finland	FI	5
+Micronesia	FM	5
+Cuba	CU	0
+Curaçao	CW	0
+Cyprus	CY	0
+Djibouti	DJ	0
+Dominica	DM	0
+Ecuador	EC	0
+Egypt	EG	0
+El Salvador	SV	0
+Equatorial Guinea	GQ	0
+Eritrea	ER	0
+Ethiopia	ET	0
+Falkland Islands 	FK	0
+Fiji	FJ	0
+French Polynesia	PF	0
+French Southern Territories	TF	0
+Gabon	GA	0
+Gambia	GM	0
+Georgia	GE	0
+Ghana	GH	0
+Gibraltar	GI	0
+Greece	GR	0
+Grenada	GD	0
+Guinea	GN	0
+Guinea-Bissau	GW	0
+Guyana	GY	0
+Haiti	HT	0
+Heard Island and McDonald Islands	HM	0
+Honduras	HN	0
+Hong Kong	HK	0
+Indonesia	ID	0
+Iran Islamic Republic of	IR	0
+Iraq	IQ	0
+Israel	IL	0
+Jamaica	JM	0
+Jordan	JO	0
+Kazakhstan	KZ	0
+Kenya	KE	0
+Kiribati	KI	0
+Korea Democratic People's Republic of	KP	0
+Kuwait	KW	0
+Kyrgyzstan	KG	0
+Lao People's Democratic Republic	LA	0
+Lebanon	LB	0
+Lesotho	LS	0
+Liberia	LR	0
+Libya	LY	0
+Seychelles	SC	0
+Sierra Leone	SL	0
+Sint Maarten (Dutch part)	SX	0
+Solomon Islands	SB	0
+Somalia	SO	0
+South Georgia and the South Sandwich Islands	GS	0
+South Sudan	SS	0
+Sudan	SD	0
+Suriname	SR	0
+Swaziland	SZ	0
+Syrian Arab Republic	SY	0
+Taiwan, Province of China	TW	0
+Tajikistan	TJ	0
+Tanzania	TZ	0
+Timor-Leste	TL	0
+Togo	TG	0
+Tokelau	TK	0
+Tonga	TO	0
+Trinidad and Tobago	TT	0
+Tunisia	TN	0
+Turkmenistan	TM	0
+Turks and Caicos Islands	TC	0
+Tuvalu	TV	0
+Uganda	UG	0
+United Arab Emirates	AE	0
+United States Minor Outlying Islands	UM	0
+Uzbekistan	UZ	0
+Vanuatu	VU	0
+Venezuela	VE	0
+Viet Nam	VN	0
+British Virgin Islands	VG	0
+Western Sahara	EH	0
+Yemen	YE	0
+Zambia	ZM	0
+Zimbabwe	ZW	0

@@ -1,19 +1,22 @@
+import sc.dyn.IPropValidator;
+
 @Sync(onDemand=true)
 @DBTypeSettings
-class Address {
+class Address implements IPropValidator {
    final static int MaxAddressFieldLength = 75;
    String name;
    String address1, address2;
    String city, state, postalCode, country;
 
+   @Bindable
    @DBPropertySettings(persist=false)
    Map<String,String> propErrors = null;
 
    static String validateAddressField(String value, String fieldName) {
       if (value == null || value.length() == 0)
-         return "Missing " + fieldName + " for address";
+         return "Missing " + fieldName;
       if (value.length() > 75)
-         return fieldName + "is too long";
+         return fieldName + " is too long";
       return null;
    }
 
@@ -44,6 +47,8 @@ class Address {
    }
 
    static String validateCountry(String country) {
+      if (country == null || country.length() == 0) // Use the default
+         return null;
       return validateAddressField(country, "country");
    }
 
@@ -59,4 +64,5 @@ class Address {
    void validateAddress() {
       propErrors = DynUtil.validateProperties(this, null);
    }
+
 }

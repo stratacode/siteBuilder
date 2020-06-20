@@ -23,5 +23,10 @@ currentNavMenu {
          url = "/Logout.html";
          visible := loggedIn;
       }
+
+      object forgetMenuItem extends NavMenuItem {
+         name = "Clear session";
+         url = "/Logout.html";
+      }
    }
 }

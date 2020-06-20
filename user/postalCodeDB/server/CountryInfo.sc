@@ -1,8 +1,9 @@
 CountryInfo {
-   static String convertNameToCode(String name) {
-      List<CountryInfo> res = findByCountryName(name);
+   static CountryInfo findLatestByCountryName(String countryName) {
+      List<CountryInfo> res = findByCountryName(countryName);
       if (res == null)
          return null;
-      return res.get(0).countryCode;
+      return res.get(0);
    }
+
 }
