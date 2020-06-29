@@ -9,7 +9,6 @@ abstract class CatalogElement extends ManagedResource {
 
    boolean visible;
 
-   @sc.obj.Sync(onDemand=true)
    Category parentCategory;
 
    @DBPropertySettings(indexed=true)

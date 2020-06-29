@@ -1,3 +1,4 @@
+@CompilerSettings(liveDynamicTypes=true)
 @DBTypeSettings(typeId=1)
 @Sync(onDemand=true)
 class Sku {
@@ -44,6 +45,15 @@ class Sku {
 
    String toString() {
       return skuCode;
+   }
+
+   @sc.obj.EditorCreate(constructorParamNames="skuCode, price")
+   static Sku createSku(String skuCode, BigDecimal price) {
+      Sku newSku = new Sku();
+      newSku.skuCode = skuCode;
+      newSku.price = price;
+      newSku.dbInsert(false);
+      return newSku;
    }
 
 }

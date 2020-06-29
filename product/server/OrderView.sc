@@ -161,6 +161,8 @@ OrderView {
    }
 
    void billToShippingChanged() {
+      if (order == null)
+         return;
       if (billToShipping) {
          if (order.shippingAddress != order.billingAddress)
             order.billingAddress = order.shippingAddress;
@@ -174,6 +176,8 @@ OrderView {
    }
 
    void updateEmailAddress(String email) {
+      if (order == null)
+         return;
       order.emailAddress = email;
       validateProperties();
    }

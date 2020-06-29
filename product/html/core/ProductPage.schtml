@@ -2,6 +2,10 @@
 <html extends="BaseStorePage">
 <%! String pathName; %>
    <body>
-      <div id="productView" extends="ProductView" pathName=":= ProductPage.this.pathName"/>
+      <div id="appFrame">
+         <div id="pageBody">
+            <div id="productView" extends="ProductView" pathName=":= ProductPage.this.pathName"/>
+         </div>
+      </div>
    </body>
 </html>

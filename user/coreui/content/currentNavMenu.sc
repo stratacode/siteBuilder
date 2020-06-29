@@ -8,7 +8,7 @@ currentNavMenu {
 
       object loginMenuItem extends NavMenuItem {
          name = "Login";
-         url = "/Login.html";
+         url = "/login";
          visible := !loggedIn;
       }
 
@@ -20,13 +20,13 @@ currentNavMenu {
 
       object signoutMenuItem extends NavMenuItem {
          name = "Sign out";
-         url = "/Logout.html";
+         url = "/logout";
          visible := loggedIn;
       }
 
       object forgetMenuItem extends NavMenuItem {
          name = "Clear session";
-         url = "/Logout.html";
+         url = "/logout";
       }
    }
 }

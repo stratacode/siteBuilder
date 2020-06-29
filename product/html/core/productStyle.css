@@ -140,6 +140,10 @@
    padding: 10px;
 }
 
+.optionTagView, .longDesc, .skuCode, .priceView, .productNameView, .categoryNameView {
+   width: 250px;
+}
+
 .thumbNavLink {
    text-decoration: none;
    display: flex;
@@ -194,7 +198,7 @@
 }
 
 #pageBody {
-   max-width: 700px;
+   max-width: 1000px;
    margin: auto;
 }
 
@@ -210,3 +214,6 @@
    margin-bottom: 10px;
 }
 
+.quantityField {
+   width: 3em;
+}

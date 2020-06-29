@@ -1,3 +1,4 @@
+@CompilerSettings(liveDynamicTypes=true)
 @DBTypeSettings
 @Sync(onDemand=true)
 class OptionValue {

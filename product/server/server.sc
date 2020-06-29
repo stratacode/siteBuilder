@@ -5,4 +5,7 @@ public product.server extends product.coreui, user.server, user.modelImpl {
    // But don't export the server only constraint here
    exportRuntime = false;
    exportProcess = false;
+
+   // Don't show in the management UI 
+   hidden = true;
 }

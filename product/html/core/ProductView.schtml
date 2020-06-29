@@ -29,7 +29,7 @@
          <div id="skuCode" class="skuCode">SKU: <%= currentSku.skuCode %></div>
          <div id="addToCartForm">
             <input type="button" value="Add to cart" id="addToCartButton" clickEvent="=: addToCart()"/>
-            <input type="number" id="quantityField" value=":=: currentQuantityStr"/>
+            <input type="number" id="quantityField" class="quantityField" value=":=: currentQuantityStr"/>
          </div>
       </div>
    </div>

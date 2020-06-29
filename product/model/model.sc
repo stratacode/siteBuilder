@@ -1,8 +1,5 @@
 package sc.product;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 import sc.obj.Constant;
 
 import sc.product.Storefront;

@@ -35,11 +35,12 @@ class PaymentInfo {
       if (expYear == null || expYear.length() == 0)
          return expMonth;
       String res = expMonth + " / " + expYear;
-      System.out.println("*** getExpDateString: " + res);
       return res;
    }
 
    String validateExpMonth(String newMonth) {
+      if (newMonth == null || newMonth.length() == 0)
+         return "Missing expiration date";
       if (newMonth.length() != 2)
          return "Invalid month format";
       try {
@@ -54,6 +55,8 @@ class PaymentInfo {
    }
 
    String validateExpYear(String newYear) {
+      if (newYear == null || newYear.length() == 0)
+         return "Missing expiration year";
       if (newYear.length() != 2)
          return "Invalid year format - expecting last 2 numbers";
       try {
@@ -88,7 +91,9 @@ class PaymentInfo {
    }
 
    String validateCardNumber(String number) {
-      int len = number.length();
+      int len = number == null ? 0 : number.length();
+      if (len == 0)
+         return "Missing card number";
       if (len < cardNumberMinLen)
          return "Card number too short";
       if (len > cardNumberMaxLen)
@@ -236,8 +241,12 @@ class PaymentInfo {
 
    String validateCardHolder(String newName) {
       int len = newName == null ? 0 : newName.length();
-      if (len < 2 || len > 40)
-         return "Invalid card holder name";
+      if (len == 0)
+         return "Missing card harder name";
+      if (len < 2)
+         return "Card holder name too short";
+      if (len > 40)
+         return "Card holder name too long";
       boolean foundAlpha = false;
       boolean foundSpace = false;
       for (int i = 0; i < len; i++) {

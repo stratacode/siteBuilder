@@ -28,8 +28,9 @@
 
  */
 
-@DBTypeSettings(typeId=1)
+// Make synchronized and persistent as a sub-type of CatalogElement with sub-type id 1
 @Sync(onDemand=true)
+@DBTypeSettings(typeId=1)
 class Product extends CatalogElement {
    override @DBPropertySettings(reverseProperty="products") parentCategory;
 
@@ -53,29 +54,23 @@ class Product extends CatalogElement {
    Brand brand;
 
    /** The main SKU for the product */
-   @Sync(onDemand=true)
    Sku sku;
 
    /* List of parts for this product */
-   @Sync(onDemand=true)
    @DBPropertySettings(columnType="jsonb")
    List<Sku> skuParts;
 
    /* Used for when there are options to hold the sku's for each available option combination */
-   @Sync(onDemand=true)
    @DBPropertySettings(columnType="jsonb")
    List<Sku> skuOptions;
 
    /** Reference to the list of options for this product (if any).  */
-   @Sync(onDemand=true)
    ProductOptions options;
 
    // Could be in a promotions layer but also pretty basic so might be best left in the core model but enabled in various layer configurations.
-   @Sync(onDemand=true)
    @DBPropertySettings(columnType="jsonb")
    List<Promotion> promotions;
 
-   @Sync(onDemand=true)
    @DBPropertySettings(columnType="jsonb")
    List<Product> accessories;
 
@@ -113,4 +108,15 @@ class Product extends CatalogElement {
       }
       return null;
    }
+
+   @sc.obj.EditorCreate(constructorParamNames="category, productName, pathName")
+   static Product createProduct(Category category, String productName, String pathName) {
+      Product newProduct = new Product();
+      newProduct.name = productName;
+      newProduct.pathName = pathName;
+      newProduct.parentCategory = category;
+      newProduct.dbInsert(false);
+      return newProduct;
+   }
+
 }

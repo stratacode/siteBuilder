@@ -1,10 +1,12 @@
-<html abstract="true">
+<html abstract="true" extends="EditablePage">
    <head exec="server">
       <link id="contentStyle" rel="stylesheet" href="/pageStyle.css" type="text/css"/>
    </head>
    <body>
-      <div id="navbar" extends="NavView"/>
-      <div id="pageBody"/>
-      <div id="footer" extends="FooterView"/>
+      <div id="appFrame" class="appFrame">
+         <div id="navbar" extends="NavView"/>
+         <div id="pageBody"/>
+         <div id="footer" extends="FooterView"/>
+      </div>
    </body>
 </html>

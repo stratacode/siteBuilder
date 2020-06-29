@@ -1,4 +1,4 @@
-//@sc.obj.ValueObject
+@CompilerSettings(liveDynamicTypes=true)
 @DBTypeSettings
 class ProductOption {
    String optionName; // e.g. size, color
