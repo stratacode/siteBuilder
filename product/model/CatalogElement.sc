@@ -1,3 +1,4 @@
+@sc.obj.EditorSettings(displayNameProperty="name")
 abstract class CatalogElement extends ManagedResource {
    /* The external name */
    String name;

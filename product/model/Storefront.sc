@@ -22,4 +22,6 @@ class Storefront {
    public boolean supportsCurrency(Currency cur) {
       return cur == defaultCurrency || (supportedCurrencies != null && supportedCurrencies.contains(cur.currencyName));
    }
+
+   MediaManager mediaManager;
 }

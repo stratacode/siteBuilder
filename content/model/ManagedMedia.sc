@@ -3,14 +3,35 @@
  * management UI since adding those two might involve different but overlapping steps.
  */
 @DBTypeSettings
+@EditorSettings(displayNameProperty="fileName")
 abstract class ManagedMedia extends ManagedResource {
-   String url;
+   String fileName;
+   String fileType;
+
+   String getUrl() {
+      return manager.getDisplayUrl(fileName, fileType);
+   }
+
    String captionText;
-   String thumbUrl;
+   String altText;
+
+   String getThumbUrl() {
+      return manager.getThumbUrl(fileName, fileType);
+   }
    String zoomedUrl;
 
    int width, height;
-   String altText;
+   long fileSize;
+   byte[] fileHash;
+
+   int mediaChangedCt = 0;
+
+   void mediaChanged() {
+      mediaChangedCt++;
+   }
+
+   @DBPropertySettings(persist=false)
+   String mediaError = null;
 }
 
 

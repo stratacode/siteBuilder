@@ -1,6 +1,7 @@
 @CompilerSettings(liveDynamicTypes=true)
 @DBTypeSettings(typeId=1)
 @Sync(onDemand=true)
+@EditorSettings(displayNameProperty="skuCode")
 class Sku {
    // TODO: might be convenient to have a read-only backptr to the product here?
    // It would be a reverse from multiple lists though which is not supported yet and 

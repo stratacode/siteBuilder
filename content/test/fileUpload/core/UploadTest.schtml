@@ -1,0 +1,22 @@
+<html>
+
+<body>
+   <form id="uploadForm" method="post" enctype="multipart/form-data">
+       <%! boolean showSubmitStatus = false; %>
+       Upload file
+      <input type="text" name="testText" value=""/>
+      <input type="hidden" name="something" value="somevalue"/>
+       <input type="file" id="uploadFile" name="fileToUpload" changeEvent="=: showSubmitStatus = false"/>
+       <!-- <input type="submit" value="Submit"/> -->
+       <input type="button" value="Upload"
+              clickEvent="=: uploadForm.submitFormData("/upload")"
+              clickEvent="=: showSubmitStatus = true"/>
+       <div id="statusView">
+          <div id="status" visible=":= showSubmitStatus">
+             <%= uploadForm.submitInProgress ? "Uploading..." : (uploadForm.submitError == null ? "Upload complete" : "Error: " + uploadForm.submitError) %>
+          </div>
+       </div>
+   </form>
+</body>
+
+</html>

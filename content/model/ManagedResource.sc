@@ -1,4 +1,6 @@
 abstract class ManagedResource {
+   MediaManager manager;
+
    Date lastModified;
    //UserProfile lastUpdatedBy;
    Date validStart;
