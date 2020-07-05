@@ -13,7 +13,7 @@
               clickEvent="=: showSubmitStatus = true"/>
        <div id="statusView">
           <div id="status" visible=":= showSubmitStatus">
-             <%= uploadForm.submitInProgress ? "Uploading..." : (uploadForm.submitError == null ? "Upload complete" : "Error: " + uploadForm.submitError) %>
+             <%= uploadForm.submitInProgress ? "Uploading..." : (uploadForm.submitError == null ? uploadForm.submitResult: "Error: " + uploadForm.submitError) %>
           </div>
        </div>
    </form>

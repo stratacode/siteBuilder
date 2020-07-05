@@ -1,11 +1,17 @@
 import java.util.Map;
 
-@Exec(serverOnly=true)
-@URL(pattern="/upload")
+import sc.servlet.UploadResult;
+
+@URL(pattern="/upload", mimeType="text/plain")
 class UploadTestPage extends UploadPage {
    uploadPath = "/tmp/imageUpload"; 
 
-   void processUpload(Map<String,String> uploadedFiles, Map<String,String> formFields) {
-      System.out.println("Uploaded: " + uploadedFiles + " forms: " + formFields);
+   UploadResult processUpload(Map<String,String> uploadedFiles, Map<String,String> formFields) {
+      String result;
+      if (uploadedFiles.size() == 1)
+          result = "Uploaded: " + uploadedFiles.get("fileToUpload");
+      else
+         result = "Uploaded files: " + uploadedFiles;
+      return new UploadResult(result, null);
    }
 }
