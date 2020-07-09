@@ -6,11 +6,15 @@ abstract class ManagedResource {
    Date validStart;
    Date notValidAfter;
 
+   boolean visible;
+
+   String revision;
+
    //VersionHistory contentHistory;
 
    int serialCt; // Incremented on each content change
 
-   //String contentVersionId; // Unique tag for the "version of this content" - including branch or deployment
+   //String contentVersionId; // Unique tag for the "version of this content" - including branch or deployment or maybe 'revision'
 
    // int 'contentStatus' - ok, edited, conflict, rejected
 
@@ -20,6 +24,8 @@ abstract class ManagedResource {
    // Also add 'boolean viewAllowed(User)' hook for overriding basic logic
 
    public boolean isAvailable() {
+      if (!visible)
+         return false;
       long now = System.currentTimeMillis();
       return (validStart == null || now > validStart.getTime()) && (notValidAfter == null || now < notValidAfter.getTime());
    }

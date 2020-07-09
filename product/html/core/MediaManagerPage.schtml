@@ -1,0 +1,17 @@
+<%@ @URL(pattern="/mediaManager/[{pathName=urlString}]", testURLs={"/mediaManager/" }) %>
+
+<html>
+   <head exec="server">
+      <link id="docStyle" rel="stylesheet" href="/productStyle.css" type="text/css"/>
+   </head>
+<%! 
+   String pathName; 
+%>
+   <body>
+      <div id="appFrame">
+         <div id="pageBody">
+            <div id="mediaManagerView" extends="MediaManagerView" pathName=":= MediaManagerPage.this.pathName"/>
+         </div>
+      </div>
+   </body>
+</html>

@@ -90,7 +90,13 @@
    align-items: center;
 }
 
-.viewImage, .thumbImage {
+/*
+.viewImage {
+  width: fit-content;
+}
+*/
+
+.thumbImage {
   width: fit-content;
 }
 
@@ -216,4 +222,51 @@
 
 .quantityField {
    width: 3em;
+}
+
+.findMediaButton, .clearMediaButton {
+   vertical-align: bottom;
+}
+
+.mediaListThumb, .removeMediaButton {
+   vertical-align: middle;
+}
+
+.mediaListThumb {
+   width: 110px;
+   padding-left: 5px;
+   padding-right: 5px;
+}
+
+.mediaRow, .selectedMediaRow, .headerRow {
+   display: flex;
+   align-items: center;
+}
+
+.mediaRow, .selectedMediaRow {
+   cursor: pointer;
+   margin-bottom: 5px;
+}
+
+.selectedMediaRow {
+   background-color: #ddddff;
+}
+
+.smallMediaColumn, .smallHeaderColumn {
+   padding: 2px;
+   width: 50px;
+}
+
+.mediaColumn, .headerColumn {
+   padding: 2px;
+   width: 100px;
+}
+
+.wideMediaColumn, .wideHeaderColumn {
+   padding: 2px;
+   width: 200px;
+}
+
+.headerRow {
+   background-color: #ccc;
 }

@@ -82,8 +82,6 @@ class Product extends CatalogElement {
    @DBPropertySettings(columnType="jsonb")
    List<Product> productUpSells;
 
-   override @FindBy(paged=true,orderBy="-lastModified",with="store") pathName;
-
    Sku getSkuForOptionsWith(List<OptionValue> optValues, int overrideIx, OptionValue overrideVal) {
       if (skuOptions == null) {
          return null;
@@ -109,12 +107,12 @@ class Product extends CatalogElement {
       return null;
    }
 
-   @sc.obj.EditorCreate(constructorParamNames="category, productName, pathName")
-   static Product createProduct(Category category, String productName, String pathName) {
+   @sc.obj.EditorCreate(constructorParamNames="parentCategory, name, pathName")
+   static Product createProduct(Category parentCategory, String name, String pathName) {
       Product newProduct = new Product();
-      newProduct.name = productName;
+      newProduct.name = name;
       newProduct.pathName = pathName;
-      newProduct.parentCategory = category;
+      newProduct.parentCategory = parentCategory;
       newProduct.dbInsert(false);
       return newProduct;
    }

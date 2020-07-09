@@ -1,5 +1,8 @@
 @DBTypeSettings
 class MediaManager {
+   final static String RevisionSep = "-";
+   final static String SizeSep = "_";
+
    @FindBy(findOne=true)
    String managerPathName;
 
@@ -11,23 +14,27 @@ class MediaManager {
    int zoomSize = 2048;
    int[] stdImageWidths = {100, 640, 1024, 2048};
 
-   String getFileNameForSize(String fileName, int size, String ext) {
-      return fileName + "_" + size + "." + ext;
+   String getOrigFileName(String fileName, String revision, String ext) {
+      return fileName + (revision == null ? "" : RevisionSep + revision) + "." + ext;
    }
 
-   String getUrl(String fileName, String ext, int size) {
-      return genBaseUrl + getFileNameForSize(fileName, size, ext);
+   String getFileNameForSize(String fileName, String revision, int size, String ext) {
+      return fileName + (revision == null ? "" : RevisionSep + revision) + SizeSep + size + "." + ext;
    }
 
-   String getDisplayUrl(String fileName, String ext) {
-      return getUrl(fileName, ext, displaySize);
+   String getUrl(String fileName, String revision, String ext, int size) {
+      return genBaseUrl + getFileNameForSize(fileName, revision, size, ext);
    }
 
-   String getThumbUrl(String fileName, String ext) {
-      return getUrl(fileName, ext, thumbSize);
+   String getDisplayUrl(String fileName, String revision, String ext) {
+      return getUrl(fileName, revision, ext, displaySize);
    }
 
-   String getZoomUrl(String fileName, String ext) {
-      return getUrl(fileName, ext, zoomSize);
+   String getThumbUrl(String fileName, String revision, String ext) {
+      return getUrl(fileName, revision, ext, thumbSize);
+   }
+
+   String getZoomUrl(String fileName, String revision, String ext) {
+      return getUrl(fileName, revision, ext, zoomSize);
    }
 }

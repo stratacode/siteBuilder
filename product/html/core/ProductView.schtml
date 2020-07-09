@@ -2,7 +2,7 @@
    <div id="categoryNavView" extends="CategoryNavView" categoryPath=":= ProductView.this.categoryPath"/>
    <div id="productDetailView" class="productDetailView">
       <div id="productViewImage" class="productViewImage">
-         <img class="viewImage" id="productViewImage" src=":= currentMedia.url"/>
+         <img class="viewImage" id="productViewImage" src=":= currentMedia.url" style=':= "width: " + currentMedia.width + "px; height: " + currentMedia.height + "px;"' />
          <div id="thumbNailsView" class="thumbNailsView">
             <div id="altMediaView" repeat=":= product.altMedia" repeatVarName="altMedia"
                  class='= "thumbView" + (altMediaIndex == repeatIndex ? " thumbViewSelected" : "")' >

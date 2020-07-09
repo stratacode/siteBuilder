@@ -21,7 +21,7 @@ MediaManager {
    static int maxImageWidth = 4096;
    static int maxImageHeight = 4096;
 
-   void refreshMedia(ManagedMedia media) {
+   boolean refreshMedia(ManagedMedia media) {
       String fileName = media.fileName;
       String fileType = media.fileType;
 
@@ -33,7 +33,7 @@ MediaManager {
 
       if (!origFile.canRead()) {
          media.mediaError = "Original media not found";
-         return;
+         return false;
       }
 
       long size = origFile.length();
@@ -51,7 +51,7 @@ MediaManager {
             int width = stdImageWidths[i];
             if (width > media.width)
                continue;
-            String nextFile = FileUtil.concat(genDir, getFileNameForSize(fileName, width, fileType));
+            String nextFile = FileUtil.concat(genDir, getFileNameForSize(fileName, media.revision, width, fileType));
             if (!mediaChanged) {
                if (!(new File(nextFile)).canRead()) {
                   System.out.println("*** Missing generated file for: " + width + ":" + nextFile);;
@@ -66,7 +66,7 @@ MediaManager {
          String mediaIdOut = FileUtil.exec("magick", "identify", origFileName);
          if (mediaIdOut == null) {
             media.mediaError = "Failed to identify image";
-            return;
+            return false;
          }
          String[] idRes = StringUtil.split(mediaIdOut, ' ');
          String type = idRes[1];
@@ -74,7 +74,7 @@ MediaManager {
          type = type.toLowerCase();
          if (!supportedFormats.contains(type)) {
             media.mediaError = "Unsupported format: " + type;
-            return;
+            return false;
          }
 
          String suffix = typeToSuffix.get(type);
@@ -91,7 +91,7 @@ MediaManager {
          if (xix == -1) {
             System.out.println("*** Invalid format of dimsStr: " + dimsStr);
             media.mediaError = "System error";
-            return;
+            return false;
          }
          String widthStr = dimsStr.substring(0, xix);
          String heightStr = dimsStr.substring(xix+1);
@@ -104,27 +104,60 @@ MediaManager {
          catch (NumberFormatException exc) {
             System.out.println("*** Invalid format of dimsStr: " + widthStr + "x" + heightStr);
             media.mediaError = "System error";
-            return;
+            return false;
          }
          if (mediaWidth > maxImageWidth || mediaHeight > maxImageHeight) {
             media.mediaError = "Image dimensions: " + dimsStr + " - larger than max allowed: " + maxImageWidth + "x" + maxImageHeight;
-            return;
+            return false;
          }
          media.width = mediaWidth;
          media.height = mediaHeight;
+         media.fileSize = size;
+         media.fileHash = newHash;
 
          for (int i = 0; i < stdImageWidths.length; i++) {
             int width = stdImageWidths[i];
             if (width > media.width)
                continue;
 
-            String genFileName = FileUtil.concat(genDir, getFileNameForSize(fileName, width, fileType));
+            String genFileName = FileUtil.concat(genDir, getFileNameForSize(fileName, null, width, fileType));
             String cvtRes = FileUtil.exec("convert", origFileName, "-resize", String.valueOf(width), genFileName);
             if (cvtRes == null) {
+               System.err.println("*** System err converting image sizes");
                media.mediaError = "System error converting image sizes";
             }
          }
-
       }
+      return mediaChanged;
+   }
+
+   int removeMediaFiles(String fileName, String fileType) {
+      String origDir = mediaStore.origDir;
+      String genDir = mediaStore.genDir;
+
+      String origFileName = FileUtil.concat(origDir, FileUtil.addExtension(fileName, fileType));
+      File origFile = new File(origFileName);
+
+      int ct = 0;
+      if (origFile.canRead()) {
+         if (!origFile.delete())
+            System.err.println("*** Unable to delete media file: " + origFile);
+         System.out.println("Removed media file: " + origFile);
+         ct++;
+      }
+
+      for (int i = 0; i < stdImageWidths.length; i++) {
+         int width = stdImageWidths[i];
+
+         String genFileName = FileUtil.concat(genDir, getFileNameForSize(fileName, null, width, fileType));
+         File genFile = new File(genFileName);
+         if (genFile.delete()) {
+            System.out.println("*** Removing gen file: " + genFile);
+            ct++;
+         }
+         else
+            System.out.println("*** Did not remove gen file: " + genFile);
+      }
+      return ct;
    }
 }

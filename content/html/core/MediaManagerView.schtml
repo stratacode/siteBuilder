@@ -1,0 +1,56 @@
+<div>
+   <div class="viewTitle">
+      Manage media
+   </div>
+   <div id="findMediaView" class="findMediaView">
+      Find media: <input type="text" value=":=: searchText" changeEvent="=: doSearch()"/>
+      <input type="image" class="findMediaButton" src="/icons/search.svg" clickEvent="=: doSearch()"/>
+      <input type="image" class="clearMediaButton" src="/icons/x-square.svg" clickEvent="=: clearSearch()"/>
+   </div>
+
+   <p/>
+
+   <form id="uploadForm" method="post" enctype="multipart/form-data">
+      <%! 
+          submitResult =: handleUploadResult(submitResult);
+          submitError =: handleUploadError(submitError);
+      %>
+      Upload media file(s)
+      <input type="file" multiple id="uploadFile" name="fileToUpload" changeEvent="=: resetUploadForm()"/>
+      <input exec="server" type="hidden" name="mediaManagerId" value=":= String.valueOf(mediaManager.id)"/>
+      <!-- <input type="submit" value="Submit"/> -->
+      <input type="button" value="Add media"
+             clickEvent="=: uploadForm.submitFormData("/mediaUpload")"
+             clickEvent="=: resetUploadForm()"/>
+      <p/>
+      <div id="statusView">
+         <div id="status" visible=":= showUploadStatus" class=':= uploadError ? "uploadError" : "uploadSuccess"'>
+            <%= uploadForm.submitInProgress ? "Uploading..." : uploadStatusMessage %>
+         </div>
+      </div>
+   </form>
+
+   <p/>
+
+   <div id="currentMediaView">
+      <div class="headerRow" visible=":= currentMedia != null && currentMedia.size() > 0">
+         <span class="wideHeaderColumn">File name</span>
+         <span class="smallHeaderColumn">Type</span>
+         <span class="headerColumn">Dimensions</span>
+         <span class="headerColumn">File size</span>
+      </div>
+      <div id="mediaRepeat" repeat=":= currentMedia" repeatVarName="media"
+           class=':= media == selectedMedia ? "selectedMediaRow" : "mediaRow"' clickEvent="=: selectedMedia = media">
+        <span class="wideMediaColumn">
+           <input type="checkbox" checked=":= selectedMedia == media"/>
+           <%= media.uniqueFileName %>
+        </span>
+        <span class="smallMediaColumn"> <%= media.fileType %> </span>
+        <span class="mediaColumn"> <%= media.width %>x<%= media.height%> </span>
+        <span class="mediaColumn"> <%= media.fileSize %> bytes </span>
+        <img src=":= media.thumbUrl" class="mediaListThumb"/>
+        <input type="image" class="removeMediaButton" src="/icons/x-square.svg" clickEvent="=: removeMedia(media.id)"/>
+      </div>
+      <span><%= currentMediaStatus %></span>
+   </div>
+</div>

@@ -2,6 +2,9 @@ ManagedMedia {
    mediaChangedCt =: updateGeneratedFiles();
 
    void updateGeneratedFiles() {
-      manager.refreshMedia(this);
+      if (manager == null)
+         System.out.println("*** No manager for media");
+      else
+         manager.refreshMedia(this);
    }
 }

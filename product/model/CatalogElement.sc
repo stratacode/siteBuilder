@@ -3,12 +3,11 @@ abstract class CatalogElement extends ManagedResource {
    /* The external name */
    String name;
 
+   @FindBy(paged=true,orderBy="-lastModified",with="store")
    @DBPropertySettings(indexed=true)
    String pathName;
 
    String shortDesc, longDesc;
-
-   boolean visible;
 
    Category parentCategory;
 

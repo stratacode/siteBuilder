@@ -4,19 +4,27 @@
  */
 @DBTypeSettings
 @EditorSettings(displayNameProperty="fileName")
-abstract class ManagedMedia extends ManagedResource {
+// TODO: this is really an abstract class but we need to instantiate it for the @FindBy because the
+// code creates an instance for the prototype. Could find another way to workaround that problem.
+// We want to instantiate the object as a prototype so that bindings and other values can be used in the
+// match query.
+class ManagedMedia extends ManagedResource {
+   @FindBy
    String fileName;
+
    String fileType;
 
    String getUrl() {
-      return manager.getDisplayUrl(fileName, fileType);
+      return manager.getDisplayUrl(fileName, revision, fileType);
    }
 
    String captionText;
    String altText;
 
+   // TODO: add visible, alt-resolution, alt-formats - we generate each required res from the closest appropriate source res/format
+
    String getThumbUrl() {
-      return manager.getThumbUrl(fileName, fileType);
+      return manager.getThumbUrl(fileName, revision, fileType);
    }
    String zoomedUrl;
 
@@ -24,6 +32,7 @@ abstract class ManagedMedia extends ManagedResource {
    long fileSize;
    byte[] fileHash;
 
+   @DBPropertySettings(persist=false)
    int mediaChangedCt = 0;
 
    void mediaChanged() {
@@ -32,6 +41,8 @@ abstract class ManagedMedia extends ManagedResource {
 
    @DBPropertySettings(persist=false)
    String mediaError = null;
+
+   String uniqueFileName := fileName + (revision == null ? "" : MediaManager.RevisionSep + revision);
 }
 
 
