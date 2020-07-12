@@ -3,7 +3,9 @@ class LineItem {
    @DBPropertySettings(reverseProperty="lineItems")
    Order order;
 
+   @DBPropertySettings(indexed=true)
    Product product;
+
    @Sync(initDefault=true)
    Sku sku;
    int quantity;

@@ -1,0 +1,91 @@
+
+.findMediaButton, .clearMediaButton {
+   vertical-align: bottom;
+}
+
+.mediaListThumb, .removeMediaButton {
+   vertical-align: middle;
+}
+
+.mediaListThumb {
+   width: 110px;
+   padding-left: 5px;
+   padding-right: 5px;
+}
+
+.mediaRow, .selectedMediaRow, .headerRow, .productRow, .selectedProductRow {
+   display: flex;
+   align-items: center;
+}
+
+.mediaRow, .selectedMediaRow, .productRow, .selectedProductRow {
+   cursor: pointer;
+   margin-bottom: 5px;
+}
+
+.selectedMediaRow, .selectedProductRow {
+   background-color: #ddddff;
+}
+
+.smallMediaColumn, .smallHeaderColumn {
+   padding: 2px;
+   width: 50px;
+}
+
+.mediaColumn, .headerColumn, .productColumn {
+   padding: 2px;
+   width: 100px;
+}
+
+.wideMediaColumn, .wideHeaderColumn, .wideProductColumn {
+   padding: 2px;
+   width: 200px;
+}
+
+.headerRow {
+   background-color: #ccc;
+}
+
+#mgrFrame {
+   max-width: 1000px;
+   margin: auto;
+}
+
+#storeSelect, #mgrNav {
+   margin-left: 10px;
+   margin-bottom: 10px;
+}
+
+#listView, #startAddView, #findProductsView {
+   margin-bottom: 10px;
+}
+
+#detailView {
+   display: flex;
+}
+
+.formView {
+   margin-bottom: 10px;
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+}
+
+
+.formView label {
+   text-align: right;
+   width: 10em;
+   margin-right: 10px;
+}
+
+.formTitle {
+   font-size: 110%;
+}
+
+.subFormView {
+   border: solid 1px #aaa;
+   margin-left: 25px;
+   display: flex;
+   padding: 5px;
+   flex-direction: column;
+}

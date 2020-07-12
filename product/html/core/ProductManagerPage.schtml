@@ -1,0 +1,8 @@
+<%@ @URL(pattern="/manage/product") %>
+<html extends="BaseManagerPage">
+   <body>
+      <div id="mgrFrame">
+         <div id="mgrView" extends="ProductManagerView" store=":= storeMgr.store"/>
+      </div>
+   </body>
+</html>

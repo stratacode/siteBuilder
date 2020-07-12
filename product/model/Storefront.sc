@@ -24,4 +24,8 @@ class Storefront {
    }
 
    MediaManager mediaManager;
+
+   public String toString() {
+      return storeName;
+   }
 }

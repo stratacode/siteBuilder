@@ -1,0 +1,19 @@
+<html>
+   <%! object storeMgr extends StoreManagerView {} %>
+
+   <head exec="server">
+      <link id="docStyle" rel="stylesheet" href="/managerStyle.css" type="text/css"/>
+   </head>
+
+   <body>
+      <div id="mgrFrame">
+         <select id="storeSelect" optionDataSource=":= storeMgr.storeList" changeEvent="=: storeMgr.changeStore((Storefront) selectedValue)" selectedIndex=":= storeMgr.storeIndex"/>
+         <span id="mgrNav">
+            <a href="/manage/order">Order</a>
+            <a href="/manage/customer">Customer</a>
+            <a href="/manage/product">Product</a>
+            <a href="/manage/media">Media</a>
+         </span>
+      </div>
+   </body>
+</html>

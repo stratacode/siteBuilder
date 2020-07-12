@@ -4,6 +4,10 @@ class PhysicalSku extends Sku {
    BigDecimal weight, height, width, length;
 
    public boolean getInStock() {
-      return inventory == null || inventory.quantity > 0;
+      return available && (inventory == null || inventory.quantity > 0);
+   }
+
+   String getDisplaySummary(Storefront store) {
+      return super.getDisplaySummary(store) + (inStock ? " in stock" : (available ? " out of stock" : "discontinued")) + (inventory == null ? "" : " " + inventory);
    }
 }

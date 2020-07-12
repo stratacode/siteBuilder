@@ -1,4 +1,4 @@
-abstract class ManagedResource {
+abstract class ManagedResource implements sc.dyn.IPropValidator {
    MediaManager manager;
 
    Date lastModified;
@@ -29,6 +29,17 @@ abstract class ManagedResource {
       long now = System.currentTimeMillis();
       return (validStart == null || now > validStart.getTime()) && (notValidAfter == null || now < notValidAfter.getTime());
    }
+
+   @Bindable
+   @DBPropertySettings(persist=false)
+   Map<String,String> propErrors = null;
+
+   static String validateRequired(String propName, String propVal) {
+      if (propVal == null || propVal.trim().length() == 0)
+         return "Missing: " + propName;
+      return null;
+   }
+
 }
 
 

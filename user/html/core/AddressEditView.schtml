@@ -2,7 +2,7 @@
    <div class="viewTitle"><%= addressName %></div>
    <div id="countryFieldBox" class="fieldBox">
       <label for="countrySelect">Country</label>
-      <select id="countrySelect" optionDataSource=":= countryNames" selectedIndex=":= countryNames.indexOf(address.country == null ? defaultCountry : address.country)"
+      <select id="countrySelect" optionDataSource=":= countryNames" selectedValue=":= countryNames.indexOf(address.country == null ? defaultCountry : address.country)"
               selectedValue="=: address.country"/>
    </div>
    <div id="addrNameFieldBox" class="fieldBox">
