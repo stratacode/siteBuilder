@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.TreeSet;
 
 ProductManagerView {
    store =: storeChanged();
@@ -14,7 +15,8 @@ ProductManagerView {
    }
 
    void doSearch() {
-      productList = searchForText(searchText);
+      String txt = searchText == null ? "" : searchText;
+      productList = searchForText(txt);
    }
 
    void doSelectProduct(Product toSel) {
@@ -28,7 +30,7 @@ ProductManagerView {
    }
 
    void removeProduct(long productId) {
-      statusMessage = null;
+      clearFormErrors();
       if (productId == 0) {
          errorMessage = "Invalid product id in remove";
          return;
@@ -71,6 +73,8 @@ ProductManagerView {
    void startAddProduct() {
       if (addInProgress)
          return;
+
+      clearFormErrors();
 
       Product newProd = (Product) Product.getDBTypeDescriptor().createInstance();
       if (product != null) {
@@ -116,47 +120,62 @@ ProductManagerView {
    }
 
    void doAddProduct() {
+      clearFormErrors();
       if (product.propErrors != null && product.propErrors.size() > 0)
          errorMessage = "Errors in new product";
-      else
+      else {
          errorMessage = null;
-      try {
-         if (addInProgress) {
-            product.dbInsert(false);
+         try {
+            if (addInProgress) {
+               product.dbInsert(false);
 
-            // This after we have inserted it to prevent the category from trying to insert the product due to the
-            // bi-directional parentCategory/products relationships
-            if (defaultCategory != null)
-               product.parentCategory = defaultCategory;
+               String newName = product.pathName;
 
-            ArrayList<Product> newList = new ArrayList<Product>();
-            newList.add(product);
-            productList = newList;
-            product = null;
-            addInProgress = false;
-            statusMessage = "Product created";
+               // This after we have inserted it to prevent the category from trying to insert the product due to the
+               // bi-directional parentCategory/products relationships
+               if (defaultCategory != null)
+                  product.parentCategory = defaultCategory;
+
+               ArrayList<Product> newList = new ArrayList<Product>();
+               newList.add(product);
+               productList = newList;
+               addInProgress = false;
+               product = null;
+               statusMessage = "Product " + newName + " created";
+            }
+            /*
+            else {
+               product.dbUpdate();
+               statusMessage = "Changes saved";
+            }
+            */
          }
-         /*
-         else {
-            product.dbUpdate();
-            statusMessage = "Changes saved";
+         catch (IllegalArgumentException exc) {
+            errorMessage = "New product failed due to system error: " + exc;
          }
-         */
-      }
-      catch (IllegalArgumentException exc) {
-         errorMessage = "New product failed due to system error: " + exc;
       }
    }
 
    void cancelAddProduct() {
-      product = null;
       addInProgress = false;
+      resetForm();
    }
 
    void updateMatchingSkus(String pattern) {
       if (pattern == null || pattern.length() < 2)
          return;
-      matchingSkus = (List<Sku>) Sku.getDBTypeDescriptor().searchQuery(null, pattern, searchOrderBy, 0, 5);
+      List<Sku> allMatches = (List<Sku>) Sku.getDBTypeDescriptor().searchQuery(null, pattern, searchOrderBy, 0, 20);
+      TreeSet<String> found = new TreeSet<String>();
+      ArrayList<Sku> res = new ArrayList<Sku>();
+      for (Sku match:allMatches) {
+         if (!found.contains(match.skuCode)) {
+            res.add(match);
+            found.add(match.skuCode);
+            if (res.size() == 10)
+               break;
+         }
+      }
+      matchingSkus = res;
    }
 
    void updateProductSku(String skuCode) {
@@ -178,7 +197,18 @@ ProductManagerView {
    void updateMatchingCategories(String pattern) {
       if (pattern == null || pattern.length() < 2)
          return;
-      matchingCategories = (List<Category>) Category.getDBTypeDescriptor().searchQuery(null, pattern, searchOrderBy, 0, 5);
+      TreeSet<String> found = new TreeSet<String>();
+      ArrayList<Category> res = new ArrayList<Category>();
+      List<Category> allMatches = (List<Category>) Category.getDBTypeDescriptor().searchQuery(null, pattern, searchOrderBy, 0, 20);
+      for (Category match:allMatches) {
+         if (!found.contains(match.pathName)) {
+            res.add(match);
+            found.add(match.pathName);
+            if (res.size() == 10)
+               break;
+         }
+      }
+      matchingCategories = res;
    }
 
    void updateParentCategory(String pathName) {
@@ -202,5 +232,113 @@ ProductManagerView {
          }
       }
       product.addPropError("parentCategory", "No category with path name: " + pathName);
+   }
+
+   void updateMatchingMedia(String pattern) {
+      if (pattern == null || pattern.length() < 2)
+         return;
+      TreeSet<String> found = new TreeSet<String>();
+      ArrayList<ManagedMedia> res = new ArrayList<ManagedMedia>();
+      List<ManagedMedia> allMatches = (List<ManagedMedia>) ManagedMedia.getDBTypeDescriptor().searchQuery(null, pattern, searchOrderBy, 0, 20);
+      for (ManagedMedia match:allMatches) {
+         if (!found.contains(match.uniqueFileName)) {
+            res.add(match);
+            found.add(match.uniqueFileName);
+            if (res.size() == 10)
+               break;
+         }
+      }
+      matchingMedia = res;
+   }
+
+   void updateProductMedia(String uniqueFileName) {
+      String fileName = MediaManager.removeRevisionFromFile(uniqueFileName);
+      List<ManagedMedia> mediaList = ManagedMedia.findByFileName(fileName);
+      mediaStatusMessage = null;
+      mediaErrorMessage = null;
+      if (mediaList != null) {
+         for (ManagedMedia media:mediaList) {
+            if (media.uniqueFileName.equals(uniqueFileName)) {
+               List<ManagedMedia> prodMedia = product.altMedia;
+               boolean setList = false;
+               if (prodMedia == null) {
+                  prodMedia = new ArrayList<ManagedMedia>();
+                  setList = true;
+               }
+               else if (prodMedia.contains(media)) {
+                  mediaErrorMessage = "Media file: " + media.uniqueFileName + " already in product";
+                  return;
+               }
+               mediaStatusMessage = "Added file: " + media.uniqueFileName + " to media";
+               prodMedia.add(media);
+               if (setList) {
+                  product.altMedia = prodMedia;
+                  product.mainMedia = media;
+               }
+               return;
+            }
+         }
+      }
+      mediaErrorMessage = "No media found with fileName: " + uniqueFileName;
+   }
+
+   void removeProductMedia(long mediaId) {
+      clearMediaErrors();
+      if (product == null || product.altMedia == null)
+         mediaErrorMessage = "No product or media for remove";
+      else {
+         for (int i = 0; i < product.altMedia.size(); i++) {
+            if (product.altMedia.get(i).id == mediaId) {
+               product.altMedia.remove(i);
+               return;
+            }
+         }
+         mediaErrorMessage = "Remove product media not found";
+      }
+   }
+
+   void addMediaResult(Object res) {
+      if (res instanceof Object[])
+         res = Arrays.asList((Object[]) res);
+      List resList = (List) res;
+      clearMediaErrors();
+      if (resList.size() == 1) {
+         String nameWithRev = (String) resList.get(0);
+         // Here we want to find all versions of the file uploaded just for context
+         List<ManagedMedia> mediaRes = MediaManagerView.searchForText(nameWithRev);
+         int selIx = -1;
+         ManagedMedia newMedia = null;
+         for (int i = 0; i < mediaRes.size(); i++) {
+            if (mediaRes.get(i).uniqueFileName.equals(nameWithRev)) {
+               newMedia = mediaRes.get(i);
+               selIx = i;
+               break;
+            }
+         }
+         if (newMedia != null) {
+            List<ManagedMedia> altMedia = product.altMedia;
+            boolean setList = false;
+            if (altMedia == null) {
+               altMedia = new ArrayList<ManagedMedia>();
+               setList = true;
+            }
+            altMedia.add(newMedia);
+            if (setList)
+               product.altMedia = altMedia;
+            if (product.mainMedia == null)
+               product.mainMedia = newMedia;
+            mediaStatusMessage = "Added media file: " + newMedia.uniqueFileName + " " + newMedia.fileType + " " + newMedia.width + "x" + newMedia.height;
+         }
+         else
+            mediaErrorMessage = "No media: " + nameWithRev;
+      }
+      else {
+         System.err.println("*** Multiple files returned for add product media - expecting only one");
+      }
+   }
+
+   void addMediaError(String err) {
+      mediaStatusMessage = null;
+      mediaErrorMessage = err;
    }
 }

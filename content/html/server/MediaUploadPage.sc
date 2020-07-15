@@ -49,8 +49,7 @@ class MediaUploadPage extends UploadPage {
             errors.add(info.error);
          }
 
-         // Use standard file extension
-         fileNameWithExt = FileUtil.addExtension(fileName, info.fileType);
+         fileNameWithExt = FileUtil.addExtension(fileName, info.suffix);
 
          String revision = null;
 
@@ -89,7 +88,7 @@ class MediaUploadPage extends UploadPage {
 
             }
             revision = revSuffix;
-            origFileName = FileUtil.concat(mediaStore.origDir, useManager.getOrigFileName(fileName, revision, info.fileType));
+            origFileName = FileUtil.concat(mediaStore.origDir, useManager.getOrigFileName(fileName, revision, info.suffix));
          }
 
          if (!found) {
@@ -103,6 +102,7 @@ class MediaUploadPage extends UploadPage {
             newIm.height = info.height;
             newIm.fileName = FileUtil.removeExtension(FileUtil.getFileName(fileName));
             newIm.fileType = info.fileType;
+            newIm.suffix = info.suffix;
             newIm.fileHash = origHash;
             newIm.revision = revision;
             newIm.manager = useManager;

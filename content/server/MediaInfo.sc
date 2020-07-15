@@ -8,6 +8,7 @@ class MediaInfo {
    int width, height;
    long fileSize;
    String fileType;
+   String suffix;
    String error;
 
    static MediaInfo getFromFile(String fileName) {
@@ -31,13 +32,7 @@ class MediaInfo {
          return info;
       }
 
-      String suffix = MediaManager.typeToSuffix.get(type);
-      if (suffix == null)
-         suffix = type;
-
-      if (!suffix.equals(origSuffix)) {
-         System.out.println("*** Warning - fileName: " + fileName + " extensions does not match file type: " + suffix);
-      }
+      info.suffix = origSuffix;
 
       String dimsStr = idRes[2];
       int xix = dimsStr.indexOf('x');

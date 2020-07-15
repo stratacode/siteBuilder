@@ -5,6 +5,7 @@ scope<global> class MediaDownloadPage extends DownloadPage {
    startUrl = "/images/gen";
    {
       mimeTypes.put("jpg", "image/jpeg");
+      mimeTypes.put("jpeg", "image/jpeg");
       mimeTypes.put("png", "image/png");
    }
 }

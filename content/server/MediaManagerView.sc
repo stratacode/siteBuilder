@@ -10,7 +10,8 @@ MediaManagerView {
    }
 
    void doSearch() {
-      currentMedia = searchForText(searchText);
+      String txt = searchText == null ? "" : searchText;
+      currentMedia = searchForText(txt);
    }
 
    void clearSearch() {
@@ -85,7 +86,7 @@ MediaManagerView {
          String fileName = media.fileName;
          String fileType = media.fileType;
          media.dbDelete(false);
-         manager.removeMediaFiles(fileName, fileType);
+         manager.removeMediaFiles(fileName, media.suffix);
          if (toRemIx != -1) {
             ArrayList<ManagedMedia> newList = new ArrayList<ManagedMedia>();
             for (int i = 0; i < currentMedia.size(); i++) {

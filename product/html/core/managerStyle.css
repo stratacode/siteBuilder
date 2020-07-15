@@ -57,7 +57,8 @@
 }
 
 #listView, #startAddView, #findProductsView {
-   margin-bottom: 10px;
+   margin-bottom: 5px;
+   margin-top: 5px;
 }
 
 #detailView {
@@ -65,12 +66,12 @@
 }
 
 .formView {
-   margin-bottom: 10px;
+   margin-top: 5px;
+   margin-bottom: 5px;
    display: flex;
    flex-direction: row;
    align-items: center;
 }
-
 
 .formView label {
    text-align: right;
@@ -78,14 +79,58 @@
    margin-right: 10px;
 }
 
+.formView input[type=text] {
+   width: 20em;
+}
+
 .formTitle {
    font-size: 110%;
+   margin-top: 5px;
+   margin-bottom: 5px;
+}
+
+#addCancel, .formTitle {
+   margin-left: 175px;
 }
 
 .subFormView {
+   margin-top: 10px;
+   margin-bottom: 10px;
    border: solid 1px #aaa;
    margin-left: 25px;
    display: flex;
    padding: 5px;
    flex-direction: column;
+   max-width: 460px;
 }
+
+.formViewError {
+}
+
+#detailFormView {
+   display: flex;
+   flex-direction: column;
+}
+
+.rightButton {
+   margin-left: 10px;
+}
+
+#addSkuButtons, .subFormTitle {
+   margin-left: 175px;
+}
+
+.subFormTitle {
+   margin-top: 5px;
+}
+
+.mediaImageList {
+   display: flex;
+}
+
+.prodMediaView {
+   margin: 5px;
+   display: flex;
+   flex-direction: column;
+}
+

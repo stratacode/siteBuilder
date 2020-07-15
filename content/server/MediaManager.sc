@@ -13,22 +13,18 @@ MediaManager {
       supportedFormats.add("png");
    }
 
-   static HashMap<String,String> typeToSuffix = new HashMap<String,String>();
-   static {
-      typeToSuffix.put("jpeg", "jpg");
-   }
-
    static int maxImageWidth = 4096;
    static int maxImageHeight = 4096;
 
    boolean refreshMedia(ManagedMedia media) {
       String fileName = media.fileName;
       String fileType = media.fileType;
+      String origSuffix = media.suffix;
 
       String origDir = mediaStore.origDir;
       String genDir = mediaStore.genDir;
 
-      String origFileName = FileUtil.concat(origDir, FileUtil.addExtension(fileName, fileType));
+      String origFileName = FileUtil.concat(origDir, FileUtil.addExtension(fileName, origSuffix));
       File origFile = new File(origFileName);
 
       if (!origFile.canRead()) {
@@ -77,15 +73,6 @@ MediaManager {
             return false;
          }
 
-         String suffix = typeToSuffix.get(type);
-         if (suffix == null)
-            suffix = type;
-
-         if (!suffix.equals(fileType)) {
-            System.out.println("*** Changing file type - extension: " + fileType + " format of file: " + type);
-            media.fileType = suffix;
-         }
-
          String dimsStr = idRes[2];
          int xix = dimsStr.indexOf('x');
          if (xix == -1) {
@@ -114,13 +101,14 @@ MediaManager {
          media.height = mediaHeight;
          media.fileSize = size;
          media.fileHash = newHash;
+         media.suffix = origSuffix;
 
          for (int i = 0; i < stdImageWidths.length; i++) {
             int width = stdImageWidths[i];
             if (width > media.width)
                continue;
 
-            String genFileName = FileUtil.concat(genDir, getFileNameForSize(fileName, null, width, fileType));
+            String genFileName = FileUtil.concat(genDir, getFileNameForSize(fileName, null, width, origSuffix));
             String cvtRes = FileUtil.exec("convert", origFileName, "-resize", String.valueOf(width), genFileName);
             if (cvtRes == null) {
                System.err.println("*** System err converting image sizes");
@@ -131,11 +119,11 @@ MediaManager {
       return mediaChanged;
    }
 
-   int removeMediaFiles(String fileName, String fileType) {
+   int removeMediaFiles(String fileName, String suffix) {
       String origDir = mediaStore.origDir;
       String genDir = mediaStore.genDir;
 
-      String origFileName = FileUtil.concat(origDir, FileUtil.addExtension(fileName, fileType));
+      String origFileName = FileUtil.concat(origDir, FileUtil.addExtension(fileName, suffix));
       File origFile = new File(origFileName);
 
       int ct = 0;
@@ -149,7 +137,7 @@ MediaManager {
       for (int i = 0; i < stdImageWidths.length; i++) {
          int width = stdImageWidths[i];
 
-         String genFileName = FileUtil.concat(genDir, getFileNameForSize(fileName, null, width, fileType));
+         String genFileName = FileUtil.concat(genDir, getFileNameForSize(fileName, null, width, suffix));
          File genFile = new File(genFileName);
          if (genFile.delete()) {
             System.out.println("*** Removing gen file: " + genFile);

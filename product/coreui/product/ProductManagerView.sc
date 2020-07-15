@@ -20,17 +20,36 @@ class ProductManagerView {
 
    List<Category> matchingCategories;
 
+   List<ManagedMedia> matchingMedia;
+
    void resetForm() {
       searchText = "";
       productList = null;
       product = null;
-      errorMessage = null;
       defaultCategory = null;
+      clearFormErrors();
+   }
+
+   void clearFormErrors() {
+      statusMessage = null;
+      errorMessage = null;
+      skuErrorMessage = null;
+      uploadInProgress = false;
+      clearMediaErrors();
+   }
+
+   void clearMediaErrors() {
+      mediaStatusMessage = null;
+      mediaErrorMessage = null;
    }
 
    String statusMessage;
    String errorMessage;
    String skuErrorMessage;
+
+   String mediaStatusMessage;
+   String mediaErrorMessage;
+   boolean uploadInProgress = false;
 
    boolean autoUpdatePath = false;
 

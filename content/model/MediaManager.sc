@@ -1,6 +1,6 @@
 @DBTypeSettings
 class MediaManager {
-   final static String RevisionSep = "-";
+   final static String RevisionSep = "--";
    final static String SizeSep = "_";
 
    @FindBy(findOne=true)
@@ -36,5 +36,13 @@ class MediaManager {
 
    String getZoomUrl(String fileName, String revision, String ext) {
       return getUrl(fileName, revision, ext, zoomSize);
+   }
+
+   static String removeRevisionFromFile(String uniqueFileName) {
+      int ix = uniqueFileName.lastIndexOf(RevisionSep);
+      if (ix != -1 && uniqueFileName.length() > ix + 1) {
+         return uniqueFileName.substring(0, ix);
+      }
+      return uniqueFileName;
    }
 }

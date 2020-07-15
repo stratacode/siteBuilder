@@ -6,7 +6,7 @@ abstract class ManagedResource implements sc.dyn.IPropValidator {
    Date validStart;
    Date notValidAfter;
 
-   boolean visible;
+   boolean visible = true;
 
    String revision;
 

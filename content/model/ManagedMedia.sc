@@ -14,8 +14,10 @@ class ManagedMedia extends ManagedResource {
 
    String fileType;
 
+   String suffix;
+
    String getUrl() {
-      return manager.getDisplayUrl(fileName, revision, fileType);
+      return manager.getDisplayUrl(fileName, revision, suffix);
    }
 
    String captionText;
@@ -24,7 +26,7 @@ class ManagedMedia extends ManagedResource {
    // TODO: add visible, alt-resolution, alt-formats - we generate each required res from the closest appropriate source res/format
 
    String getThumbUrl() {
-      return manager.getThumbUrl(fileName, revision, fileType);
+      return manager.getThumbUrl(fileName, revision, suffix);
    }
    String zoomedUrl;
 
