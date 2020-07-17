@@ -17,7 +17,7 @@
          boolean hasPathNameError := TextUtil.hasMapEntry(product.propErrors, "pathName");
          boolean hasParentCategoryError := TextUtil.hasMapEntry(product.propErrors, "parentCategory");
       %>
-         <div class="formTitle"> <%= addInProgress ? "Add product" : "Update product" %></div>
+         <div class="formTitle"> <%= addInProgress ? "Unsaved product" : "Update product" %></div>
          <div id="nameFieldView" class="formView">
             <label for="nameField">Product name</label><input id="nameField" type="text" value=":=: product.name" changeEvent="=: updateProductName(value)"/>
          </div>
@@ -117,9 +117,19 @@
                <label for="uploadFile">Add new media</label>
                <input type="file" id="uploadFile" name="fileToUpload" accept=".jpg, .jpeg, .png"
                       changeEvent="=: addMediaForm.submitFormData("/mediaUpload")"/>
-               <input exec="server" type="hidden" name="mediaManagerId" value=":= String.valueOf(store.mediaManager.id)"/>
+               <input id="mediaManagerIdField" type="hidden" name="mediaManagerId" value=":= String.valueOf(store.mediaManager.id)"/>
                <div><%= addMediaForm.submitInProgress ? "Uploading..." : (mediaErrorMessage != null ? mediaErrorMessage : mediaStatusMessage) %></div>
             </form>
+         </div>
+
+         <div id="shortDescView" class="formView">
+            <label for="shortDescField">Short description</label>
+            <input id="shortDescField" type="text" value=":=: product.shortDesc" class="shortDescField"/>
+         </div>
+
+         <div id="longDescView">
+            <label for="longDescText">Long description</label>
+            <div id="longDescText" class="longDescText" extends="HtmlTextEditor" placeholder="Enter product description..." content=":=: product.longDesc"/>
          </div>
 
          <div id="addCancel" visible=":= addInProgress" class="formView">

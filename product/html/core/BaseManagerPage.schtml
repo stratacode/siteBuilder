@@ -1,4 +1,4 @@
-<html>
+<html abstract="true">
    <%! object storeMgr extends StoreManagerView {} %>
 
    <head exec="server">

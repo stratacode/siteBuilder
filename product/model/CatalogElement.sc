@@ -7,7 +7,10 @@ abstract class CatalogElement extends ManagedResource {
    @DBPropertySettings(indexed=true)
    String pathName;
 
-   String shortDesc, longDesc;
+   String shortDesc;
+
+   @sc.obj.HTMLSettings(returnsHTML=true)
+   String longDesc;
 
    Category parentCategory;
 

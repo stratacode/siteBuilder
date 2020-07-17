@@ -83,11 +83,17 @@ ProductManagerView {
          newProd.name = "copy of " + product.name;
          newProd.pathName = product.pathName;
          newProd.mainMedia = product.mainMedia;
+         newProd.shortDesc = product.shortDesc;
+         newProd.longDesc = product.longDesc;
       }
       else {
          newProd.name = "";
          newProd.pathName = "";
       }
+      if (newProd.shortDesc == null)
+         newProd.shortDesc = "";
+      if (newProd.longDesc == null)
+         newProd.longDesc = "";
       product = newProd;
 
       // Automatically set this based on the product name unless it's already specified
@@ -295,6 +301,11 @@ ProductManagerView {
          }
          mediaErrorMessage = "Remove product media not found";
       }
+   }
+
+   void updateLongDesc(String htmlText) {
+      // TODO: validation here!
+      product.longDesc = htmlText;
    }
 
    void addMediaResult(Object res) {
