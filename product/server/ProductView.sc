@@ -109,7 +109,7 @@ ProductView {
                boolean enabled;
 
                if (PTypeUtil.testMode)
-                  DBUtil.addTestIdInstance(optValue, "optVal-" + optValue.name);
+                  DBUtil.addTestIdInstance(optValue, "optVal-" + optValue.optionValue);
 
                if (skuOptions != null) {
                   Sku optionSku = product.getSkuForOptionsWith(defaultOptions, i, optValue);
@@ -119,7 +119,7 @@ ProductView {
                   enabled = true;
                }
                optionView.enabled.add(enabled);
-               if (optValue.name.equals(defaultValue.name))
+               if (optValue.optionValue.equals(defaultValue.optionValue))
                   selIndex = ix;
                ix++;
             }

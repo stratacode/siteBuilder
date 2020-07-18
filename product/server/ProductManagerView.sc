@@ -1,6 +1,8 @@
 import java.util.Arrays;
 import java.util.TreeSet;
 
+import sc.lang.html.HTMLElement;
+
 ProductManagerView {
    store =: storeChanged();
 
@@ -185,6 +187,13 @@ ProductManagerView {
    }
 
    void updateProductSku(String skuCode) {
+      skuErrorMessage = null;
+
+      if (skuCode == null || skuCode.trim().length() == 0) {
+         product.sku = null;
+         return;
+      }
+
       List<Sku> skus = Sku.findBySkuCode(skuCode);
       if (skus != null) {
          if (skus.size() == 1) {
@@ -304,8 +313,11 @@ ProductManagerView {
    }
 
    void updateLongDesc(String htmlText) {
-      // TODO: validation here!
-      product.longDesc = htmlText;
+      String error = HTMLElement.validateClientHTML(htmlText, HTMLElement.formattingTags);
+      if (error == null)
+         product.longDesc = htmlText;
+      else // TODO: fix this and log it as a security warning
+         System.err.println("Invalid html text submission: " + htmlText + ": " + error);
    }
 
    void addMediaResult(Object res) {
@@ -333,7 +345,13 @@ ProductManagerView {
                altMedia = new ArrayList<ManagedMedia>();
                setList = true;
             }
-            altMedia.add(newMedia);
+            if (altMedia.contains(newMedia)) {
+               // The result may have already been uploaded and added to the product
+               mediaErrorMessage = "Media already exists in product: " + nameWithRev;
+               return;
+            }
+            else
+               altMedia.add(newMedia);
             if (setList)
                product.altMedia = altMedia;
             if (product.mainMedia == null)
@@ -352,4 +370,102 @@ ProductManagerView {
       mediaStatusMessage = null;
       mediaErrorMessage = err;
    }
+
+
+   // Options view
+
+   void startNewOptionScheme() {
+      optionScheme = (ProductOptions) ProductOptions.getDBTypeDescriptor().createInstance();
+
+      optionScheme.options = new ArrayList<ProductOption>();
+      addNewOption();
+
+      showNewOptionsView = true;
+   }
+
+   void updateMatchingOptionSchemes(String pattern) {
+      if (pattern == null)
+         pattern = "";
+      List<ProductOptions> allMatches = (List<ProductOptions>) ProductOptions.getDBTypeDescriptor().searchQuery(null, pattern, searchOrderBy, 0, 20);
+      TreeSet<String> found = new TreeSet<String>();
+      ArrayList<ProductOptions> res = new ArrayList<ProductOptions>();
+      for (ProductOptions match:allMatches) {
+         if (!found.contains(match.optionSchemeName)) {
+            res.add(match);
+            found.add(match.optionSchemeName);
+            if (res.size() == 10)
+               break;
+         }
+      }
+      matchingOptionSchemes = res;
+   }
+
+   void updateOptionScheme(String optionSchemeName) {
+      List<ProductOptions> schemes = ProductOptions.findByOptionSchemeName(optionSchemeName);
+      if (schemes != null) {
+         if (schemes.size() == 1) {
+            product.options = schemes.get(0);
+            return;
+         }
+         else if (schemes.size() > 1) {
+            product.options = schemes.get(0);
+            //skuErrorMessage = "Warning multiple skus with skuCode: " + skuCode;
+            return;
+         }
+      }
+      optionStatusMessage = null;
+      optionErrorMessage = "No option scheme with scheme name: " + optionSchemeName;
+   }
+
+   void updateHasOptions(boolean status) {
+      if (!status) {
+         product.options = null;
+      }
+      showOptionsView = status;
+   }
+
+   void addNewOption() {
+      ProductOption opt = (ProductOption) ProductOption.getDBTypeDescriptor().createInstance();
+      opt.optionName = "";
+      opt.optionValues = new ArrayList<OptionValue>();
+      OptionValue optVal = new OptionValue();
+      optVal.optionValue = "";
+      optVal.skuSymbol = "";
+      opt.optionValues.add(optVal);
+      opt.defaultValue = optVal;
+      optionScheme.options.add(opt);
+   }
+
+   void removeOption(ProductOption option) {
+      if (!optionScheme.options.remove(option))
+         System.err.println("*** Error - unable to find option to remove");
+   }
+
+   void addNewOptionValue(ProductOption option) {
+      OptionValue optVal = new OptionValue();
+      optVal.optionValue = "";
+      optVal.skuSymbol = "";
+      option.optionValues.add(optVal);
+   }
+
+   void removeOptionValue(ProductOption option, OptionValue optVal) {
+      boolean isDefault = option.defaultValue == optVal;
+      if (!option.optionValues.remove(optVal))
+         System.err.println("*** Error - no option value found to remove");
+      else if (isDefault && option.optionValues.size() > 0)
+         option.defaultValue = option.optionValues.get(0);
+   }
+
+   void completeNewOptionScheme() {
+      optionScheme.dbInsert(false);
+      product.options = optionScheme;
+      showNewOptionsView = false;
+      optionStatusMessage = "Option scheme: " + optionScheme.optionSchemeName + " added";
+   }
+
+   void cancelNewOptionScheme() {
+      optionScheme = null;
+      showNewOptionsView = false;
+   }
+
 }

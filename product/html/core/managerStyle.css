@@ -1,5 +1,5 @@
 
-.findMediaButton, .clearMediaButton {
+.findMediaButton, .clearMediaButton, .clearOptionButton {
    vertical-align: bottom;
 }
 
@@ -89,7 +89,7 @@
    margin-bottom: 5px;
 }
 
-#addCancel, .formTitle {
+.confirmButtons, .formTitle {
    margin-left: 175px;
 }
 
@@ -97,11 +97,14 @@
    margin-top: 10px;
    margin-bottom: 10px;
    border: solid 1px #aaa;
-   margin-left: 25px;
    display: flex;
    padding: 5px;
    flex-direction: column;
-   max-width: 460px;
+}
+
+.subFormTitle {
+   font-size: 105%;
+   margin-top: 10px;
 }
 
 .formViewError {
@@ -122,10 +125,19 @@
 
 .subFormTitle {
    margin-top: 5px;
+   margin-bottom: 5px;
 }
 
 .mediaImageList {
    display: flex;
+}
+
+.mediaEmptyTitle {
+   padding: 25px;
+}
+
+.mediaImageList, .mediaEmptyTitle {
+   background: #eef1ff;
 }
 
 .prodMediaView {
@@ -136,7 +148,52 @@
 
 .longDescText {
    width: 100%;
-   height: 300px;
    border: solid 1px #aaa;
+}
+
+.shortDescField {
+   width: 60em;
+}
+
+/* For summernote - to get rid of the weird space due to it's use of the <p> wrapper */
+.note-editor .note-editable p { margin-bottom: 0 !important; margin-top: 0px}
+
+.note-editable { font-size: 13px; }
+
+.optionListView, .optionValueList {
+   margin-left: 25px;
+   width: fit-content;
+   padding: 5px;
+}
+
+#optionsView {
+}
+
+#optionSchemeView {
+   border: solid 1px #aaa;
+}
+
+.longDescView, .boxTitle {
+  margin-top: 10px;
+}
+
+.boxTitle {
+   margin-left: 25px;
+}
+
+.newValueView {
+   padding: 5px;
+   background: #dde0ee;
+   margin-top: 2px;
+}
+
+.newOptionView {
+   padding: 5px;
+   background: #eef1ff;
+   margin-top: 2px;
+}
+
+.endListButton {
+   margin-top: 10px;
 }
 

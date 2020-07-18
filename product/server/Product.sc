@@ -24,7 +24,7 @@ Product {
       int numOptions = options.options.size();
       for (int i = 0; i < numOptions; i++) {
          skuCode.append("-");
-         skuCode.append(skuOptions.get(i).skuPart);
+         skuCode.append(skuOptions.get(i).skuSymbol);
       }
       optionSku.skuCode = skuCode.toString();
       optionSku.options = skuOptions;

@@ -2,10 +2,10 @@
 @DBTypeSettings
 @Sync(onDemand=true)
 class OptionValue {
-   String name;
-   String skuPart;
+   String optionValue;
+   String skuSymbol;
 
    public String toString() {
-      return name;
+      return optionValue;
    }
 }

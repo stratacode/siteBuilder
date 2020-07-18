@@ -22,6 +22,13 @@ class ProductManagerView {
 
    List<ManagedMedia> matchingMedia;
 
+   List<ProductOptions> matchingOptionSchemes;
+
+   boolean showOptionsView = false;
+   boolean showNewOptionsView = false;
+
+   ProductOptions optionScheme = null;
+
    void resetForm() {
       searchText = "";
       productList = null;
@@ -36,6 +43,7 @@ class ProductManagerView {
       skuErrorMessage = null;
       uploadInProgress = false;
       clearMediaErrors();
+      optionErrorMessage = null;
    }
 
    void clearMediaErrors() {
@@ -53,6 +61,9 @@ class ProductManagerView {
 
    boolean autoUpdatePath = false;
 
+   String optionStatusMessage;
+   String optionErrorMessage;
+
    void updateProductName(String val) {
       if (product == null)
          return;
@@ -68,5 +79,4 @@ class ProductManagerView {
       autoUpdatePath = false;
       product.pathName = pathName;
    }
-
 }

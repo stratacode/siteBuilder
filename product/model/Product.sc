@@ -96,7 +96,7 @@ class Product extends CatalogElement {
          for (int vx = 0; vx < skuVals.size(); vx++) {
             OptionValue skuVal = skuVals.get(vx);
             OptionValue findVal = vx == overrideIx ? overrideVal : optValues.get(vx);
-            if (!findVal.name.equals(skuVal.name)) {
+            if (!findVal.optionValue.equals(skuVal.optionValue)) {
                matched = false;
                break;
             }

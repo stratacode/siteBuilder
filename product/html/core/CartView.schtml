@@ -90,7 +90,7 @@
                <div id="cartOptions" class="cartOptions">
                   <div id="cartOption" repeat=":= lineItem.product.options.options" repeatVarName="option" class="cartOption">
                      <span><%= option.optionName %>: </span>
-                     <span><%= lineItem.sku.options.get(cartOption.this.repeatIndex).name %></span>
+                     <span><%= lineItem.sku.options.get(cartOption.this.repeatIndex).optionValue %></span>
                   </div>
                </div>
             </div>

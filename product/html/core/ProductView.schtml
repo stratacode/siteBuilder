@@ -21,7 +21,7 @@
             <div id="optionViewList" class="optionView" repeat=":= optionViews" repeatVarName="optionView">
                <span class="optionName"><%= optionView.option.optionName %></span>
                <select id="optionSelect" optionDataSource=":= optionView.option.optionValues" selectedIndex=":=: optionView.selectedIndex">
-                  <option class=':= optionView.isEnabled((OptionValue) optionData) ? "" : "optionDisabled"'><%= ((OptionValue)optionData).name %></option>
+                  <option class=':= optionView.isEnabled((OptionValue) optionData) ? "" : "optionDisabled"'><%= ((OptionValue)optionData).optionValue %></option>
                </select>
             </div>
          </div>

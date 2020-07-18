@@ -21,11 +21,11 @@
          <div id="nameFieldView" class="formView">
             <label for="nameField">Product name</label><input id="nameField" type="text" value=":=: product.name" changeEvent="=: updateProductName(value)"/>
          </div>
-         <div id="nameErrorView" class="formViewError" visible=":= hasNameError"><%= product.propErrors.get("name") %></div>
+         <div><div id="nameErrorView" class="formViewError" visible=":= hasNameError"><%= product.propErrors.get("name") %></div></div>
          <div id="pathNameView" class="formView">
             <label for="pathNameField">Path name</label><input id="pathNameField" type="text" value=":= product.pathName" changeEvent="=: updatePathName(value)"/>
          </div>
-         <div id="pathNameErrorView" class="formViewError" visible=":= hasPathNameError"><%= product.propErrors.get("pathName") %></div>
+         <div><div id="pathNameErrorView" class="formViewError" visible=":= hasPathNameError"><%= product.propErrors.get("pathName") %></div></div>
          <div id="parentCategoryView" class="formView">
             <label for="parentCategoryField">Parent category path</label>
             <input id="parentCategoryField" type="text" list="= parentCategorySuggestions.getId()"
@@ -35,7 +35,7 @@
                <option repeat=":= matchingCategories" repeatVarName="matchingCat" value=":= matchingCat.pathName"/>
             </datalist>
          </div>
-         <div id="parentCategoryErrorView" class="formViewError" visible=":= hasParentCategoryError"><%= product.propErrors.get("parentCategory") %></div>
+         <div><div id="parentCategoryErrorView" class="formViewError" visible=":= hasParentCategoryError"><%= product.propErrors.get("parentCategory") %></div></div>
 
          <div id="skuView" class="formView">
             <label for="skuField">Product Sku</label>
@@ -48,7 +48,7 @@
             <div id="skuErrorView" class="formView"><%= skuErrorMessage %></div>
          </div>
 
-         <div id="addSkuView" visible=":= addSkuInProgress" class="subFormView">
+         <div><div id="addSkuView" visible=":= addSkuInProgress" class="subFormView">
             <%! boolean hasSkuCodeError := TextUtil.hasMapEntry(sku.propErrors, "skuCode"); %>
             <span class="subFormTitle">Add Sku</span>
             <div id="skuCodeView" class="formView">
@@ -84,12 +84,12 @@
                <input type="button" clickEvent="=: completeAddSku()" value="Add Sku"/>
                <input type="button" class="rightButton" clickEvent="=: addSkuInProgress = false" value="Cancel "/>
             </div>
-         </div>
+         </div></div>
 
          <div id="addMediaView" class="subFormView">
             <span class="subFormTitle">Product media</span>
             <span id="mediaTitle" visible=":= product.altMedia != null && product.altMedia.size() > 0">
-               <span id="alt">No media - add files from the library or upload new ones</span>
+               <span id="alt" class="mediaEmptyTitle">No media - add files from the library or upload new ones</span>
             </span>
             <div class="mediaImageList">
                <div id="prodMediaView" class="prodMediaView" repeat=":= product.altMedia" repeatVarName="media">
@@ -129,11 +129,74 @@
 
          <div id="longDescView">
             <label for="longDescText">Long description</label>
-            <div id="longDescText" class="longDescText" extends="HtmlTextEditor" placeholder="Enter product description..." content=":=: product.longDesc"/>
+            <div id="longDescText" class="longDescText" extends="HtmlTextEditor" placeholder="Enter product description..." content=":= product.longDesc"
+                 content="=: updateLongDesc(content)"/>
          </div>
 
-         <div id="addCancel" visible=":= addInProgress" class="formView">
-            <input type="button" value="Add product" disabled=":= product == null || product.propErrors != null" clickEvent="=: doAddProduct()"/>
+         <div id="optionsWrapperView">
+            <input type="checkbox" checked=":= product.options != null || showOptionsView" checked="=: updateHasOptions(checked)">Has options?
+
+            <div id="optionsView" visible=":= showOptionsView">
+               <div class="subFormTitle">Product options</div>
+               <div id="optionsSchemeFieldView" class="formView">
+                  <label for="optionSchemeField">Scheme name</label>
+                  <input id="optionsSchemeField" type="text" list="= optionSchemeSuggestions.getId()"
+                         value=":= product.options == null ? "" : product.options.optionSchemeName"
+                         keyUpEvent="=: updateMatchingOptionSchemes(value)"
+                         changeEvent="=: updateOptionScheme(value)"/>
+                  <datalist id="optionSchemeSuggestions">
+                     <option repeat=":= matchingOptionSchemes" repeatVarName="matchedScheme" value=":= matchedScheme.optionSchemeName"/>
+                  </datalist>
+                  <input type="button" value="Add option scheme" class="rightButton"
+                         clickEvent="=: startNewOptionScheme()" disabled=":= showNewOptionsView"/>
+               </div>
+               <div id="optionSchemeView" visible=":= showNewOptionsView">
+                  <div class="subFormTitle">New option scheme</div>
+                  <div class="formView">
+                     <label for="schemeName">Name</label>
+                     <input id="optionSchemeNameField" type="text" value=":=: optionScheme.optionSchemeName"/>
+                  </div>
+
+                  <div class="boxTitle">List of options</div>
+                  <div class="optionListView">
+                     <div id="newOptionView" class="newOptionView" repeat=":= optionScheme.options" repeatVarName="productOption">
+                        <div class="formView">
+                           <label for="optionNameField">Option #<%= newOptionView.this.repeatIndex+1 %> name</label>
+                           <input type="text" id="optionNameField" value=":=: productOption.optionName"
+                                  placeholder="e.g. Size, Color"/>
+                           <input type="image" class="clearOptionButton" src="/icons/x-square.svg"
+                                  visible=":= optionScheme.options.size() > 1"
+                                  clickEvent="=: removeOption(productOption)"/>
+                        </div>
+                        <div class="boxTitle">List of values</div>
+                        <div class="optionValueList">
+                           <div id="newValueView" class="newValueView" repeat=":= productOption.optionValues" repeatVarName="optionValue">
+                              <label for="optionValueNameField">Value #<%= newValueView.this.repeatIndex+1 %></label>
+                              <input type="text" id="optionValueNameField" value=":=: optionValue.optionValue"
+                                     placeholder="e.g. Small, Blue"/>
+                              <label for="optionValueNameField">Option sku code</label>
+                              <input type="text" id="optionValueSkuField" value=":=: optionValue.skuSymbol"
+                                     placeholder="e.g. sm, blu"/>
+                              <label for="defaultOptionCheckbox">Default</label>
+                              <input id="defaultOptionCheckbox" type="checkbox" checked=":= optionValue == productOption.defaultValue" changeEvent="=: productOption.defaultValue = optionValue"/>
+                              <input visible=":= productOption.optionValues.size() > 1" type="image" class="clearOptionButton" src="/icons/x-square.svg"
+                                     clickEvent="=: removeOptionValue(productOption, optionValue)"/>
+                           </div>
+                           <input type="button" class="endListButton" value="Add another value" clickEvent="=: addNewOptionValue(productOption)"/>
+                        </div>
+                     </div>
+                     <input type="button" class="endListButton" value="Add another option" clickEvent="=: addNewOption()"/>
+                  </div>
+                  <div class="formView confirmButtons">
+                     <input type="button" value="Save option scheme" clickEvent="=: completeNewOptionScheme()"/>
+                     <input type="button" class="rightButton" value="Cancel" clickEvent="=: cancelNewOptionScheme()"/>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <div id="addCancel" visible=":= addInProgress" class="formView confirmButtons">
+            <input type="button" value="Save product" disabled=":= product == null || product.propErrors != null" clickEvent="=: doAddProduct()"/>
             <input type="button" class="rightButton" value="Cancel" clickEvent="=: cancelAddProduct()"/>
          </div>
       </div>
@@ -166,7 +229,7 @@
         <span class="headerColumn"> <%= productElem.pathName %> </span>
         <span class="headerColumn"> <%= productElem.parentCategory == null ? "none" : productElem.parentCategory.pathName %> </span>
         <span class="headerColumn"> <%= productElem.sku == null ? "no sku" : productElem.sku.getDisplaySummary(store) %> </span>
-        <span class="headerColumn"> <%= productElem.options == null ? "n/a" : productElem.options.optionTypeName %> </span>
+        <span class="headerColumn"> <%= productElem.options == null ? "n/a" : productElem.options.optionSchemeName %> </span>
         <span class="headerColumn"> <input type="checkbox" checked=":=: productElem.visible"/> </span>
         <input type="image" class="removeProductButton" src="/icons/x-square.svg" clickEvent="=: removeProduct(productElem.id)"/>
       </div>
