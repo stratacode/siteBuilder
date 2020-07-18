@@ -1,10 +1,11 @@
 <div>
    <div id="findProductsView">
-      Find products <input type="text" value=":=: searchText" changeEvent="=: doSearch()"/>
-      <input type="image" class="findMediaButton" src="/icons/search.svg" clickEvent="=: doSearch()"/>
-      <input type="image" class="clearMediaButton" src="/icons/x-square.svg" clickEvent="=: resetForm()"/>
+      <div id="findProductsForm" visible=":= !addInProgress">
+         Find products <input type="text" value=":=: searchText" changeEvent="=: doSearch()"/>
+         <input type="image" class="findMediaButton" src="/icons/search.svg" clickEvent="=: doSearch()"/>
+         <input type="image" class="clearMediaButton" src="/icons/x-square.svg" clickEvent="=: resetForm()"/>
+      </div>
    </div>
-
 
    <div id="extraFormView">
       <div id="startAddView" >
