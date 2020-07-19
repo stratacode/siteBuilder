@@ -72,15 +72,14 @@ ProductManagerView {
       }
    }
 
-   void startAddProduct() {
+   void startAddProduct(boolean doCopy) {
       if (addInProgress)
          return;
 
       clearFormErrors();
 
       Product newProd = (Product) Product.getDBTypeDescriptor().createInstance();
-      if (product != null) {
-         newProd.options = product.options;
+      if (product != null && doCopy) {
          newProd.sku = product.sku;
          newProd.name = "copy of " + product.name;
          newProd.pathName = product.pathName;
@@ -126,9 +125,14 @@ ProductManagerView {
       skuErrorMessage = null;
 
       try {
-         sku.dbInsert(false);
-         product.sku = sku;
-         addSkuInProgress = false;
+         sku.validateSku();
+         if (sku.propErrors == null) {
+            sku.dbInsert(false);
+            product.sku = sku;
+            addSkuInProgress = false;
+         }
+         else
+            System.err.println("*** property errors for sku: " + sku.propErrors);
       }
       catch (IllegalArgumentException exc) {
          skuErrorMessage = "System error: " + exc;
@@ -409,7 +413,7 @@ ProductManagerView {
    // Options view
 
    void startNewOptionScheme() {
-      optionScheme = (ProductOptions) ProductOptions.getDBTypeDescriptor().createInstance();
+      optionScheme = (OptionScheme) OptionScheme.getDBTypeDescriptor().createInstance();
 
       optionScheme.options = new ArrayList<ProductOption>();
       addNewOption();
@@ -420,13 +424,13 @@ ProductManagerView {
    void updateMatchingOptionSchemes(String pattern) {
       if (pattern == null)
          pattern = "";
-      List<ProductOptions> allMatches = (List<ProductOptions>) ProductOptions.getDBTypeDescriptor().searchQuery(null, pattern, searchOrderBy, 0, 20);
+      List<OptionScheme> allMatches = (List<OptionScheme>) OptionScheme.getDBTypeDescriptor().searchQuery(null, pattern, searchOrderBy, 0, 20);
       TreeSet<String> found = new TreeSet<String>();
-      ArrayList<ProductOptions> res = new ArrayList<ProductOptions>();
-      for (ProductOptions match:allMatches) {
-         if (!found.contains(match.optionSchemeName)) {
+      ArrayList<OptionScheme> res = new ArrayList<OptionScheme>();
+      for (OptionScheme match:allMatches) {
+         if (!found.contains(match.schemeName)) {
             res.add(match);
-            found.add(match.optionSchemeName);
+            found.add(match.schemeName);
             if (res.size() == 10)
                break;
          }
@@ -435,14 +439,14 @@ ProductManagerView {
    }
 
    void updateOptionScheme(String optionSchemeName) {
-      List<ProductOptions> schemes = ProductOptions.findByOptionSchemeName(optionSchemeName);
+      List<OptionScheme> schemes = OptionScheme.findBySchemeName(optionSchemeName);
       if (schemes != null) {
          if (schemes.size() == 1) {
-            product.options = schemes.get(0);
+            sku.optionScheme = schemes.get(0);
             return;
          }
          else if (schemes.size() > 1) {
-            product.options = schemes.get(0);
+            sku.optionScheme = schemes.get(0);
             //skuErrorMessage = "Warning multiple skus with skuCode: " + skuCode;
             return;
          }
@@ -452,8 +456,10 @@ ProductManagerView {
    }
 
    void updateHasOptions(boolean status) {
+      if (sku == null)
+         return;
       if (!status) {
-         product.options = null;
+         sku.optionScheme = null;
       }
       showOptionsView = status;
    }
@@ -492,9 +498,9 @@ ProductManagerView {
 
    void completeNewOptionScheme() {
       optionScheme.dbInsert(false);
-      product.options = optionScheme;
+      sku.optionScheme = optionScheme;
       showNewOptionsView = false;
-      optionStatusMessage = "Option scheme: " + optionScheme.optionSchemeName + " added";
+      optionStatusMessage = "Option scheme: " + optionScheme.schemeName + " added";
    }
 
    void cancelNewOptionScheme() {

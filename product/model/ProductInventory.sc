@@ -15,4 +15,22 @@ class ProductInventory implements IPropValidator {
          addPropError("quantity", "Not an integer");
       }
    }
+
+   String toString() {
+      return quantity + " available" + (nextAvail != null ? " - next available: " + nextAvail : "");
+   }
+
+   static String getMinNextAvailDateStr() {
+      Date today = new Date();
+      return (today.getMonth() + 1) + "/" + today.getDate() + "/" + (today.getYear() + 1900);
+   }
+
+   void updateNextAvailStr(String value) {
+      try {
+         nextAvail = DynUtil.parseDate(value);
+      }
+      catch (IllegalArgumentException exc) {
+         addPropError("nextAvail", "Invalid date format");
+      }
+   }
 }

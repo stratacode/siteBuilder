@@ -20,7 +20,7 @@ class ProductView extends CatalogElementView {
    String productViewError;
 
    @Sync(initDefault=true)
-   ProductOptions options;
+   OptionScheme optionScheme;
    @Sync(initDefault=true)
    List<OptionView> optionViews;
 

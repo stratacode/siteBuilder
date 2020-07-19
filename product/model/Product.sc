@@ -64,9 +64,6 @@ class Product extends CatalogElement {
    @DBPropertySettings(columnType="jsonb")
    List<Sku> skuOptions;
 
-   /** Reference to the list of options for this product (if any).  */
-   ProductOptions options;
-
    // Could be in a promotions layer but also pretty basic so might be best left in the core model but enabled in various layer configurations.
    @DBPropertySettings(columnType="jsonb")
    List<Promotion> promotions;

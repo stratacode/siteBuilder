@@ -52,18 +52,18 @@ ProductView {
    void initOptions() {
       if (product == null)
          return;
-      options = product.options;
-      ProductOptions productOptions = options;
-      if (productOptions != null) {
+      optionScheme = product.sku == null ? null : product.sku.optionScheme;
+      OptionScheme scheme = optionScheme;
+      if (scheme != null) {
          List<Sku> skuOptions = product.skuOptions;
 
          if (skuOptions == null) {
             skuOptions = product.initSkuOptions();
          }
 
-         Sku defaultSku = Sku.findSkuForOptions(skuOptions, options.defaultOptions);
+         Sku defaultSku = Sku.findSkuForOptions(skuOptions, scheme.defaultOptions);
          if (defaultSku == null)
-            System.err.println("*** Missing sku for default option combination: " + product + ": " + options.defaultOptions);
+            System.err.println("*** Missing sku for default option combination: " + product + ": " + scheme.defaultOptions);
          if (defaultSku == null || !defaultSku.inStock) {
             if (skuOptions != null) {
                for (Sku optSku:skuOptions) {
@@ -80,9 +80,9 @@ ProductView {
             return;
          }
 
-         List<OptionValue> defaultOptions = defaultSku != null ? defaultSku.options : options.defaultOptions;
+         List<OptionValue> defaultOptions = defaultSku != null ? defaultSku.options : scheme.defaultOptions;
 
-         int numOptions = options.options.size();
+         int numOptions = scheme.options.size();
 
          currentSku = defaultSku;
 
@@ -93,7 +93,7 @@ ProductView {
 
          optionViews = new ArrayList<OptionView>();
          for (int i = 0; i < numOptions; i++) {
-            ProductOption opt = options.options.get(i);
+            ProductOption opt = scheme.options.get(i);
 
             if (PTypeUtil.testMode)
                DBUtil.addTestIdInstance(opt, "prodOpt-" + opt.optionName);
@@ -128,7 +128,7 @@ ProductView {
          }
       }
       else {
-         productOptions = null;
+         scheme = null;
          currentSku = product.sku;
          optionViews = new ArrayList<OptionView>();
       }
@@ -155,18 +155,18 @@ ProductView {
    void validateOptions() {
       if (optionsValid)
          return;
-      if (options != product.options) {
+      if (optionScheme != product.sku.optionScheme) {
          initOptions();
       }
       else {
-         int numOptions = options.options.size();
+         int numOptions = optionScheme.options.size();
          if (optionViews.size() != numOptions) {
             System.err.println("*** Mismatching number of options");
             return;
          }
 
          for (int i = 0; i < numOptions; i++) {
-            ProductOption opt = options.options.get(i);
+            ProductOption opt = optionScheme.options.get(i);
             OptionView optionView = optionViews.get(i);
             if (optionView.option != opt) {
                System.err.println("*** Mismatching option");

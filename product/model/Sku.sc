@@ -18,6 +18,9 @@ class Sku implements IPropValidator {
 
    Date lastModified;
 
+   /** Set for the main sku only if it has options */
+   OptionScheme optionScheme;
+
    /* One value for each of the options for the product */
    @Sync(initDefault=true)
    @DBPropertySettings(columnType="jsonb")
@@ -28,6 +31,7 @@ class Sku implements IPropValidator {
    @Bindable
    @DBPropertySettings(persist=false)
    Map<String,String> propErrors = null;
+
 
    boolean getInStock() {
       return available;
@@ -92,4 +96,21 @@ class Sku implements IPropValidator {
       }
    }
 
+   String validateSkuCode(String sc) {
+      if (sc == null || sc.length() == 0)
+         return "Missing sku code";
+      return null;
+   }
+
+   String validatePrice(BigDecimal price) {
+      if (price == null)
+         return "Missing price";
+      if (price.compareTo(BigDecimal.ZERO) < 0)
+         return "Price is less than 0";
+      return null;
+   }
+
+   void validateSku() {
+      propErrors = DynUtil.validateProperties(this, null);
+   }
 }

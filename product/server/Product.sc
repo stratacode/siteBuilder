@@ -3,7 +3,7 @@ Product {
       if (skuOptions != null)
          return skuOptions;
 
-      ProductOptions prodOpts = options;
+      OptionScheme prodOpts = sku.optionScheme;
       if (prodOpts == null)
          return null;
 
@@ -21,7 +21,7 @@ Product {
       Sku optionSku = mainSku.createOptionSku();
       StringBuilder skuCode = new StringBuilder();
       skuCode.append(mainSku.skuCode);
-      int numOptions = options.options.size();
+      int numOptions = mainSku.optionScheme.options.size();
       for (int i = 0; i < numOptions; i++) {
          skuCode.append("-");
          skuCode.append(skuOptions.get(i).skuSymbol);

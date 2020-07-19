@@ -24,12 +24,12 @@ class ProductManagerView {
 
    List<ManagedMedia> matchingMedia;
 
-   List<ProductOptions> matchingOptionSchemes;
+   List<OptionScheme> matchingOptionSchemes;
 
    boolean showOptionsView = false;
    boolean showNewOptionsView = false;
 
-   ProductOptions optionScheme = null;
+   OptionScheme optionScheme = null;
 
    void resetForm() {
       searchText = "";

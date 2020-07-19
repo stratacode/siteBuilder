@@ -1,11 +1,10 @@
 /** Stores a set of options for a given product, possibly shared by more than one product  */
 @DBTypeSettings
 @Sync(onDemand=true)
-// TODO: rename to OptionScheme
-class ProductOptions {
+class OptionScheme {
    /* Name of this group of product options */
    @FindBy @DBPropertySettings(indexed=true)
-   String optionSchemeName; // TODO: rename schemeName?
+   String schemeName; 
 
    @DBPropertySettings(columnType="jsonb")
    List<ProductOption> options;

@@ -8,7 +8,14 @@ class PhysicalSku extends Sku {
    }
 
    String getDisplaySummary(Storefront store) {
-      return super.getDisplaySummary(store) + (inStock ? " in stock" : (available ? " out of stock" : "discontinued")) + (inventory == null ? "" : " " + inventory);
+      String quantStr = "";
+      String nextAvailStr = "";
+      if (inventory != null) {
+         if (inventory.quantity > 0)
+            quantStr = String.valueOf(inventory.quantity) + " ";
+         nextAvailStr = "avail: " + inventory.nextAvail != null ? DynUtil.formatDate(inventory.nextAvail) : "";
+      }
+      return super.getDisplaySummary(store) + quantStr + (inStock ? " in stock" : (available ? " out of stock" : "discontinued")) + nextAvailStr;
    }
 
    void updateWeight(String str) {
