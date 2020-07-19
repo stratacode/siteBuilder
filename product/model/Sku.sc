@@ -75,20 +75,20 @@ class Sku implements IPropValidator {
    void updatePrice(String priceStr) {
       try {
          price = new BigDecimal(priceStr);
+         removePropError("price");
       }
       catch (NumberFormatException exc) {
-         propErrors = new java.util.TreeMap<String,String>();
-         propErrors.put("price", "Invalid price");
+         addPropError("price", "Invalid price");
       }
    }
 
    void updateDiscount(String priceStr) {
       try {
          discountPrice = new BigDecimal(priceStr);
+         removePropError("discountPrice");
       }
       catch (NumberFormatException exc) {
-         propErrors = new java.util.TreeMap<String,String>();
-         propErrors.put("discountPrice", "Invalid discountPrice");
+         addPropError("discountPrice", "Invalid discountPrice");
       }
    }
 

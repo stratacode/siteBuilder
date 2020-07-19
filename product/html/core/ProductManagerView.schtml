@@ -52,6 +52,15 @@
          <div><div id="addSkuView" visible=":= addSkuInProgress" class="subFormView">
             <%! boolean hasSkuCodeError := TextUtil.hasMapEntry(sku.propErrors, "skuCode"); %>
             <span class="subFormTitle">Add Sku</span>
+            <div>
+               Product type
+               <input type="radio" id="digitalRadio" name="skuType" checked=":= skuTypeId == 1"
+                      changeEvent="=: checked ? updateSkuType(1) : null" value="1"/>
+               <label for="digitalRadio">Digital</label>
+               <input type="radio" id="physicalRadio" name="skuType" checked=":= skuTypeId == 2"
+                      changeEvent="=: checked ? updateSkuType(2) : null" value="2"/>
+               <label for="physicalRadio">Physical</label>
+            </div>
             <div id="skuCodeView" class="formView">
                <label for="skuCodeField">Sku code</label>
                <input type="text" id="skuCodeField" value=":=: sku.skuCode" placeholder="unique code"/>
@@ -79,6 +88,42 @@
                <input type="text" id="discountPriceField" changeEvent="=: sku.updateDiscount(value)"/>
                <div id="discountPriceError" visible=":= hasError">
                   <%= sku.propErrors.get("discountPrice") %>
+               </div>
+            </div>
+            <div id="physicalSkuView" visible=":= psku != null">
+               <input type="checkbox" id="inventoryCheckbox" checked=":= psku.inventory != null" changeEvent="=: updateManageInventory(checked)"/>
+               <label for="inventoryCheckbox">Manage inventory?</label>
+               <div id="inventoryView" visible=":= psku.inventory != null" class="formView">
+                  <%! boolean hasError := TextUtil.hasMapEntry(psku.inventory.propErrors, "quantity"); %>
+                  <label for="quantityField">Quantity</label>
+                  <input type="number" id="quantityField" value=":= String.valueOf(psku.inventory.quantity)" changeEvent="=: psku.inventory.updateQuantityStr(value)"/>
+                  <div id="inventoryErrorView" class="formViewError" visible=":= hasError">
+                     <%= psku.inventory.propErrors.get("quantity") %>
+                  </div>
+               </div>
+               <div id="weightView" class="formView">
+                  <%! boolean hasError := TextUtil.hasMapEntry(psku.propErrors, "weight"); %>
+                  <label for="weightField">Weight</label>
+                  <input type="text" id="weightField" changeEvent="=: psku.updateWeight(value)"/>
+                  <div id="weightError" visible=":= hasError" class="formViewError">
+                     <%= sku.propErrors.get("weight") %>
+                  </div>
+               </div>
+               <div id="heightView" class="formView">
+               <%! boolean hasError := TextUtil.hasMapEntry(psku.propErrors, "height"); %>
+                  <label for="heightField">Height</label>
+                  <input type="text" id="heightField" changeEvent="=: psku.updateHeight(value)"/>
+                  <div id="heightError" visible=":= hasError" class="formViewError">
+                     <%= sku.propErrors.get("height") %>
+                  </div>
+               </div>
+               <div id="lengthView" class="formView">
+               <%! boolean hasError := TextUtil.hasMapEntry(psku.propErrors, "length"); %>
+                  <label for="lengthField">Length</label>
+                  <input type="text" id="lengthField" changeEvent="=: psku.updateLength(value)"/>
+                  <div id="lengthError" visible=":= hasError" class="formViewError">
+                     <%= sku.propErrors.get("length") %>
+                  </div>
                </div>
             </div>
             <div id="addSkuButtons" class="formView">
@@ -110,7 +155,7 @@
                   <option repeat=":= matchingMedia" repeatVarName="matchedMedia" value=":= matchedMedia.uniqueFileName"/>
                </datalist>
             </div>
-            <form id="addMediaForm" method="post" enctype="multipart/form-data">
+            <form id="addMediaForm" class="formView" method="post" enctype="multipart/form-data">
                <%!
                   submitResult =: addMediaResult(submitResult);
                   submitError =: addMediaError(submitError);
@@ -128,8 +173,8 @@
             <input id="shortDescField" type="text" value=":=: product.shortDesc" class="shortDescField"/>
          </div>
 
-         <div id="longDescView">
-            <label for="longDescText">Long description</label>
+         <div id="longDescView" class="subFormView">
+            <label for="longDescText" class="subFormTitle">Long description</label>
             <div id="longDescText" class="longDescText" extends="HtmlTextEditor" placeholder="Enter product description..." content=":= product.longDesc"
                  content="=: updateLongDesc(content)"/>
          </div>
@@ -235,5 +280,4 @@
         <input type="image" class="removeProductButton" src="/icons/x-square.svg" clickEvent="=: removeProduct(productElem.id)"/>
       </div>
    </div>
-
 </div>

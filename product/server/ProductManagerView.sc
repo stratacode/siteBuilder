@@ -107,9 +107,17 @@ ProductManagerView {
    void startAddSku() {
       if (addSkuInProgress)
          return;
-      sku = (Sku) Sku.getDBTypeDescriptor().createInstance();
-      sku.skuCode = "";
+      initTemporarySku();
       addSkuInProgress = true;
+   }
+
+   void initTemporarySku() {
+      sku = (Sku) Sku.getDBTypeDescriptor().createInstanceOfType(skuTypeId);
+      sku.skuCode = "";
+      if (sku instanceof PhysicalSku)
+         psku = (PhysicalSku) sku;
+      else
+         psku = null;
    }
 
    void completeAddSku() {
@@ -167,6 +175,30 @@ ProductManagerView {
    void cancelAddProduct() {
       addInProgress = false;
       resetForm();
+   }
+
+   void updateSkuType(int typeId) {
+      if (typeId == skuTypeId)
+         return;
+      skuTypeId = typeId;
+
+      String saveCode = null; // TODO: add other sku attributes to save across a type change
+      if (sku != null) {
+         saveCode = sku.skuCode;
+      }
+      initTemporarySku();
+      if (saveCode != null && saveCode.length() > 0)
+         sku.skuCode = saveCode;
+   }
+
+   void updateManageInventory(boolean enable) {
+      if (psku == null)
+         return;
+      if (enable) {
+         psku.inventory = new ProductInventory();
+      }
+      else
+         psku.inventory = null;
    }
 
    void updateMatchingSkus(String pattern) {
@@ -313,6 +345,8 @@ ProductManagerView {
    }
 
    void updateLongDesc(String htmlText) {
+      if (product == null)
+         return;
       String error = HTMLElement.validateClientHTML(htmlText, HTMLElement.formattingTags);
       if (error == null)
          product.longDesc = htmlText;

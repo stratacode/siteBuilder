@@ -9,7 +9,9 @@ class ProductManagerView {
 
    Product product;
 
+   int skuTypeId = 1; // 1 = Sku, 2 = PhysicalSku using dbTypeId annotation values
    Sku sku;
+   PhysicalSku psku;
 
    boolean addInProgress;
    boolean addSkuInProgress;

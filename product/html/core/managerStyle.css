@@ -79,6 +79,7 @@
    margin-right: 10px;
 }
 
+
 .formView input[type=text] {
    width: 20em;
 }
@@ -195,5 +196,9 @@
 
 .endListButton {
    margin-top: 10px;
+}
+
+#addMediaView {
+   display: flex;
 }
 
