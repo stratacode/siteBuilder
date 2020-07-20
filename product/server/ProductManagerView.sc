@@ -23,11 +23,25 @@ ProductManagerView {
 
    void doSelectProduct(Product toSel) {
       // We might have just removed this product so don't make it current again
-      if (((sc.db.DBObject)toSel.getDBObject()).isActive()) {
-         if (toSel == product)
+      if (((DBObject)toSel.getDBObject()).isActive()) {
+         if (toSel == product) {
             product = null;
-         else
+            sku = null;
+            skuEditable = false;
+            showSkuView = false;
+         }
+         else {
             product = toSel;
+            showSkuView = false;
+            sku = product.sku;
+            if (sku instanceof PhysicalSku)
+               psku = (PhysicalSku) sku;
+
+            if (sku != null && ((DBObject)sku.getDBObject()).isActive())
+               skuEditable = true;
+            else
+               skuEditable = false;
+         }
       }
    }
 
@@ -108,6 +122,7 @@ ProductManagerView {
          return;
       initTemporarySku();
       addSkuInProgress = true;
+      showSkuView = true;
    }
 
    void initTemporarySku() {
@@ -137,6 +152,13 @@ ProductManagerView {
       catch (IllegalArgumentException exc) {
          skuErrorMessage = "System error: " + exc;
       }
+   }
+
+   void cancelAddSku() {
+      addSkuInProgress = false;
+      sku = null;
+      skuErrorMessage = null;
+      showSkuView = false;
    }
 
    void doAddProduct() {
@@ -184,15 +206,33 @@ ProductManagerView {
    void updateSkuType(int typeId) {
       if (typeId == skuTypeId)
          return;
+
+      if (!sku.getDBObject().isTransient()) {
+         skuErrorMessage = "Unable to change type of sku once it's been added";
+         return;
+      }
       skuTypeId = typeId;
 
       String saveCode = null; // TODO: add other sku attributes to save across a type change
+      BigDecimal savePrice = null;
+      BigDecimal saveDiscount = null;
+      OptionScheme saveScheme = null;
       if (sku != null) {
          saveCode = sku.skuCode;
+         saveDiscount = sku.discountPrice;
+         saveScheme = sku.optionScheme;
       }
       initTemporarySku();
       if (saveCode != null && saveCode.length() > 0)
          sku.skuCode = saveCode;
+      if (savePrice != null)
+         sku.price = savePrice;
+      if (saveDiscount != null)
+         sku.discountPrice = saveDiscount;
+      if (saveScheme != null)
+         sku.optionScheme = saveScheme;
+
+      refreshSkuOptions();
    }
 
    void updateManageInventory(boolean enable) {
@@ -351,7 +391,7 @@ ProductManagerView {
    void updateLongDesc(String htmlText) {
       if (product == null)
          return;
-      String error = HTMLElement.validateClientHTML(htmlText, HTMLElement.formattingTags);
+      String error = HTMLElement.validateClientHTML(htmlText, HTMLElement.formattingTags, HTMLElement.formattingAtts);
       if (error == null)
          product.longDesc = htmlText;
       else // TODO: fix this and log it as a security warning
@@ -439,21 +479,37 @@ ProductManagerView {
    }
 
    void updateOptionScheme(String optionSchemeName) {
+      if (optionSchemeName == null || optionSchemeName.trim().length() == 0) {
+         if (sku.optionScheme != null) {
+            sku.optionScheme = null;
+            optionStatusMessage = "Cleared option scheme";
+         }
+         return;
+      }
+
       List<OptionScheme> schemes = OptionScheme.findBySchemeName(optionSchemeName);
+      OptionScheme newScheme = null;
       if (schemes != null) {
          if (schemes.size() == 1) {
-            sku.optionScheme = schemes.get(0);
-            return;
+            newScheme = schemes.get(0);
          }
          else if (schemes.size() > 1) {
-            sku.optionScheme = schemes.get(0);
+            newScheme = schemes.get(0);
             //skuErrorMessage = "Warning multiple skus with skuCode: " + skuCode;
-            return;
          }
       }
-      optionStatusMessage = null;
-      optionErrorMessage = "No option scheme with scheme name: " + optionSchemeName;
+      if (newScheme == null) {
+         optionStatusMessage = null;
+         optionErrorMessage = "No option scheme with scheme name: " + optionSchemeName;
+      }
+      else {
+         sku.optionScheme = newScheme;
+         optionStatusMessage = "Option scheme updated to: " + optionSchemeName + " for sku: " + sku.skuCode;
+
+         refreshSkuOptions();
+      }
    }
+
 
    void updateHasOptions(boolean status) {
       if (sku == null)
@@ -508,4 +564,55 @@ ProductManagerView {
       showNewOptionsView = false;
    }
 
+   void refreshSkuOptions() {
+      missingSkuOptions = new ArrayList<Sku>();
+      validSkuOptions = new ArrayList<Sku>();
+      invalidSkuOptions = new ArrayList<Sku>();
+      if (sku.optionScheme != null) {
+         sku.verifySkuOptions(validSkuOptions, missingSkuOptions, invalidSkuOptions);
+      }
+   }
+
+   void removeInvalidSku(Sku toRem) {
+      if (invalidSkuOptions.contains(toRem)) {
+         if (sku.skuOptions.remove(toRem)) {
+            // TODO: delete the sku here here if there are no orders or anything pointing to it
+            invalidSkuOptions.remove(toRem);
+         }
+      }
+   }
+
+   void addMissingSku(Sku newSkuOpt) {
+      if (missingSkuOptions.contains(newSkuOpt)) {
+         if (sku.skuOptions == null || !sku.skuOptions.contains(newSkuOpt)) {
+            if (!((DBObject)sku.getDBObject()).isTransient())
+               newSkuOpt.dbInsert(false);
+            sku.addSkuOption(newSkuOpt);
+            missingSkuOptions.remove(newSkuOpt);
+            validSkuOptions.add(newSkuOpt);
+         }
+      }
+   }
+
+   void updateSkuCode(String value) {
+      String err = Sku.validateSkuCode(value);
+      if (err != null) {
+         sku.addPropError("skuCode", err);
+         return;
+      }
+      sku.skuCode = value;
+      if (sku.skuOptions != null)
+         updateSkuOptionsForCode(sku.skuOptions, value);
+      if (missingSkuOptions != null)
+         updateSkuOptionsForCode(missingSkuOptions, value);
+   }
+
+   void updateSkuOptionsForCode(List<Sku> optionList, String mainSkuCode) {
+      if (optionList != null) {
+         for (Sku optionSku:optionList) {
+            optionSku.skuCode = sku.getSkuOptionCode(optionSku.options, mainSkuCode);
+         }
+      }
+   }
 }
+

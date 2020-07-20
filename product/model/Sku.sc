@@ -21,7 +21,14 @@ class Sku implements IPropValidator {
    /** Set for the main sku only if it has options */
    OptionScheme optionScheme;
 
-   /* One value for each of the options for the product */
+   @DBPropertySettings(columnType="jsonb")
+   List<Sku> skuParts;
+
+   /* Used for when there are options to hold the sku's for each available option combination */
+   @DBPropertySettings(columnType="jsonb")
+   List<Sku> skuOptions;
+
+   /* Set for a skuOption only */
    @Sync(initDefault=true)
    @DBPropertySettings(columnType="jsonb")
    List<OptionValue> options;
@@ -32,27 +39,40 @@ class Sku implements IPropValidator {
    @DBPropertySettings(persist=false)
    Map<String,String> propErrors = null;
 
-
    boolean getInStock() {
       return available;
    }
 
    Sku createOptionSku() {
       Sku res = new Sku();
-      res.price = price;
-      res.discountPrice = discountPrice;
-      res.barCode = barCode;
+      copyInto(res);
       return res;
    }
 
+   void copyInto(Sku other) {
+      other.price = price;
+      other.discountPrice = discountPrice;
+      other.barCode = barCode;
+   }
+
    BigDecimal getPriceToUse() {
-      return discountPrice == null ? price : discountPrice;
+      BigDecimal itemPrice = discountPrice == null ? price : discountPrice;
+      if (skuParts != null) {
+         if (skuParts != null) {
+            for (Sku skuPart:skuParts) {
+               itemPrice = skuPart.priceToUse.add(itemPrice);
+            }
+         }
+      }
+      return itemPrice;
    }
 
    static Sku findSkuForOptions(List<Sku> skuOptions, List<OptionValue> opts) {
-      for (Sku sku:skuOptions) {
-         if (sku.options.equals(opts))
-            return sku;
+      if (skuOptions != null) {
+         for (Sku sku:skuOptions) {
+            if (sku.options.equals(opts))
+               return sku;
+         }
       }
       return null;
    }
@@ -96,7 +116,7 @@ class Sku implements IPropValidator {
       }
    }
 
-   String validateSkuCode(String sc) {
+   static String validateSkuCode(String sc) {
       if (sc == null || sc.length() == 0)
          return "Missing sku code";
       return null;
@@ -112,5 +132,34 @@ class Sku implements IPropValidator {
 
    void validateSku() {
       propErrors = DynUtil.validateProperties(this, null);
+   }
+
+   Sku getSkuForOptionsWith(List<OptionValue> optValues, int overrideIx, OptionValue overrideVal) {
+      if (skuOptions == null) {
+         return null;
+      }
+      int numOptions = optValues.size();
+      List<Sku> productSkus = skuOptions;
+      for (int sx = 0; sx < productSkus.size(); sx++) {
+         Sku sku = productSkus.get(sx);
+
+         boolean matched = true;
+         List<OptionValue> skuVals = sku.options;
+         for (int vx = 0; vx < skuVals.size(); vx++) {
+            OptionValue skuVal = skuVals.get(vx);
+            OptionValue findVal = vx == overrideIx ? overrideVal : optValues.get(vx);
+            if (!findVal.optionValue.equals(skuVal.optionValue)) {
+               matched = false;
+               break;
+            }
+         }
+         if (matched)
+            return sku;
+      }
+      return null;
+   }
+
+   ProductInventory getInventory() {
+      return null;
    }
 }

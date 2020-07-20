@@ -27,17 +27,17 @@
    background-color: #ddddff;
 }
 
-.smallMediaColumn, .smallHeaderColumn {
+.smallMediaColumn, .smallHeaderColumn, .smallSkuColumn {
    padding: 2px;
    width: 50px;
 }
 
-.mediaColumn, .headerColumn, .productColumn {
+.mediaColumn, .headerColumn, .productColumn, .skuColumn {
    padding: 2px;
    width: 100px;
 }
 
-.wideMediaColumn, .wideHeaderColumn, .wideProductColumn {
+.wideMediaColumn, .wideHeaderColumn, .wideProductColumn, .wideSkuColumn {
    padding: 2px;
    width: 200px;
 }
@@ -90,7 +90,7 @@
    margin-bottom: 5px;
 }
 
-.confirmButtons, .formTitle, .checkFormView {
+.confirmButtons, .formTitle, .checkFormView, .skuOptionsSummary {
    margin-left: 175px;
 }
 
@@ -105,7 +105,8 @@
 
 .subFormTitle {
    font-size: 105%;
-   margin-top: 10px;
+   margin-top: 5px;
+   margin-bottom: 5px;
 }
 
 .formViewError {
@@ -120,13 +121,8 @@
    margin-left: 10px;
 }
 
-#addSkuButtons, .subFormTitle {
+#addSkuButtons, .subFormTitle, .skuListTitle {
    margin-left: 175px;
-}
-
-.subFormTitle {
-   margin-top: 5px;
-   margin-bottom: 5px;
 }
 
 .mediaImageList {
@@ -202,3 +198,57 @@
    display: flex;
 }
 
+.skuListView {
+   display: flex;
+   flex-direction: column;
+}
+
+.skuRowView, .skuHeaderRow {
+   display: flex;
+   flex-direction: row;
+   margin-top: 2px;
+   margin-bottom: 2px;
+}
+
+.skuHeaderRow {
+   background: #dde0ee;
+}
+
+.optionValueCell0, .optionValueCell1, optionValueCell2 {
+   padding: 3px;
+   margin: 2px;
+}
+
+.optionValueCell0 {
+   background: #f1eeff;
+}
+
+.optionValueCell1 {
+   background: #eef1ff;
+}
+
+.optionValueCell2 {
+   background: #ffeef1;
+}
+
+#skuOptionsView {
+   margin-top: 5px;
+   padding: 5px;
+   margin-bottom: 5px;
+   border: solid 1px #aaa;
+   width: fit-content;
+}
+
+.skuListViewBox {
+   margin-top: 5px;
+   margin-bottom: 5px;
+}
+
+.skuListTitle {
+   font-size: 105%;
+   margin-top: 10px;
+}
+
+.quantityCell {
+   width: 5em;
+}

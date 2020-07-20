@@ -38,7 +38,7 @@ OrderView {
       }
    }
 
-   void addLineItem(Product product, Sku sku, List<Sku> skuParts, int quantity) {
+   void addLineItem(Product product, Sku sku, int quantity) {
       if (quantity <= 0) {
          orderError = "Not adding 0 quantity sku to order";
          return;
@@ -54,7 +54,7 @@ OrderView {
       }
       if (order.lineItems == null)
          order.lineItems = new ArrayList<LineItem>();
-      LineItem newLineItem = LineItem.create(order, product, sku, skuParts, quantity);
+      LineItem newLineItem = LineItem.create(order, product, sku, quantity);
       refreshLineItems();
    }
 

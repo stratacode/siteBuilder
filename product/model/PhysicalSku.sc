@@ -3,6 +3,22 @@ class PhysicalSku extends Sku {
    ProductInventory inventory;
    BigDecimal weight, height, width, length;
 
+   PhysicalSku createOptionSku() {
+      PhysicalSku res = new PhysicalSku();
+      copyInto(res);
+      return res;
+   }
+
+   void copyInto(PhysicalSku other) {
+      super.copyInto(other);
+      other.weight = weight;
+      other.height = height;
+      other.length = length;
+      other.inventory = new ProductInventory();
+      other.inventory.quantity = inventory.quantity;
+      other.inventory.nextAvail = inventory.nextAvail;
+   }
+
    boolean getInStock() {
       return available && (inventory == null || inventory.quantity > 0);
    }

@@ -96,26 +96,27 @@
                <option repeat=":= matchingSkus" repeatVarName="matchingSku" value=":= matchingSku.skuCode"/>
             </datalist>
             <input class="rightButton" type="button" value="Add Sku" clickEvent="=: startAddSku()"/>
+            <input visible=":= skuEditable" class="rightButton" type="button" value="Edit Sku" clickEvent="=: showSkuView = true"/>
             <div id="skuErrorView" class="formView"><%= skuErrorMessage %></div>
          </div>
 
-         <div><div id="addSkuView" visible=":= addSkuInProgress" class="subFormView">
+         <div><div id="addSkuView" visible=":= showSkuView" class="subFormView">
             <%! boolean hasSkuCodeError := TextUtil.hasMapEntry(sku.propErrors, "skuCode"); %>
-            <span class="subFormTitle">Add Sku</span>
+            <span class="subFormTitle"><%= addSkuInProgress ? "Add Sku" : "Update sku" %></span>
             <div class="formView">
                <label>Product type</label>
                <input type="radio" id="digitalRadio" name="skuType" checked=":= skuTypeId == 1"
-                      changeEvent="=: checked ? updateSkuType(1) : null" value="1"/>
+                      changeEvent="=: checked ? updateSkuType(1) : null" value="1" disabled=":= !addSkuInProgress"/>
                <div>
                   <label for="digitalRadio">Digital</label>
                   <input type="radio" id="physicalRadio" name="skuType" checked=":= skuTypeId == 2"
-                         changeEvent="=: checked ? updateSkuType(2) : null" value="2"/>
+                         changeEvent="=: checked ? updateSkuType(2) : null" value="2" disabled=":= !addSkuInProgress"/>
                   <label for="physicalRadio">Physical</label>
                </div>
             </div>
             <div id="skuCodeView" class="formView">
                <label for="skuCodeField">Sku code</label>
-               <input type="text" id="skuCodeField" value=":=: sku.skuCode" placeholder="unique code"/>
+               <input type="text" id="skuCodeField" value=":= sku.skuCode" changeEvent="=: updateSkuCode(value)" placeholder="code for tracking orders and inventory"/>
             </div>
             <div id="skuCodeError" class="formViewError" visible=":= hasSkuCodeError"> <%= sku.propErrors.get("skuCode") %> </div>
             <div id="barCodeView" class="formView">
@@ -179,9 +180,12 @@
                      <%= psku.inventory.propErrors.get("quantity") %>
                   </div>
                </div>
-               <div id="nextAvailView" class="formView">
+               <div id="nextAvailView" class="formView" visible=":= psku.inventory != null">
                   <label for="nextAvailField">Next available</label>
-                  <input type="date" id="nextAvailField" min="= ProductInventory.minNextAvailDateStr" changeEvent="=: psku.inventory.updateNextAvailStr(value)"/>
+                  <input disabled=":= psku.inventory.quantity > 0"
+                         type="date" id="nextAvailField"
+                         min="= ProductInventory.minNextAvailDateStr"
+                         changeEvent="=: psku.inventory.updateNextAvailStr(value)"/>
                </div>
             </div>
             <div id="optionsWrapperView">
@@ -192,7 +196,7 @@
                <div id="optionsView" visible=":= showOptionsView">
                   <div class="subFormTitle">Sku options</div>
                   <div id="optionsSchemeFieldView" class="formView">
-                     <label for="optionSchemeField">Scheme name</label>
+                     <label for="optionSchemeField">Option scheme name</label>
                      <input id="optionsSchemeField" type="text" list="= optionSchemeSuggestions.getId()"
                             value=":= sku.optionScheme == null ? "" : sku.optionScheme.schemeName"
                             keyUpEvent="=: updateMatchingOptionSchemes(value)"
@@ -245,11 +249,77 @@
                         <input type="button" class="rightButton" value="Cancel" clickEvent="=: cancelNewOptionScheme()"/>
                      </div>
                   </div>
+                  <div id="skuOptionsView" visible=":= showSkuOptions">
+                     <div id="invalidView" visible=":= invalidSkuOptions.size() > 0" class="skuListViewBox">
+                        <div class="skuListTitle">Invalid options</div>
+                        <div id="invalidList" class="skuListView">
+                           <div id="invalidHeaderList" class="skuHeaderRow">
+                              <span class="headerColumn">sku code</span>
+                              <span class="wideHeaderColumn">options</span>
+                           </div>
+                           <div id="invalidOptionView" repeat=":= invalidSkuOptions" repeatVarName="invalidSku" class="skuRowView">
+                              <span class="skuColumn"><%= invalidSku.skuCode %></span>
+                              <span class="wideSkuColumn"><span class=':= "optionValueCell" + repeatIndex' repeat=":= invalidSku.options" repeatVarName="optVal"><%= optVal.optionValue %></span></span>
+                              <input type="image" class="removeSkuButton" src="/icons/x-square.svg" clickEvent="=: removeInvalidSku(invalidSku)"/>
+                           </div>
+                        </div>
+                     </div>
+                     <div id="missingView" visible=":= missingSkuOptions.size() > 0" class="skuListViewBox">
+                       <div class="skuListTitle">Missing sku options</div>
+                        <div id="missingList" class="skuListView">
+                           <div id="missingHeaderList" class="skuHeaderRow">
+                              <span class="headerColumn">sku code</span>
+                              <span class="wideHeaderColumn">options</span>
+                           </div>
+                           <div id="missingOptionView" repeat=":= missingSkuOptions" repeatVarName="missingSku" class="skuRowView">
+                              <span class="skuColumn"><%= missingSku.skuCode %></span>
+                              <span class="wideSkuColumn"><span class=':= "optionValueCell" + repeatIndex' repeat=":= missingSku.options" repeatVarName="optVal"><%= optVal.optionValue %></span></span>
+                              <input class="rightButton" type="button" value="Add" clickEvent="=: addMissingSku(missingSku)"/>
+                        </div>
+                        </div>
+                     </div>
+                     <div id="validView" visible=":= validSkuOptions.size() > 0" class="skuListViewBox">
+                        <div class="skuListTitle">Sku options</div>
+                        <div id="validList" class="skuListView">
+                           <div id="validHeaderList" class="skuHeaderRow">
+                              <span class="headerColumn">sku code</span>
+                              <span class="wideHeaderColumn">options</span>
+                              <span visible=":= psku.inventory != null" bodyOnly="true">
+                                 <span class="headerColumn">inventory</span>
+                                 <span class="headerColumn">next available</span>
+                              </span>
+                           </div>
+                           <div id="validOptionView" repeat=":= validSkuOptions" repeatVarName="validSku" class="skuRowView">
+                              <span class="skuColumn"><%= validSku.skuCode %></span>
+                              <span class="wideSkuColumn"><span class=':= "optionValueCell" + repeatIndex' repeat=":= validSku.options" repeatVarName="optVal"><%= optVal.optionValue %></span></span>
+                              <span visible=":= psku.inventory != null" bodyOnly="true">
+                                 <span class="skuColumn">
+                                    <input type="number"
+                                           min="0" class="quantityCell"
+                                           value=":= String.valueOf(validSku.inventory.quantity)"
+                                           changeEvent="=: validSku.inventory.updateQuantityStr(value)"/>
+                                 </span>
+                                 <input disabled=":= validSku.inventory.quantity != 0" type="date" id="nextAvailField"
+                                        min="= ProductInventory.minNextAvailDateStr"
+                                        changeEvent="=: validSku.inventory.updateNextAvailStr(value)"/>
+                              </span>
+                           </div>
+                        </div>
+                     </div>
+                     <div id="alt">
+                        <div visible=":= sku.optionScheme != null" class="skuOptionsSummary">
+                           <input type="button" value="Show sku options" clickEvent="=: showSkuOptions = true"/>
+                           <%= invalidSkuOptions.size() %> invalid,
+                           <%= missingSkuOptions.size() %> missing,
+                           <%= validSkuOptions.size() %> valid
+                        </div>
+                     </div>
+                  </div>
                </div>
             </div>
             <div id="addSkuButtons" class="formView">
                <input type="button" clickEvent="=: completeAddSku()" value="Add Sku"/>
-               <input type="button" class="rightButton" clickEvent="=: addSkuInProgress = false" value="Cancel "/>
+               <input type="button" class="rightButton" clickEvent="=: cancelAddSku()" value="Cancel "/>
             </div>
          </div></div>
 

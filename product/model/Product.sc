@@ -56,14 +56,6 @@ class Product extends CatalogElement {
    /** The main SKU for the product */
    Sku sku;
 
-   /* List of parts for this product */
-   @DBPropertySettings(columnType="jsonb")
-   List<Sku> skuParts;
-
-   /* Used for when there are options to hold the sku's for each available option combination */
-   @DBPropertySettings(columnType="jsonb")
-   List<Sku> skuOptions;
-
    // Could be in a promotions layer but also pretty basic so might be best left in the core model but enabled in various layer configurations.
    @DBPropertySettings(columnType="jsonb")
    List<Promotion> promotions;
@@ -78,31 +70,6 @@ class Product extends CatalogElement {
    @Sync(onDemand=true)
    @DBPropertySettings(columnType="jsonb")
    List<Product> productUpSells;
-
-   Sku getSkuForOptionsWith(List<OptionValue> optValues, int overrideIx, OptionValue overrideVal) {
-      if (skuOptions == null) {
-         return null;
-      }
-      int numOptions = optValues.size();
-      List<Sku> productSkus = skuOptions;
-      for (int sx = 0; sx < productSkus.size(); sx++) {
-         Sku sku = productSkus.get(sx);
-
-         boolean matched = true;
-         List<OptionValue> skuVals = sku.options;
-         for (int vx = 0; vx < skuVals.size(); vx++) {
-            OptionValue skuVal = skuVals.get(vx);
-            OptionValue findVal = vx == overrideIx ? overrideVal : optValues.get(vx);
-            if (!findVal.optionValue.equals(skuVal.optionValue)) {
-               matched = false;
-               break;
-            }
-         }
-         if (matched)
-            return sku;
-      }
-      return null;
-   }
 
    @sc.obj.EditorCreate(constructorParamNames="parentCategory, name, pathName")
    static Product createProduct(Category parentCategory, String name, String pathName) {

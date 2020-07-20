@@ -15,6 +15,9 @@ class ProductManagerView {
 
    boolean addInProgress;
    boolean addSkuInProgress;
+   boolean showSkuView;
+   boolean skuEditable;
+   boolean showSkuOptions;
 
    Category defaultCategory;
 
@@ -30,6 +33,10 @@ class ProductManagerView {
    boolean showNewOptionsView = false;
 
    OptionScheme optionScheme = null;
+
+   List<Sku> missingSkuOptions;
+   List<Sku> validSkuOptions;
+   List<Sku> invalidSkuOptions;
 
    void resetForm() {
       searchText = "";
@@ -81,4 +88,5 @@ class ProductManagerView {
       autoUpdatePath = false;
       product.pathName = pathName;
    }
+
 }

@@ -55,10 +55,10 @@ ProductView {
       optionScheme = product.sku == null ? null : product.sku.optionScheme;
       OptionScheme scheme = optionScheme;
       if (scheme != null) {
-         List<Sku> skuOptions = product.skuOptions;
+         List<Sku> skuOptions = product.sku.skuOptions;
 
          if (skuOptions == null) {
-            skuOptions = product.initSkuOptions();
+            skuOptions = product.sku.initSkuOptions();
          }
 
          Sku defaultSku = Sku.findSkuForOptions(skuOptions, scheme.defaultOptions);
@@ -112,7 +112,7 @@ ProductView {
                   DBUtil.addTestIdInstance(optValue, "optVal-" + optValue.optionValue);
 
                if (skuOptions != null) {
-                  Sku optionSku = product.getSkuForOptionsWith(defaultOptions, i, optValue);
+                  Sku optionSku = product.sku.getSkuForOptionsWith(defaultOptions, i, optValue);
                   enabled = optionSku != null && optionSku.inStock;
                }
                else {
@@ -177,8 +177,8 @@ ProductView {
             for (int j = 0; j < optValues.size(); j++) {
                OptionValue optValue = optValues.get(j);
                boolean enabled = true;;
-               if (product.skuOptions != null) {
-                  Sku optionSku = product.getSkuForOptionsWith(selectedOptions, i, optValue);
+               if (product.sku.skuOptions != null) {
+                  Sku optionSku = product.sku.getSkuForOptionsWith(selectedOptions, i, optValue);
                   enabled = optionSku != null && optionSku.inStock;
                }
                optionView.enabled.set(j, enabled);
@@ -186,8 +186,8 @@ ProductView {
          }
 
          List<OptionValue> selectedOptions = getSelectedOptions();
-         if (product.skuOptions != null)
-            currentSku = product.getSkuForOptionsWith(selectedOptions, -1, null);
+         if (product.sku.skuOptions != null)
+            currentSku = product.sku.getSkuForOptionsWith(selectedOptions, -1, null);
          else
             System.err.println("*** No sku found for selected options in product: " + product);
       }
@@ -196,7 +196,7 @@ ProductView {
 
    void addToCart() {
       OrderView orderView = currentOrderView;
-      orderView.addLineItem(product, currentSku, product.skuParts, currentQuantity);
+      orderView.addLineItem(product, currentSku, currentQuantity);
    }
 
    void startProductSync() {

@@ -22,7 +22,13 @@ class ProductInventory implements IPropValidator {
 
    static String getMinNextAvailDateStr() {
       Date today = new Date();
-      return (today.getMonth() + 1) + "/" + today.getDate() + "/" + (today.getYear() + 1900);
+      return (today.getYear() + 1900) + "-" + twoDigit(today.getMonth() + 1) + "-" + twoDigit(today.getDate());
+   }
+
+   private static String twoDigit(int val) {
+      if (val < 10)
+         return "0" + val;
+      return String.valueOf(val);
    }
 
    void updateNextAvailStr(String value) {
