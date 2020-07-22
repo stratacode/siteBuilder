@@ -37,9 +37,14 @@ abstract class CatalogElementView {
       List<ManagedMedia> newAltMedia;
       if (elem.altMedia != null) {
          newAltMedia = new ArrayList<ManagedMedia>();
-         if (!elem.altMedia.contains(mainMedia))
+         if (!elem.altMedia.contains(mainMedia) && mediaIsAvailable(mainMedia))
             newAltMedia.add(mainMedia);
-         newAltMedia.addAll(elem.altMedia);
+         int numMedia = elem.altMedia.size();
+         for (int i = 0; i < numMedia; i++) {
+            ManagedMedia next = elem.altMedia.get(i);
+            if (mediaIsAvailable(next))
+               newAltMedia.add(next);
+         }
       }
       else {
          newAltMedia = new ArrayList<ManagedMedia>();
@@ -51,6 +56,10 @@ abstract class CatalogElementView {
       ManagedMedia newCurrentMedia = altMediaIndex < altMedia.size() ? altMedia.get(altMediaIndex) : catalogElement.mainMedia;
       if (newCurrentMedia != currentMedia)
          currentMedia = newCurrentMedia;
+   }
+
+   boolean mediaIsAvailable(ManagedMedia media) {
+      return media.available;
    }
 
 }

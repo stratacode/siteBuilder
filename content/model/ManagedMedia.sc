@@ -34,6 +34,9 @@ class ManagedMedia extends ManagedResource {
    long fileSize;
    byte[] fileHash;
 
+   // Used to store metadata like optionName=optionValue for media specific to a set of options
+   String filterPattern;
+
    @DBPropertySettings(persist=false)
    int mediaChangedCt = 0;
 
@@ -46,5 +49,3 @@ class ManagedMedia extends ManagedResource {
 
    String uniqueFileName := fileName + (revision == null ? "" : MediaManager.RevisionSep + revision);
 }
-
-

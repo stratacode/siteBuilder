@@ -94,6 +94,10 @@
    margin-left: 175px;
 }
 
+.skuOptionsSummary {
+   margin-top: 5px;
+}
+
 .subFormView {
    margin-top: 10px;
    margin-bottom: 10px;
@@ -109,7 +113,8 @@
    margin-bottom: 5px;
 }
 
-.formViewError {
+.formViewError, .formViewStatus {
+   margin-left: 175px;
 }
 
 #detailFormView {
@@ -121,12 +126,13 @@
    margin-left: 10px;
 }
 
-#addSkuButtons, .subFormTitle, .skuListTitle {
+#addSkuButtons, .subFormTitle, .skuListTitle, .formMessage {
    margin-left: 175px;
 }
 
 .mediaImageList {
    display: flex;
+   align-items: baseline;
 }
 
 .mediaEmptyTitle {
@@ -201,6 +207,8 @@
 .skuListView {
    display: flex;
    flex-direction: column;
+   background: #eef1ff;
+   padding: 10px;
 }
 
 .skuRowView, .skuHeaderRow {
@@ -212,23 +220,24 @@
 
 .skuHeaderRow {
    background: #dde0ee;
+   padding: 5px;
 }
 
-.optionValueCell0, .optionValueCell1, optionValueCell2 {
+.optionValueCell0, .optionValueCell1, .optionValueCell2 {
    padding: 3px;
    margin: 2px;
 }
 
 .optionValueCell0 {
-   background: #f1eeff;
+   background: #f1b9e7;
 }
 
 .optionValueCell1 {
-   background: #eef1ff;
+   background: #aae2d1;
 }
 
 .optionValueCell2 {
-   background: #ffeef1;
+   background: #e2b185;
 }
 
 #skuOptionsView {
@@ -251,4 +260,20 @@
 
 .quantityCell {
    width: 5em;
+}
+
+.mediaInfoText {
+   max-width: 100px;
+   font-size: 75%;
+}
+
+.fieldInput {}
+
+.fieldInputError, input:invalid {
+   border-color: #c00;
+}
+
+.formViewError {
+   color: #c00;
+   font-size: 85%;
 }

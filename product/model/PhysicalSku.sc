@@ -14,9 +14,11 @@ class PhysicalSku extends Sku {
       other.weight = weight;
       other.height = height;
       other.length = length;
-      other.inventory = new ProductInventory();
-      other.inventory.quantity = inventory.quantity;
-      other.inventory.nextAvail = inventory.nextAvail;
+      if (inventory != null) {
+         other.inventory = new ProductInventory();
+         other.inventory.quantity = inventory.quantity;
+         other.inventory.nextAvail = inventory.nextAvail;
+      }
    }
 
    boolean getInStock() {
@@ -29,7 +31,8 @@ class PhysicalSku extends Sku {
       if (inventory != null) {
          if (inventory.quantity > 0)
             quantStr = String.valueOf(inventory.quantity) + " ";
-         nextAvailStr = "avail: " + inventory.nextAvail != null ? DynUtil.formatDate(inventory.nextAvail) : "";
+         if (inventory.nextAvail != null)
+            nextAvailStr = " next avail: " + DynUtil.formatDate(inventory.nextAvail);
       }
       return super.getDisplaySummary(store) + quantStr + (inStock ? " in stock" : (available ? " out of stock" : "discontinued")) + nextAvailStr;
    }

@@ -29,6 +29,10 @@ ProductManagerView {
             sku = null;
             skuEditable = false;
             showSkuView = false;
+            optionScheme = null;
+            optionMediaFilter = null;
+            editableOptionScheme = false;
+            productSaved = false;
          }
          else {
             product = toSel;
@@ -37,12 +41,68 @@ ProductManagerView {
             if (sku instanceof PhysicalSku)
                psku = (PhysicalSku) sku;
 
-            if (sku != null && ((DBObject)sku.getDBObject()).isActive())
+            if (sku != null && ((DBObject)sku.getDBObject()).isActive()) {
                skuEditable = true;
+               optionScheme = sku.optionScheme;
+               refreshOptionScheme();
+               if (optionScheme != null)
+                  editableOptionScheme = true;
+            }
             else
                skuEditable = false;
+            productSaved = true;
          }
       }
+   }
+
+   void refreshOptionScheme() {
+      refreshSkuOptions();
+      refreshMediaFilter();
+   }
+
+   void updateMediaFilter(int ix, String val) {
+      if (optionMediaFilter == null && optionScheme != null)
+         refreshMediaFilter();
+      optionMediaFilter.set(ix, val);
+   }
+
+   void refreshMediaFilter() {
+      if (optionScheme == null)
+         optionMediaFilter = null;
+      else {
+         List<String> newFilter = optionScheme.defaultOptionFilter;
+         if (!newFilter.equals(optionMediaFilter)) {
+            optionMediaFilter = newFilter;
+         }
+         if (optionScheme.options != null) {
+            for (ProductOption opt: optionScheme.options) {
+               Bind.sendChangedEvent(opt, "optionFilterList");
+            }
+         }
+      }
+   }
+
+   String getMediaFilterPattern() {
+      if (optionScheme == null)
+         return null;
+      int numOpts = optionScheme.options.size();
+      StringBuilder res = new StringBuilder();
+      boolean any = false;
+      for (int i = 0; i < numOpts; i++) {
+         ProductOption opt = optionScheme.options.get(i);
+         String filter = optionMediaFilter.get(i);
+         if (filter.equals(opt.anyString))
+            continue;
+         if (any)
+            res.append(",");
+         res.append(opt.optionName);
+         res.append("=");
+         res.append(optionMediaFilter.get(i));
+         any = true;
+      }
+      if (!any)
+         return null;
+      return res.toString();
    }
 
    void removeProduct(long productId) {
@@ -91,6 +151,7 @@ ProductManagerView {
          return;
 
       clearFormErrors();
+      productSaved = false;
 
       Product newProd = (Product) Product.getDBTypeDescriptor().createInstance();
       if (product != null && doCopy) {
@@ -115,6 +176,8 @@ ProductManagerView {
       autoUpdatePath = product.pathName == null || product.pathName.length() == 0;
 
       addInProgress = true;
+      skuEditable = product.sku != null;
+      skuAddErrorMessage = skuFindErrorMessage = skuStatusMessage = null;
    }
 
    void startAddSku() {
@@ -137,7 +200,6 @@ ProductManagerView {
    void completeAddSku() {
       if (!addSkuInProgress)
          return;
-      skuErrorMessage = null;
 
       try {
          sku.validateSku();
@@ -145,56 +207,76 @@ ProductManagerView {
             sku.dbInsert(false);
             product.sku = sku;
             addSkuInProgress = false;
+            showSkuView = false;
+            skuStatusMessage = "Sku added";
+            skuAddErrorMessage = skuFindErrorMessage = null;
+            skuEditable = true;
          }
-         else
-            System.err.println("*** property errors for sku: " + sku.propErrors);
+         else {
+            skuAddErrorMessage = sku.formatErrors();
+            skuStatusMessage = null;
+            skuFindErrorMessage = null;
+         }
       }
       catch (IllegalArgumentException exc) {
-         skuErrorMessage = "System error: " + exc;
+         skuStatusMessage = null;
+         skuAddErrorMessage = "System error: " + exc;
+         skuFindErrorMessage = null;
       }
    }
 
    void cancelAddSku() {
       addSkuInProgress = false;
       sku = null;
-      skuErrorMessage = null;
+      skuAddErrorMessage = null;
+      skuFindErrorMessage = null;
+      skuStatusMessage = "Add sku cancelled";
+      showSkuView = false;
+   }
+
+   void doneEditingSku() {
+      addSkuInProgress = false;
+      skuAddErrorMessage = null;
+      skuFindErrorMessage = null;
+      skuStatusMessage = null;
       showSkuView = false;
    }
 
    void doAddProduct() {
       clearFormErrors();
-      if (product.propErrors != null && product.propErrors.size() > 0)
-         errorMessage = "Errors in new product";
-      else {
-         errorMessage = null;
-         try {
-            if (addInProgress) {
-               product.dbInsert(false);
+      if (!product.validateProperties()) {
+         errorMessage = product.formatErrors();
+         productSaved = true;
+         return;
+      }
 
-               String newName = product.pathName;
+      try {
+         if (addInProgress) {
+            product.dbInsert(false);
 
-               // This after we have inserted it to prevent the category from trying to insert the product due to the
-               // bi-directional parentCategory/products relationships
-               if (defaultCategory != null)
-                  product.parentCategory = defaultCategory;
+            String newName = product.pathName;
 
-               ArrayList<Product> newList = new ArrayList<Product>();
-               newList.add(product);
-               productList = newList;
-               addInProgress = false;
-               product = null;
-               statusMessage = "Product " + newName + " created";
-            }
-            /*
-            else {
-               product.dbUpdate();
-               statusMessage = "Changes saved";
-            }
-            */
+            // This after we have inserted it to prevent the category from trying to insert the product due to the
+            // bi-directional parentCategory/products relationships
+            if (defaultCategory != null)
+               product.parentCategory = defaultCategory;
+
+            ArrayList<Product> newList = new ArrayList<Product>();
+            newList.add(product);
+            productList = newList;
+            addInProgress = false;
+            product = null;
+            statusMessage = "Product " + newName + " created";
          }
-         catch (IllegalArgumentException exc) {
-            errorMessage = "New product failed due to system error: " + exc;
+         /*
+         else {
+            product.dbUpdate();
+            statusMessage = "Changes saved";
          }
+         */
+      }
+      catch (IllegalArgumentException exc) {
+         errorMessage = "New product failed due to system error: " + exc;
       }
    }
 
@@ -208,7 +290,7 @@ ProductManagerView {
          return;
 
       if (!sku.getDBObject().isTransient()) {
-         skuErrorMessage = "Unable to change type of sku once it's been added";
+         skuAddErrorMessage = "Unable to change type of sku once it's been added";
          return;
       }
       skuTypeId = typeId;
@@ -263,7 +345,8 @@ ProductManagerView {
    }
 
    void updateProductSku(String skuCode) {
-      skuErrorMessage = null;
+      skuFindErrorMessage = null;
+      skuAddErrorMessage = null;
 
       if (skuCode == null || skuCode.trim().length() == 0) {
          product.sku = null;
@@ -278,11 +361,10 @@ ProductManagerView {
          }
          else if (skus.size() > 1) {
             product.sku = skus.get(0);
-            //skuErrorMessage = "Warning multiple skus with skuCode: " + skuCode;
             return;
          }
       }
-      skuErrorMessage = "No sku with skuCode: " + skuCode;
+      skuFindErrorMessage = "No sku with skuCode: " + skuCode;
    }
 
    void updateMatchingCategories(String pattern) {
@@ -347,6 +429,9 @@ ProductManagerView {
       List<ManagedMedia> mediaList = ManagedMedia.findByFileName(fileName);
       mediaStatusMessage = null;
       mediaErrorMessage = null;
+
+      String newFilter = getMediaFilterPattern();
+
       if (mediaList != null) {
          for (ManagedMedia media:mediaList) {
             if (media.uniqueFileName.equals(uniqueFileName)) {
@@ -357,10 +442,31 @@ ProductManagerView {
                   setList = true;
                }
                else if (prodMedia.contains(media)) {
+                  if (newFilter != null) {
+                     String oldFilter = media.filterPattern;
+                     if (oldFilter != null && !oldFilter.equals(newFilter)) {
+                        mediaStatusMessage = "Changed filter pattern from: " + oldFilter + " to: " + newFilter;
+                        media.filterPattern = newFilter;
+                        return;
+                     }
+                  }
                   mediaErrorMessage = "Media file: " + media.uniqueFileName + " already in product";
                   return;
                }
-               mediaStatusMessage = "Added file: " + media.uniqueFileName + " to media";
+
+               String extraStatus = "";
+               String oldFilter = media.filterPattern;
+               if (newFilter != null) {
+                  if (oldFilter != null && !oldFilter.equals(newFilter)) {
+                     extraStatus = " and replaced old options: " + oldFilter + " to: " + newFilter;
+                  }
+               }
+               else if (media.filterPattern != null) {
+                  extraStatus = " and cleared old options: " + oldFilter;
+               }
+               media.filterPattern = newFilter;
+
+               mediaStatusMessage = "Added file: " + media.uniqueFileName + " to media" + extraStatus;
                prodMedia.add(media);
                if (setList) {
                   product.altMedia = prodMedia;
@@ -417,6 +523,15 @@ ProductManagerView {
             }
          }
          if (newMedia != null) {
+            String newFilter = getMediaFilterPattern();
+            if (newFilter != null) {
+               String oldFilter = newMedia.filterPattern;
+               if (oldFilter != null && !oldFilter.equals(newFilter)) {
+                  System.out.println("Changing filter pattern from: " + oldFilter + " to: " + newFilter);
+               }
+               newMedia.filterPattern = newFilter;
+            }
+
             List<ManagedMedia> altMedia = product.altMedia;
             boolean setList = false;
             if (altMedia == null) {
@@ -434,7 +549,8 @@ ProductManagerView {
                product.altMedia = altMedia;
             if (product.mainMedia == null)
                product.mainMedia = newMedia;
-            mediaStatusMessage = "Added media file: " + newMedia.uniqueFileName + " " + newMedia.fileType + " " + newMedia.width + "x" + newMedia.height;
+
+            mediaStatusMessage = "Added media file: " + newMedia.uniqueFileName + " " + newMedia.fileType + " " + newMedia.width + "x" + newMedia.height + (newFilter == null ? "" : " for options: " + newFilter);
          }
          else
             mediaErrorMessage = "No media: " + nameWithRev;
@@ -449,16 +565,30 @@ ProductManagerView {
       mediaErrorMessage = err;
    }
 
-
    // Options view
 
    void startNewOptionScheme() {
       optionScheme = (OptionScheme) OptionScheme.getDBTypeDescriptor().createInstance();
+      optionScheme.schemeName = product.pathName;
 
       optionScheme.options = new ArrayList<ProductOption>();
       addNewOption();
 
-      showNewOptionsView = true;
+      showOptionSchemeView = true;
+
+      refreshMediaFilter();
+
+      optionSchemeSaved = false;
+   }
+
+   void doEditOptionScheme() {
+      if (!editableOptionScheme) {
+         System.err.println("*** doEditOptionScheme called without editable option");
+         return;
+      }
+      optionErrorMessage = optionStatusMessage = null;
+      showOptionSchemeView = true;
+      optionSchemeSaved = true;
    }
 
    void updateMatchingOptionSchemes(String pattern) {
@@ -483,6 +613,8 @@ ProductManagerView {
          if (sku.optionScheme != null) {
             sku.optionScheme = null;
             optionStatusMessage = "Cleared option scheme";
+
+            refreshMediaFilter();
          }
          return;
       }
@@ -495,7 +627,6 @@ ProductManagerView {
          }
          else if (schemes.size() > 1) {
             newScheme = schemes.get(0);
-            //skuErrorMessage = "Warning multiple skus with skuCode: " + skuCode;
          }
       }
       if (newScheme == null) {
@@ -504,31 +635,29 @@ ProductManagerView {
       }
       else {
          sku.optionScheme = newScheme;
+         optionScheme = newScheme;
          optionStatusMessage = "Option scheme updated to: " + optionSchemeName + " for sku: " + sku.skuCode;
 
          refreshSkuOptions();
       }
    }
 
-
    void updateHasOptions(boolean status) {
       if (sku == null)
          return;
       if (!status) {
          sku.optionScheme = null;
+         optionScheme = null;
       }
       showOptionsView = status;
+      refreshMediaFilter();
    }
 
    void addNewOption() {
       ProductOption opt = (ProductOption) ProductOption.getDBTypeDescriptor().createInstance();
       opt.optionName = "";
       opt.optionValues = new ArrayList<OptionValue>();
-      OptionValue optVal = new OptionValue();
-      optVal.optionValue = "";
-      optVal.skuSymbol = "";
-      opt.optionValues.add(optVal);
-      opt.defaultValue = optVal;
+      opt.defaultValue = addNewOptionValue(opt);
       optionScheme.options.add(opt);
    }
 
@@ -537,11 +666,13 @@ ProductManagerView {
          System.err.println("*** Error - unable to find option to remove");
    }
 
-   void addNewOptionValue(ProductOption option) {
+   OptionValue addNewOptionValue(ProductOption option) {
       OptionValue optVal = new OptionValue();
       optVal.optionValue = "";
       optVal.skuSymbol = "";
       option.optionValues.add(optVal);
+      newOptionValue = optVal;
+      return optVal;
    }
 
    void removeOptionValue(ProductOption option, OptionValue optVal) {
@@ -553,15 +684,54 @@ ProductManagerView {
    }
 
    void completeNewOptionScheme() {
+      if (!validateOptionScheme()) {
+         return;
+      }
       optionScheme.dbInsert(false);
       sku.optionScheme = optionScheme;
-      showNewOptionsView = false;
+      showOptionSchemeView = false;
       optionStatusMessage = "Option scheme: " + optionScheme.schemeName + " added";
+      optionErrorMessage = null;
+      refreshMediaFilter();
+      refreshSkuOptions();
+      editableOptionScheme = true;
+      optionSchemeSaved = true;
+   }
+
+   void validateOptionSchemeName() {
+      if (optionSchemeSaved)
+         validateOptionScheme();
+      optionScheme.validateProp("schemeName");
+   }
+
+   boolean validateOptionScheme() {
+      optionScheme.validateOptionScheme();
+      optionSchemeSaved = true;
+      if (optionScheme.hasErrors()) {
+         optionStatusMessage = null;
+         optionErrorMessage = optionScheme.formatErrors();
+         return false;
+      }
+      return true;
    }
 
    void cancelNewOptionScheme() {
-      optionScheme = null;
-      showNewOptionsView = false;
+      optionScheme = sku == null ? null : sku.optionScheme;
+      showOptionSchemeView = false;
+      refreshMediaFilter();
+      refreshSkuOptions();
+      editableOptionScheme = sku.optionScheme != null;
+      optionStatusMessage = optionErrorMessage = null;
+      optionSchemeSaved = false;
+   }
+
+   void doneEditingOptionScheme() {
+      if (!validateOptionScheme())
+         return;
+      optionScheme.dbUpdate();
+      showOptionSchemeView = false;
+      optionStatusMessage = "Option scheme: " + optionScheme.schemeName + " saved";
+      optionSchemeSaved = true;
    }
 
    void refreshSkuOptions() {
@@ -594,11 +764,19 @@ ProductManagerView {
       }
    }
 
+   void clearSkuMessages() {
+      skuAddErrorMessage = skuFindErrorMessage = skuStatusMessage = null;
+   }
+
    void updateSkuCode(String value) {
       String err = Sku.validateSkuCode(value);
       if (err != null) {
          sku.addPropError("skuCode", err);
          return;
+      }
+      else {
+         sku.removePropError("skuCode");
+         clearSkuMessages();
       }
       sku.skuCode = value;
       if (sku.skuOptions != null)

@@ -99,21 +99,45 @@ class Sku implements IPropValidator {
    void updatePrice(String priceStr) {
       try {
          price = new BigDecimal(priceStr);
+         // TODO: need to validate the number of digits match the currency for the store's locale
          removePropError("price");
+         invalidPriceStr = null;
       }
       catch (NumberFormatException exc) {
+         invalidPriceStr = priceStr;
          addPropError("price", "Invalid price");
       }
+      Bind.sendChangedEvent(this, "priceStr");
    }
+
+   @Bindable(manual=true)
+   String getPriceStr() {
+      if (invalidPriceStr != null)
+         return invalidPriceStr;
+      return price == null ? "" : price.toString();
+   }
+
+   @Bindable(manual=true)
+   String getDiscountPriceStr() {
+      if (invalidDiscountPriceStr != null)
+         return invalidDiscountPriceStr;
+      return discountPrice == null ? "" : discountPrice.toString();
+   }
+
+   private String invalidDiscountPriceStr = null, invalidPriceStr = null;
 
    void updateDiscount(String priceStr) {
       try {
          discountPrice = new BigDecimal(priceStr);
          removePropError("discountPrice");
+         invalidDiscountPriceStr = null;
       }
       catch (NumberFormatException exc) {
          addPropError("discountPrice", "Invalid discountPrice");
+         invalidDiscountPriceStr = priceStr;
+         discountPrice = null;
       }
+      Bind.sendChangedEvent(this, "discountPriceStr");
    }
 
    static String validateSkuCode(String sc) {

@@ -38,11 +38,11 @@ abstract class CatalogElement extends ManagedResource {
    List<ManagedMedia> altMedia;
 
    static String validateName(String name) {
-      return validateRequired("name", name);
+      return IPropValidator.validateRequired("name", name);
    }
 
    static String validatePathName(String pn) {
-      String res = validateRequired("pathName", pn);
+      String res = IPropValidator.validateRequired("pathName", pn);
       if (res != null)
          return res;
       for (int i = 0; i < pn.length(); i++) {

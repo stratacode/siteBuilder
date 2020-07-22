@@ -33,13 +33,6 @@ abstract class ManagedResource implements sc.dyn.IPropValidator {
    @Bindable
    @DBPropertySettings(persist=false)
    Map<String,String> propErrors = null;
-
-   static String validateRequired(String propName, String propVal) {
-      if (propVal == null || propVal.trim().length() == 0)
-         return "Missing: " + propName;
-      return null;
-   }
-
 }
 
 

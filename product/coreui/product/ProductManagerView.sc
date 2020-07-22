@@ -18,6 +18,7 @@ class ProductManagerView {
    boolean showSkuView;
    boolean skuEditable;
    boolean showSkuOptions;
+   boolean productSaved;
 
    Category defaultCategory;
 
@@ -30,9 +31,15 @@ class ProductManagerView {
    List<OptionScheme> matchingOptionSchemes;
 
    boolean showOptionsView = false;
-   boolean showNewOptionsView = false;
+   boolean showOptionSchemeView = false;
+   boolean editableOptionScheme = false;
 
    OptionScheme optionScheme = null;
+
+   // Used for focusing
+   OptionValue newOptionValue;
+
+   List<String> optionMediaFilter = null;
 
    List<Sku> missingSkuOptions;
    List<Sku> validSkuOptions;
@@ -43,16 +50,22 @@ class ProductManagerView {
       productList = null;
       product = null;
       defaultCategory = null;
+      productSaved = false;
       clearFormErrors();
    }
 
    void clearFormErrors() {
       statusMessage = null;
       errorMessage = null;
-      skuErrorMessage = null;
+
+      skuAddErrorMessage = null;
+      skuFindErrorMessage = null;
+      skuStatusMessage = null;
+
       uploadInProgress = false;
       clearMediaErrors();
       optionErrorMessage = null;
+      optionStatusMessage = null;
    }
 
    void clearMediaErrors() {
@@ -62,7 +75,9 @@ class ProductManagerView {
 
    String statusMessage;
    String errorMessage;
-   String skuErrorMessage;
+   String skuFindErrorMessage;
+   String skuAddErrorMessage;
+   String skuStatusMessage;
 
    String mediaStatusMessage;
    String mediaErrorMessage;
@@ -70,6 +85,7 @@ class ProductManagerView {
 
    boolean autoUpdatePath = false;
 
+   boolean optionSchemeSaved = false;
    String optionStatusMessage;
    String optionErrorMessage;
 
@@ -80,6 +96,10 @@ class ProductManagerView {
       if (!autoUpdatePath || (val == null || val.length() == 0))
          return;
       product.pathName = product.convertToPathName(val);
+      if (productSaved)
+         product.validateProperties();
+      else
+         product.validateProp("name");
    }
 
    void updatePathName(String pathName) {
