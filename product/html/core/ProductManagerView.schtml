@@ -201,19 +201,18 @@
                                 // so that the model object itself has a 'takeFocus' property that is set so that
                                 // we can wire that do the 'focus()' call on change.
                                 OptionValue focusedOption := ProductManagerView.this.newOptionValue;
+                                override @Bindable(doLater=true, priority=-6)
                                 focusedOption =: updateFocusOnValue(focusedOption);
                                 void updateFocusOnValue(OptionValue val) {
-                                    DynUtil.invokeLater(new Runnable() {
-                                       void run() {
-                                          int ix = productOption.optionValues.indexOf(val);
-                                          if (ix != -1) {
-                                             Object[] children = newValueView_Repeat.getObjChildren(false);
-                                             if (children != null && ix < children.length) {
-                                                ((newValueView_Repeat.newValueView) children[ix]).optionValueNameField.focus();
-                                             }
-                                          }
-                                      }
-                                   }, Element.AFTER_REFRESH_TAG_PRIORITY);
+                                    int ix = productOption.optionValues.indexOf(val);
+                                    if (ix != -1) {
+                                       Object[] children = newValueView_Repeat.getObjChildren(false);
+                                       if (children != null && ix < children.length) {
+                                          ((newValueView_Repeat.newValueView) children[ix]).optionValueNameField.focus();
+                                       }
+                                    }
+                                   else
+                                      System.err.println("*** Unable to find option for focus change");
                                 }
                              %>
                              <div id="newValueView" class="newValueView" repeat=":= productOption.optionValues" repeatVarName="optionValue">
