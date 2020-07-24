@@ -180,6 +180,10 @@
   margin-top: 10px;
 }
 
+.longDescView {
+  height: 177px;
+}
+
 .boxTitle {
    margin-left: 25px;
 }
