@@ -81,4 +81,5 @@ class Product extends CatalogElement {
       return newProduct;
    }
 
+   override @FindBy(paged=true,orderBy="-lastModified",with="store") pathName;
 }

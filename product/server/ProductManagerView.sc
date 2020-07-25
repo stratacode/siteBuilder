@@ -22,6 +22,7 @@ ProductManagerView {
    }
 
    void doSelectProduct(Product toSel) {
+      clearFormErrors();
       // We might have just removed this product so don't make it current again
       if (((DBObject)toSel.getDBObject()).isActive()) {
          if (toSel == product) {
@@ -76,7 +77,7 @@ ProductManagerView {
          }
          if (optionScheme.options != null) {
             for (ProductOption opt: optionScheme.options) {
-               Bind.sendChangedEvent(opt, "optionFilterList");
+               opt.refreshOptionFilterList();
             }
          }
       }
@@ -657,8 +658,9 @@ ProductManagerView {
       ProductOption opt = (ProductOption) ProductOption.getDBTypeDescriptor().createInstance();
       opt.optionName = "";
       opt.optionValues = new ArrayList<OptionValue>();
-      opt.defaultValue = addNewOptionValue(opt);
+      opt.defaultValue = addNewOptionValue(opt, false);
       optionScheme.options.add(opt);
+      newProductOption = opt;
    }
 
    void removeOption(ProductOption option) {
@@ -666,12 +668,13 @@ ProductManagerView {
          System.err.println("*** Error - unable to find option to remove");
    }
 
-   OptionValue addNewOptionValue(ProductOption option) {
+   OptionValue addNewOptionValue(ProductOption option, boolean setFocus) {
       OptionValue optVal = new OptionValue();
       optVal.optionValue = "";
       optVal.skuSymbol = "";
       option.optionValues.add(optVal);
-      newOptionValue = optVal;
+      if (setFocus)
+         newOptionValue = optVal;
       return optVal;
    }
 
@@ -679,8 +682,11 @@ ProductManagerView {
       boolean isDefault = option.defaultValue == optVal;
       if (!option.optionValues.remove(optVal))
          System.err.println("*** Error - no option value found to remove");
-      else if (isDefault && option.optionValues.size() > 0)
-         option.defaultValue = option.optionValues.get(0);
+      else {
+         option.refreshOptionFilterList();
+         if (isDefault && option.optionValues.size() > 0)
+            option.defaultValue = option.optionValues.get(0);
+      }
    }
 
    void completeNewOptionScheme() {

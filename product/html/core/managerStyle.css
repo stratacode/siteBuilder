@@ -163,6 +163,8 @@
 
 .note-editable { font-size: 13px; }
 
+.note-frame { font-family: inherit}
+
 .optionListView, .optionValueList {
    margin-left: 25px;
    width: fit-content;

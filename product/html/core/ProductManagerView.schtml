@@ -184,37 +184,51 @@
 
                      <div class="boxTitle">List of options</div>
                      <div class="optionListView">
+                        <%!
+                           ProductOption focusedProductOption := ProductManagerView.this.newProductOption;
+
+                           override @Bindable(doLater=true, priority=-6)
+                           focusedProductOption =: updateOptionFocusOnValue(focusedProductOption);
+                           void updateOptionFocusOnValue(ProductOption val) {
+                              int ix = optionScheme.options.indexOf(val);
+                              if (ix != -1) {
+                                 Object[] children = newOptionView_Repeat.getObjChildren(false);
+                                 if (children != null && ix < children.length) {
+                                    ((newOptionView_Repeat.newOptionView) children[ix]).optionFormView.optionNameField.focus();
+                                 }
+                              }
+                           }
+                        %>
                         <div id="newOptionView" class="newOptionView" repeat=":= optionScheme.options" repeatVarName="productOption">
-                           <div class="formView">
+                           <div id="optionFormView" class="formView">
                               <label for="optionNameField">Option #<%= newOptionView.this.repeatIndex+1 %> name</label>
                               <input type="text" id="optionNameField" value=":=: productOption.optionName"
                                      changeEvent="=: refreshOptionScheme()"
                                      placeholder="e.g. Size, Color"/>
                               <input type="image" class="clearOptionButton" src="/icons/x-square.svg"
                                      visible=":= optionScheme.options.size() > 1"
-                                     clickEvent="=: removeOption(productOption)"/>
+                                     clickEvent="=: removeOption(productOption)" tabindex="-1"/>
                            </div>
                            <div class="boxTitle">List of values</div>
                              <div class="optionValueList">
-                             <%!
-                                // One way to avoid this would be to wrap the option values in a 'view' object
-                                // so that the model object itself has a 'takeFocus' property that is set so that
-                                // we can wire that do the 'focus()' call on change.
-                                OptionValue focusedOption := ProductManagerView.this.newOptionValue;
-                                override @Bindable(doLater=true, priority=-6)
-                                focusedOption =: updateFocusOnValue(focusedOption);
-                                void updateFocusOnValue(OptionValue val) {
-                                    int ix = productOption.optionValues.indexOf(val);
-                                    if (ix != -1) {
-                                       Object[] children = newValueView_Repeat.getObjChildren(false);
-                                       if (children != null && ix < children.length) {
-                                          ((newValueView_Repeat.newValueView) children[ix]).optionValueNameField.focus();
+                                <%!
+                                   // One way to avoid this would be to wrap the option values in a 'view' object
+                                   // so that the model object itself has a 'takeFocus' property that is set so that
+                                   // we can wire that do the 'focus()' call on change.
+                                   OptionValue focusedOption := ProductManagerView.this.newOptionValue;
+                                   override @Bindable(doLater=true, priority=-6)
+                                   focusedOption =: updateFocusOnValue(focusedOption);
+                                   void updateFocusOnValue(OptionValue val) {
+                                       int ix = productOption.optionValues.indexOf(val);
+                                       if (ix != -1) {
+                                          Object[] children = newValueView_Repeat.getObjChildren(false);
+                                          if (children != null && ix < children.length) {
+                                             ((newValueView_Repeat.newValueView) children[ix]).optionValueNameField.focus();
+                                          }
                                        }
-                                    }
-                                   else
-                                      System.err.println("*** Unable to find option for focus change");
-                                }
-                             %>
+                                      // else - might not be for the is option
+                                   }
+                                %>
                              <div id="newValueView" class="newValueView" repeat=":= productOption.optionValues" repeatVarName="optionValue">
                                 <label for="optionValueNameField">Value #<%= newValueView.this.repeatIndex+1 %></label>
                                 <input type="text" id="optionValueNameField" value=":=: optionValue.optionValue"
@@ -228,11 +242,11 @@
                                 <input tabindex="-1" visible=":= productOption.optionValues.size() > 1" type="image" class="clearOptionButton" src="/icons/x-square.svg"
                                        clickEvent="=: removeOptionValue(productOption, optionValue)"/>
                               </div>
-                              <input type="button" class="endListButton" value="Add another value" clickEvent="=: addNewOptionValue(productOption)"/>
+                              <input type="button" class="endListButton" value="Add another value" clickEvent="=: addNewOptionValue(productOption, true)"/>
                            </div>
                         </div>
                         <input type="button" class="endListButton" value="Add another option" clickEvent="=: addNewOption()"/>
-                        <input type="button" class="rightButton" value="Done" clickEvent="=: doneEditingOptionScheme()"
+                        <input type="button" class="rightButton" value="Done editing option scheme" clickEvent="=: doneEditingOptionScheme()"
                                visible=":= editableOptionScheme"/>
                      </div>
                      <div class="formViewError"><%= optionErrorMessage %></div>
@@ -313,7 +327,7 @@
                <input type="button" clickEvent="=: completeAddSku()" value="Add Sku"/>
                <input type="button" class="rightButton" clickEvent="=: cancelAddSku()" value="Cancel"/>
                <div id="alt" class="formView confirmButtons">
-                  <input type="button" clickEvent="=: doneEditingSku()" value="Done"/>
+                  <input type="button" clickEvent="=: doneEditingSku()" value="Done editing sku"/>
                </div>
             </div>
             <div class="formViewError"><%= skuAddErrorMessage %></div>
@@ -355,7 +369,7 @@
                <input id="mediaManagerIdField" type="hidden" name="mediaManagerId" value=":= String.valueOf(store.mediaManager.id)"/>
             </form>
             <div>
-               <div visible=":= !addMediaForm.submitInProgress" class="formViewStatus">
+               <div visible=":= !addMediaForm.submitInProgress">
                   <div class="formViewError"><%= mediaErrorMessage %></div>
                   <div class="formViewStatus"><%= mediaStatusMessage%></div>
                   <div id="alt">

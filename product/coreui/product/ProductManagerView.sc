@@ -3,20 +3,27 @@
 class ProductManagerView {
    Storefront store;
 
-   String searchText; 
+   @Sync(resetState=true)
+   String searchText;
 
    List<Product> productList;
 
+   @Sync(resetState=true)
    Product product;
 
    int skuTypeId = 1; // 1 = Sku, 2 = PhysicalSku using dbTypeId annotation values
    Sku sku;
    PhysicalSku psku;
 
+   @Sync(resetState=true)
    boolean addInProgress;
+   @Sync(resetState=true)
    boolean addSkuInProgress;
+   @Sync(resetState=true)
    boolean showSkuView;
+   @Sync(resetState=true)
    boolean skuEditable;
+   @Sync(resetState=true)
    boolean showSkuOptions;
    boolean productSaved;
 
@@ -37,6 +44,7 @@ class ProductManagerView {
    OptionScheme optionScheme = null;
 
    // Used for focusing
+   ProductOption newProductOption;
    OptionValue newOptionValue;
 
    List<String> optionMediaFilter = null;
@@ -93,9 +101,8 @@ class ProductManagerView {
       if (product == null)
          return;
       product.name = val;
-      if (!autoUpdatePath || (val == null || val.length() == 0))
-         return;
-      product.pathName = product.convertToPathName(val);
+      if (autoUpdatePath && (val != null && val.length() > 0))
+         product.pathName = product.convertToPathName(val);
       if (productSaved)
          product.validateProperties();
       else

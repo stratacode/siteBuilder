@@ -1,7 +1,9 @@
 <%@ @URL(pattern="/manage/product") %>
 <html extends="BaseManagerPage">
    <head>
-      <script extends="TextEditorScripts"/>
+      <div id="libScripts">
+         <script extends="TextEditorScripts"/>
+      </div>
    </head>
    <body>
       <div id="mgrFrame">

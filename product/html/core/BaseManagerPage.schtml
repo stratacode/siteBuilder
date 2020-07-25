@@ -2,6 +2,8 @@
    <%! object storeMgr extends StoreManagerView {} %>
 
    <head exec="server">
+      <div id="libScripts" bodyOnly="true">
+      </div>
       <link id="docStyle" rel="stylesheet" href="/managerStyle.css" type="text/css"/>
    </head>
 
