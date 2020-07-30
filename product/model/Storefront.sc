@@ -2,8 +2,12 @@
 @DBTypeSettings
 class Storefront {
    public final static int MaxQuantity = 100000;
+
+   @Sync(resetState=true,initDefault=true)
    String storeName;
+
    @FindBy(findOne=true)
+   @Sync(resetState=true,initDefault=true)
    String storePathName;
 
    String icon;

@@ -75,13 +75,16 @@
 
 .formView > label {
    text-align: right;
-   width: 10em;
-   margin-right: 10px;
+   width: 20%;
+   margin-right: 1%;
 }
 
-
 .formView input[type=text] {
-   width: 20em;
+   width: 30%;
+}
+
+.formView .wideTextField[type=text] {
+   width: 78%;
 }
 
 .formTitle {
@@ -90,8 +93,9 @@
    margin-bottom: 5px;
 }
 
-.confirmButtons, .formTitle, .checkFormView, .skuOptionsSummary {
-   margin-left: 175px;
+.confirmButtons, .formTitle, .checkFormView, .skuOptionsSummary, .formViewError, .formViewStatus,
+#addSkuButtons, .subFormTitle, .skuListTitle, .formMessage {
+   margin-left: 21%;
 }
 
 .skuOptionsSummary {
@@ -113,21 +117,21 @@
    margin-bottom: 5px;
 }
 
-.formViewError, .formViewStatus {
-   margin-left: 175px;
-}
-
 #detailFormView {
    display: flex;
    flex-direction: column;
 }
 
 .rightButton {
-   margin-left: 10px;
+   margin-left: 1%;
 }
 
-#addSkuButtons, .subFormTitle, .skuListTitle, .formMessage {
-   margin-left: 175px;
+.findMediaButton {
+   margin-left: 5px;
+}
+
+.clearMediaButton {
+   margin-left: 1%;
 }
 
 .mediaImageList {
@@ -161,7 +165,7 @@
 /* For summernote - to get rid of the weird space due to it's use of the <p> wrapper */
 .note-editor .note-editable p { margin-bottom: 0 !important; margin-top: 0px}
 
-.note-editable { font-size: 13px; }
+/*.note-editable { font-size: 13px; } */
 
 .note-frame { font-family: inherit}
 
@@ -281,5 +285,25 @@
 
 .formViewError {
    color: #c00;
+   font-style: italic;
    font-size: 85%;
+}
+
+.formViewStatus {
+   font-style: italic;
+   font-size: 85%;
+}
+
+.detailView {
+   overflow: hidden;
+   transition: max-height 2.5s ease-out;
+   height: auto;
+}
+
+.openDetail {
+   /* max-height: 700px; */
+}
+
+.closedDetail {
+   max-height: 0px;
 }

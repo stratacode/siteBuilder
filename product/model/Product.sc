@@ -54,6 +54,7 @@ class Product extends CatalogElement {
    Brand brand;
 
    /** The main SKU for the product */
+   @Sync(resetState=true,initDefault=true)
    Sku sku;
 
    // Could be in a promotions layer but also pretty basic so might be best left in the core model but enabled in various layer configurations.

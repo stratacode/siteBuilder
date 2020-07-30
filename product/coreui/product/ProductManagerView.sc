@@ -3,30 +3,38 @@
 class ProductManagerView {
    Storefront store;
 
-   @Sync(resetState=true)
+   @Sync(resetState=true, initDefault=true)
    String searchText;
 
    List<Product> productList;
 
-   @Sync(resetState=true)
+   @Sync(resetState=true, initDefault=true)
    Product product;
+
+   /**
+    * Save the un-validated html in a temporary property so that it gets sync'd properly for session reset
+    * When this changes, a binding triggers updateLongDesc to do the validation and update product.longDesc
+    */
+   @Sync(resetState=true, initDefault=true)
+   String longDescHtml;
 
    int skuTypeId = 1; // 1 = Sku, 2 = PhysicalSku using dbTypeId annotation values
    Sku sku;
    PhysicalSku psku;
 
-   @Sync(resetState=true)
+   @Sync(resetState=true, initDefault=true)
    boolean addInProgress;
-   @Sync(resetState=true)
+   @Sync(resetState=true, initDefault=true)
    boolean addSkuInProgress;
-   @Sync(resetState=true)
+   @Sync(resetState=true, initDefault=true)
    boolean showSkuView;
-   @Sync(resetState=true)
+   @Sync(resetState=true, initDefault=true)
    boolean skuEditable;
-   @Sync(resetState=true)
+   @Sync(resetState=true, initDefault=true)
    boolean showSkuOptions;
    boolean productSaved;
 
+   @Sync(resetState=true, initDefault=true)
    Category defaultCategory;
 
    List<Sku> matchingSkus;
@@ -37,10 +45,14 @@ class ProductManagerView {
 
    List<OptionScheme> matchingOptionSchemes;
 
+   @Sync(resetState=true, initDefault=true)
    boolean showOptionsView = false;
+   @Sync(resetState=true, initDefault=true)
    boolean showOptionSchemeView = false;
+   @Sync(resetState=true, initDefault=true)
    boolean editableOptionScheme = false;
 
+   @Sync(resetState=true, initDefault=true)
    OptionScheme optionScheme = null;
 
    // Used for focusing
@@ -87,6 +99,7 @@ class ProductManagerView {
    String skuAddErrorMessage;
    String skuStatusMessage;
 
+   String findMediaText;
    String mediaStatusMessage;
    String mediaErrorMessage;
    boolean uploadInProgress = false;

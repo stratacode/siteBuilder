@@ -6,6 +6,8 @@ import sc.lang.html.HTMLElement;
 ProductManagerView {
    store =: storeChanged();
 
+   longDescHtml =: updateLongDesc(longDescHtml);
+
    void storeChanged() {
       resetForm();
    }
@@ -62,9 +64,13 @@ ProductManagerView {
    }
 
    void updateMediaFilter(int ix, String val) {
+      validateMediaFilter();
+      optionMediaFilter.set(ix, val);
+   }
+
+   void validateMediaFilter() {
       if (optionMediaFilter == null && optionScheme != null)
          refreshMediaFilter();
-      optionMediaFilter.set(ix, val);
    }
 
    void refreshMediaFilter() {
@@ -86,6 +92,7 @@ ProductManagerView {
    String getMediaFilterPattern() {
       if (optionScheme == null)
          return null;
+      validateMediaFilter();
       int numOpts = optionScheme.options.size();
       StringBuilder res = new StringBuilder();
       boolean any = false;
@@ -251,8 +258,14 @@ ProductManagerView {
          return;
       }
 
+      if (store == null) {
+         errorMessage = "No current store";
+         return;
+      }
+
       try {
          if (addInProgress) {
+            product.store = store;
             product.dbInsert(false);
 
             String newName = product.pathName;
@@ -348,24 +361,30 @@ ProductManagerView {
    void updateProductSku(String skuCode) {
       skuFindErrorMessage = null;
       skuAddErrorMessage = null;
+      skuStatusMessage = null;
 
       if (skuCode == null || skuCode.trim().length() == 0) {
          product.sku = null;
+         skuEditable = false;
          return;
       }
 
       List<Sku> skus = Sku.findBySkuCode(skuCode);
-      if (skus != null) {
-         if (skus.size() == 1) {
-            product.sku = skus.get(0);
-            return;
-         }
-         else if (skus.size() > 1) {
-            product.sku = skus.get(0);
-            return;
-         }
+      if (skus != null && skus.size() > 0) {
+         Sku newSku = skus.get(0);
+         product.sku = newSku;
+         sku = newSku;
+         optionScheme = newSku.optionScheme;
+         refreshMediaFilter();
+         refreshSkuOptions();
+         skuEditable = true;
+
+         skuStatusMessage = "Sku updated to: " + skuCode;
       }
-      skuFindErrorMessage = "No sku with skuCode: " + skuCode;
+      else {
+         skuEditable = false;
+         skuFindErrorMessage = "No sku with skuCode: " + skuCode;
+      }
    }
 
    void updateMatchingCategories(String pattern) {
@@ -388,24 +407,17 @@ ProductManagerView {
    void updateParentCategory(String pathName) {
       List<Category> cats = Category.findByPathName(pathName, store, 0, 10);
       boolean newProduct = product.getDBObject().isTransient();
-      if (cats != null) {
-         if (cats.size() == 1) {
-            if (!newProduct)
-               product.parentCategory = cats.get(0);
-            product.removePropError("parentCategory");
-            defaultCategory = cats.get(0);
-            return;
-         }
-         else if (cats.size() > 1) {
-            if (!newProduct)
-               product.parentCategory = cats.get(0);
-            product.removePropError("parentCategory");
-            defaultCategory = cats.get(0);
-            //product.addPropError("parentCategory", "Warning multiple categories with pathName: " + pathName);
-            return;
-         }
+      if (cats != null && cats.size() > 0) {
+         if (!newProduct)
+            product.parentCategory = cats.get(0);
+         product.removePropError("parentCategory");
+         // Not setting product.parentCategory here for new products because it ends up inserting the product
+         // because of the bi-directional relationship - the category is already added so once we set the product
+         // to point to the category, the category wants to point to the product and adds it.
+         defaultCategory = cats.get(0);
       }
-      product.addPropError("parentCategory", "No category with path name: " + pathName);
+      else
+         product.addPropError("parentCategory", "No category with path name: " + pathName);
    }
 
    void updateMatchingMedia(String pattern) {
@@ -430,6 +442,7 @@ ProductManagerView {
       List<ManagedMedia> mediaList = ManagedMedia.findByFileName(fileName);
       mediaStatusMessage = null;
       mediaErrorMessage = null;
+      findMediaText = uniqueFileName;
 
       String newFilter = getMediaFilterPattern();
 
@@ -448,10 +461,12 @@ ProductManagerView {
                      if (oldFilter != null && !oldFilter.equals(newFilter)) {
                         mediaStatusMessage = "Changed filter pattern from: " + oldFilter + " to: " + newFilter;
                         media.filterPattern = newFilter;
+                        findMediaText = "";
                         return;
                      }
                   }
                   mediaErrorMessage = "Media file: " + media.uniqueFileName + " already in product";
+                  findMediaText = "";
                   return;
                }
 
@@ -473,10 +488,12 @@ ProductManagerView {
                   product.altMedia = prodMedia;
                   product.mainMedia = media;
                }
+               findMediaText = "";
                return;
             }
          }
       }
+      // Restore the old text
       mediaErrorMessage = "No media found with fileName: " + uniqueFileName;
    }
 
