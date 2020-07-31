@@ -3,6 +3,7 @@
  * management UI since adding those two might involve different but overlapping steps.
  */
 @DBTypeSettings
+@Sync(onDemand=true)
 @EditorSettings(displayNameProperty="fileName")
 // TODO: this is really an abstract class but we need to instantiate it for the @FindBy because the
 // code creates an instance for the prototype. Could find another way to workaround that problem.

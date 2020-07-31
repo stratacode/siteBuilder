@@ -69,8 +69,8 @@
             <%! int openViewHeight = 500;
                 scrollHeight =: scrollHeight > 50 ? openViewHeight = scrollHeight : null; %>
             <style type="text/css">
-               .openDetail {
-                  max-height: <%= openViewHeight %>px;
+               #addSkuView.openDetail {
+                  max-height: <%= openViewHeight + 100 %>px;
                }
             </style>
             <%! boolean enableAddSku := sku == null || addInProgress; %>
@@ -159,10 +159,10 @@
             </div>
             <div id="optionsWrapperView">
                <div class="checkFormView">
-                  <input id="hasOptionCheckbox" type="checkbox" checked=":= sku.optionScheme != null || showOptionsView" checked="=: updateHasOptions(checked)"/>
+                  <input id="hasOptionCheckbox" type="checkbox" checked=":= sku.optionScheme != null || showOptionsView" changeEvent="=: updateHasOptions(checked)"/>
                   <label for="hasOptionCheckbox">Has options?</label>
                </div>
-               <div id="optionsView" visible=":= showOptionsView">
+               <div id="optionsView" visible=':= showOptionsView'>
                   <div class="subFormTitle">Sku options</div>
                   <div id="optionsSchemeFieldView" class="formView">
                      <label for="optionSchemeField">Option scheme name</label>
@@ -180,7 +180,14 @@
                             clickEvent="=: doEditOptionScheme()" visible=":= editableOptionScheme"/>
                   </div>
                   <div class="formViewStatus"><%= optionStatusMessage %></div>
-                  <div id="optionSchemeView" visible=":= showOptionSchemeView">
+                  <div id="optionSchemeView" class=':= showOptionSchemeView ? "subFormView detailView openDetail" : "subFormView detailView closedDetail"'>
+                     <%! int openSchemeHeight = 500;
+                     scrollHeight =: scrollHeight > 200 ? openSchemeHeight = scrollHeight : null; %>
+                     <style type="text/css">
+                        #optionSchemeView.openDetail {
+                           max-height: <%= openSchemeHeight + 100 %>px;
+                     }
+                     </style>
                      <div class="subFormTitle"><%= editableOptionScheme ? "Update" : "New" %> option scheme</div>
                      <div class="formView">
                         <label for="schemeNameField">Name</label>
