@@ -296,14 +296,18 @@
 
 .detailView {
    overflow: hidden;
-   transition: max-height 2.5s ease-out;
+   transition: max-height 0.7s ease-out, border 0.7s ease-out, margin-top 0.7s, margin-bottom 0.7s;
    height: auto;
 }
 
 .openDetail {
-   /* max-height: 700px; */
+   visibility: inherit;
+   border: solid 1px rgba(170,170,170,1);
 }
 
 .closedDetail {
    max-height: 0px;
+   border: solid 0px rgba(170,170,170,0);
+   margin-bottom: 0px;
+   margin-top: 0px;
 }

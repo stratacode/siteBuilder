@@ -65,16 +65,24 @@
          </div>
          <div id="skuErrorView" class="formViewError"><%= skuFindErrorMessage %></div><div class="formViewStatus"><%= skuStatusMessage %></div>
 
-         <div><div id="addSkuView" visible=":= showSkuView" class="subFormView">
-            <span class="subFormTitle"><%= addSkuInProgress ? "Add Sku" : "Update sku" %></span>
+         <div id="addSkuView" class=':= showSkuView ? "subFormView detailView openDetail" : "subFormView detailView closedDetail"'>
+            <%! int openViewHeight = 500;
+                scrollHeight =: scrollHeight > 50 ? openViewHeight = scrollHeight : null; %>
+            <style type="text/css">
+               .openDetail {
+                  max-height: <%= openViewHeight %>px;
+               }
+            </style>
+            <%! boolean enableAddSku := sku == null || addInProgress; %>
+            <span class="subFormTitle"><%= enableAddSku ? "Add Sku" : "Update sku" %></span>
             <div class="formView">
                <label>Product type</label>
                <input type="radio" id="digitalRadio" name="skuType" checked=":= skuTypeId == 1"
-                      changeEvent="=: checked ? updateSkuType(1) : null" value="1" disabled=":= !addSkuInProgress"/>
+                      changeEvent="=: checked ? updateSkuType(1) : null" value="1" disabled=":= !enableAddSku"/>
                <div>
                   <label for="digitalRadio">Digital</label>
                   <input type="radio" id="physicalRadio" name="skuType" checked=":= skuTypeId == 2"
-                         changeEvent="=: checked ? updateSkuType(2) : null" value="2" disabled=":= !addSkuInProgress"/>
+                         changeEvent="=: checked ? updateSkuType(2) : null" value="2" disabled=":= !enableAddSku"/>
                   <label for="physicalRadio">Physical</label>
                </div>
             </div>
@@ -331,7 +339,7 @@
                </div>
             </div>
             <div class="formViewError"><%= skuAddErrorMessage %></div>
-         </div></div>
+         </div>
 
          <div id="addMediaView" class="subFormView">
             <span class="subFormTitle">Product media</span>

@@ -194,6 +194,9 @@ ProductManagerView {
       initTemporarySku();
       addSkuInProgress = true;
       showSkuView = true;
+      skuStatusMessage = null;
+      skuAddErrorMessage = null;
+      skuFindErrorMessage = null;
    }
 
    void initTemporarySku() {
