@@ -104,18 +104,18 @@ class ProductManagerView {
    String mediaErrorMessage;
    boolean uploadInProgress = false;
 
-   boolean autoUpdatePath = false;
-
    boolean optionSchemeSaved = false;
    String optionStatusMessage;
    String optionErrorMessage;
+
+   boolean autoUpdatePath = false;
 
    void updateProductName(String val) {
       if (product == null)
          return;
       product.name = val;
       if (autoUpdatePath && (val != null && val.length() > 0))
-         product.pathName = product.convertToPathName(val);
+         product.pathName = CatalogElement.convertToPathName(val);
       if (productSaved)
          product.validateProperties();
       else
@@ -128,5 +128,4 @@ class ProductManagerView {
       autoUpdatePath = false;
       product.pathName = pathName;
    }
-
 }

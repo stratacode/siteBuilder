@@ -47,8 +47,8 @@ abstract class CatalogElement extends ManagedResource {
       return IPropValidator.validateRequired("name", name);
    }
 
-   static String validatePathName(String pn) {
-      String res = IPropValidator.validateRequired("pathName", pn);
+   static String validatePathName(String displayPropName, String pn) {
+      String res = IPropValidator.validateRequired(displayPropName, pn);
       if (res != null)
          return res;
       for (int i = 0; i < pn.length(); i++) {

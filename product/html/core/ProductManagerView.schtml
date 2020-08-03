@@ -1,6 +1,6 @@
 <div>
    <div id="findProductsView">
-      <div id="findProductsForm" visible=":= !addInProgress" class="formView">
+      <div id="findProductsForm" visible=":= !addInProgress" class="formField">
          <label for="searchTextField">Find products</label><input type="text" value=":=: searchText" changeEvent="=: doSearch()"/>
          <input type="image" class="findMediaButton" src="/icons/search.svg" clickEvent="=: doSearch()"/>
          <input type="image" class="clearMediaButton" src="/icons/x-square.svg" clickEvent="=: resetForm()"/>
@@ -9,27 +9,28 @@
 
    <div id="extraFormView">
       <div id="startAddView">
-         <div visible=":= !addInProgress" class="formView confirmButtons">
+         <div visible=":= !addInProgress" class="formField confirmButtons">
             <input type="button" value="Add product" clickEvent="=: startAddProduct(false)" />
             <input type="button" class="rightButton" visible=":= product != null" value="Copy product" clickEvent="=: startAddProduct(true)"/>
          </div>
       </div>
 
-      <div id="detailFormView" visible=':= product != null'>
+      <div id="detailFormView" class="formContainer" visible=':= product != null'>
          <div class="formTitle"> <%= addInProgress ? "Unsaved product" : "Update product" %></div>
-         <div id="nameFieldView" class="formView">
+         <div id="nameFieldView" class="formField">
             <label for="nameField">Product name</label>
             <input id="nameField" type="text" value=":=: product.name" changeEvent="=: updateProductName(value)"
-                   class=':= product.propErrors.get("name") == null ? "fieldInput" : "fieldInputError"'/>
+                   class=':= product.propErrors.get("name") == null ? "fieldInput" : "fieldInputError"' placeholder="display name"/>
          </div>
-         <div id="nameErrorView" class="formViewError"><%= product.propErrors.get("name") %></div>
-         <div id="pathNameView" class="formView">
+         <div id="nameErrorView" class="formError"><%= product.propErrors.get("name") %></div>
+         <div id="pathNameView" class="formField">
             <label for="pathNameField">Path name</label>
             <input id="pathNameField" type="text" value=":= product.pathName" changeEvent="=: updatePathName(value)"
-                   class=':= product.propErrors.get("pathName") == null ? "fieldInput" : "fieldInputError"'/>
+                   class=':= product.propErrors.get("pathName") == null ? "fieldInput" : "fieldInputError"'
+                   placeholder="browser location name (no spaces)"/>
          </div>
-         <div id="pathNameErrorView" class="formViewError"><%= product.propErrors.get("pathName") %></div>
-         <div id="parentCategoryView" class="formView">
+         <div id="pathNameErrorView" class="formError"><%= product.propErrors.get("pathName") %></div>
+         <div id="parentCategoryView" class="formField">
             <label for="parentCategoryField">Parent category path</label>
             <input id="parentCategoryField" type="text" list="= parentCategorySuggestions.getId()"
                    class=':= product.propErrors.get("parentCategory") == null ? "fieldInput" : "fieldInputError"'
@@ -39,9 +40,9 @@
                <option repeat=":= matchingCategories" repeatVarName="matchingCat" value=":= matchingCat.pathName"/>
             </datalist>
          </div>
-         <div id="parentCategoryErrorView" class="formViewError"><%= product.propErrors.get("parentCategory") %></div>
+         <div id="parentCategoryErrorView" class="formError"><%= product.propErrors.get("parentCategory") %></div>
 
-         <div id="shortDescView" class="formView">
+         <div id="shortDescView" class="formField">
             <label for="shortDescField">Short description</label>
             <input id="shortDescField" type="text" value=":=: product.shortDesc" class="wideTextField"/>
          </div>
@@ -52,7 +53,7 @@
                  content="=: longDescHtml = content"/>
          </div>
 
-         <div id="skuView" class="formView">
+         <div id="skuView" class="formField">
             <label for="skuField">Product Sku</label>
             <input id="skuField" type="text" list="= skuSuggestions.getId()" disabled=":= showSkuView"
                    class=':= skuFindErrorMessage == null ? "fieldInput" : "fieldInputError"'
@@ -63,7 +64,7 @@
             <input class="rightButton" type="button" value="Add Sku" clickEvent="=: startAddSku()" disabled=":= showSkuView"/>
             <input visible=":= skuEditable" class="rightButton" type="button" value="Edit Sku" clickEvent="=: showSkuView = true"/>
          </div>
-         <div id="skuErrorView" class="formViewError"><%= skuFindErrorMessage %></div><div class="formViewStatus"><%= skuStatusMessage %></div>
+         <div id="skuErrorView" class="formError"><%= skuFindErrorMessage %></div><div class="formStatus"><%= skuStatusMessage %></div>
 
          <div id="addSkuView" class=':= showSkuView ? "subFormView detailView openDetail" : "subFormView detailView closedDetail"'>
             <%! int openViewHeight = 500;
@@ -75,7 +76,7 @@
             </style>
             <%! boolean enableAddSku := sku == null || addInProgress; %>
             <span class="subFormTitle"><%= enableAddSku ? "Add Sku" : "Update sku" %></span>
-            <div class="formView">
+            <div class="formField">
                <label>Product type</label>
                <input type="radio" id="digitalRadio" name="skuType" checked=":= skuTypeId == 1"
                       changeEvent="=: checked ? updateSkuType(1) : null" value="1" disabled=":= !enableAddSku"/>
@@ -86,70 +87,70 @@
                   <label for="physicalRadio">Physical</label>
                </div>
             </div>
-            <div id="skuCodeView" class="formView">
+            <div id="skuCodeView" class="formField">
                <label for="skuCodeField">Sku code</label>
                <input type="text" id="skuCodeField" value=":= sku.skuCode" changeEvent="=: updateSkuCode(value)"
                       class=':= sku.propErrors.get("skuCode") == null ? "fieldInput" : "fieldInputError"'
                       placeholder="code for tracking orders and inventory"/>
             </div>
-            <div id="skuCodeError" class="formViewError"> <%= sku.propErrors.get("skuCode") %> </div>
-            <div id="barCodeView" class="formView">
+            <div id="skuCodeError" class="formError"> <%= sku.propErrors.get("skuCode") %> </div>
+            <div id="barCodeView" class="formField">
                <label for="barCodeField">Bar code</label>
                <input type="text" id="barCodeField" value=":=: sku.barCode"
                       class=':= sku.propErrors.get("barCode") == null ? "fieldInput" : "fieldInputError"'
                       placeholder="optional"/>
             </div>
-            <div id="barCodeError" class="formViewError"> <%= sku.propErrors.get("barCode") %> </div>
-            <div id="priceView" class="formView">
+            <div id="barCodeError" class="formError"> <%= sku.propErrors.get("barCode") %> </div>
+            <div id="priceView" class="formField">
                <label for="priceField">Price</label>
                <input type="text" id="priceField" value=":= sku.priceStr" changeEvent="=: sku.updatePrice(value)"
                       class=':= sku.propErrors.get("price") == null ? "fieldInput" : "fieldInputError"'/>
             </div>
-            <div id="priceError" class="formViewError"> <%= sku.propErrors.get("price") %> </div>
-            <div id="discountPriceView" class="formView">
+            <div id="priceError" class="formError"> <%= sku.propErrors.get("price") %> </div>
+            <div id="discountPriceView" class="formField">
                <label for="discountPriceField">Discount price</label>
                <input type="text" id="discountPriceField" value=":= sku.discountPriceStr"
                       class=':= sku.propErrors.get("discountPrice") == null ? "fieldInput" : "fieldInputError"'
                       changeEvent="=: sku.updateDiscount(value)" placeholder="optional"/>
             </div>
-            <div id="discountPriceError" class="formViewError">
+            <div id="discountPriceError" class="formError">
                <%= sku.propErrors.get("discountPrice") %>
             </div>
             <div id="physicalSkuView" visible=":= psku != null">
-               <div id="weightView" class="formView">
+               <div id="weightView" class="formField">
                   <label for="weightField">Weight</label>
                   <input type="text" id="weightField" changeEvent="=: psku.updateWeight(value)"
                          class=':= sku.propErrors.get("weight") == null ? "fieldInput" : "fieldInputError"'/>
                </div>
-               <div id="weightError" class="formViewError">
+               <div id="weightError" class="formError">
                   <%= sku.propErrors.get("weight") %>
                </div>
-               <div id="heightView" class="formView">
+               <div id="heightView" class="formField">
                   <label for="heightField">Height</label>
                   <input type="text" id="heightField" changeEvent="=: psku.updateHeight(value)"
                          class=':= sku.propErrors.get("height") == null ? "fieldInput" : "fieldInputError"'/>
 
                </div>
-               <div id="heightError" class="formViewError">
+               <div id="heightError" class="formError">
                   <%= sku.propErrors.get("height") %>
                </div>
-               <div id="lengthView" class="formView">
+               <div id="lengthView" class="formField">
                   <label for="lengthField">Length</label>
                   <input type="text" id="lengthField" changeEvent="=: psku.updateLength(value)"
                          class=':= sku.propErrors.get("length") == null ? "fieldInput" : "fieldInputError"'/>
                </div>
-               <div id="lengthError" class="formViewError">
+               <div id="lengthError" class="formError">
                   <%= sku.propErrors.get("length") %>
                </div>
                <div class="checkFormView">
                   <input type="checkbox" id="inventoryCheckbox" checked=":= psku.inventory != null" changeEvent="=: updateManageInventory(checked)"/>
                   <label for="inventoryCheckbox">Manage inventory?</label>
                </div>
-               <div id="inventoryView" visible=":= psku.inventory != null" class="formView">
+               <div id="inventoryView" visible=":= psku.inventory != null" class="formField">
                   <label for="quantityField">Quantity</label>
                   <input type="number" min="0" id="quantityField" value=":= String.valueOf(psku.inventory.quantity)" changeEvent="=: psku.inventory.updateQuantityStr(value)"/>
                </div>
-               <div id="nextAvailView" class="formView" visible=":= psku.inventory != null">
+               <div id="nextAvailView" class="formField" visible=":= psku.inventory != null">
                   <label for="nextAvailField">Next available</label>
                   <input disabled=":= psku.inventory.quantity > 0"
                          type="date" id="nextAvailField"
@@ -164,7 +165,7 @@
                </div>
                <div id="optionsView" visible=':= showOptionsView'>
                   <div class="subFormTitle">Sku options</div>
-                  <div id="optionsSchemeFieldView" class="formView">
+                  <div id="optionsSchemeFieldView" class="formField">
                      <label for="optionSchemeField">Option scheme name</label>
                      <input id="optionsSchemeField" type="text" list="= optionSchemeSuggestions.getId()"
                             value=":= sku.optionScheme == null ? "" : sku.optionScheme.schemeName"
@@ -179,7 +180,7 @@
                      <input type="button" value="Edit option scheme" class="rightButton"
                             clickEvent="=: doEditOptionScheme()" visible=":= editableOptionScheme"/>
                   </div>
-                  <div class="formViewStatus"><%= optionStatusMessage %></div>
+                  <div class="formStatus"><%= optionStatusMessage %></div>
                   <div id="optionSchemeView" class=':= showOptionSchemeView ? "subFormView detailView openDetail" : "subFormView detailView closedDetail"'>
                      <%! int openSchemeHeight = 500;
                      scrollHeight =: scrollHeight > 200 ? openSchemeHeight = scrollHeight : null; %>
@@ -189,13 +190,13 @@
                      }
                      </style>
                      <div class="subFormTitle"><%= editableOptionScheme ? "Update" : "New" %> option scheme</div>
-                     <div class="formView">
+                     <div class="formField">
                         <label for="schemeNameField">Name</label>
                         <input id="schemeNameField" type="text" value=":=: optionScheme.schemeName"
                                class=':= optionScheme.propErrors.get("schemeName") == null ? "fieldInput" : "fieldInputError"'
                                changeEvent="=: validateOptionSchemeName()"/>
                      </div>
-                     <div class="formViewError"><%= optionScheme.propErrors.get("schemeName") %></div>
+                     <div class="formError"><%= optionScheme.propErrors.get("schemeName") %></div>
 
                      <div class="boxTitle">List of options</div>
                      <div class="optionListView">
@@ -215,7 +216,7 @@
                            }
                         %>
                         <div id="newOptionView" class="newOptionView" repeat=":= optionScheme.options" repeatVarName="productOption">
-                           <div id="optionFormView" class="formView">
+                           <div id="optionFormView" class="formField">
                               <label for="optionNameField">Option #<%= newOptionView.this.repeatIndex+1 %> name</label>
                               <input type="text" id="optionNameField" value=":=: productOption.optionName"
                                      changeEvent="=: refreshOptionScheme()"
@@ -264,8 +265,8 @@
                         <input type="button" class="rightButton" value="Done editing option scheme" clickEvent="=: doneEditingOptionScheme()"
                                visible=":= editableOptionScheme"/>
                      </div>
-                     <div class="formViewError"><%= optionErrorMessage %></div>
-                     <div class="formView confirmButtons" visible=":= !editableOptionScheme">
+                     <div class="formError"><%= optionErrorMessage %></div>
+                     <div class="formField confirmButtons" visible=":= !editableOptionScheme">
                         <input type="button" value="Save option scheme" clickEvent="=: completeNewOptionScheme()"/>
                         <input type="button" class="rightButton" value="Cancel" clickEvent="=: cancelNewOptionScheme()"/>
                      </div>
@@ -338,14 +339,14 @@
                   </div>
                </div>
             </div>
-            <div id="addSkuButtons" class="formView confirmButtons" visible=":= addSkuInProgress">
+            <div id="addSkuButtons" class="formField confirmButtons" visible=":= addSkuInProgress">
                <input type="button" clickEvent="=: completeAddSku()" value="Add Sku"/>
                <input type="button" class="rightButton" clickEvent="=: cancelAddSku()" value="Cancel"/>
-               <div id="alt" class="formView confirmButtons">
+               <div id="alt" class="formField confirmButtons">
                   <input type="button" clickEvent="=: doneEditingSku()" value="Done editing sku"/>
                </div>
             </div>
-            <div class="formViewError"><%= skuAddErrorMessage %></div>
+            <div class="formError"><%= skuAddErrorMessage %></div>
          </div>
 
          <div id="addMediaView" class="subFormView">
@@ -365,7 +366,7 @@
                   <span class="mediaInfoText"><%= media.filterPattern %></span>
                </div>
             </div>
-            <div id="findMedia" class="formView">
+            <div id="findMedia" class="formField">
                <label for="findMediaField">Add existing media</label>
                <input id="findMediaField" type="text" list="= findMediaSuggestions.getId()" value=":=: findMediaText"
                       keyUpEvent="=: updateMatchingMedia(value)" changeEvent="=: updateProductMedia(value)" />
@@ -373,7 +374,7 @@
                   <option repeat=":= matchingMedia" repeatVarName="matchedMedia" value=":= matchedMedia.uniqueFileName"/>
                </datalist>
             </div>
-            <form id="addMediaForm" class="formView" method="post" enctype="multipart/form-data">
+            <form id="addMediaForm" class="formField" method="post" enctype="multipart/form-data">
             <%!
                submitResult =: addMediaResult(submitResult);
                submitError =: addMediaError(submitError);
@@ -385,14 +386,14 @@
             </form>
             <div>
                <div visible=":= !addMediaForm.submitInProgress">
-                  <div class="formViewError"><%= mediaErrorMessage %></div>
-                  <div class="formViewStatus"><%= mediaStatusMessage%></div>
+                  <div class="formError"><%= mediaErrorMessage %></div>
+                  <div class="formStatus"><%= mediaStatusMessage%></div>
                   <div id="alt">
                      Uploading...
                   </div>
                </div>
             </div>
-            <div id="mediaOptionsView" visible=":= sku != null && optionScheme != null" class="formView">
+            <div id="mediaOptionsView" visible=":= sku != null && optionScheme != null" class="formField">
                <label for="mediaOptionRepeat">For options</label>
                <span id="mediaOptionRepeat" repeat=":= optionScheme.options" repeatVarName="productOption">
                   <select optionDataSource=":= productOption.optionFilterList" selectedIndex="0" class=':= mediaOptionRepeat.this.repeatIndex > 0 ? "rightButton" : ""'
@@ -402,9 +403,13 @@
             </div>
          </div>
 
-         <div id="addCancel" visible=":= addInProgress" class="formView confirmButtons">
+         <div id="addCancel" visible=":= addInProgress" class="formField confirmButtons">
             <input type="button" value="Save product" disabled=":= product == null || product.propErrors != null" clickEvent="=: doAddProduct()"/>
             <input type="button" class="rightButton" value="Cancel" clickEvent="=: cancelAddProduct()"/>
+
+            <div id="alt" class="formField confirmButtons">
+               <input type="button" value="Done editing product" clickEvent="=: doneEditingProduct()"/>
+            </div>
          </div>
       </div>
 
@@ -423,6 +428,7 @@
          <span class="headerColumn">Sku code</span>
          <span class="headerColumn">Options</span>
          <span class="headerColumn">Visible</span>
+         <span class="headerColumn">Remove</span>
       </div>
       <div id="productElemView" repeat=":= productList" repeatVarName="productElem"
            class=':= productElem == product ? "selectedProductRow" : "productRow"'>

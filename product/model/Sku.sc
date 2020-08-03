@@ -39,6 +39,9 @@ class Sku implements IPropValidator {
    @DBPropertySettings(persist=false)
    Map<String,String> propErrors = null;
 
+   @DBPropertySettings(indexed=true)
+   Storefront store;
+
    boolean getInStock() {
       return available;
    }
@@ -53,6 +56,7 @@ class Sku implements IPropValidator {
       other.price = price;
       other.discountPrice = discountPrice;
       other.barCode = barCode;
+      other.store = store;
    }
 
    BigDecimal getPriceToUse() {

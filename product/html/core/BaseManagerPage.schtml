@@ -8,14 +8,54 @@
    </head>
 
    <body>
-      <div id="mgrFrame">
-         <select id="storeSelect" optionDataSource=":= storeMgr.storeList" changeEvent="=: storeMgr.changeStore((Storefront) selectedValue)" selectedIndex=":= storeMgr.storeIndex"/>
-         <span id="mgrNav">
+      <div id="mgrFrame" visible=":= currentUserView.loginStatus == LoginStatus.LoggedIn">
+         <select id="storeSelect" optionDataSource=":= storeMgr.storeSelectList"
+                 changeEvent="=: storeMgr.changeStoreWithIndex(selectedIndex)"
+                 disabled=":= storeMgr.showCreateView"
+                 selectedIndex=":= storeMgr.storeIndex"/>
+         <input type="button" value="Create store" visible=":= !storeMgr.showCreateView"
+                clickEvent="=: storeMgr.startAddStore()" class="rightButton"/>
+         <span id="mgrNav" visible=":= storeMgr.validStore">
             <a href="/manage/order">Order</a>
             <a href="/manage/customer">Customer</a>
             <a href="/manage/product">Product</a>
             <a href="/manage/media">Media</a>
          </span>
+         <div class="formError"><%= storeMgr.errorMessage %></div>
+
+         <div id="createStoreView" class="formContainer" visible=":= storeMgr.showCreateView">
+            <div class="formTitle">Add store</div>
+            <div class="formField">
+               <label for="storeNameField">Store name</label>
+               <input type="text" id="storeNameField" placeholder="display name"
+                      value=":= storeMgr.store.storeName" changeEvent="=: storeMgr.updateStoreName(value)"/>
+            </div>
+            <div class="formField">
+               <label for="storePathNameField">Store path name</label>
+               <input type="text" id="storePathNameField" placeholder="browser location name (no spaces)"
+                      value=":= storeMgr.store.storePathName" changeEvent="=: storeMgr.updatePathName(value)"/>
+            </div>
+            <div class="formField confirmButtons">
+               <input type="button" value="Save store" clickEvent="=: storeMgr.completeAddStore()"/>
+               <input type="button" value="Cancel" clickEvent="=: storeMgr.cancelAddStore()" class="rightButton"/>
+            </div>
+         </div>
+
+         <div id="alt">
+            <div id="loginView" visible=":= currentUserView.loginStatus == LoginStatus.NotLoggedIn">
+               <div class="formTitle">Login to manage stores</div>
+               <div class="formField">
+                  <label for="userNameField">User name</label>
+                  <input type="text" placeholder="user name" value=":=: currentUserView.userName"/>
+               </div>
+               <div class="formField">
+                  <label for="passwordField">Password</label>
+                  <input type="password" placeholder="password" value=":=: currentUserView.password"/>
+               </div>
+               <input type="submit" value="Log in" clickEvent="=: currentUserView.login()"/>
+            </div>
+            <div class="formError"><%= currentUserView.userViewError %></div>
+         </div>
       </div>
    </body>
 </html>

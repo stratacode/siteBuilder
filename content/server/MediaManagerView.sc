@@ -6,7 +6,7 @@ MediaManagerView {
    static final List<String> searchOrderBy = Arrays.asList("-lastModified");
 
    static ArrayList<ManagedMedia> searchForText(String text) {
-      return new ArrayList<ManagedMedia>((List<ManagedMedia>)ManagedMedia.getDBTypeDescriptor().searchQuery(null, text, searchOrderBy, -1, -1));
+      return new ArrayList<ManagedMedia>((List<ManagedMedia>)ManagedMedia.getDBTypeDescriptor().searchQuery(text, null, null, null, searchOrderBy, -1, -1));
    }
 
    void doSearch() {

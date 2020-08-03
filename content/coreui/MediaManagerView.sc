@@ -1,4 +1,6 @@
-@Sync @sc.js.JSSettings(dependentTypes="sc.content.ManagedImage")
+@Sync
+@sc.js.JSSettings(dependentTypes="sc.content.ManagedImage")
+@sc.obj.SyncTypeFilter(typeNames={"sc.content.ManagedImage"})
 class MediaManagerView {
    MediaManager mediaManager;
 

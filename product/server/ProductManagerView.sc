@@ -13,9 +13,16 @@ ProductManagerView {
    }
 
    static final List<String> searchOrderBy = Arrays.asList("-lastModified");
+   static final List<String> searchStore = Arrays.asList("store");
 
-   static List<Product> searchForText(String text) {
-      return (List<Product>) Product.getDBTypeDescriptor().searchQuery(null, text, searchOrderBy, -1, -1);
+   List<Object> getSearchStoreValues() {
+      ArrayList<Object> res = new ArrayList<Object>();
+      res.add(store);
+      return res;
+   }
+
+   List<Product> searchForText(String text) {
+      return (List<Product>) Product.getDBTypeDescriptor().searchQuery(text, searchStore, getSearchStoreValues(), null, searchOrderBy, -1, -1);
    }
 
    void doSearch() {
@@ -126,7 +133,7 @@ ProductManagerView {
          return;
       }
       List<Object> propValues = Arrays.asList(prod);
-      List<LineItem> refsToProd = (List<LineItem>) LineItem.getDBTypeDescriptor().findBy(propValues, null, Arrays.asList("product"), null, 0, 1);
+      List<LineItem> refsToProd = (List<LineItem>) LineItem.getDBTypeDescriptor().findBy(Arrays.asList("product"), propValues, null, null, 0, 1);
       if (refsToProd != null && refsToProd.size() > 0) {
          errorMessage = "Unable to remove product that's in a shopping cart or order";
          return;
@@ -201,6 +208,7 @@ ProductManagerView {
 
    void initTemporarySku() {
       sku = (Sku) Sku.getDBTypeDescriptor().createInstanceOfType(skuTypeId);
+      sku.store = store;
       sku.skuCode = "";
       if (sku instanceof PhysicalSku)
          psku = (PhysicalSku) sku;
@@ -302,6 +310,12 @@ ProductManagerView {
       resetForm();
    }
 
+   void doneEditingProduct() {
+      product = null;
+      productSaved = false;
+      clearFormErrors();
+   }
+
    void updateSkuType(int typeId) {
       if (typeId == skuTypeId)
          return;
@@ -347,7 +361,7 @@ ProductManagerView {
    void updateMatchingSkus(String pattern) {
       if (pattern == null || pattern.length() < 2)
          return;
-      List<Sku> allMatches = (List<Sku>) Sku.getDBTypeDescriptor().searchQuery(null, pattern, searchOrderBy, 0, 20);
+      List<Sku> allMatches = (List<Sku>) Sku.getDBTypeDescriptor().searchQuery(pattern, searchStore, searchStoreValues, null, searchOrderBy, 0, 20);
       TreeSet<String> found = new TreeSet<String>();
       ArrayList<Sku> res = new ArrayList<Sku>();
       for (Sku match:allMatches) {
@@ -395,7 +409,7 @@ ProductManagerView {
          return;
       TreeSet<String> found = new TreeSet<String>();
       ArrayList<Category> res = new ArrayList<Category>();
-      List<Category> allMatches = (List<Category>) Category.getDBTypeDescriptor().searchQuery(null, pattern, searchOrderBy, 0, 20);
+      List<Category> allMatches = (List<Category>) Category.getDBTypeDescriptor().searchQuery(pattern, null, null, null, searchOrderBy, 0, 20);
       for (Category match:allMatches) {
          if (!found.contains(match.pathName)) {
             res.add(match);
@@ -408,6 +422,12 @@ ProductManagerView {
    }
 
    void updateParentCategory(String pathName) {
+      if (pathName == null || pathName.trim().length() == 0) {
+         product.parentCategory = null;
+         product.removePropError("parentCategory");
+         return;
+      }
+
       List<Category> cats = Category.findByPathName(pathName, store, 0, 10);
       boolean newProduct = product.getDBObject().isTransient();
       if (cats != null && cats.size() > 0) {
@@ -428,7 +448,7 @@ ProductManagerView {
          return;
       TreeSet<String> found = new TreeSet<String>();
       ArrayList<ManagedMedia> res = new ArrayList<ManagedMedia>();
-      List<ManagedMedia> allMatches = (List<ManagedMedia>) ManagedMedia.getDBTypeDescriptor().searchQuery(null, pattern, searchOrderBy, 0, 20);
+      List<ManagedMedia> allMatches = (List<ManagedMedia>) ManagedMedia.getDBTypeDescriptor().searchQuery(pattern, null, null, null, searchOrderBy, 0, 20);
       for (ManagedMedia match:allMatches) {
          if (!found.contains(match.uniqueFileName)) {
             res.add(match);
@@ -615,7 +635,7 @@ ProductManagerView {
    void updateMatchingOptionSchemes(String pattern) {
       if (pattern == null)
          pattern = "";
-      List<OptionScheme> allMatches = (List<OptionScheme>) OptionScheme.getDBTypeDescriptor().searchQuery(null, pattern, searchOrderBy, 0, 20);
+      List<OptionScheme> allMatches = (List<OptionScheme>) OptionScheme.getDBTypeDescriptor().searchQuery(pattern, null, null, null, searchOrderBy, 0, 20);
       TreeSet<String> found = new TreeSet<String>();
       ArrayList<OptionScheme> res = new ArrayList<OptionScheme>();
       for (OptionScheme match:allMatches) {

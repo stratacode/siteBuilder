@@ -1,7 +1,20 @@
 /** The top-level model object for an online store */
 @DBTypeSettings
-class Storefront {
+class Storefront implements IPropValidator {
    public final static int MaxQuantity = 100000;
+
+   List<UserProfile> storeAdmins;
+
+   // Inner class used without DBTypeSettings with FindBy. Generates a findBy method that will create
+   // an instance of the inner class (and a prototype of the outer one if necessary), populate properties
+   // from the findBy parameters and return the typed result
+   //     List<Storefront> res = proto.storeForAdmin.findBy(currentUser, true);
+
+   // @FindBy
+   //class storeForAdmin {
+   //   UserProfile currentUser;
+   //   boolean userIsAdmin := storeAdmins.contains(currentUser);
+   //}
 
    @Sync(resetState=true,initDefault=true)
    String storeName;
@@ -32,4 +45,8 @@ class Storefront {
    public String toString() {
       return storeName;
    }
+
+   @Bindable
+   @DBPropertySettings(persist=false)
+   Map<String,String> propErrors = null;
 }
