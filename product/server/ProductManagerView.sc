@@ -43,6 +43,11 @@ ProductManagerView {
             optionMediaFilter = null;
             editableOptionScheme = false;
             productSaved = false;
+
+            categorySaved = false;
+            category = null;
+            showCategoryView = false;
+            categoryEditable = false;
          }
          else {
             product = toSel;
@@ -61,6 +66,13 @@ ProductManagerView {
             else
                skuEditable = false;
             productSaved = true;
+            category = product.parentCategory;
+            if (category != null && ((DBObject) category.getDBObject()).isActive()) {
+               categoryEditable = true;
+               categorySaved = true;
+            }
+            else
+               categoryEditable = false;
          }
       }
    }
@@ -195,6 +207,24 @@ ProductManagerView {
       skuAddErrorMessage = skuFindErrorMessage = skuStatusMessage = null;
    }
 
+   void startAddCategory() {
+      if (addCategoryInProgress)
+         return;
+      initTemporaryCategory();
+      addCategoryInProgress = true;
+      showCategoryView = true;
+      categoryStatusMessage = categoryErrorMessage = null;
+      categoryEditable = false;
+      autoUpdateCategoryPath = true;
+   }
+
+   void initTemporaryCategory() {
+      category = (Category) Category.getDBTypeDescriptor().createInstance();
+      category.store = store;
+      category.name = "";
+      category.pathName = "";
+   }
+
    void startAddSku() {
       if (addSkuInProgress)
          return;
@@ -261,6 +291,49 @@ ProductManagerView {
       showSkuView = false;
    }
 
+   void completeAddCategory() {
+      if (!addCategoryInProgress)
+         return;
+
+      try {
+         category.validateProperties();
+         if (category.propErrors == null) {
+            category.dbInsert(false);
+
+            if (!addInProgress)
+               product.parentCategory = category;
+            addCategoryInProgress = false;
+            showCategoryView = false;
+            categoryStatusMessage = "Sku added";
+            categoryErrorMessage = null;
+            categoryEditable = true;
+         }
+         else {
+            categoryErrorMessage = category.formatErrors();
+            categoryStatusMessage = null;
+         }
+      }
+      catch (IllegalArgumentException exc) {
+         categoryStatusMessage = null;
+         categoryErrorMessage = "System error: " + exc;
+      }
+   }
+
+   void cancelAddCategory() {
+      addCategoryInProgress = false;
+      category = null;
+      categoryErrorMessage = null;
+      categoryStatusMessage = "Add category cancelled";
+      showCategoryView = false;
+   }
+
+   void doneEditingCategory() {
+      addCategoryInProgress = false;
+      categoryErrorMessage = null;
+      categoryStatusMessage = null;
+      showCategoryView = false;
+   }
+
    void doAddProduct() {
       clearFormErrors();
       if (!product.validateProperties()) {
@@ -283,8 +356,8 @@ ProductManagerView {
 
             // This after we have inserted it to prevent the category from trying to insert the product due to the
             // bi-directional parentCategory/products relationships
-            if (defaultCategory != null)
-               product.parentCategory = defaultCategory;
+            if (category != null)
+               product.parentCategory = category;
 
             ArrayList<Product> newList = new ArrayList<Product>();
             newList.add(product);
@@ -311,6 +384,12 @@ ProductManagerView {
    }
 
    void doneEditingProduct() {
+      clearFormErrors();
+      if (!product.validateProperties()) {
+         errorMessage = product.formatErrors();
+         productSaved = true;
+         return;
+      }
       product = null;
       productSaved = false;
       clearFormErrors();
@@ -437,7 +516,7 @@ ProductManagerView {
          // Not setting product.parentCategory here for new products because it ends up inserting the product
          // because of the bi-directional relationship - the category is already added so once we set the product
          // to point to the category, the category wants to point to the product and adds it.
-         defaultCategory = cats.get(0);
+         category = cats.get(0);
       }
       else
          product.addPropError("parentCategory", "No category with path name: " + pathName);

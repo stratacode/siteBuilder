@@ -18,7 +18,7 @@ class StoreManagerView {
 
    int storeIndex;
 
-   boolean autoUpdatePath = false;
+   boolean autoUpdatePath = true;
    boolean storeSaved = false;
 
    void updateStoreName(String val) {

@@ -35,7 +35,21 @@ class ProductManagerView {
    boolean productSaved;
 
    @Sync(resetState=true, initDefault=true)
-   Category defaultCategory;
+   Category category;
+
+   @Sync(resetState=true, initDefault=true)
+   boolean addCategoryInProgress;
+   @Sync(resetState=true, initDefault=true)
+   boolean showCategoryView;
+   @Sync(resetState=true, initDefault=true)
+   boolean categoryEditable;
+   @Sync(resetState=true, initDefault=true)
+   boolean categorySaved = false;
+
+   boolean autoUpdateCategoryPath = false;
+
+   String categoryErrorMessage;
+   String categoryStatusMessage;
 
    List<Sku> matchingSkus;
 
@@ -69,8 +83,9 @@ class ProductManagerView {
       searchText = "";
       productList = null;
       product = null;
-      defaultCategory = null;
+      category = null;
       productSaved = false;
+      categorySaved = false;
       clearFormErrors();
    }
 
@@ -86,6 +101,8 @@ class ProductManagerView {
       clearMediaErrors();
       optionErrorMessage = null;
       optionStatusMessage = null;
+
+      categoryErrorMessage = categoryStatusMessage = null;
    }
 
    void clearMediaErrors() {
@@ -127,5 +144,24 @@ class ProductManagerView {
          return;
       autoUpdatePath = false;
       product.pathName = pathName;
+   }
+
+   void updateCategoryName(String val) {
+      if (category == null)
+         return;
+      category.name = val;
+      if (autoUpdateCategoryPath && (val != null && val.length() > 0))
+         category.pathName = CatalogElement.convertToPathName(val);
+      if (categorySaved)
+         category.validateProperties();
+      else
+         category.validateProp("name");
+   }
+
+   void updateCategoryPathName(String pathName) {
+      if (category == null)
+         return;
+      autoUpdateCategoryPath = false;
+      category.pathName = pathName;
    }
 }

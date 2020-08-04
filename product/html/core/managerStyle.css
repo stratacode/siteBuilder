@@ -144,7 +144,10 @@
 }
 
 .mediaEmptyTitle {
-   padding: 25px;
+   padding-left: 21%;
+   padding-right: 25px;
+   padding-top: 25px;
+   padding-bottom: 25px;
 }
 
 .mediaImageList, .mediaEmptyTitle {
@@ -289,7 +292,7 @@
    font-size: 85%;
 }
 
-.formStatus {
+.formStatus, .formMessage, .mediaEmptyTitle {
    font-style: italic;
    font-size: 85%;
 }

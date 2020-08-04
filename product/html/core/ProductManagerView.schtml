@@ -29,27 +29,64 @@
                    class=':= product.propErrors.get("pathName") == null ? "fieldInput" : "fieldInputError"'
                    placeholder="browser location name (no spaces)"/>
          </div>
+         <div id="visibleView" class="formField">
+            <label for="visibleField">Product is available</label>
+            <input id="visibleField" type="checkbox" checked=":=: product.visible"/>
+         </div>
          <div id="pathNameErrorView" class="formError"><%= product.propErrors.get("pathName") %></div>
          <div id="parentCategoryView" class="formField">
             <label for="parentCategoryField">Parent category path</label>
             <input id="parentCategoryField" type="text" list="= parentCategorySuggestions.getId()"
                    class=':= product.propErrors.get("parentCategory") == null ? "fieldInput" : "fieldInputError"'
-                   value=':= defaultCategory == null ? "" : defaultCategory.pathName'
-                   keyUpEvent="=: updateMatchingCategories(value)" changeEvent="=: updateParentCategory(value)" />
+                   value=':= category == null ? "" : category.pathName'
+                   keyUpEvent="=: updateMatchingCategories(value)" changeEvent="=: updateParentCategory(value)"
+                   placeholder="search for category"/>
             <datalist id="parentCategorySuggestions">
                <option repeat=":= matchingCategories" repeatVarName="matchingCat" value=":= matchingCat.pathName"/>
             </datalist>
+            <input class="rightButton" type="button" value="Add Category" clickEvent="=: startAddCategory()" disabled=":= showCategoryView"/>
+            <input visible=":= categoryEditable" class="rightButton" type="button" value="Edit Category" clickEvent="=: showCategoryView = true"/>
          </div>
          <div id="parentCategoryErrorView" class="formError"><%= product.propErrors.get("parentCategory") %></div>
+         <div id="addCategoryView" class=':= showCategoryView ? "subFormView detailView openDetail" : "subFormView detailView closedDetail"'>
+            <%! int openCatViewHeight = 100;
+            scrollHeight =: scrollHeight > 50 ? openCatViewHeight = scrollHeight : null; %>
+            <style type="text/css">
+               #addCategoryView.openDetail {
+                  max-height: <%= openCatViewHeight + 100 %>px;
+               }
+            </style>
+            <%! boolean enableAddCategory := category == null || addCategoryInProgress; %>
+            <span class="subFormTitle"><%= enableAddCategory ? "Add Category" : "Update category" %></span>
+            <div id="catNameView" class="formField">
+               <label for="catNameField">Category name</label>
+               <input type="text" id="catNameField" value=":= category.name" changeEvent="=: updateCategoryName(value)"
+                      class=':= category.propErrors.get("name") == null ? "fieldInput" : "fieldInputError"'
+                      placeholder="display name"/>
+            </div>
+            <div id="catPathNameView" class="formField">
+               <label for="catPathNameField">Category path name</label>
+               <input type="text" id="catNameField" value=":= category.pathName" changeEvent="=: updateCategoryPathName(value)"
+                      class=':= category.propErrors.get("pathName") == null ? "fieldInput" : "fieldInputError"'
+                      placeholder="browser location name (no spaces)"/>
+            </div>
+            <div id="addCategoryButtons" class="formField confirmButtons" visible=":= addCategoryInProgress">
+               <input type="button" clickEvent="=: completeAddCategory()" value="Add Category"/>
+               <input type="button" class="rightButton" clickEvent="=: cancelAddCategory()" value="Cancel"/>
+               <div id="alt" class="formField confirmButtons">
+                  <input type="button" clickEvent="=: doneEditingCategory()" value="Done editing category"/>
+               </div>
+            </div>
+         </div>
 
          <div id="shortDescView" class="formField">
             <label for="shortDescField">Short description</label>
-            <input id="shortDescField" type="text" value=":=: product.shortDesc" class="wideTextField"/>
+            <input id="shortDescField" type="text" value=":=: product.shortDesc" class="wideTextField" placeholder="product summary"/>
          </div>
 
          <div id="longDescView" class="subFormView">
             <label for="longDescText" class="subFormTitle">Long description</label>
-            <div id="longDescText" class="longDescText" extends="HtmlTextEditor" placeholder="Enter product description..." content=":= product.longDesc"
+            <div id="longDescText" class="longDescText" extends="HtmlTextEditor" placeholder="detailed product description" content=":= product.longDesc"
                  content="=: longDescHtml = content"/>
          </div>
 
@@ -57,7 +94,9 @@
             <label for="skuField">Product Sku</label>
             <input id="skuField" type="text" list="= skuSuggestions.getId()" disabled=":= showSkuView"
                    class=':= skuFindErrorMessage == null ? "fieldInput" : "fieldInputError"'
-                   value=":= product.sku == null ? "" : product.sku.skuCode" keyUpEvent="=: updateMatchingSkus(value)" changeEvent="=: updateProductSku(value)"/>
+                   value=":= product.sku == null ? "" : product.sku.skuCode"
+                   keyUpEvent="=: updateMatchingSkus(value)" changeEvent="=: updateProductSku(value)"
+                   placeholder="search for skus"/>
             <datalist id="skuSuggestions">
                <option repeat=":= matchingSkus" repeatVarName="matchingSku" value=":= matchingSku.skuCode"/>
             </datalist>
@@ -369,7 +408,8 @@
             <div id="findMedia" class="formField">
                <label for="findMediaField">Add existing media</label>
                <input id="findMediaField" type="text" list="= findMediaSuggestions.getId()" value=":=: findMediaText"
-                      keyUpEvent="=: updateMatchingMedia(value)" changeEvent="=: updateProductMedia(value)" />
+                      keyUpEvent="=: updateMatchingMedia(value)" changeEvent="=: updateProductMedia(value)"
+                      placeholder="search for media files"/>
                <datalist id="findMediaSuggestions">
                   <option repeat=":= matchingMedia" repeatVarName="matchedMedia" value=":= matchedMedia.uniqueFileName"/>
                </datalist>

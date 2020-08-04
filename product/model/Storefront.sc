@@ -49,4 +49,12 @@ class Storefront implements IPropValidator {
    @Bindable
    @DBPropertySettings(persist=false)
    Map<String,String> propErrors = null;
+
+   static String validateStoreName(String storeName) {
+      return IPropValidator.validateRequired("store name", storeName);
+   }
+
+   static String validateStorePathName(String storePathName) {
+      return CatalogElement.validatePathName("store path name", storePathName);
+   }
 }
