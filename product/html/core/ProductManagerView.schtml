@@ -1,4 +1,4 @@
-<div>
+<div extends="ProductManager">
    <div id="findProductsView">
       <div id="findProductsForm" visible=":= !addInProgress" class="formField">
          <label for="searchTextField">Find products</label><input type="text" value=":=: searchText" changeEvent="=: doSearch()"/>
@@ -38,7 +38,7 @@
             <label for="parentCategoryField">Parent category path</label>
             <input id="parentCategoryField" type="text" list="= parentCategorySuggestions.getId()"
                    class=':= product.propErrors.get("parentCategory") == null ? "fieldInput" : "fieldInputError"'
-                   value=':= category == null ? "" : category.pathName'
+                   value=':= parentCategoryPathName'
                    keyUpEvent="=: updateMatchingCategories(value)" changeEvent="=: updateParentCategory(value)"
                    placeholder="search for category"/>
             <datalist id="parentCategorySuggestions">
@@ -48,7 +48,7 @@
             <input visible=":= categoryEditable" class="rightButton" type="button" value="Edit Category" clickEvent="=: showCategoryView = true"/>
          </div>
          <div id="parentCategoryErrorView" class="formError"><%= product.propErrors.get("parentCategory") %></div>
-         <div id="addCategoryView" class=':= showCategoryView ? "subFormView detailView openDetail" : "subFormView detailView closedDetail"'>
+         <div id="addCategoryView" class=':= showCategoryView ? "detailView openDetail" : "detailView closedDetail"'>
             <%! int openCatViewHeight = 100;
             scrollHeight =: scrollHeight > 50 ? openCatViewHeight = scrollHeight : null; %>
             <style type="text/css">
@@ -399,7 +399,7 @@
                   <span class="mediaInfoText"><%= media.uniqueFileName %></span>
                   <span class="mediaInfoText">
                      <input type="checkbox" checked=":= media == product.mainMedia" changeEvent="=: product.mainMedia = media"/> main
-                     <input type="image" class="clearMediaButton" src="/icons/x-square-sm.svg" clickEvent="=: removeProductMedia(media.id)"/>
+                     <input type="image" class="clearMediaButton" src="/icons/x-square-sm.svg" clickEvent="=: removeElementMedia(media.id)"/>
                   </span>
                   <span class="mediaInfoText"><input type="checkbox" checked=":=: product.visible"/> visible</span>
                   <span class="mediaInfoText"><%= media.filterPattern %></span>
@@ -408,7 +408,7 @@
             <div id="findMedia" class="formField">
                <label for="findMediaField">Add existing media</label>
                <input id="findMediaField" type="text" list="= findMediaSuggestions.getId()" value=":=: findMediaText"
-                      keyUpEvent="=: updateMatchingMedia(value)" changeEvent="=: updateProductMedia(value)"
+                      keyUpEvent="=: updateMatchingMedia(value)" changeEvent="=: updateElementMedia(value)"
                       placeholder="search for media files"/>
                <datalist id="findMediaSuggestions">
                   <option repeat=":= matchingMedia" repeatVarName="matchedMedia" value=":= matchedMedia.uniqueFileName"/>
@@ -444,7 +444,7 @@
          </div>
 
          <div id="addCancel" visible=":= addInProgress" class="formField confirmButtons">
-            <input type="button" value="Save product" disabled=":= product == null || product.propErrors != null" clickEvent="=: doAddProduct()"/>
+            <input type="button" value="Save product" disabled=":= product == null || product.propErrors != null" clickEvent="=: completeAddProduct()"/>
             <input type="button" class="rightButton" value="Cancel" clickEvent="=: cancelAddProduct()"/>
 
             <div id="alt" class="formField confirmButtons">

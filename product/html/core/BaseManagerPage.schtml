@@ -17,9 +17,11 @@
                 clickEvent="=: storeMgr.startAddStore()" class="rightButton"/>
          <span id="mgrNav" visible=":= storeMgr.validStore">
             <a href="/manage/order">Order</a>
-            <a href="/manage/customer">Customer</a>
+            <a href="/manage/user">User</a>
             <a href="/manage/product">Product</a>
+            <a href="/manage/category">Category</a>
             <a href="/manage/media">Media</a>
+            <a href="/manage/sku">Sku</a>
          </span>
          <div class="formError"><%= storeMgr.errorMessage %></div>
 

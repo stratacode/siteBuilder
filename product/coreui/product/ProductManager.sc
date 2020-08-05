@@ -1,22 +1,12 @@
-@Component
-@Sync
-class ProductManagerView {
-   Storefront store;
-
-   @Sync(resetState=true, initDefault=true)
-   String searchText;
-
+class ProductManager extends BaseManager {
    List<Product> productList;
 
    @Sync(resetState=true, initDefault=true)
    Product product;
 
-   /**
-    * Save the un-validated html in a temporary property so that it gets sync'd properly for session reset
-    * When this changes, a binding triggers updateLongDesc to do the validation and update product.longDesc
-    */
-   @Sync(resetState=true, initDefault=true)
-   String longDescHtml;
+   void updateElementInstance(CatalogElement el) {
+      product = (Product) el;
+   }
 
    int skuTypeId = 1; // 1 = Sku, 2 = PhysicalSku using dbTypeId annotation values
    Sku sku;
@@ -34,28 +24,7 @@ class ProductManagerView {
    boolean showSkuOptions;
    boolean productSaved;
 
-   @Sync(resetState=true, initDefault=true)
-   Category category;
-
-   @Sync(resetState=true, initDefault=true)
-   boolean addCategoryInProgress;
-   @Sync(resetState=true, initDefault=true)
-   boolean showCategoryView;
-   @Sync(resetState=true, initDefault=true)
-   boolean categoryEditable;
-   @Sync(resetState=true, initDefault=true)
-   boolean categorySaved = false;
-
-   boolean autoUpdateCategoryPath = false;
-
-   String categoryErrorMessage;
-   String categoryStatusMessage;
-
    List<Sku> matchingSkus;
-
-   List<Category> matchingCategories;
-
-   List<ManagedMedia> matchingMedia;
 
    List<OptionScheme> matchingOptionSchemes;
 
@@ -80,16 +49,16 @@ class ProductManagerView {
    List<Sku> invalidSkuOptions;
 
    void resetForm() {
-      searchText = "";
+      super.resetForm();
       productList = null;
-      product = null;
-      category = null;
+      element = null;
       productSaved = false;
-      categorySaved = false;
       clearFormErrors();
+      parentCategoryPathName = "";
    }
 
    void clearFormErrors() {
+      super.clearFormErrors();
       statusMessage = null;
       errorMessage = null;
 
@@ -97,17 +66,8 @@ class ProductManagerView {
       skuFindErrorMessage = null;
       skuStatusMessage = null;
 
-      uploadInProgress = false;
-      clearMediaErrors();
       optionErrorMessage = null;
       optionStatusMessage = null;
-
-      categoryErrorMessage = categoryStatusMessage = null;
-   }
-
-   void clearMediaErrors() {
-      mediaStatusMessage = null;
-      mediaErrorMessage = null;
    }
 
    String statusMessage;
@@ -115,11 +75,6 @@ class ProductManagerView {
    String skuFindErrorMessage;
    String skuAddErrorMessage;
    String skuStatusMessage;
-
-   String findMediaText;
-   String mediaStatusMessage;
-   String mediaErrorMessage;
-   boolean uploadInProgress = false;
 
    boolean optionSchemeSaved = false;
    String optionStatusMessage;
@@ -146,22 +101,7 @@ class ProductManagerView {
       product.pathName = pathName;
    }
 
-   void updateCategoryName(String val) {
-      if (category == null)
-         return;
-      category.name = val;
-      if (autoUpdateCategoryPath && (val != null && val.length() > 0))
-         category.pathName = CatalogElement.convertToPathName(val);
-      if (categorySaved)
-         category.validateProperties();
-      else
-         category.validateProp("name");
-   }
-
-   void updateCategoryPathName(String pathName) {
-      if (category == null)
-         return;
-      autoUpdateCategoryPath = false;
-      category.pathName = pathName;
+   String getElementType() {
+      return "product";
    }
 }

@@ -1,0 +1,146 @@
+<div extends="CategoryManager">
+   <div id="findCategoriesView">
+      <div id="findCategoriesForm" visible=":= !addCategoryInProgress" class="formField">
+         <label for="searchTextField">Find categories</label><input type="text" value=":=: searchText" changeEvent="=: doSearch()"/>
+         <input type="image" class="findMediaButton" src="/icons/search.svg" clickEvent="=: doSearch()"/>
+         <input type="image" class="clearMediaButton" src="/icons/x-square.svg" clickEvent="=: resetForm()"/>
+      </div>
+   </div>
+
+   <div id="extraFormView">
+      <div id="startAddView">
+         <div visible=":= !addCategoryInProgress" class="formField confirmButtons">
+            <input type="button" value="Add category" clickEvent="=: startAddCategory(false)" />
+            <input type="button" class="rightButton" visible=":= category != null" value="Copy category" clickEvent="=: startAddCategory(true)"/>
+         </div>
+      </div>
+
+      <div id="detailFormView" class="formContainer" visible=':= category != null'>
+         <div class="formTitle"> <%= addCategoryInProgress ? "Unsaved category" : "Update category" %></div>
+         <div id="nameFieldView" class="formField">
+            <label for="nameField">Category name</label>
+            <input id="nameField" type="text" value=":=: category.name" changeEvent="=: updateCategoryName(value)"
+                   class=':= category.propErrors.get("name") == null ? "fieldInput" : "fieldInputError"' placeholder="display name"/>
+         </div>
+         <div id="nameErrorView" class="formError"><%= category.propErrors.get("name") %></div>
+         <div id="pathNameView" class="formField">
+            <label for="pathNameField">Path name</label>
+            <input id="pathNameField" type="text" value=":= category.pathName" changeEvent="=: updateCategoryPathName(value)"
+                   class=':= category.propErrors.get("pathName") == null ? "fieldInput" : "fieldInputError"'
+                   placeholder="browser location name (no spaces)"/>
+         </div>
+         <div id="visibleView" class="formField">
+            <label for="visibleField">Category is available</label>
+            <input id="visibleField" type="checkbox" checked=":=: category.visible"/>
+         </div>
+         <div id="pathNameErrorView" class="formError"><%= category.propErrors.get("pathName") %></div>
+         <div id="parentCategoryView" class="formField">
+            <label for="parentCategoryField">Parent category path</label>
+            <input id="parentCategoryField" type="text" list="= parentCategorySuggestions.getId()"
+                   class=':= category.propErrors.get("parentCategory") == null ? "fieldInput" : "fieldInputError"'
+                   value=':= parentCategoryPathName'
+                   keyUpEvent="=: updateMatchingCategories(value)" changeEvent="=: updateParentCategory(value)"
+                   placeholder="search for category"/>
+            <datalist id="parentCategorySuggestions">
+               <option repeat=":= matchingCategories" repeatVarName="matchingCat" value=":= matchingCat.pathName"/>
+            </datalist>
+         </div>
+         <div id="parentCategoryErrorView" class="formError"><%= category.propErrors.get("parentCategory") %></div>
+
+         <div id="shortDescView" class="formField">
+            <label for="shortDescField">Short description</label>
+            <input id="shortDescField" type="text" value=":=: category.shortDesc" class="wideTextField" placeholder="category summary"/>
+         </div>
+
+         <div id="longDescView" class="subFormView">
+            <label for="longDescText" class="subFormTitle">Long description</label>
+            <div id="longDescText" class="longDescText" extends="HtmlTextEditor" placeholder="detailed category description" content=":= category.longDesc"
+                 content="=: longDescHtml = content"/>
+         </div>
+
+         <div id="addMediaView" class="subFormView">
+            <span class="subFormTitle">Category media</span>
+            <span id="mediaTitle" visible=":= category.altMedia != null && category.altMedia.size() > 0">
+               <span id="alt" class="mediaEmptyTitle">No media - add files from the library or upload new ones</span>
+            </span>
+            <div class="mediaImageList">
+               <div id="catMediaView" class="catMediaView" repeat=":= category.altMedia" repeatVarName="media">
+                  <img src=":= media.thumbUrl"/>
+                  <span class="mediaInfoText"><%= media.uniqueFileName %></span>
+                  <span class="mediaInfoText">
+                     <input type="checkbox" checked=":= media == category.mainMedia" changeEvent="=: category.mainMedia = media"/> main
+                     <input type="image" class="clearMediaButton" src="/icons/x-square-sm.svg" clickEvent="=: removeElementMedia(media.id)"/>
+                  </span>
+               </div>
+            </div>
+            <div id="findMedia" class="formField">
+               <label for="findMediaField">Add existing media</label>
+               <input id="findMediaField" type="text" list="= findMediaSuggestions.getId()" value=":=: findMediaText"
+                      keyUpEvent="=: updateMatchingMedia(value)" changeEvent="=: updateElementMedia(value)"
+                      placeholder="search for media files"/>
+               <datalist id="findMediaSuggestions">
+                  <option repeat=":= matchingMedia" repeatVarName="matchedMedia" value=":= matchedMedia.uniqueFileName"/>
+               </datalist>
+            </div>
+            <form id="addMediaForm" class="formField" method="post" enctype="multipart/form-data">
+            <%!
+               submitResult =: addMediaResult(submitResult);
+               submitError =: addMediaError(submitError);
+            %>
+               <label for="uploadFile">Add new media</label>
+               <input type="file" id="uploadFile" name="fileToUpload" accept=".jpg, .jpeg, .png"
+                      changeEvent="=: addMediaForm.submitFormData("/mediaUpload")"/>
+               <input id="mediaManagerIdField" type="hidden" name="mediaManagerId" value=":= String.valueOf(store.mediaManager.id)"/>
+            </form>
+            <div>
+               <div visible=":= !addMediaForm.submitInProgress">
+                  <div class="formError"><%= mediaErrorMessage %></div>
+                  <div class="formStatus"><%= mediaStatusMessage%></div>
+                  <div id="alt">
+                     Uploading...
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <div id="addCancel" visible=":= addCategoryInProgress" class="formField confirmButtons">
+            <input type="button" value="Save category" disabled=":= category == null || category.propErrors != null" clickEvent="=: completeAddCategory()"/>
+            <input type="button" class="rightButton" value="Cancel" clickEvent="=: cancelAddCategory()"/>
+
+            <div id="alt" class="formField confirmButtons">
+               <input type="button" value="Done editing category" clickEvent="=: doneEditingCategory()"/>
+            </div>
+         </div>
+      </div>
+
+      <span id="catStatusView" class="errorMessage" visible=":= categoryErrorMessage != null">
+         <%= categoryErrorMessage %>
+         <div id="alt" class="statusMessage"><%= categoryStatusMessage %></div>
+      </span>
+   </div>
+
+   <div id="listView">
+      <div class="headerRow" visible=":= categoryList != null && categoryList.size() > 0">
+         <span class="wideHeaderColumn">Name</span>
+         <span class="headerColumn">Media</span>
+         <span class="headerColumn">Pathname</span>
+         <span class="headerColumn">Category</span>
+         <span class="headerColumn">Visible</span>
+         <span class="headerColumn">Remove</span>
+      </div>
+      <div id="categoryElemView" repeat=":= categoryList" repeatVarName="categoryElem"
+           class=':= categoryElem == category ? "selectedCategoryRow" : "categoryRow"'>
+        <span class="wideHeaderColumn" clickEvent="=: doSelectCategory(categoryElem)">
+           <input type="checkbox" checked=":= category == categoryElem"/>
+           <%= categoryElem.name %>
+        </span>
+        <span class="headerColumn" clickEvent="=: doSelectCategory(categoryElem)">
+           <img src=":= categoryElem.mainMedia.thumbUrl"/>
+        </span>
+        <span class="headerColumn"> <%= categoryElem.pathName %> </span>
+        <span class="headerColumn"> <%= categoryElem.parentCategory == null ? "none" : categoryElem.parentCategory.pathName %> </span>
+        <span class="headerColumn"> <input type="checkbox" checked=":=: categoryElem.visible"/> </span>
+        <input type="image" class="removeCategoryButton" src="/icons/x-square.svg" clickEvent="=: removeCategory(categoryElem.id)"/>
+      </div>
+   </div>
+</div>

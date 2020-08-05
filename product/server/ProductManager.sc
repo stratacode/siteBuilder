@@ -3,24 +3,7 @@ import java.util.TreeSet;
 
 import sc.lang.html.HTMLElement;
 
-ProductManagerView {
-   store =: storeChanged();
-
-   longDescHtml =: updateLongDesc(longDescHtml);
-
-   void storeChanged() {
-      resetForm();
-   }
-
-   static final List<String> searchOrderBy = Arrays.asList("-lastModified");
-   static final List<String> searchStore = Arrays.asList("store");
-
-   List<Object> getSearchStoreValues() {
-      ArrayList<Object> res = new ArrayList<Object>();
-      res.add(store);
-      return res;
-   }
-
+ProductManager {
    List<Product> searchForText(String text) {
       return (List<Product>) Product.getDBTypeDescriptor().searchQuery(text, searchStore, getSearchStoreValues(), null, searchOrderBy, -1, -1);
    }
@@ -35,7 +18,7 @@ ProductManagerView {
       // We might have just removed this product so don't make it current again
       if (((DBObject)toSel.getDBObject()).isActive()) {
          if (toSel == product) {
-            product = null;
+            element = null;
             sku = null;
             skuEditable = false;
             showSkuView = false;
@@ -48,9 +31,11 @@ ProductManagerView {
             category = null;
             showCategoryView = false;
             categoryEditable = false;
+
+            parentCategoryPathName = "";
          }
          else {
-            product = toSel;
+            element = toSel;
             showSkuView = false;
             sku = product.sku;
             if (sku instanceof PhysicalSku)
@@ -73,6 +58,8 @@ ProductManagerView {
             }
             else
                categoryEditable = false;
+
+            parentCategoryPathName = category == null ? "" : category.pathName;
          }
       }
    }
@@ -152,8 +139,8 @@ ProductManagerView {
       }
       errorMessage = null;
       try {
-         int toRemIx = prod == null ? -1 : productList.indexOf(prod);
-         product = null;
+         int toRemIx = productList == null ? -1 : productList.indexOf(prod);
+         element = null;
          if (prod.parentCategory != null)
             prod.parentCategory = null; // Will remove this from category.products
          prod.dbDelete(false);
@@ -197,7 +184,7 @@ ProductManagerView {
          newProd.shortDesc = "";
       if (newProd.longDesc == null)
          newProd.longDesc = "";
-      product = newProd;
+      element = newProd;
 
       // Automatically set this based on the product name unless it's already specified
       autoUpdatePath = product.pathName == null || product.pathName.length() == 0;
@@ -205,24 +192,8 @@ ProductManagerView {
       addInProgress = true;
       skuEditable = product.sku != null;
       skuAddErrorMessage = skuFindErrorMessage = skuStatusMessage = null;
-   }
 
-   void startAddCategory() {
-      if (addCategoryInProgress)
-         return;
-      initTemporaryCategory();
-      addCategoryInProgress = true;
-      showCategoryView = true;
-      categoryStatusMessage = categoryErrorMessage = null;
-      categoryEditable = false;
-      autoUpdateCategoryPath = true;
-   }
-
-   void initTemporaryCategory() {
-      category = (Category) Category.getDBTypeDescriptor().createInstance();
-      category.store = store;
-      category.name = "";
-      category.pathName = "";
+      parentCategoryPathName = "";
    }
 
    void startAddSku() {
@@ -291,50 +262,7 @@ ProductManagerView {
       showSkuView = false;
    }
 
-   void completeAddCategory() {
-      if (!addCategoryInProgress)
-         return;
-
-      try {
-         category.validateProperties();
-         if (category.propErrors == null) {
-            category.dbInsert(false);
-
-            if (!addInProgress)
-               product.parentCategory = category;
-            addCategoryInProgress = false;
-            showCategoryView = false;
-            categoryStatusMessage = "Sku added";
-            categoryErrorMessage = null;
-            categoryEditable = true;
-         }
-         else {
-            categoryErrorMessage = category.formatErrors();
-            categoryStatusMessage = null;
-         }
-      }
-      catch (IllegalArgumentException exc) {
-         categoryStatusMessage = null;
-         categoryErrorMessage = "System error: " + exc;
-      }
-   }
-
-   void cancelAddCategory() {
-      addCategoryInProgress = false;
-      category = null;
-      categoryErrorMessage = null;
-      categoryStatusMessage = "Add category cancelled";
-      showCategoryView = false;
-   }
-
-   void doneEditingCategory() {
-      addCategoryInProgress = false;
-      categoryErrorMessage = null;
-      categoryStatusMessage = null;
-      showCategoryView = false;
-   }
-
-   void doAddProduct() {
+   void completeAddProduct() {
       clearFormErrors();
       if (!product.validateProperties()) {
          errorMessage = product.formatErrors();
@@ -363,7 +291,7 @@ ProductManagerView {
             newList.add(product);
             productList = newList;
             addInProgress = false;
-            product = null;
+            element = null;
             statusMessage = "Product " + newName + " created";
          }
          /*
@@ -390,7 +318,7 @@ ProductManagerView {
          productSaved = true;
          return;
       }
-      product = null;
+      element = null;
       productSaved = false;
       clearFormErrors();
    }
@@ -501,8 +429,10 @@ ProductManagerView {
    }
 
    void updateParentCategory(String pathName) {
+      parentCategoryPathName = pathName;
       if (pathName == null || pathName.trim().length() == 0) {
          product.parentCategory = null;
+         category = null;
          product.removePropError("parentCategory");
          return;
       }
@@ -518,171 +448,9 @@ ProductManagerView {
          // to point to the category, the category wants to point to the product and adds it.
          category = cats.get(0);
       }
-      else
+      else {
          product.addPropError("parentCategory", "No category with path name: " + pathName);
-   }
-
-   void updateMatchingMedia(String pattern) {
-      if (pattern == null || pattern.length() < 2)
-         return;
-      TreeSet<String> found = new TreeSet<String>();
-      ArrayList<ManagedMedia> res = new ArrayList<ManagedMedia>();
-      List<ManagedMedia> allMatches = (List<ManagedMedia>) ManagedMedia.getDBTypeDescriptor().searchQuery(pattern, null, null, null, searchOrderBy, 0, 20);
-      for (ManagedMedia match:allMatches) {
-         if (!found.contains(match.uniqueFileName)) {
-            res.add(match);
-            found.add(match.uniqueFileName);
-            if (res.size() == 10)
-               break;
-         }
       }
-      matchingMedia = res;
-   }
-
-   void updateProductMedia(String uniqueFileName) {
-      String fileName = MediaManager.removeRevisionFromFile(uniqueFileName);
-      List<ManagedMedia> mediaList = ManagedMedia.findByFileName(fileName);
-      mediaStatusMessage = null;
-      mediaErrorMessage = null;
-      findMediaText = uniqueFileName;
-
-      String newFilter = getMediaFilterPattern();
-
-      if (mediaList != null) {
-         for (ManagedMedia media:mediaList) {
-            if (media.uniqueFileName.equals(uniqueFileName)) {
-               List<ManagedMedia> prodMedia = product.altMedia;
-               boolean setList = false;
-               if (prodMedia == null) {
-                  prodMedia = new ArrayList<ManagedMedia>();
-                  setList = true;
-               }
-               else if (prodMedia.contains(media)) {
-                  if (newFilter != null) {
-                     String oldFilter = media.filterPattern;
-                     if (oldFilter != null && !oldFilter.equals(newFilter)) {
-                        mediaStatusMessage = "Changed filter pattern from: " + oldFilter + " to: " + newFilter;
-                        media.filterPattern = newFilter;
-                        findMediaText = "";
-                        return;
-                     }
-                  }
-                  mediaErrorMessage = "Media file: " + media.uniqueFileName + " already in product";
-                  findMediaText = "";
-                  return;
-               }
-
-               String extraStatus = "";
-               String oldFilter = media.filterPattern;
-               if (newFilter != null) {
-                  if (oldFilter != null && !oldFilter.equals(newFilter)) {
-                     extraStatus = " and replaced old options: " + oldFilter + " to: " + newFilter;
-                  }
-               }
-               else if (media.filterPattern != null) {
-                  extraStatus = " and cleared old options: " + oldFilter;
-               }
-               media.filterPattern = newFilter;
-
-               mediaStatusMessage = "Added file: " + media.uniqueFileName + " to media" + extraStatus;
-               prodMedia.add(media);
-               if (setList) {
-                  product.altMedia = prodMedia;
-                  product.mainMedia = media;
-               }
-               findMediaText = "";
-               return;
-            }
-         }
-      }
-      // Restore the old text
-      mediaErrorMessage = "No media found with fileName: " + uniqueFileName;
-   }
-
-   void removeProductMedia(long mediaId) {
-      clearMediaErrors();
-      if (product == null || product.altMedia == null)
-         mediaErrorMessage = "No product or media for remove";
-      else {
-         for (int i = 0; i < product.altMedia.size(); i++) {
-            if (product.altMedia.get(i).id == mediaId) {
-               product.altMedia.remove(i);
-               return;
-            }
-         }
-         mediaErrorMessage = "Remove product media not found";
-      }
-   }
-
-   void updateLongDesc(String htmlText) {
-      if (product == null)
-         return;
-      String error = HTMLElement.validateClientHTML(htmlText, HTMLElement.formattingTags, HTMLElement.formattingAtts);
-      if (error == null)
-         product.longDesc = htmlText;
-      else // TODO: fix this and log it as a security warning
-         System.err.println("Invalid html text submission: " + htmlText + ": " + error);
-   }
-
-   void addMediaResult(Object res) {
-      if (res instanceof Object[])
-         res = Arrays.asList((Object[]) res);
-      List resList = (List) res;
-      clearMediaErrors();
-      if (resList.size() == 1) {
-         String nameWithRev = (String) resList.get(0);
-         // Here we want to find all versions of the file uploaded just for context
-         List<ManagedMedia> mediaRes = MediaManagerView.searchForText(nameWithRev);
-         int selIx = -1;
-         ManagedMedia newMedia = null;
-         for (int i = 0; i < mediaRes.size(); i++) {
-            if (mediaRes.get(i).uniqueFileName.equals(nameWithRev)) {
-               newMedia = mediaRes.get(i);
-               selIx = i;
-               break;
-            }
-         }
-         if (newMedia != null) {
-            String newFilter = getMediaFilterPattern();
-            if (newFilter != null) {
-               String oldFilter = newMedia.filterPattern;
-               if (oldFilter != null && !oldFilter.equals(newFilter)) {
-                  System.out.println("Changing filter pattern from: " + oldFilter + " to: " + newFilter);
-               }
-               newMedia.filterPattern = newFilter;
-            }
-
-            List<ManagedMedia> altMedia = product.altMedia;
-            boolean setList = false;
-            if (altMedia == null) {
-               altMedia = new ArrayList<ManagedMedia>();
-               setList = true;
-            }
-            if (altMedia.contains(newMedia)) {
-               // The result may have already been uploaded and added to the product
-               mediaErrorMessage = "Media already exists in product: " + nameWithRev;
-               return;
-            }
-            else
-               altMedia.add(newMedia);
-            if (setList)
-               product.altMedia = altMedia;
-            if (product.mainMedia == null)
-               product.mainMedia = newMedia;
-
-            mediaStatusMessage = "Added media file: " + newMedia.uniqueFileName + " " + newMedia.fileType + " " + newMedia.width + "x" + newMedia.height + (newFilter == null ? "" : " for options: " + newFilter);
-         }
-         else
-            mediaErrorMessage = "No media: " + nameWithRev;
-      }
-      else {
-         System.err.println("*** Multiple files returned for add product media - expecting only one");
-      }
-   }
-
-   void addMediaError(String err) {
-      mediaStatusMessage = null;
-      mediaErrorMessage = err;
    }
 
    // Options view
@@ -917,5 +685,11 @@ ProductManagerView {
          }
       }
    }
-}
 
+   void newCategoryCompleted(Category cat) {
+      if (!addInProgress)
+         product.parentCategory = cat;
+      product.removePropError("parentCategory");
+      parentCategoryPathName = cat.pathName;
+   }
+}

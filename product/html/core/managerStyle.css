@@ -13,17 +13,17 @@
    padding-right: 5px;
 }
 
-.mediaRow, .selectedMediaRow, .headerRow, .productRow, .selectedProductRow {
+.mediaRow, .selectedMediaRow, .headerRow, .productRow, .selectedProductRow, .categoryRow, .selectedCategoryRow {
    display: flex;
    align-items: center;
 }
 
-.mediaRow, .selectedMediaRow, .productRow, .selectedProductRow {
+.mediaRow, .selectedMediaRow, .productRow, .selectedProductRow, .categoryRow, .selectedCategoryRow {
    cursor: pointer;
    margin-bottom: 5px;
 }
 
-.selectedMediaRow, .selectedProductRow {
+.selectedMediaRow, .selectedProductRow, .selectedCategoryRow {
    background-color: #ddddff;
 }
 
@@ -32,12 +32,12 @@
    width: 50px;
 }
 
-.mediaColumn, .headerColumn, .productColumn, .skuColumn {
+.mediaColumn, .headerColumn, .productColumn, .skuColumn, .categoryColumn {
    padding: 2px;
    width: 100px;
 }
 
-.wideMediaColumn, .wideHeaderColumn, .wideProductColumn, .wideSkuColumn {
+.wideMediaColumn, .wideHeaderColumn, .wideProductColumn, .wideSkuColumn, .wideCategoryColumn {
    padding: 2px;
    width: 200px;
 }
@@ -56,7 +56,7 @@
    margin-bottom: 10px;
 }
 
-#listView, #startAddView, #findProductsView {
+#listView, #startAddView, #findProductsView, #findCategoriesView {
    margin-bottom: 5px;
    margin-top: 5px;
 }
@@ -154,7 +154,7 @@
    background: #eef1ff;
 }
 
-.prodMediaView {
+.prodMediaView, .catMediaView {
    margin: 5px;
    display: flex;
    flex-direction: column;
@@ -306,6 +306,11 @@
 .openDetail {
    visibility: inherit;
    border: solid 1px rgba(170,170,170,1);
+   margin-top: 10px;
+   margin-bottom: 10px;
+   display: flex;
+   padding: 5px;
+   flex-direction: column;
 }
 
 .closedDetail {
