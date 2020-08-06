@@ -88,10 +88,6 @@
          <div class="checkFormView">
             <input id="hasOptionCheckbox" type="checkbox" checked=":= sku.optionScheme != null || showOptionsView" changeEvent="=: updateHasOptions(checked)"/>
             <label for="hasOptionCheckbox">Has options?</label>
-            <span visible=":= optionScheme != null">
-               <input type="checkbox" class="rightButton" checked=":= showOptionsView" changeEvent="=: showOptionsView = checked"/>
-               <label for="showOptionsCheckbox">Show options?</label>
-            </span>
          </div>
          <div id="optionsView" visible=':= showOptionsView'>
             <div class="subFormTitle">Sku options</div>
@@ -258,6 +254,7 @@
                      </div>
                   </div>
                </div>
+               <input type="button" value="Hide sku options" clickEvent="=: showSkuOptions = false" class="confirmButtons"/>
                <div id="alt">
                   <div visible=":= sku.optionScheme != null" class="skuOptionsSummary">
                      <input type="button" value="Show sku options" clickEvent="=: showSkuOptions = true"/>

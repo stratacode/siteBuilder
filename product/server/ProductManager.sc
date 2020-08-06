@@ -62,6 +62,7 @@ ProductManager {
                categoryEditable = false;
 
             parentCategoryPathName = category == null ? "" : category.pathName;
+            showOptionsView = sku.optionScheme != null;
          }
       }
    }
@@ -186,6 +187,16 @@ ProductManager {
          newProd.shortDesc = "";
       if (newProd.longDesc == null)
          newProd.longDesc = "";
+      if (newProd.sku != null) {
+         sku = newProd.sku;
+         optionScheme = sku.optionScheme;
+         showOptionsView = optionScheme != null;
+      }
+      else {
+         optionScheme = null;
+         sku = null;
+         showOptionsView = false;
+      }
       element = newProd;
 
       // Automatically set this based on the product name unless it's already specified
@@ -717,6 +728,7 @@ ProductManager {
             showSkuView = false;
             optionScheme = null;
             editableOptionScheme = false;
+            showOptionsView = false;
          }
          else {
             sku = toSel;
@@ -729,6 +741,7 @@ ProductManager {
             editableOptionScheme = true;
 
             showSkuView = true;
+            showOptionsView = optionScheme != null;
          }
       }
    }
