@@ -28,6 +28,9 @@ class Sku implements IPropValidator {
    @DBPropertySettings(columnType="jsonb")
    List<Sku> skuOptions;
 
+   /** False for a skuOption */
+   boolean mainSku = true;
+
    /* Set for a skuOption only */
    @Sync(initDefault=true)
    @DBPropertySettings(columnType="jsonb")
@@ -48,6 +51,7 @@ class Sku implements IPropValidator {
 
    Sku createOptionSku() {
       Sku res = new Sku();
+      res.mainSku = false;
       copyInto(res);
       return res;
    }
@@ -94,7 +98,10 @@ class Sku implements IPropValidator {
       return newSku;
    }
 
-   String getDisplaySummary(Storefront store) {
+   @Bindable(manual=true)
+   String getDisplaySummary() {
+      if (store == null)
+         return skuCode + " (no store)";
       BigDecimal priceToUse = getPriceToUse();
       String priceStr = priceToUse == null ? "(no price)" : " " + store.defaultCurrency.symbol + priceToUse;
       return (skuCode == null ? "" : skuCode) + priceStr;
@@ -103,15 +110,26 @@ class Sku implements IPropValidator {
    void updatePrice(String priceStr) {
       try {
          price = new BigDecimal(priceStr);
+
+         checkDiscount();
          // TODO: need to validate the number of digits match the currency for the store's locale
          removePropError("price");
          invalidPriceStr = null;
+         checkDiscount();
       }
       catch (NumberFormatException exc) {
          invalidPriceStr = priceStr;
          addPropError("price", "Invalid price");
       }
       Bind.sendChangedEvent(this, "priceStr");
+      Bind.sendChangedEvent(this, "displaySummary");
+      Bind.sendChangedEvent(this, "priceDisplayStr");
+   }
+
+   private void checkDiscount() {
+      if (discountPrice != null && discountPrice.compareTo(price) >= 0) {
+         addPropError("discountPrice", "Discount must be less than or equal to the current price");
+      }
    }
 
    @Bindable(manual=true)
@@ -128,6 +146,12 @@ class Sku implements IPropValidator {
       return discountPrice == null ? "" : discountPrice.toString();
    }
 
+   @Bindable(manual=true)
+   String getPriceDisplayStr() {
+      BigDecimal price = priceToUse;
+      return price == null ? "(no price)" : " " + store.defaultCurrency.symbol + price;
+   }
+
    private String invalidDiscountPriceStr = null, invalidPriceStr = null;
 
    void updateDiscount(String priceStr) {
@@ -135,6 +159,7 @@ class Sku implements IPropValidator {
          discountPrice = new BigDecimal(priceStr);
          removePropError("discountPrice");
          invalidDiscountPriceStr = null;
+         checkDiscount();
       }
       catch (NumberFormatException exc) {
          addPropError("discountPrice", "Invalid discountPrice");
@@ -142,6 +167,7 @@ class Sku implements IPropValidator {
          discountPrice = null;
       }
       Bind.sendChangedEvent(this, "discountPriceStr");
+      Bind.sendChangedEvent(this, "priceDisplayStr");
    }
 
    static String validateSkuCode(String sc) {

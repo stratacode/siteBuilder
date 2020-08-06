@@ -2,14 +2,20 @@ class ProductManager extends BaseManager {
    List<Product> productList;
 
    @Sync(resetState=true, initDefault=true)
+   String skuSearchText;
+
+   @Sync(resetState=true, initDefault=true)
    Product product;
 
    void updateElementInstance(CatalogElement el) {
       product = (Product) el;
    }
 
+   @Sync(resetState=true, initDefault=true)
    int skuTypeId = 1; // 1 = Sku, 2 = PhysicalSku using dbTypeId annotation values
+   @Sync(resetState=true, initDefault=true)
    Sku sku;
+   @Sync(resetState=true, initDefault=true)
    PhysicalSku psku;
 
    @Sync(resetState=true, initDefault=true)
@@ -22,6 +28,7 @@ class ProductManager extends BaseManager {
    boolean skuEditable;
    @Sync(resetState=true, initDefault=true)
    boolean showSkuOptions;
+   @Sync(resetState=true, initDefault=true)
    boolean productSaved;
 
    List<Sku> matchingSkus;
@@ -44,8 +51,11 @@ class ProductManager extends BaseManager {
 
    List<String> optionMediaFilter = null;
 
+   @Sync(resetState=true, initDefault=true)
    List<Sku> missingSkuOptions;
+   @Sync(resetState=true, initDefault=true)
    List<Sku> validSkuOptions;
+   @Sync(resetState=true, initDefault=true)
    List<Sku> invalidSkuOptions;
 
    void resetForm() {
@@ -80,6 +90,7 @@ class ProductManager extends BaseManager {
    String optionStatusMessage;
    String optionErrorMessage;
 
+   @Sync(resetState=true, initDefault=true)
    boolean autoUpdatePath = false;
 
    void updateProductName(String val) {

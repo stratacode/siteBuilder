@@ -3,6 +3,8 @@ import java.util.TreeSet;
 
 import sc.lang.html.HTMLElement;
 
+import sc.util.BindableTreeMap;
+
 ProductManager {
    List<Product> searchForText(String text) {
       return (List<Product>) Product.getDBTypeDescriptor().searchQuery(text, searchStore, getSearchStoreValues(), null, searchOrderBy, -1, -1);
@@ -260,6 +262,8 @@ ProductManager {
       skuFindErrorMessage = null;
       skuStatusMessage = null;
       showSkuView = false;
+      if (product == null)
+         sku = null;
    }
 
    void completeAddProduct() {
@@ -365,10 +369,20 @@ ProductManager {
          psku.inventory = null;
    }
 
+   static final List<String> searchSkus = Arrays.asList("store", "mainSku");
+
+   List<Object> getSearchSkusValues() {
+      ArrayList<Object> res = new ArrayList<Object>();
+      res.add(store);
+      res.add(true); // returning mainSkus only since we get the rest via skuOptions
+      return res;
+   }
+
    void updateMatchingSkus(String pattern) {
-      if (pattern == null || pattern.length() < 2)
-         return;
-      List<Sku> allMatches = (List<Sku>) Sku.getDBTypeDescriptor().searchQuery(pattern, searchStore, searchStoreValues, null, searchOrderBy, 0, 20);
+      skuSearchText = pattern;
+      if (pattern == null)
+         pattern = "";
+      List<Sku> allMatches = (List<Sku>) Sku.getDBTypeDescriptor().searchQuery(pattern, searchSkus, searchSkusValues, null, searchOrderBy, 0, 20);
       TreeSet<String> found = new TreeSet<String>();
       ArrayList<Sku> res = new ArrayList<Sku>();
       for (Sku match:allMatches) {
@@ -691,5 +705,70 @@ ProductManager {
          product.parentCategory = cat;
       product.removePropError("parentCategory");
       parentCategoryPathName = cat.pathName;
+   }
+
+   void doSelectSku(Sku toSel) {
+      clearFormErrors();
+      // We might have just removed this product so don't make it current again
+      if (((DBObject)toSel.getDBObject()).isActive()) {
+         if (toSel == sku) {
+            sku = null;
+            skuEditable = false;
+            showSkuView = false;
+            optionScheme = null;
+            editableOptionScheme = false;
+         }
+         else {
+            sku = toSel;
+            if (sku instanceof PhysicalSku)
+               psku = (PhysicalSku) sku;
+
+            skuEditable = true;
+            optionScheme = sku.optionScheme;
+            refreshOptionScheme();
+            editableOptionScheme = true;
+
+            showSkuView = true;
+         }
+      }
+   }
+
+   void removeSku(long skuId) {
+      clearFormErrors();
+      if (skuId == 0) {
+         skuAddErrorMessage = "Invalid sku id in remove";
+         return;
+      }
+      Sku toRem = (Sku) Sku.getDBTypeDescriptor().findById(skuId);
+      if (toRem == null) {
+         skuAddErrorMessage = "Sku not found to remove";
+         System.err.println("*** removeSku - sku with id: " + skuId + " not found");
+         return;
+      }
+      List<Object> propValues = Arrays.asList(sku);
+      List<Product> refsToProd = (List<Product>) Product.getDBTypeDescriptor().findBy(Arrays.asList("sku"), propValues, null, null, 0, 1);
+      if (refsToProd != null && refsToProd.size() > 0) {
+         errorMessage = "Unable to remove sku that's referenced by a product";
+         return;
+      }
+      errorMessage = null;
+      try {
+         int toRemIx = matchingSkus == null ? -1 : matchingSkus.indexOf(toRem);
+         element = null;
+         sku.dbDelete(false);
+
+         if (toRemIx != -1) {
+            ArrayList<Sku> newList = new ArrayList<Sku>();
+            for (int i = 0; i < matchingSkus.size(); i++) {
+               if (i != toRemIx)
+                  newList.add(matchingSkus.get(i));
+            }
+            matchingSkus = newList;
+         }
+      }
+      catch (IllegalArgumentException exc) {
+         errorMessage = "Failed to remove sku: " + exc;
+         return;
+      }
    }
 }

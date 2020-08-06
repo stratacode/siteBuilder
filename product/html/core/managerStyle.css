@@ -13,17 +13,17 @@
    padding-right: 5px;
 }
 
-.mediaRow, .selectedMediaRow, .headerRow, .productRow, .selectedProductRow, .categoryRow, .selectedCategoryRow {
+.mediaRow, .selectedMediaRow, .headerRow, .productRow, .selectedProductRow, .categoryRow, .selectedCategoryRow, .mainSkuRow {
    display: flex;
    align-items: center;
 }
 
-.mediaRow, .selectedMediaRow, .productRow, .selectedProductRow, .categoryRow, .selectedCategoryRow {
+.mediaRow, .selectedMediaRow, .productRow, .selectedProductRow, .categoryRow, .selectedCategoryRow, .mainSkuRow, .selectedSkuRow {
    cursor: pointer;
    margin-bottom: 5px;
 }
 
-.selectedMediaRow, .selectedProductRow, .selectedCategoryRow {
+.selectedMediaRow, .selectedProductRow, .selectedCategoryRow, .selectedSkuRow {
    background-color: #ddddff;
 }
 
@@ -56,9 +56,9 @@
    margin-bottom: 10px;
 }
 
-#listView, #startAddView, #findProductsView, #findCategoriesView {
-   margin-bottom: 5px;
-   margin-top: 5px;
+#listView, #startAddView, #findProductsView, #findCategoriesView, #findMediaView {
+   margin-bottom: 10px;
+   margin-top: 10px;
 }
 
 #detailView {

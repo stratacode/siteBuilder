@@ -1,4 +1,4 @@
-<div extends="ProductManager">
+<div extends="BaseProductManagerView">
    <div id="findProductsView">
       <div id="findProductsForm" visible=":= !addInProgress" class="formField">
          <label for="searchTextField">Find products</label><input type="text" value=":=: searchText" changeEvent="=: doSearch()"/>
@@ -94,7 +94,7 @@
             <label for="skuField">Product Sku</label>
             <input id="skuField" type="text" list="= skuSuggestions.getId()" disabled=":= showSkuView"
                    class=':= skuFindErrorMessage == null ? "fieldInput" : "fieldInputError"'
-                   value=":= product.sku == null ? "" : product.sku.skuCode"
+                   value=":= product.sku == null ? skuSearchText : product.sku.skuCode"
                    keyUpEvent="=: updateMatchingSkus(value)" changeEvent="=: updateProductSku(value)"
                    placeholder="search for skus"/>
             <datalist id="skuSuggestions">
@@ -105,7 +105,7 @@
          </div>
          <div id="skuErrorView" class="formError"><%= skuFindErrorMessage %></div><div class="formStatus"><%= skuStatusMessage %></div>
 
-         <div id="addSkuView" class=':= showSkuView ? "subFormView detailView openDetail" : "subFormView detailView closedDetail"'>
+         <div id="addSkuView" class=':= showSkuView ? "subFormView detailView openDetail" : "subFormView detailView closedDetail"' extends="SkuEditorView">
             <%! int openViewHeight = 500;
                 scrollHeight =: scrollHeight > 50 ? openViewHeight = scrollHeight : null; %>
             <style type="text/css">
@@ -113,279 +113,6 @@
                   max-height: <%= openViewHeight + 100 %>px;
                }
             </style>
-            <%! boolean enableAddSku := sku == null || addInProgress; %>
-            <span class="subFormTitle"><%= enableAddSku ? "Add Sku" : "Update sku" %></span>
-            <div class="formField">
-               <label>Product type</label>
-               <input type="radio" id="digitalRadio" name="skuType" checked=":= skuTypeId == 1"
-                      changeEvent="=: checked ? updateSkuType(1) : null" value="1" disabled=":= !enableAddSku"/>
-               <div>
-                  <label for="digitalRadio">Digital</label>
-                  <input type="radio" id="physicalRadio" name="skuType" checked=":= skuTypeId == 2"
-                         changeEvent="=: checked ? updateSkuType(2) : null" value="2" disabled=":= !enableAddSku"/>
-                  <label for="physicalRadio">Physical</label>
-               </div>
-            </div>
-            <div id="skuCodeView" class="formField">
-               <label for="skuCodeField">Sku code</label>
-               <input type="text" id="skuCodeField" value=":= sku.skuCode" changeEvent="=: updateSkuCode(value)"
-                      class=':= sku.propErrors.get("skuCode") == null ? "fieldInput" : "fieldInputError"'
-                      placeholder="code for tracking orders and inventory"/>
-            </div>
-            <div id="skuCodeError" class="formError"> <%= sku.propErrors.get("skuCode") %> </div>
-            <div id="barCodeView" class="formField">
-               <label for="barCodeField">Bar code</label>
-               <input type="text" id="barCodeField" value=":=: sku.barCode"
-                      class=':= sku.propErrors.get("barCode") == null ? "fieldInput" : "fieldInputError"'
-                      placeholder="optional"/>
-            </div>
-            <div id="barCodeError" class="formError"> <%= sku.propErrors.get("barCode") %> </div>
-            <div id="priceView" class="formField">
-               <label for="priceField">Price</label>
-               <input type="text" id="priceField" value=":= sku.priceStr" changeEvent="=: sku.updatePrice(value)"
-                      class=':= sku.propErrors.get("price") == null ? "fieldInput" : "fieldInputError"'/>
-            </div>
-            <div id="priceError" class="formError"> <%= sku.propErrors.get("price") %> </div>
-            <div id="discountPriceView" class="formField">
-               <label for="discountPriceField">Discount price</label>
-               <input type="text" id="discountPriceField" value=":= sku.discountPriceStr"
-                      class=':= sku.propErrors.get("discountPrice") == null ? "fieldInput" : "fieldInputError"'
-                      changeEvent="=: sku.updateDiscount(value)" placeholder="optional"/>
-            </div>
-            <div id="discountPriceError" class="formError">
-               <%= sku.propErrors.get("discountPrice") %>
-            </div>
-            <div id="physicalSkuView" visible=":= psku != null">
-               <div id="weightView" class="formField">
-                  <label for="weightField">Weight</label>
-                  <input type="text" id="weightField" changeEvent="=: psku.updateWeight(value)"
-                         class=':= sku.propErrors.get("weight") == null ? "fieldInput" : "fieldInputError"'/>
-               </div>
-               <div id="weightError" class="formError">
-                  <%= sku.propErrors.get("weight") %>
-               </div>
-               <div id="heightView" class="formField">
-                  <label for="heightField">Height</label>
-                  <input type="text" id="heightField" changeEvent="=: psku.updateHeight(value)"
-                         class=':= sku.propErrors.get("height") == null ? "fieldInput" : "fieldInputError"'/>
-
-               </div>
-               <div id="heightError" class="formError">
-                  <%= sku.propErrors.get("height") %>
-               </div>
-               <div id="lengthView" class="formField">
-                  <label for="lengthField">Length</label>
-                  <input type="text" id="lengthField" changeEvent="=: psku.updateLength(value)"
-                         class=':= sku.propErrors.get("length") == null ? "fieldInput" : "fieldInputError"'/>
-               </div>
-               <div id="lengthError" class="formError">
-                  <%= sku.propErrors.get("length") %>
-               </div>
-               <div class="checkFormView">
-                  <input type="checkbox" id="inventoryCheckbox" checked=":= psku.inventory != null" changeEvent="=: updateManageInventory(checked)"/>
-                  <label for="inventoryCheckbox">Manage inventory?</label>
-               </div>
-               <div id="inventoryView" visible=":= psku.inventory != null" class="formField">
-                  <label for="quantityField">Quantity</label>
-                  <input type="number" min="0" id="quantityField" value=":= String.valueOf(psku.inventory.quantity)" changeEvent="=: psku.inventory.updateQuantityStr(value)"/>
-               </div>
-               <div id="nextAvailView" class="formField" visible=":= psku.inventory != null">
-                  <label for="nextAvailField">Next available</label>
-                  <input disabled=":= psku.inventory.quantity > 0"
-                         type="date" id="nextAvailField"
-                         min="= ProductInventory.minNextAvailDateStr"
-                         changeEvent="=: psku.inventory.updateNextAvailStr(value)"/>
-               </div>
-            </div>
-            <div id="optionsWrapperView">
-               <div class="checkFormView">
-                  <input id="hasOptionCheckbox" type="checkbox" checked=":= sku.optionScheme != null || showOptionsView" changeEvent="=: updateHasOptions(checked)"/>
-                  <label for="hasOptionCheckbox">Has options?</label>
-               </div>
-               <div id="optionsView" visible=':= showOptionsView'>
-                  <div class="subFormTitle">Sku options</div>
-                  <div id="optionsSchemeFieldView" class="formField">
-                     <label for="optionSchemeField">Option scheme name</label>
-                     <input id="optionsSchemeField" type="text" list="= optionSchemeSuggestions.getId()"
-                            value=":= sku.optionScheme == null ? "" : sku.optionScheme.schemeName"
-                            disabled=":= showOptionSchemeView"
-                            keyUpEvent="=: updateMatchingOptionSchemes(value)"
-                            changeEvent="=: updateOptionScheme(value)"/>
-                     <datalist id="optionSchemeSuggestions">
-                        <option repeat=":= matchingOptionSchemes" repeatVarName="matchedScheme" value=":= matchedScheme.schemeName"/>
-                     </datalist>
-                     <input type="button" value="Add option scheme" class="rightButton"
-                            clickEvent="=: startNewOptionScheme()" disabled=":= showOptionSchemeView"/>
-                     <input type="button" value="Edit option scheme" class="rightButton"
-                            clickEvent="=: doEditOptionScheme()" visible=":= editableOptionScheme"/>
-                  </div>
-                  <div class="formStatus"><%= optionStatusMessage %></div>
-                  <div id="optionSchemeView" class=':= showOptionSchemeView ? "subFormView detailView openDetail" : "subFormView detailView closedDetail"'>
-                     <%! int openSchemeHeight = 500;
-                     scrollHeight =: scrollHeight > 200 ? openSchemeHeight = scrollHeight : null; %>
-                     <style type="text/css">
-                        #optionSchemeView.openDetail {
-                           max-height: <%= openSchemeHeight + 100 %>px;
-                     }
-                     </style>
-                     <div class="subFormTitle"><%= editableOptionScheme ? "Update" : "New" %> option scheme</div>
-                     <div class="formField">
-                        <label for="schemeNameField">Name</label>
-                        <input id="schemeNameField" type="text" value=":=: optionScheme.schemeName"
-                               class=':= optionScheme.propErrors.get("schemeName") == null ? "fieldInput" : "fieldInputError"'
-                               changeEvent="=: validateOptionSchemeName()"/>
-                     </div>
-                     <div class="formError"><%= optionScheme.propErrors.get("schemeName") %></div>
-
-                     <div class="boxTitle">List of options</div>
-                     <div class="optionListView">
-                        <%!
-                           ProductOption focusedProductOption := ProductManagerView.this.newProductOption;
-
-                           override @Bindable(doLater=true, priority=-6)
-                           focusedProductOption =: updateOptionFocusOnValue(focusedProductOption);
-                           void updateOptionFocusOnValue(ProductOption val) {
-                              int ix = optionScheme.options.indexOf(val);
-                              if (ix != -1) {
-                                 Object[] children = newOptionView_Repeat.getObjChildren(false);
-                                 if (children != null && ix < children.length) {
-                                    ((newOptionView_Repeat.newOptionView) children[ix]).optionFormView.optionNameField.focus();
-                                 }
-                              }
-                           }
-                        %>
-                        <div id="newOptionView" class="newOptionView" repeat=":= optionScheme.options" repeatVarName="productOption">
-                           <div id="optionFormView" class="formField">
-                              <label for="optionNameField">Option #<%= newOptionView.this.repeatIndex+1 %> name</label>
-                              <input type="text" id="optionNameField" value=":=: productOption.optionName"
-                                     changeEvent="=: refreshOptionScheme()"
-                                     placeholder="e.g. Size, Color"/>
-                              <input type="image" class="clearOptionButton" src="/icons/x-square.svg"
-                                     visible=":= optionScheme.options.size() > 1"
-                                     clickEvent="=: removeOption(productOption)" tabindex="-1"/>
-                           </div>
-                           <div class="boxTitle">List of values</div>
-                             <div class="optionValueList">
-                                <%!
-                                   // One way to avoid this would be to wrap the option values in a 'view' object
-                                   // so that the model object itself has a 'takeFocus' property that is set so that
-                                   // we can wire that do the 'focus()' call on change.
-                                   OptionValue focusedOption := ProductManagerView.this.newOptionValue;
-                                   override @Bindable(doLater=true, priority=-6)
-                                   focusedOption =: updateFocusOnValue(focusedOption);
-                                   void updateFocusOnValue(OptionValue val) {
-                                       int ix = productOption.optionValues.indexOf(val);
-                                       if (ix != -1) {
-                                          Object[] children = newValueView_Repeat.getObjChildren(false);
-                                          if (children != null && ix < children.length) {
-                                             ((newValueView_Repeat.newValueView) children[ix]).optionValueNameField.focus();
-                                          }
-                                       }
-                                      // else - might not be for the is option
-                                   }
-                                %>
-                             <div id="newValueView" class="newValueView" repeat=":= productOption.optionValues" repeatVarName="optionValue">
-                                <label for="optionValueNameField">Value #<%= newValueView.this.repeatIndex+1 %></label>
-                                <input type="text" id="optionValueNameField" value=":=: optionValue.optionValue"
-                                       changeEvent="=: refreshOptionScheme()"
-                                       placeholder="e.g. Small, Blue"/>
-                                <label for="optionValueNameField">sku symbol</label>
-                                <input type="text" id="optionValueSkuField" value=":=: optionValue.skuSymbol"
-                                       placeholder="e.g. sm, blu"/>
-                                <label for="defaultOptionCheckbox">Default</label>
-                                <input tabindex="-1" id="defaultOptionCheckbox" type="checkbox" checked=":= optionValue == productOption.defaultValue" changeEvent="=: productOption.defaultValue = optionValue"/>
-                                <input tabindex="-1" visible=":= productOption.optionValues.size() > 1" type="image" class="clearOptionButton" src="/icons/x-square.svg"
-                                       clickEvent="=: removeOptionValue(productOption, optionValue)"/>
-                              </div>
-                              <input type="button" class="endListButton" value="Add another value" clickEvent="=: addNewOptionValue(productOption, true)"/>
-                           </div>
-                        </div>
-                        <input type="button" class="endListButton" value="Add another option" clickEvent="=: addNewOption()"/>
-                        <input type="button" class="rightButton" value="Done editing option scheme" clickEvent="=: doneEditingOptionScheme()"
-                               visible=":= editableOptionScheme"/>
-                     </div>
-                     <div class="formError"><%= optionErrorMessage %></div>
-                     <div class="formField confirmButtons" visible=":= !editableOptionScheme">
-                        <input type="button" value="Save option scheme" clickEvent="=: completeNewOptionScheme()"/>
-                        <input type="button" class="rightButton" value="Cancel" clickEvent="=: cancelNewOptionScheme()"/>
-                     </div>
-                  </div>
-                  <div id="skuOptionsView" visible=":= showSkuOptions">
-                     <div id="invalidView" visible=":= invalidSkuOptions.size() > 0" class="skuListViewBox">
-                        <div class="skuListTitle">Invalid options</div>
-                        <div id="invalidList" class="skuListView">
-                           <div id="invalidHeaderList" class="skuHeaderRow">
-                              <span class="wideHeaderColumn">sku code</span>
-                              <span class="wideHeaderColumn">options</span>
-                           </div>
-                           <div id="invalidOptionView" repeat=":= invalidSkuOptions" repeatVarName="invalidSku" class="skuRowView">
-                              <span class="wideSkuColumn"><%= invalidSku.skuCode %></span>
-                              <span class="wideSkuColumn"><span class=':= "optionValueCell" + repeatIndex' repeat=":= invalidSku.options" repeatVarName="optVal"><%= optVal.optionValue %></span></span>
-                              <input type="image" class="removeSkuButton" src="/icons/x-square.svg" clickEvent="=: removeInvalidSku(invalidSku)"/>
-                           </div>
-                        </div>
-                     </div>
-                     <div id="missingView" visible=":= missingSkuOptions.size() > 0" class="skuListViewBox">
-                       <div class="skuListTitle">Missing sku options</div>
-                        <div id="missingList" class="skuListView">
-                           <div id="missingHeaderList" class="skuHeaderRow">
-                              <span class="wideHeaderColumn">sku code</span>
-                              <span class="wideHeaderColumn">options</span>
-                           </div>
-                           <div id="missingOptionView" repeat=":= missingSkuOptions" repeatVarName="missingSku" class="skuRowView">
-                              <span class="wideSkuColumn"><%= missingSku.skuCode %></span>
-                              <span class="wideSkuColumn"><span class=':= "optionValueCell" + repeatIndex' repeat=":= missingSku.options" repeatVarName="optVal"><%= optVal.optionValue %></span></span>
-                              <input class="rightButton" type="button" value="Add" clickEvent="=: addMissingSku(missingSku)"/>
-                        </div>
-                        </div>
-                     </div>
-                     <div id="validView" visible=":= validSkuOptions.size() > 0" class="skuListViewBox">
-                        <div class="skuListTitle">Sku options</div>
-                        <div id="validList" class="skuListView">
-                           <div id="validHeaderList" class="skuHeaderRow">
-                              <span class="wideHeaderColumn">sku code</span>
-                              <span class="wideHeaderColumn">options</span>
-                              <span visible=":= psku.inventory != null" bodyOnly="true">
-                                 <span class="headerColumn">inventory</span>
-                                 <span class="headerColumn">next available</span>
-                              </span>
-                           </div>
-                           <div id="validOptionView" repeat=":= validSkuOptions" repeatVarName="validSku" class="skuRowView">
-                              <span class="wideSkuColumn"><%= validSku.skuCode %></span>
-                              <span class="wideSkuColumn"><span class=':= "optionValueCell" + repeatIndex' repeat=":= validSku.options" repeatVarName="optVal"><%= optVal.optionValue %></span></span>
-                              <span visible=":= psku.inventory != null" bodyOnly="true">
-                                 <span class="skuColumn">
-                                    <input type="number"
-                                           min="0" class="quantityCell"
-                                           value=":= String.valueOf(validSku.inventory.quantity)"
-                                           changeEvent="=: validSku.inventory.updateQuantityStr(value)"/>
-                                 </span>
-                                 <input disabled=":= validSku.inventory.quantity != 0" type="date" id="nextAvailField"
-                                        min="= ProductInventory.minNextAvailDateStr"
-                                        changeEvent="=: validSku.inventory.updateNextAvailStr(value)"/>
-                              </span>
-                           </div>
-                        </div>
-                     </div>
-                     <div id="alt">
-                        <div visible=":= sku.optionScheme != null" class="skuOptionsSummary">
-                           <input type="button" value="Show sku options" clickEvent="=: showSkuOptions = true"/>
-                           <%= invalidSkuOptions.size() %> invalid,
-                           <%= missingSkuOptions.size() %> missing,
-                           <%= validSkuOptions.size() %> valid
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <div id="addSkuButtons" class="formField confirmButtons" visible=":= addSkuInProgress">
-               <input type="button" clickEvent="=: completeAddSku()" value="Add Sku"/>
-               <input type="button" class="rightButton" clickEvent="=: cancelAddSku()" value="Cancel"/>
-               <div id="alt" class="formField confirmButtons">
-                  <input type="button" clickEvent="=: doneEditingSku()" value="Done editing sku"/>
-               </div>
-            </div>
-            <div class="formError"><%= skuAddErrorMessage %></div>
          </div>
 
          <div id="addMediaView" class="subFormView">
@@ -481,7 +208,7 @@
         </span>
         <span class="headerColumn"> <%= productElem.pathName %> </span>
         <span class="headerColumn"> <%= productElem.parentCategory == null ? "none" : productElem.parentCategory.pathName %> </span>
-        <span class="headerColumn"> <%= productElem.sku == null ? "no sku" : productElem.sku.getDisplaySummary(store) %> </span>
+        <span class="headerColumn"> <%= productElem.sku == null ? "no sku" : productElem.sku.getDisplaySummary() %> </span>
         <span class="headerColumn"> 
            <%= productElem.sku == null || productElem.sku.optionScheme == null ? "n/a" : productElem.sku.optionScheme.schemeName %>
          </span>

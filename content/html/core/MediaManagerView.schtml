@@ -1,21 +1,23 @@
 <div>
-   <div class="viewTitle">
+   <div class="formTitle">
       Manage media
    </div>
    <div id="findMediaView" class="findMediaView">
-      Find media: <input type="text" value=":=: searchText" changeEvent="=: doSearch()"/>
-      <input type="image" class="findMediaButton" src="/icons/search.svg" clickEvent="=: doSearch()"/>
-      <input type="image" class="clearMediaButton" src="/icons/x-square.svg" clickEvent="=: clearSearch()"/>
+      <div id="findMediaForm" class="formField">
+         <label for="searchMediaField">Find media:</label><input type="text" value=":=: searchText" changeEvent="=: doSearch()"/>
+         <input type="image" class="findMediaButton" src="/icons/search.svg" clickEvent="=: doSearch()"/>
+         <input type="image" class="clearMediaButton" src="/icons/x-square.svg" clickEvent="=: clearSearch()"/>
+      </div>
    </div>
 
    <p/>
 
-   <form id="uploadForm" method="post" enctype="multipart/form-data">
+   <form id="uploadForm" method="post" enctype="multipart/form-data" class="formField">
       <%! 
           submitResult =: handleUploadResult(submitResult);
           submitError =: handleUploadError(submitError);
       %>
-      Upload media file(s)
+      <label for="uploadFile">Upload media file(s)</label>
       <input type="file" multiple id="uploadFile" name="fileToUpload" changeEvent="=: resetUploadForm()"/>
       <input exec="server" type="hidden" name="mediaManagerId" value=":= String.valueOf(mediaManager.id)"/>
       <!-- <input type="submit" value="Submit"/> -->

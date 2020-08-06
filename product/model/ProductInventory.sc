@@ -1,4 +1,6 @@
-class ProductInventory implements IPropValidator {
+import sc.bind.IChangeable;
+
+class ProductInventory implements IPropValidator, IChangeable {
    int quantity;
    Date nextAvail;
 
@@ -10,6 +12,7 @@ class ProductInventory implements IPropValidator {
       try {
          quantity = Integer.parseInt(qstr);
          removePropError("quantity");
+         Bind.sendChangedEvent(this, null);
       }
       catch (NumberFormatException exc) {
          addPropError("quantity", "Not an integer");
@@ -34,6 +37,7 @@ class ProductInventory implements IPropValidator {
    void updateNextAvailStr(String value) {
       try {
          nextAvail = DynUtil.parseDate(value);
+         Bind.sendChangedEvent(this, null);
       }
       catch (IllegalArgumentException exc) {
          addPropError("nextAvail", "Invalid date format");

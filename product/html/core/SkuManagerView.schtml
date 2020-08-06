@@ -1,0 +1,57 @@
+<div extends="BaseProductManagerView">
+   <div id="findSkusView">
+      <div id="findSkusForm" visible=":= !addSkuInProgress" class="formField">
+         <label for="searchTextField">Find skus</label><input type="text" value=":= skuSearchText" changeEvent="=: updateMatchingSkus(value)"/>
+         <input type="image" class="findMediaButton" src="/icons/search.svg" clickEvent="=: updateMatchingSkus(skuSearchText)"/>
+         <input type="image" class="clearMediaButton" src="/icons/x-square.svg" clickEvent="=: resetForm()"/>
+      </div>
+   </div>
+
+   <div id="skuViewWrapper">
+      <div id="skuView" extends="SkuEditorView" visible=":= showSkuView">
+      </div>
+   </div>
+
+   <div id="listView">
+      <div class="headerRow" visible=":= matchingSkus != null && matchingSkus.size() > 0">
+         <span class="wideHeaderColumn">Sku code</span>
+         <span class="headerColumn">Options</span>
+         <span class="headerColumn">Price</span>
+         <span class="headerColumn">inventory</span>
+         <span class="wideHeaderColumn">next available</span>
+         <span class="headerColumn">Remove</span>
+      </div>
+      <div id="skuElemView" repeat=":= matchingSkus" repeatVarName="skuElem"
+           class=':= skuElem == sku ? "selectedSkuRow" : "skuRow"'>
+         <div class="mainSkuRow">
+            <span class="wideSkuColumn" clickEvent="=: doSelectSku(skuElem)">
+               <input type="checkbox" checked=":= sku == skuElem"/>
+               <%= skuElem.skuCode %>
+            </span>
+            <span class="skuColumn" clickEvent="=: doSelectSku(skuElem)">
+               <span id="optSchemeNameView" visible=":= skuElem.optionScheme != null">
+                  <%= skuElem.optionScheme.schemeName %>
+                  <span id="alt">n/a</span>
+               </span>
+            </span>
+            <span class="skuColumn" clickEvent="=: doSelectSku(skuElem)"> <%= skuElem.priceDisplayStr %> </span>
+            <span class="skuColumn">
+               <span visible=":= skuElem.inventory != null">
+                  <input type="number"
+                         min="0" class="quantityCell"
+                         value=":= String.valueOf(skuElem.inventory.quantity)"
+                         changeEvent="=: skuElem.inventory.updateQuantityStr(value)"/>
+               </span>
+            </span>
+            <span class="wideSkuColumn">
+               <span visible=":= skuElem.inventory != null">
+                  <input disabled=":= skuElem.inventory.quantity != 0" type="date" id="nextAvailField"
+                         min="= ProductInventory.minNextAvailDateStr"
+                         changeEvent="=: skuElem.inventory.updateNextAvailStr(value)"/>
+               </span>
+            </span>
+            <input type="image" class="removeSkuButton" src="/icons/x-square.svg" clickEvent="=: removeSku(skuElem.id)"/>
+         </div>
+      </div>
+   </div>
+</div>

@@ -3,6 +3,8 @@ class PhysicalSku extends Sku {
    ProductInventory inventory;
    BigDecimal weight, height, width, length;
 
+   inventory =: Bind.sendChangedEvent(this, "displaySummary");
+
    PhysicalSku createOptionSku() {
       PhysicalSku res = new PhysicalSku();
       copyInto(res);
@@ -25,7 +27,7 @@ class PhysicalSku extends Sku {
       return available && (inventory == null || inventory.quantity > 0);
    }
 
-   String getDisplaySummary(Storefront store) {
+   String getDisplaySummary() {
       String quantStr = "";
       String nextAvailStr = "";
       if (inventory != null) {
@@ -34,7 +36,7 @@ class PhysicalSku extends Sku {
          if (inventory.nextAvail != null)
             nextAvailStr = " next avail: " + DynUtil.formatDate(inventory.nextAvail);
       }
-      return super.getDisplaySummary(store) + quantStr + (inStock ? " in stock" : (available ? " out of stock" : "discontinued")) + nextAvailStr;
+      return super.getDisplaySummary() + quantStr + (inStock ? " in stock" : (available ? " out of stock" : "discontinued")) + nextAvailStr;
    }
 
    void updateWeight(String str) {
