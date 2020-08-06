@@ -10,8 +10,6 @@
       </div>
    </div>
 
-   <p/>
-
    <form id="uploadForm" method="post" enctype="multipart/form-data" class="formField">
       <%! 
           submitResult =: handleUploadResult(submitResult);
@@ -31,8 +29,8 @@
          </div>
       </div>
    </form>
-
-   <p/>
+   <div class="formStatus"><%= currentMediaStatus %></div>
+   <div class="formError"><%= currentMediaError %></div>
 
    <div id="currentMediaView">
       <div class="headerRow" visible=":= currentMedia != null && currentMedia.size() > 0">
@@ -42,17 +40,16 @@
          <span class="headerColumn">File size</span>
       </div>
       <div id="mediaRepeat" repeat=":= currentMedia" repeatVarName="media"
-           class=':= media == selectedMedia ? "selectedMediaRow" : "mediaRow"' clickEvent="=: selectedMedia = media">
-        <span class="wideMediaColumn">
+           class=':= media == selectedMedia ? "selectedMediaRow" : "mediaRow"' >
+        <span class="wideMediaColumn" clickEvent="=: selectedMedia = media">
            <input type="checkbox" checked=":= selectedMedia == media"/>
            <%= media.uniqueFileName %>
         </span>
         <span class="smallMediaColumn"> <%= media.fileType %> </span>
         <span class="mediaColumn"> <%= media.width %>x<%= media.height%> </span>
         <span class="mediaColumn"> <%= media.fileSize %> bytes </span>
-        <img src=":= media.thumbUrl" class="mediaListThumb"/>
+        <img src=":= media.thumbUrl" class="mediaListThumb" clickEvent="=: selectedMedia = media"/>
         <input type="image" class="removeMediaButton" src="/icons/x-square.svg" clickEvent="=: removeMedia(media.id)"/>
       </div>
-      <span><%= currentMediaStatus %></span>
    </div>
 </div>

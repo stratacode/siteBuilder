@@ -279,6 +279,8 @@
 .mediaInfoText {
    max-width: 100px;
    font-size: 75%;
+   overflow: hidden;
+   text-overflow: ellipsis;
 }
 
 .fieldInput {}

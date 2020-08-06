@@ -1,4 +1,5 @@
 class ProductManager extends BaseManager {
+   @Sync(initDefault=true)
    List<Product> productList;
 
    @Sync(resetState=true, initDefault=true)
@@ -31,8 +32,10 @@ class ProductManager extends BaseManager {
    @Sync(resetState=true, initDefault=true)
    boolean productSaved;
 
+   @Sync(initDefault=true)
    List<Sku> matchingSkus;
 
+   @Sync(initDefault=true)
    List<OptionScheme> matchingOptionSchemes;
 
    @Sync(resetState=true, initDefault=true)
@@ -51,11 +54,11 @@ class ProductManager extends BaseManager {
 
    List<String> optionMediaFilter = null;
 
-   @Sync(resetState=true, initDefault=true)
+   @Sync(initDefault=true)
    List<Sku> missingSkuOptions;
-   @Sync(resetState=true, initDefault=true)
+   @Sync(initDefault=true)
    List<Sku> validSkuOptions;
-   @Sync(resetState=true, initDefault=true)
+   @Sync(initDefault=true)
    List<Sku> invalidSkuOptions;
 
    void resetForm() {

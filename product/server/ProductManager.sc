@@ -429,6 +429,8 @@ ProductManager {
          skuEditable = true;
 
          skuStatusMessage = "Sku updated to: " + skuCode;
+
+         showOptionsView = optionScheme != null;
       }
       else {
          skuEditable = false;

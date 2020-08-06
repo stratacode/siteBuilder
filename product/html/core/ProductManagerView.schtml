@@ -62,19 +62,19 @@
                <label for="catNameField">Category name</label>
                <input type="text" id="catNameField" value=":= category.name" changeEvent="=: updateCategoryName(value)"
                       class=':= category.propErrors.get("name") == null ? "fieldInput" : "fieldInputError"'
-                      placeholder="display name"/>
+                      placeholder="display name" disabled=":= !showCategoryView"/>
             </div>
             <div id="catPathNameView" class="formField">
                <label for="catPathNameField">Category path name</label>
                <input type="text" id="catNameField" value=":= category.pathName" changeEvent="=: updateCategoryPathName(value)"
                       class=':= category.propErrors.get("pathName") == null ? "fieldInput" : "fieldInputError"'
-                      placeholder="browser location name (no spaces)"/>
+                      placeholder="browser location name (no spaces)" disabled=":= !showCategoryView"/>
             </div>
             <div id="addCategoryButtons" class="formField confirmButtons" visible=":= addCategoryInProgress">
                <input type="button" clickEvent="=: completeAddCategory()" value="Add Category"/>
                <input type="button" class="rightButton" clickEvent="=: cancelAddCategory()" value="Cancel"/>
                <div id="alt" class="formField confirmButtons">
-                  <input type="button" clickEvent="=: doneEditingCategory()" value="Done editing category"/>
+                  <input type="button" clickEvent="=: doneEditingCategory()" value="Done editing category" disabled=":= !showCategoryView"/>
                </div>
             </div>
          </div>

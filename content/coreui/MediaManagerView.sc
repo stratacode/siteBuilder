@@ -16,11 +16,13 @@ class MediaManagerView {
    String uploadStatusMessage = null;
 
    String currentMediaStatus;
+   String currentMediaError;
 
    void resetUploadForm() {
       showUploadStatus = true;
       uploadError = false;
       uploadStatusMessage = null;
       currentMediaStatus = null;
+      currentMediaError = null;
    }
 }

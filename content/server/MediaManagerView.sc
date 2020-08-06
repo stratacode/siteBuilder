@@ -6,7 +6,7 @@ MediaManagerView {
    static final List<String> searchOrderBy = Arrays.asList("-lastModified");
 
    static ArrayList<ManagedMedia> searchForText(String text) {
-      return new ArrayList<ManagedMedia>((List<ManagedMedia>)ManagedMedia.getDBTypeDescriptor().searchQuery(text, null, null, null, searchOrderBy, -1, -1));
+      return new ArrayList<ManagedMedia>((List<ManagedMedia>)ManagedMedia.getDBTypeDescriptor().searchQuery(text, null, null, null, searchOrderBy, 0, 20));
    }
 
    void doSearch() {
@@ -85,8 +85,10 @@ MediaManagerView {
          MediaManager manager = media.manager;
          String fileName = media.fileName;
          String fileType = media.fileType;
+         String suffix = media.suffix;
          media.dbDelete(false);
-         manager.removeMediaFiles(fileName, media.suffix);
+         selectedMedia = null;
+         manager.removeMediaFiles(fileName, suffix);
          if (toRemIx != -1) {
             ArrayList<ManagedMedia> newList = new ArrayList<ManagedMedia>();
             for (int i = 0; i < currentMedia.size(); i++) {
@@ -98,7 +100,11 @@ MediaManagerView {
          currentMediaStatus = "Removed " + fileName + " " + fileType;
       }
       catch (IllegalArgumentException exc) {
-         currentMediaStatus = "Failed to remove media: " + exc;
+         String err = exc.toString();
+         if (err.contains("still referenced"))
+            currentMediaError = "Unable to remove media that's still in use";
+         else
+            currentMediaError = "Failed to remove media - system error: " + err;
          return;
       }
    }
