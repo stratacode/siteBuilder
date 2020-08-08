@@ -1,0 +1,2 @@
+class PageFooter extends NavMenu {
+}

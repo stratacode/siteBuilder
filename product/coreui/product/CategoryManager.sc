@@ -1,4 +1,4 @@
-class CategoryManager extends BaseManager {
+class CategoryManager extends BaseProductManager {
    List<Category> categoryList;
 
    @Sync(resetState=true, initDefault=true)

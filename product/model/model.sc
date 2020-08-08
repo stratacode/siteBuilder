@@ -15,5 +15,5 @@ import sc.product.ProductOption;
 import sc.product.OptionValue;
 
 @Sync(syncMode=SyncMode.Automatic)
-public product.model extends util, user.model, content.model  {
+public product.model extends util, user.model, content.userModel {
 }

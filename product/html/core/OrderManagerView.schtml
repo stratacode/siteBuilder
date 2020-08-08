@@ -1,0 +1,62 @@
+<div extends="OrderManager">
+   <div id="findOrdersView">
+      <div id="findOrderForm" class="formField">
+         <label for="searchTextField">Find orders</label><input type="text" value=":=: searchText" changeEvent="=: doSearch()"/>
+         <input type="image" class="findMediaButton" src="/icons/search.svg" clickEvent="=: doSearch()"/>
+         <input type="image" class="clearMediaButton" src="/icons/x-square.svg" clickEvent="=: resetForm()"/>
+      </div>
+      <div id="orderTypeForm">
+         <input type="radio" id="allOrderType" name="orderSearchType" checked=":= orderSearchType == OrderSearchType.All"
+                changeEvent="=: orderSearchType = OrderSearchType.All"/>
+         <label for="allOrderType">All</label>
+         <input type="radio" id="cartOrderType" name="orderSearchType" checked=":= orderSearchType == OrderSearchType.Pending"
+                changeEvent="=: orderSearchType = OrderSearchType.Pending"/>
+         <label for="cartOrderType">Pending</label>
+         <input type="radio" id="submittedOrderType" name="orderSearchType" checked=":= orderSearchType == OrderSearchType.Submitted"
+                changeEvent="=: orderSearchType = OrderSearchType.Submitted"/>
+         <label for="submittedOrderType">Submitted</label>
+         <input type="radio" id="submittedOrderType" name="orderSearchType" checked=":= orderSearchType == OrderSearchType.Delivered"
+                changeEvent="=: orderSearchType = OrderSearchType.Delivered"/>
+         <label for="submittedOrderType">Delivered</label>
+      </div>
+   </div>
+
+   <div id="extraFormView">
+      <div id="detailFormView" class="formContainer" visible=':= order != null'>
+         <div class="formTitle"> Order: <span visible=":= order.orderNumber != null"><%= order.orderNumber %>:</span><span><%= order.displayStatus %></span></div>
+      </div>
+   </div>
+
+   <div id="listView">
+      <div class="headerRow" visible=":= orderList != null && orderList.size() > 0">
+         <span class="wideHeaderColumn">Order #</span>
+         <span class="headerColumn">Customer email</span>
+         <span class="headerColumn">Total price</span>
+         <span class="headerColumn">Submitted</span>
+         <span class="headerColumn">Delivered</span>
+      </div>
+      <div id="orderElemView" repeat=":= orderList" repeatVarName="orderElem"
+           class=':= orderElem == order ? "selectedOrderRow" : "orderRow"'>
+        <span class="wideOrderColumn" clickEvent="=: doSelectOrder(orderElem)">
+           <input type="checkbox" checked=":= order == orderElem"/>
+           <%= orderElem.orderNumber %>
+        </span>
+        <span class="orderColumn" clickEvent="=: doSelectOrder(orderElem)">
+           <%= order.emailAddress %>
+        </span>
+        <span class="orderColumn"><%= orderElem.totalPrice %> </span>
+        <span class="wideOrderColumn">
+           <span visible=":= orderElem.submittedOn != null">
+              <%= DynUtil.formatDate(orderElem.submittedOn) %>
+              <span id="alt">pending <%= orderElem.checkoutStarted ? "checkout" : "submit" %> </span>
+           </span>
+        </span>
+        <span class="wideOrderColumn">
+           <span visible=":= orderElem.deliveredOn != null">
+              <%= DynUtil.formatDate(orderElem.deliveredOn) %>
+              <span id="alt"><input type="button" value="Mark delivered" clickEvent="=: markOrderDelivered(orderElem)"/> </span>
+           </span>
+        </span>
+      </div>
+   </div>
+</div>

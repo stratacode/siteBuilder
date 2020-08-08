@@ -1,4 +1,8 @@
+package sc.content;
+
 import sc.content.MediaManagerView;
 
-public content.coreui extends content.model {
+import sc.content.SiteView;
+
+public content.coreui extends content.model, content.userModel {
 }

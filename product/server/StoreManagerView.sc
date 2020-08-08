@@ -3,55 +3,67 @@ StoreManagerView {
       UserView uv = currentUserView;
 
       if (uv.loginStatus == LoginStatus.NotLoggedIn) {
-         storeList = new ArrayList<Storefront>();
-         changeStore(null);
+         siteList = new ArrayList<SiteContext>();
+         changeSite(null);
          errorMessage = "Please log in";
          return;
       }
 
-      storeList = uv.user.storeList;
+      siteList = uv.user.siteList;
       //if (storeList == null) {
-      //   storeList = new ArrayList<Storefront>();
+      //   storeList = new ArrayListSiteContext>();
       //   uv.user.storeList = storeList;
       //}
 
       Storefront newStore = null;
+      SiteContext newSite = null;
       errorMessage = null;
       if (pathName != null) {
-         newStore = Storefront.findByStorePathName(pathName);
+         newSite = SiteContext.findBySitePathName(pathName);
          if (newStore == null) {
             errorMessage = "No store with path name: " + pathName;
          }
       }
       else {
-         if (storeList.size() == 0)
-            errorMessage = "No current stores for user: " + uv.user.userName;
+         if (siteList.size() == 0)
+            errorMessage = "No current sites for user: " + uv.user.userName;
          else
-            newStore = storeList.get(0);
+            newSite = siteList.get(0);
       }
+      if (newSite instanceof Storefront)
+         newStore = (Storefront) newSite;
+      else
+         errorMessage = "Site with path name: " + pathName + " is not a store";
 
-      changeStore(newStore);
+      changeSite(newStore);
       updateStoreSelectList();
    }
 
    void changeStoreWithIndex(int ix) {
       ix = ix - 1; // Skip the select title
-      if (storeList == null || storeList.size() <= ix)
+      if (siteList == null || siteList.size() <= ix)
          errorMessage = "Invalid store selection";
       else
-         changeStore(storeList.get(ix));
+         changeSite(siteList.get(ix));
    }
 
-   void changeStore(Storefront newStore) {
-      if (newStore != null) {
-         if (!storeList.contains(newStore)) {
-            errorMessage = "Not an admin of store: " + newStore.storeName;
+   void changeSite(SiteContext newSite) {
+      if (newSite != null) {
+         if (!siteList.contains(newSite)) {
+            errorMessage = "Not an admin of site: " + newSite.siteName;
             validStore = false;
          }
          else {
-            store = newStore;
-            errorMessage = null;
-            validStore = true;
+            if (newSite instanceof Storefront) {
+               store = (Storefront) newSite;
+               errorMessage = null;
+               validStore = true;
+            }
+            else {
+               store = null;
+               errorMessage = "Site: " + newSite.siteName + " is not a store";
+               validStore = false;
+            }
          }
       }
       else {
@@ -85,22 +97,22 @@ StoreManagerView {
 
       if (store.propErrors == null) {
          UserProfile user = currentUserView.user;
-         store.storeAdmins = new ArrayList<UserProfile>();
-         store.storeAdmins.add(user);
+         store.siteAdmins = new ArrayList<UserProfile>();
+         store.siteAdmins.add(user);
          try {
             store.dbInsert(false);
          }
          catch (IllegalArgumentException exc) {
             storeError = "Error adding store: " + exc;
          }
-         if (user.storeList == null) {
-            user.storeList = new ArrayList<Storefront>();
+         if (user.siteList == null) {
+            user.siteList = new ArrayList<SiteContext>();
          }
-         if (!user.storeList.contains(store)) {
+         if (!user.siteList.contains(store)) {
             System.out.println("*** Reverse relationship did not add do the store list");
-            user.storeList.add(store);
+            user.siteList.add(store);
          }
-         storeList = user.storeList;
+         siteList = user.siteList;
          showCreateView = false;
          validStore = true;
 
@@ -110,7 +122,7 @@ StoreManagerView {
 
    void cancelAddStore() {
       showCreateView = false;
-      changeStore(lastStore);
+      changeSite(lastStore);
       validStore = store != null;
       updateStoreSelectList();
    }
@@ -120,21 +132,21 @@ StoreManagerView {
          return; // Creating a new store
 
       ArrayList<String> res = new ArrayList<String>();
-      if (storeList == null) {
+      if (siteList == null) {
          res.add("User: " + currentUserView.user.userName + " admin for no stores");
       }
       else {
          res.add("Select a store");
-         for (Storefront store:storeList)
-            res.add(store.storeName);
+         for (SiteContext store:siteList)
+            res.add(store.siteName);
       }
       storeSelectList = res;
       if (store == null)
          storeIndex = 0;
       else {
-         int storeIx = storeList.indexOf(store);
+         int storeIx = siteList.indexOf(store);
          if (storeIndex == -1)
-            System.err.println("*** Failed to find current store in storeList!");
+            System.err.println("*** Failed to find current store in siteList!");
          else
             storeIndex = storeIx + 1; // For the header message
       }

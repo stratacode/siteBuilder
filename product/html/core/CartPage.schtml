@@ -1,10 +1,10 @@
-<%@ @URL(pattern="/cart") %>
+<%@ @URL(pattern="/{sitePathName=urlString}/cart", testURLs={"/stratacycles/cart"}) %>
 <html extends="BaseStorePage">
-  <body>
-     <div id="appFrame">
-        <div id="pageBody">
-           <div id="cartView" extends="CartView"/>
-        </div>
-     </div>
-  </body>
+   <body>
+      <div id="appFrame">
+         <div id="pageBody">
+            <div id="cartView" extends="CartView" siteView=":= CartPage.this.siteView"/>
+         </div>
+      </div>
+   </body>
 </html>

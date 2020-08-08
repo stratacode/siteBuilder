@@ -1,10 +1,11 @@
 @Component
+@CompilerSettings(constructorProperties="siteView,pathName")
 abstract class CatalogElementView {
+   SiteView siteView;
+   StoreView storeView := (StoreView) siteView;
+
    @Sync(syncMode=SyncMode.Disabled)
    String pathName;
-
-   @Constant
-   Storefront store = StoreView.store;
 
    @Sync(initDefault=true)
    List<Category> categoryPath;

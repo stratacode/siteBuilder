@@ -1,4 +1,5 @@
-class ProductManager extends BaseManager {
+@Sync
+class ProductManager extends BaseProductManager {
    @Sync(initDefault=true)
    List<Product> productList;
 

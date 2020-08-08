@@ -1,11 +1,14 @@
 StoreView {
-   void init() {
-      Storefront storefront = Storefront.findByStorePathName(pathName);
-      if (storefront == null) {
-         System.err.println("*** No storefront with pathname: " + pathName);
+   void validateSite() {
+      super.validateSite();
+      if (siteContext instanceof Storefront) {
+         store = (Storefront) siteContext;
+         orderView = new OrderView(store);
       }
-      else
-         store = storefront;
+      else {
+         System.err.println("*** validateSite - not a valid Storefront");
+         store = null;
+         orderView = null;
+      }
    }
-
 }

@@ -11,7 +11,7 @@ CategoryView {
       if (path == null)
          path = "/";
       if (category == null || !DynUtil.equalObjects(category.pathName, path)) {
-         List<Category> cats = Category.findByPathName(path, store, 0, 1);
+         List<Category> cats = Category.findByPathName(path, storeView.store, 0, 1);
          if (cats.size() > 0) {
             category = cats.get(0);
             if (PTypeUtil.testMode)

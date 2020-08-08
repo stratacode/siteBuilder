@@ -5,8 +5,10 @@ ProductView {
    pathName =: validateProductPath();
 
    void init() {
+      if (storeView.store == null)
+         return;
       validateProductPath();
-      currencySymbol = store.defaultCurrency.symbol;
+      currencySymbol = storeView.store.defaultCurrency.symbol;
    }
 
    void validateProductPath() {
@@ -15,7 +17,7 @@ ProductView {
 
       if (product == null || !product.pathName.equals(pathName)) {
          optionsValid = false;
-         List<Product> prods = Product.findByPathName(pathName, store, 0, 1);
+         List<Product> prods = Product.findByPathName(pathName, storeView.store, 0, 1);
          if (prods.size() > 0) {
             product = prods.get(0);
 
@@ -195,8 +197,7 @@ ProductView {
    }
 
    void addToCart() {
-      OrderView orderView = currentOrderView;
-      orderView.addLineItem(product, currentSku, currentQuantity);
+      storeView.orderView.addLineItem(product, currentSku, currentQuantity);
    }
 
    void startProductSync() {

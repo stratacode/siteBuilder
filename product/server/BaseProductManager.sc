@@ -3,7 +3,7 @@ import java.util.Arrays;
 
 import sc.lang.html.HTMLElement;
 
-BaseManager {
+BaseProductManager {
    store =: storeChanged();
    longDescHtml =: updateLongDesc(longDescHtml);
 

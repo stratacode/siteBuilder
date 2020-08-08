@@ -1,10 +1,16 @@
 import java.util.HashMap;
 
 @Component
-object StoreView {
+@CompilerSettings(constructorProperties="pathName")
+class StoreView extends SiteView {
    @Sync(initDefault=true)
    Storefront store;
 
-   String pathName;
+   /*
+   public StoreView(String sitePathName) {
+      super(sitePathName);
+   }
+   */
 
+   OrderView orderView; 
 }

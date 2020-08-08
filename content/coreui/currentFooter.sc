@@ -1,2 +1,0 @@
-object currentFooter extends NavMenu {
-}

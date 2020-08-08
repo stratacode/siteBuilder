@@ -1,40 +1,46 @@
 <div>
    <%!
-      UserProfile user := currentUserView.user;
-      Order order := currentOrderView.order;
+      SiteView siteView;
+      StoreView storeView := (StoreView) siteView;
+      OrderView orderView := storeView.orderView;
+      UserView userView := currentUserView;
+
+      UserProfile user := userView.user;
+      Order order := orderView.order;
+      Storefront store := storeView.store;
 
       object quantityConverter extends IntConverter {}
    %>
-   <div id="title" class="cartTitle"><%= StoreView.store.storeName %> - checkout</div>
+   <div id="title" class="cartTitle"><%= store.siteName %> - checkout</div>
    <div id="cartWrapper" visible=":= order.numLineItems != 0">
       <div id="checkoutView" visible=":= order.orderNumber == null && order.checkoutStarted">
-         <div id="guestCheckoutBox" visible=":= currentUserView.loginStatus == LoginStatus.NotLoggedIn">
+         <div id="guestCheckoutBox" visible=":= userView.loginStatus == LoginStatus.NotLoggedIn">
             <div class="viewTitle">Continue as a guest or <a href="/login">login</a></div>
-            <div id="orderErrorView" visible=":= currentOrderView.orderError != null">
-               Please correct these errors: <%= currentOrderView.orderError %>
+            <div id="orderErrorView" visible=":= orderView.orderError != null">
+               Please correct these errors: <%= orderView.orderError %>
             </div>
             <div id="emailFieldBox" class="fieldBox">
                <%!
-                  boolean hasError := TextUtil.hasMapEntry(currentOrderView.propErrors, "emailAddress");
+                  boolean hasError := TextUtil.hasMapEntry(orderView.propErrors, "emailAddress");
                %>
                <label for="emailAddrField" class="fieldLabel">Email address</label>
                <input id="emailAddrField" class=':= hasError ? "fieldInputError" : "fieldInput"' type="email"
-                      value=":= order.emailAddress" changeEvent="=: currentOrderView.updateEmailAddress(value)"/>
+                      value=":= order.emailAddress" changeEvent="=: orderView.updateEmailAddress(value)"/>
                <div id="emailError" class="fieldError" visible=":= hasError">
-                  <%= currentOrderView.propErrors.get("emailAddress") %>
+                  <%= orderView.propErrors.get("emailAddress") %>
                </div>
             </div>
             <div id="shippingAddressView" extends="AddressEditView"
                  address=":= order.shippingAddress"
-                 defaultCountry=":= StoreView.store.defaultCountry"
-                 countryNames=":= StoreView.store.countryNames"
+                 defaultCountry=":= store.defaultCountry"
+                 countryNames=":= store.countryNames"
                  addressName="Shipping address"/>
-            <div><input id="billToShippingField" type="checkbox" checked=":=: currentOrderView.billToShipping">Bill to shipping address?</div>
+            <div><input id="billToShippingField" type="checkbox" checked=":=: orderView.billToShipping">Bill to shipping address?</div>
             <div id="billingAddressView" extends="AddressEditView"
-                 visible=":= !currentOrderView.billToShipping"
+                 visible=":= !orderView.billToShipping"
                  address=":= order.billingAddress"
-                 defaultCountry=":= StoreView.store.defaultCountry"
-                 countryNames=":= StoreView.store.countryNames"
+                 defaultCountry=":= store.defaultCountry"
+                 countryNames=":= store.countryNames"
                  addressName="Billing address"/>
             <div id="paymentView" class="paymentView">
                <div class="viewTitle">Payment info</div>
@@ -77,7 +83,7 @@
                </div>
             </div>
          </div>
-         <div id="registeredCheckout" visible=":= currentUserView.loginStatus == LoginStatus.LoggedIn">
+         <div id="registeredCheckout" visible=":= userView.loginStatus == LoginStatus.LoggedIn">
             Order for <%= user.displayName %> with <%= user.emailAddress %>
             Shipping to: <span id="shipAddressBox" extends="AddressDisplayView" address=":= order.shippingAddress"/>
          </div>
@@ -96,10 +102,10 @@
             </div>
             <input type="text" class="cartLineItemQuantity"
                    value=":= quantityConverter.intToString(lineItem.quantity)"
-                   changeEvent="=: currentOrderView.changeQuantity(lineItem, value)"/>
+                   changeEvent="=: orderView.changeQuantity(lineItem, value)"/>
             <div id="cartStatus" class="cartStatus"><%= lineItem.sku.inStock ? "in stock" : "backordered" %></div>
             <div id="price" class="cartPrice"><%= lineItem.totalPrice %></div>
-            <img class="cartDeleteItem" id="deleteIcon" src="/icons/x-square.svg" clickEvent="=: currentOrderView.deleteLineItem(lineItem)"/>
+            <img class="cartDeleteItem" id="deleteIcon" src="/icons/x-square.svg" clickEvent="=: orderView.deleteLineItem(lineItem)"/>
          </div>
          <div id="totalPrice" class="cartTotalPrice">
             Total:
@@ -109,7 +115,7 @@
             <div id="actionButtonBox">
                <input id="actionButton" type="button"
                       value=':= order.checkoutStarted ? "Submit order" : "Checkout"'
-                      clickEvent="=: currentOrderView.performAction()"/>
+                      clickEvent="=: orderView.performAction()"/>
             </div>
          </div>
       </div>
@@ -118,16 +124,16 @@
       </div>
    </div>
    <div id="completedOrderView">
-      <div id="submittedOrderView" visible=":= currentOrderView.completedOrder != null">
+      <div id="submittedOrderView" visible=":= orderView.completedOrder != null">
          <p>
          <hr>
-         Order <%= currentOrderView.completedOrder.orderNumber %> submitted on <%= currentOrderView.completedOrder.submittedOn %>
+         Order <%= orderView.completedOrder.orderNumber %> submitted on <%= orderView.completedOrder.submittedOn %>
          <p>
-         Ship to: <div id="completedShipTo" extends="AddressDisplayView" address=":= currentOrderView.completedOrder.shippingAddress"/>
+         Ship to: <div id="completedShipTo" extends="AddressDisplayView" address=":= orderView.completedOrder.shippingAddress"/>
          <p>
-         Total: <%= currentOrderView.completedOrder.totalPrice %>
+         Total: <%= orderView.completedOrder.totalPrice %>
          <p>
-         Bill to: <div id="completedShipTo" extends="AddressDisplayView" address=":= currentOrderView.completedOrder.billingAddress"/>
+         Bill to: <div id="completedShipTo" extends="AddressDisplayView" address=":= orderView.completedOrder.billingAddress"/>
       </div>
    </div>
 </div>

@@ -94,7 +94,7 @@
 }
 
 .confirmButtons, .formTitle, .checkFormView, .skuOptionsSummary, .formError, .formStatus,
-#addSkuButtons, .subFormTitle, .skuListTitle, .formMessage {
+#addSkuButtons, .subFormTitle, .skuListTitle, .formMessage, #orderTypeForm {
    margin-left: 21%;
 }
 

@@ -7,7 +7,6 @@ class ProductView extends CatalogElementView {
    @Sync
    String currencySymbol;
 
-
    @Sync(initDefault=true)
    Sku currentSku;
 

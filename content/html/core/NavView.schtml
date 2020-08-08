@@ -1,5 +1,11 @@
 <div>
-   <div id="mainMenuRepeat" class="menuItem" repeat=":= currentNavMenu.menuItems" repeatVarName="menuItem"
+   <%! 
+      SiteView siteView;
+      object navMenu extends PageNavMenu {
+         siteView := NavView.this.siteView;
+      }
+   %>
+   <div id="mainMenuRepeat" class="menuItem" repeat=":= navMenu.menuItems" repeatVarName="menuItem"
         visible=":= menuItem.visible">
       <a    id="menuItemlink" class=':= (menuItem.menuItems != null ? "subMenuLink" : "menuItemLink") + (!menuItem.enabled ? " menuItemDisabled" : "")'
             clickEvent="=: menuItem.itemSelected()" >

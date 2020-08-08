@@ -1,6 +1,6 @@
 import sc.user.currentUserView;
 
-currentNavMenu {
+PageNavMenu {
    boolean loggedIn := currentUserView.loginStatus == LoginStatus.LoggedIn;
    object profileMenu extends NavMenu {
       name := loggedIn ? currentUserView.user.userName : "login";

@@ -1,10 +1,12 @@
-<%@ @URL(pattern="/category/{pathName=urlString}", testURLs={"/category/bikes", "/category/road-bikes", "/category/mountain-bikes"}) %>
+<%@ @URL(pattern="/{sitePathName=urlString}/category/{categoryPathName=urlString}", testURLs={"/stratacyles/category/bikes", "/stratacyles/category/road-bikes", "/stratacycles/category/mountain-bikes"}) %>
 <html extends="BaseStorePage">
-   <%! String pathName; %>
+   <%!
+      String categoryPathName;
+   %>
    <body>
       <div id="appFrame">
          <div id="pageBody">
-            <div id="categoryView" extends="CategoryView" pathName=":= CategoryPage.this.pathName"/>
+            <div id="categoryView" extends="CategoryView" pathName=":= categoryPathName" siteView=":= CategoryPage.this.siteView"/>
          </div>
       </div>
    </body>

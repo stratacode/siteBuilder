@@ -1,10 +1,15 @@
+<%@ @CompilerSettings(constructorProperties="sitePathName") %>
 <html abstract="true" extends="EditablePage">
+   <%!
+      String sitePathName;
+      SiteView siteView;
+   %>
    <head exec="server">
       <link id="contentStyle" rel="stylesheet" href="/pageStyle.css" type="text/css"/>
    </head>
    <body>
       <div id="appFrame" class="appFrame">
-         <div id="navbar" extends="NavView"/>
+         <div id="navbar" extends="NavView" siteView=":= PageLayout.this.siteView"/>
          <div id="pageBody"/>
          <div id="footer" extends="FooterView"/>
       </div>

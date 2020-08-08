@@ -1,10 +1,13 @@
-<%@ @URL(pattern="/product/{pathName=urlString}", testURLs={"/product/surly", "/product/maverick", "/product/four-corners"}) %>
+<%@ @URL(pattern="/{sitePathName=urlString}/product/{productPathName=urlString}", testURLs={"/stratacycles/product/surly", "/stratacycles/product/maverick", "/stratacycles/product/four-corners"}) %>
 <html extends="BaseStorePage">
-<%! String pathName; %>
+   <%! 
+      String productPathName;
+   %>
    <body>
       <div id="appFrame">
          <div id="pageBody">
-            <div id="productView" extends="ProductView" pathName=":= ProductPage.this.pathName"/>
+            <div id="productView" extends="ProductView" siteView=":= ProductPage.this.siteView" pathName=":= ProductPage.this.productPathName">
+            </div>
          </div>
       </div>
    </body>

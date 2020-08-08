@@ -25,6 +25,8 @@ class Order {
    boolean checkoutStarted;
    String orderNumber;
    boolean pending := orderNumber == null;
+   boolean delivered := deliveredOn != null;
+   boolean submitted := submittedOn != null && deliveredOn == null;
 
    Date submittedOn;
    Date deliveredOn;
@@ -54,4 +56,15 @@ class Order {
       return TextUtil.validateEmailAddress(emailAddress);
    }
 
+   @Bindable(manual=true)
+   public String getDisplayStatus() {
+      if (!checkoutStarted)
+         return "pending checkout";
+      else if (submittedOn == null)
+         return "pending submit";
+      else if (deliveredOn == null)
+         return "pending delivery";
+      else
+         return "order complete";
+   }
 }

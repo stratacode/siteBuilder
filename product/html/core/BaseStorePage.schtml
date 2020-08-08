@@ -1,7 +1,9 @@
-<html extends="PageLayout" abstract="true" pageVisitCount="=: currentOrderView.refresh()">
+<html extends="PageLayout" abstract="true">
    <%!
-      //String storePathName;
-      //StoreView storeView := StoreView.getForPathName(storePathName);
+      object storeView extends StoreView {
+         pathName := BaseStorePage.this.sitePathName;
+      }
+      siteView = storeView;
    %>
    <head exec="server">
       <link id="docStyle" rel="stylesheet" href="/productStyle.css" type="text/css"/>

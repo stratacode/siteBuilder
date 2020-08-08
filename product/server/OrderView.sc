@@ -50,7 +50,7 @@ OrderView {
 
       UserProfile user = currentUserView.user;
       if (order == null) {
-         order = Order.createDraft(StoreView.store, user);
+         order = Order.createDraft(store, user);
       }
       if (order.lineItems == null)
          order.lineItems = new ArrayList<LineItem>();
@@ -133,11 +133,11 @@ OrderView {
    void submitOrder() {
       validateProperties();
       if (order.shippingAddress.country == null)
-         order.shippingAddress.country = StoreView.store.defaultCountry;
+         order.shippingAddress.country = store.defaultCountry;
       order.shippingAddress.validateAddress();
       if (order.shippingAddress != order.billingAddress) {
          if (order.billingAddress.country == null)
-            order.billingAddress.country = StoreView.store.defaultCountry;
+            order.billingAddress.country = store.defaultCountry;
          order.billingAddress.validateAddress();
       }
       order.paymentInfo.validatePaymentInfo();
@@ -150,7 +150,7 @@ OrderView {
             order.dbUpdate();
 
             completedOrder = order;
-            order = Order.createDraft(StoreView.store, currentUserView.user);
+            order = Order.createDraft(store, currentUserView.user);
          }
          catch (RuntimeException exc) {
             orderError = "Software error submitting order - please try again or contact us";

@@ -1,7 +1,7 @@
 @Component @Sync
 class StoreManagerView {
    String pathName;
-   List<Storefront> storeList;
+   List<SiteContext> siteList;
    Storefront store;
 
    Storefront lastStore;
@@ -21,23 +21,23 @@ class StoreManagerView {
    boolean autoUpdatePath = true;
    boolean storeSaved = false;
 
-   void updateStoreName(String val) {
+   void updateSiteName(String val) {
       if (store == null)
          return;
-      store.storeName = val;
+      store.siteName = val;
       if (autoUpdatePath && (val != null && val.length() > 0))
-         store.storePathName = CatalogElement.convertToPathName(val);
+         store.sitePathName = CatalogElement.convertToPathName(val);
       if (storeSaved)
          store.validateProperties();
       else
-         store.validateProp("storeName");
+         store.validateProp("siteName");
    }
 
    void updatePathName(String pathName) {
       if (store == null)
          return;
       autoUpdatePath = false;
-      store.storePathName = pathName;
-      store.validateProp("storePathName");
+      store.sitePathName = pathName;
+      store.validateProp("sitePathName");
    }
 }
