@@ -142,38 +142,43 @@
             </div>
          </div>
       </div>
-      <div id="alt" class="cartMessage">
+      <div id="alt" class="viewTitle">
          Cart is empty
       </div>
    </div>
    <div id="completedOrderView">
-      <div id="submittedOrderView" visible=":= orderView.completedOrder != null">
-         <div class="viewTitle">Thank you for your order!</div>
+      <div id="completedOrderView" visible=":= orderView.completedOrder != null">
+         <div id="newOrderSubmittedView" visible=":= orderView.newOrderSubmitted">
+            <div class="viewTitle">Thank you for your order!</div>
 
-         <div class="statusBox">
-            Order number: <%= orderView.completedOrder.orderNumber %> submitted on <%= orderView.completedOrder.submittedOn %>, total: <%= orderView.order.currency.symbol %><%= orderView.completedOrder.totalPrice %>
-         </div>
-         <div id="completedShipView" class="statusBox">
-            Ship to: <div id="completedShipTo" extends="AddressDisplayView" address=":= orderView.completedOrder.shippingAddress"/>
-            <%= orderView.completedOrder.shippingAddress == user.homeAddress ? "(default address)" : "" %>
-            <div id="confirmAddress" visible=":= orderView.confirmDefaultAddress">
-               <input type="button" value="Make default address"
-                      clickEvent="=: orderView.changeDefaultAddress(orderView.completedOrder.shippingAddress)"/>
+            <div class="statusBox">
+               Order number: <%= orderView.completedOrder.orderSummary %>
             </div>
-         </div>
+            <div id="completedShipView" class="statusBox">
+               Ship to: <div id="completedShipTo" extends="AddressDisplayView" address=":= orderView.completedOrder.shippingAddress"/>
+               <%= orderView.completedOrder.shippingAddress == user.homeAddress ? "(default address)" : "" %>
+               <div id="confirmAddress" visible=":= orderView.confirmDefaultAddress">
+                  <input type="button" value="Use as default address"
+                         clickEvent="=: orderView.changeDefaultAddress(orderView.completedOrder.shippingAddress)"/>
+               </div>
+            </div>
 
-         <div class="statusBox">
-            Bill to: <%= orderView.completedOrder.paymentInfo.displaySummary %>
-         </div>
-         <div id="savePaymentInfo" visible=":= !userView.user.savePaymentInfo">
-            <input type="button" value="Save payment info" clickEvent="=: userView.savePaymentInfo(orderView.completedOrder.paymentInfo)"/>
-            <div id="alt">
-               Saved for faster checkout: <input type="button" value="Remove payment info" clickEvent="=: userView.clearPaymentInfo()"/>
+            <div class="statusBox">
+               Bill to: <%= orderView.completedOrder.paymentInfo.displaySummary %>
             </div>
-         </div>
-         <div id="confirmPayment" visible=":= orderView.confirmDefaultPayment">
-            <input type="button" value="Make default payment"
-                   clickEvent="=: orderView.changeDefaultPaymentInfo(orderView.completedOrder.paymentInfo)"/>
+            <div id="savePaymentInfo" visible=":= !userView.user.savePaymentInfo">
+               <input type="button" value="Save payment method" clickEvent="=: userView.savePaymentInfo(orderView.completedOrder.paymentInfo)"/>
+               <div id="alt">
+                  Saved for faster checkout: <input type="button" value="Remove payment info" clickEvent="=: userView.clearPaymentInfo()"/>
+               </div>
+            </div>
+            <div id="confirmPayment" visible=":= orderView.confirmDefaultPayment">
+               <input type="button" value="Use as primary payment method"
+                      clickEvent="=: orderView.changeDefaultPaymentInfo(orderView.completedOrder.paymentInfo)"/>
+            </div>
+            <div id="alt" class="recentOrderMessage">
+               Recent order: <%= orderView.completedOrder.orderSummary %>
+            </div>
          </div>
 
          <div id="registerAccount" visible=":= userView.loginStatus == LoginStatus.NotLoggedIn">

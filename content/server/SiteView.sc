@@ -15,5 +15,6 @@ SiteView {
    }
 
    void pageVisited() {
+      pageVisitCount++;
    }
 }

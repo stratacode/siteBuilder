@@ -241,6 +241,12 @@
   margin-bottom: 10px;
 }
 
+.recentOrderMessage {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+
 .rowStatusBox {
   margin-top: 5px;
   margin-bottom: 5px;

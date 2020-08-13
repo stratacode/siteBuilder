@@ -4,7 +4,7 @@ StoreView {
       if (siteContext instanceof Storefront) {
          if (store != siteContext) {
             store = (Storefront) siteContext;
-            orderView = new OrderView(store, currentUserView);
+            orderView = new OrderView(this, currentUserView);
          }
          else
             orderView.refresh();
@@ -17,8 +17,9 @@ StoreView {
    }
 
    void pageVisited() {
+      super.pageVisited();
       if (orderView != null)
-         orderView.refresh();
+         orderView.pageVisited();
    }
 
 }

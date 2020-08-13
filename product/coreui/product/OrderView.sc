@@ -1,6 +1,8 @@
 @Component @Sync
 class OrderView {
    Storefront store;
+   StoreView storeView;
+   UserView userView;
 
    @Sync(initDefault=true)
    int numLineItems := order == null ? 0 : order.numLineItems;
@@ -32,10 +34,11 @@ class OrderView {
    boolean confirmDefaultAddress = false;
    boolean confirmDefaultPayment = false;
 
-   UserView userView;
+   boolean newOrderSubmitted = false;
 
-   OrderView(Storefront store, UserView userView) {
-      this.store = store;
+   OrderView(StoreView storeView, UserView userView) {
+      this.storeView = storeView;
+      this.store = storeView.store;
       this.userView = userView;
    }
 

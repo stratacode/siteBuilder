@@ -3,6 +3,11 @@ OrderView {
       refresh();
    }
 
+   void pageVisited() {
+      newOrderSubmitted = false;
+      refresh();
+   }
+
    void refresh() {
       UserProfile user = currentUserView.user;
       orderError = null;
@@ -173,6 +178,8 @@ OrderView {
       orderError = order.validateForSubmit();
       if (propErrors == null && order.paymentInfo.billingAddress.propErrors == null && order.shippingAddress.propErrors == null &&
           orderError == null && order.paymentInfo.propErrors == null) {
+
+         newOrderSubmitted = true;
          order.orderNumber = order.store.makeOrderNumber(order);
          order.submittedOn = new Date();
          try {

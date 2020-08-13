@@ -13,4 +13,6 @@ class SiteView {
    */
 
    String pathName;
+
+   int pageVisitCount = 0;
 }

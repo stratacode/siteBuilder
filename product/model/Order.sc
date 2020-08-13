@@ -66,4 +66,8 @@ class Order {
       else
          return "order complete";
    }
+
+   public String getOrderSummary() {
+      return "Order number: " + orderNumber + " submitted on " + submittedOn + " for total: " + currency.symbol + totalPrice;
+   }
 }
