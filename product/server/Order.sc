@@ -17,20 +17,26 @@ Order {
       if (currency == null || !store.supportsCurrency(currency))
          currency = store.defaultCurrency;
       order.currencyName = currency.currencyName;
-      if (user.homeAddress != null) {
-         order.shippingAddress = user.homeAddress;
-         order.billingAddress = user.homeAddress;
-      }
-      else {
-         order.shippingAddress = new Address();
-         order.billingAddress = order.shippingAddress;
-      }
+      boolean newPaymentInfo = false;
       if (user.paymentInfo == null) {
          order.paymentInfo = new PaymentInfo();
          order.paymentInfo.cardHolder = user.name;
+         newPaymentInfo = true;
       }
       else
          order.paymentInfo = user.paymentInfo;
+      if (user.homeAddress != null) {
+         order.shippingAddress = user.homeAddress;
+         if (newPaymentInfo || order.paymentInfo.billingAddress == null)
+            order.paymentInfo.billingAddress = user.homeAddress;
+      }
+      else {
+         order.shippingAddress = new Address();
+         if (newPaymentInfo)
+            order.paymentInfo.billingAddress = order.shippingAddress;
+      }
+      if (order.paymentInfo.billingAddress == null)
+         order.paymentInfo.billingAddress = order.shippingAddress;
       order.dbInsert(false);
       return order;
    }

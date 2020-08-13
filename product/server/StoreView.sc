@@ -2,8 +2,12 @@ StoreView {
    void validateSite() {
       super.validateSite();
       if (siteContext instanceof Storefront) {
-         store = (Storefront) siteContext;
-         orderView = new OrderView(store);
+         if (store != siteContext) {
+            store = (Storefront) siteContext;
+            orderView = new OrderView(store, currentUserView);
+         }
+         else
+            orderView.refresh();
       }
       else {
          System.err.println("*** validateSite - not a valid Storefront");
@@ -11,4 +15,10 @@ StoreView {
          orderView = null;
       }
    }
+
+   void pageVisited() {
+      if (orderView != null)
+         orderView.refresh();
+   }
+
 }

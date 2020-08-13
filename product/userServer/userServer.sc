@@ -1,12 +1,8 @@
-package sc.product;
+package sc.user;
 
-public product.server extends content.server, product.coreui, user.server, user.modelImpl, product.userServer {
-   // But don't export the server only constraint here
+public product.userServer extends user.server, product.userModel, user.modelImpl, product.coreui, content.server {
    exportRuntime = false;
    exportProcess = false;
-
-   // Don't show in the management UI 
-   hidden = true;
 
    void init() {
    // Exclude the runtimes which do not support the DB features

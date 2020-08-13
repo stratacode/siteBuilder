@@ -182,5 +182,22 @@ UserView {
    }
 
    void persistAuthToken(String token) {}
+
    void clearAuthToken(){}
+
+   void removeAddress(Address addr) {
+      if (user != null && user.addresses != null) {
+         int ix = user.addresses.indexOf(addr);
+         if (ix != -1)
+            user.addresses.remove(ix);
+      }
+   }
+
+   void changeHomeAddress(Address addr) {
+      if (user != null) {
+         user.homeAddress = addr;
+      }
+   }
+
 }
+

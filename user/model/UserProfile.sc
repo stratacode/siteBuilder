@@ -29,6 +29,7 @@ class UserProfile {
    Date limitRestoreDate;
 
    Address homeAddress;
+   @DBPropertySettings(columnType="jsonb")
    List<Address> addresses;
 
    final static int PRIV_SUPER_ADMIN = 1;

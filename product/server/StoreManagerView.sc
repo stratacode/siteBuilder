@@ -99,6 +99,11 @@ StoreManagerView {
          UserProfile user = currentUserView.user;
          store.siteAdmins = new ArrayList<UserProfile>();
          store.siteAdmins.add(user);
+         MediaManager newMgr = new MediaManager();
+         newMgr.managerPathName = store.sitePathName;
+         newMgr.mediaBaseUrl = "/images/" + newMgr.managerPathName + "/";
+         newMgr.genBaseUrl = "/images/gen/" + newMgr.managerPathName + "/";
+         store.mediaManager = newMgr;
          try {
             store.dbInsert(false);
          }

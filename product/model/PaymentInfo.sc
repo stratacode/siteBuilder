@@ -4,7 +4,7 @@ class PaymentInfo {
    CreditCardType cardType;
    String cardHolder;
 
-   // TODO: This will be stored in a separate data source
+   // TODO: The actual card number will be stored in a separate data source
    // For the authorizePayment method, we'll have a method in
    // the payment processor that can run on either the client or
    // server that takes this info and returns a token to identify
@@ -20,6 +20,8 @@ class PaymentInfo {
    String expMonth;
    String expYear;
    String country;
+
+   Address billingAddress;
 
    static final int cardNumberMaxLen = 16;
    static final int cardNumberMinLen = 13;
@@ -162,6 +164,7 @@ class PaymentInfo {
                last4 = "x" + cardNumber.substring(newNum.length() - 4);
          }
       }
+      refreshCardType();
       Bind.sendChangedEvent(this, "cardNumberDisplay");
    }
 
@@ -267,5 +270,26 @@ class PaymentInfo {
 
    void validatePaymentInfo() {
       propErrors = DynUtil.validateProperties(this, null);
+   }
+
+   void refreshCardType() {
+      if (cardNumber == null || cardNumber.length() < cardNumberMinLen)
+         cardType = null;
+      else {
+         cardType = CreditCardType.fromNumber(cardNumber);
+      }
+   }
+
+
+   String getDisplaySummary() {
+      return cardType + " " + last4;
+   }
+
+   void clearCardInfo() {
+      cardType = null;
+      cardNumber = null;
+      expMonth = null;
+      expYear = null;
+      cvv = null;
    }
 }

@@ -54,7 +54,8 @@
                   <label for="passwordField">Password</label>
                   <input type="password" placeholder="password" value=":=: currentUserView.password"/>
                </div>
-               <input type="submit" value="Log in" clickEvent="=: currentUserView.login()"/>
+               <input type="submit" value="Log in" clickEvent="=: currentUserView.login()" class="confirmButtons"/>
+               <input type="submit" value="Register" clickEvent='=: Window.window.location.href = "/Register.html"' class="rightButtons"/>
             </div>
             <div class="formError"><%= currentUserView.userViewError %></div>
          </div>

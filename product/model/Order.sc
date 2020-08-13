@@ -14,7 +14,6 @@ class Order {
 
    String emailAddress;
    Address shippingAddress;
-   Address billingAddress;
 
    String currencyName;
 

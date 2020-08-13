@@ -204,7 +204,7 @@ ProductView {
       if (product != null) {
          SyncContext syncCtx = SyncManager.getSyncContextForInst(product);
          if (syncCtx == null) {
-            SyncManager.addSyncInst(product, false, false, "appSession", null);
+            SyncManager.addSyncInst(product, false, false, false, "appSession", null);
          }
          SyncManager.startSync(product, "products");
          SyncManager.startSync(product, "subCategories");

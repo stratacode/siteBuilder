@@ -18,6 +18,7 @@
 .cartContents {
   display: flex;
   flex-direction: column;
+  margin-top: 10px
 }
 
 .cartLineItem {
@@ -225,3 +226,26 @@
 }
 
 
+.shippingAddressView {
+   display: flex;
+   margin-top: 10px;
+   margin-bottom: 5px;
+}
+
+.selectListRadio {
+   margin-right: 5px;
+}
+
+.statusBox {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.rowStatusBox {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.removeAddressButton, .removePaymentInfoButton {
+   vertical-align: middle;
+}

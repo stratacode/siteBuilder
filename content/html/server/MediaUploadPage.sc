@@ -54,7 +54,7 @@ class MediaUploadPage extends UploadPage {
          String revision = null;
 
          List<ManagedMedia> oldMedia = ManagedMedia.findByFileName(fileName);
-         String origFileName = FileUtil.concat(mediaStore.origDir, fileNameWithExt);
+         String origFileName = FileUtil.concat(mediaStore.origDir, useManager.managerPathName, fileNameWithExt);
          File orig = new File(origFileName);
          boolean found = false;
          byte[] origHash = FileUtil.computeHash(uploadFileName);
@@ -88,11 +88,11 @@ class MediaUploadPage extends UploadPage {
 
             }
             revision = revSuffix;
-            origFileName = FileUtil.concat(mediaStore.origDir, useManager.getOrigFileName(fileName, revision, info.suffix));
+            origFileName = FileUtil.concat(mediaStore.origDir, useManager.managerPathName, useManager.getOrigFileName(fileName, revision, info.suffix));
          }
 
          if (!found) {
-            if (!FileUtil.copyFile(uploadFileName, origFileName, false)) {
+            if (!FileUtil.copyFile(uploadFileName, origFileName, true)) {
                errors.add("Error copying media to storage");
                break;
             }

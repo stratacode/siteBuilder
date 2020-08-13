@@ -30,62 +30,85 @@
                   <%= orderView.propErrors.get("emailAddress") %>
                </div>
             </div>
+         </div>
+         <div id="registeredCheckout" visible=":= userView.loginStatus == LoginStatus.LoggedIn">
+            Order for <%= user.displayName %> using email address <%= user.emailAddress %>
+         </div>
+         <div id="addressView" visible=":= orderView.editAddress">
             <div id="shippingAddressView" extends="AddressEditView"
                  address=":= order.shippingAddress"
                  defaultCountry=":= store.defaultCountry"
                  countryNames=":= store.countryNames"
                  addressName="Shipping address"/>
+            <div id="alt" class="statusBox">
+               <div>Ship to:</div>
+               <div id="shippingAddressView" class="shippingAddressView" repeat=":= userView.user.addresses" repeatVarName="shipAddr">
+                  <input id="shipChoiceRadio" type="radio" name="shippingAddressChoice" class="selectListRadio"
+                         checked=":= shipAddr == order.shippingAddress"
+                         changeEvent="=: checked ? orderView.changeShippingAddress(shipAddr) : null"/>
+                  <span id="shipAddressBox" extends="AddressDisplayView" address=":= shipAddr"/>
+                  <img class="removeAddressButton" src="/icons/x-square.svg" clickEvent="=: userView.removeAddress(shipAddr)"/>
+               </div>
+               <input type="button" value="New address" clickEvent="=: orderView.startNewAddress()"/>
+            </div>
+         </div>
+         <div id="paymentView" class="paymentView" visible=":= orderView.editPayment">
+            <div class="viewTitle">Payment info</div>
+            <div id="cardHolderFieldBox" class="fieldBox">
+               <%! boolean hasError := TextUtil.hasMapEntry(order.paymentInfo.propErrors, "cardHolder"); %>
+               <label for="cardHolderField">Name on card</label>
+               <input id="cardHolderField" class=':= hasError ? "fieldInputError" : "fieldInput"'
+                      type="text" value=":=: order.paymentInfo.cardHolder" liveEdit="off"/>
+               <div class="fieldError" visible=':= hasError'>
+                  <%= order.paymentInfo.propErrors.get("cardHolder") %>
+               </div>
+            </div>
+            <div id="cardNumberFieldBox" class="fieldBox">
+               <%! boolean hasError := TextUtil.hasMapEntry(order.paymentInfo.propErrors, "cardNumber"); %>
+               <label for="cardNumberField" class="fieldLabel">Card number</label>
+               <input type="text" class=':= hasError ? "fieldInputError" : "fieldInput"'
+                      value=":= order.paymentInfo.cardNumberDisplay"
+                      value="=: order.paymentInfo.updateCardNumber(value)"/>
+               <div class="fieldError" visible=':= hasError'>
+                  <%= order.paymentInfo.propErrors.get("cardNumber") %>
+               </div>
+            </div>
+            <div id="expDateFieldBox" class="fieldBox">
+                <%! boolean hasError := TextUtil.hasMapEntry(order.paymentInfo.propErrors, "expMonth") ||
+                                        TextUtil.hasMapEntry(order.paymentInfo.propErrors, "expYear"); %>
+               <label for="expDateField" class="fieldLabel">Expiration date</label>
+               <input type="text" id="expDateField"
+                      class=':= hasError ? "fieldInputError" : "fieldInput"' placeholder="MM / YY " value=":= order.paymentInfo.expDateString"
+                      value="=: order.paymentInfo.updateExpireDate(value)"/>
+               <div class="fieldError" visible=':= hasError'>
+                  <%= order.paymentInfo.propErrors.get("expMonth") %><%= order.paymentInfo.propErrors.get("expYear") %>
+               </div>
+            </div>
+            <div id="cvvFieldBox" class="fieldBox">
+               <%! boolean hasError := TextUtil.hasMapEntry(order.paymentInfo.propErrors, "cvv"); %>
+               <label for="cvvField" class="fieldLabel">Security code</label>
+               <input type="text" id="cvvField" placeholder="123" value=":= order.paymentInfo.cvv" size="4" minlength="3" maxlength="4"
+                      value="=: order.paymentInfo.updateCvv(value)" pattern="\\d*"/>
+               <div class="fieldError" visible=':= hasError'><%= order.paymentInfo.propErrors.get("cvv") %></div>
+            </div>
             <div><input id="billToShippingField" type="checkbox" checked=":=: orderView.billToShipping">Bill to shipping address?</div>
             <div id="billingAddressView" extends="AddressEditView"
                  visible=":= !orderView.billToShipping"
-                 address=":= order.billingAddress"
+                 address=":= order.paymentInfo.billingAddress"
                  defaultCountry=":= store.defaultCountry"
                  countryNames=":= store.countryNames"
                  addressName="Billing address"/>
-            <div id="paymentView" class="paymentView">
-               <div class="viewTitle">Payment info</div>
-               <div id="cardHolderFieldBox" class="fieldBox">
-                  <%! boolean hasError := TextUtil.hasMapEntry(order.paymentInfo.propErrors, "cardHolder"); %>
-                  <label for="cardHolderField">Name on card</label>
-                  <input id="cardHolderField" class=':= hasError ? "fieldInputError" : "fieldInput"'
-                         type="text" value=":=: order.paymentInfo.cardHolder" liveEdit="off"/>
-                  <div class="fieldError" visible=':= hasError'>
-                     <%= order.paymentInfo.propErrors.get("cardHolder") %>
-                  </div>
+            <div id="alt">
+               <div>Use payment info: </div>
+               <div id="paymentInfoView" repeat=":= userView.user.paymentInfos" repeatVarName="paymentInfo" class="rowStatusBox">
+                  <input id="paymentInfoChoiceRadio" type="radio" name="paymentInfoChoice"
+                         checked=":= paymentInfo == order.paymentInfo"
+                         changeEvent="=: checked ? orderView.changePaymentInfo(paymentInfo) : null"/>
+                  <%= paymentInfo.displaySummary %>
+                  <img class="removePaymentInfoButton" src="/icons/x-square.svg" clickEvent="=: userView.removePaymentInfo(paymentInfo)"/>
                </div>
-               <div id="cardNumberFieldBox" class="fieldBox">
-                  <%! boolean hasError := TextUtil.hasMapEntry(order.paymentInfo.propErrors, "cardNumber"); %>
-                  <label for="cardNumberField" class="fieldLabel">Card number</label>
-                  <input type="text" class=':= hasError ? "fieldInputError" : "fieldInput"'
-                         value=":= order.paymentInfo.cardNumberDisplay"
-                         value="=: order.paymentInfo.updateCardNumber(value)"/>
-                  <div class="fieldError" visible=':= hasError'>
-                     <%= order.paymentInfo.propErrors.get("cardNumber") %>
-                  </div>
-               </div>
-               <div id="expDateFieldBox" class="fieldBox">
-                   <%! boolean hasError := TextUtil.hasMapEntry(order.paymentInfo.propErrors, "expMonth") ||
-                                           TextUtil.hasMapEntry(order.paymentInfo.propErrors, "expYear"); %>
-                  <label for="expDateField" class="fieldLabel">Expiration date</label>
-                  <input type="text" id="expDateField"
-                         class=':= hasError ? "fieldInputError" : "fieldInput"' placeholder="MM / YY " value=":= order.paymentInfo.expDateString"
-                         value="=: order.paymentInfo.updateExpireDate(value)"/>
-                  <div class="fieldError" visible=':= hasError'>
-                     <%= order.paymentInfo.propErrors.get("expMonth") %><%= order.paymentInfo.propErrors.get("expYear") %>
-                  </div>
-               </div>
-               <div id="cvvFieldBox" class="fieldBox">
-                  <%! boolean hasError := TextUtil.hasMapEntry(order.paymentInfo.propErrors, "cvv"); %>
-                  <label for="cvvField" class="fieldLabel">Security code</label>
-                  <input type="text" id="cvvField" placeholder="123" value=":= order.paymentInfo.cvv" size="4" minlength="3" maxlength="4"
-                         value="=: order.paymentInfo.updateCvv(value)" pattern="\\d*"/>
-                  <div class="fieldError" visible=':= hasError'><%= order.paymentInfo.propErrors.get("cvv") %></div>
-               </div>
+               <input type="button" value="New payment info" clickEvent="=: orderView.startNewPaymentInfo()"/>
             </div>
-         </div>
-         <div id="registeredCheckout" visible=":= userView.loginStatus == LoginStatus.LoggedIn">
-            Order for <%= user.displayName %> with <%= user.emailAddress %>
-            Shipping to: <span id="shipAddressBox" extends="AddressDisplayView" address=":= order.shippingAddress"/>
          </div>
       </div>
       <div id="cartContents" class="cartContents">
@@ -125,15 +148,40 @@
    </div>
    <div id="completedOrderView">
       <div id="submittedOrderView" visible=":= orderView.completedOrder != null">
-         <p>
-         <hr>
-         Order <%= orderView.completedOrder.orderNumber %> submitted on <%= orderView.completedOrder.submittedOn %>
-         <p>
-         Ship to: <div id="completedShipTo" extends="AddressDisplayView" address=":= orderView.completedOrder.shippingAddress"/>
-         <p>
-         Total: <%= orderView.completedOrder.totalPrice %>
-         <p>
-         Bill to: <div id="completedShipTo" extends="AddressDisplayView" address=":= orderView.completedOrder.billingAddress"/>
+         <div class="viewTitle">Thank you for your order!</div>
+
+         <div class="statusBox">
+            Order number: <%= orderView.completedOrder.orderNumber %> submitted on <%= orderView.completedOrder.submittedOn %>, total: <%= orderView.order.currency.symbol %><%= orderView.completedOrder.totalPrice %>
+         </div>
+         <div id="completedShipView" class="statusBox">
+            Ship to: <div id="completedShipTo" extends="AddressDisplayView" address=":= orderView.completedOrder.shippingAddress"/>
+            <%= orderView.completedOrder.shippingAddress == user.homeAddress ? "(default address)" : "" %>
+            <div id="confirmAddress" visible=":= orderView.confirmDefaultAddress">
+               <input type="button" value="Make default address"
+                      clickEvent="=: orderView.changeDefaultAddress(orderView.completedOrder.shippingAddress)"/>
+            </div>
+         </div>
+
+         <div class="statusBox">
+            Bill to: <%= orderView.completedOrder.paymentInfo.displaySummary %>
+         </div>
+         <div id="savePaymentInfo" visible=":= !userView.user.savePaymentInfo">
+            <input type="button" value="Save payment info" clickEvent="=: userView.savePaymentInfo(orderView.completedOrder.paymentInfo)"/>
+            <div id="alt">
+               Saved for faster checkout: <input type="button" value="Remove payment info" clickEvent="=: userView.clearPaymentInfo()"/>
+            </div>
+         </div>
+         <div id="confirmPayment" visible=":= orderView.confirmDefaultPayment">
+            <input type="button" value="Make default payment"
+                   clickEvent="=: orderView.changeDefaultPaymentInfo(orderView.completedOrder.paymentInfo)"/>
+         </div>
+
+         <div id="registerAccount" visible=":= userView.loginStatus == LoginStatus.NotLoggedIn">
+            Enter a password to create an account:
+            <input type="password" changeEvent="=: userView.password = value"/>
+            <input type="checkbox" checked=":=: userView.savePaymentInfo"/> Save payment info
+            <input type="button" value="Create account" clickEvent="=: userView.registerAfterOrder(orderView.completedOrder)"/>
+         </div>
       </div>
    </div>
 </div>

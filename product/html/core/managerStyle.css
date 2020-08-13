@@ -79,7 +79,7 @@
    margin-right: 1%;
 }
 
-.formField input[type=text] {
+.formField input[type=text], .formField input[type=password] {
    width: 30%;
 }
 
@@ -322,3 +322,4 @@
    margin-bottom: 0px;
    margin-top: 0px;
 }
+

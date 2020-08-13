@@ -2,8 +2,8 @@
    <div class="viewTitle"><%= addressName %></div>
    <div id="countryFieldBox" class="fieldBox">
       <label for="countrySelect">Country</label>
-      <select id="countrySelect" optionDataSource=":= countryNames" selectedValue=":= countryNames.indexOf(address.country == null ? defaultCountry : address.country)"
-              selectedValue="=: address.country"/>
+      <select id="countrySelect" optionDataSource=":= countryNames" selectedValue=":= countryNames.indexOf(address.country) == -1 ? defaultCountry : address.country"
+              changeEvent="=: address.country"/>
    </div>
    <div id="addrNameFieldBox" class="fieldBox">
       <%! boolean hasError := TextUtil.hasMapEntry(address.propErrors, "name"); %>
@@ -31,7 +31,7 @@
          <label for="postalCodeField">Postal code</label>
          <input id="postalCodeField" type="text" class=':= hasError ? "fieldInputError" : "fieldInput"'
                 value=":= address.postalCode"
-                value="=: updatePostalCode(value)" liveEdit="change" size="10"/>
+                changeEvent="=: updatePostalCode(value)" liveEdit="change" size="10"/>
          <div class="fieldError"
               visible=':= hasError'><%= address.propErrors.get("postalCode") %></div>
       </div>
@@ -39,7 +39,7 @@
          <%! boolean hasError := TextUtil.hasMapEntry(address.propErrors, "city"); %>
          <label for="cityField">City</label>
          <input id="cityField" type="text" class=':= hasError ? "fieldInputError" : "fieldInput"'
-                value=":=: address.city" liveEdit="off" size="18"/>
+                value=":=: address.city" liveEdit="change" size="18"/>
          <div class="fieldError"
               visible=':= TextUtil.hasMapEntry(address.propErrors, "city")'><%= address.propErrors.get("city") %></div>
       </div>
@@ -47,7 +47,7 @@
          <%! boolean hasError := TextUtil.hasMapEntry(address.propErrors, "state"); %>
          <label for="stateField">State</label>
          <input id="stateField" type="text" class=':= hasError ? "fieldInputError" : "fieldInput"'
-                value=":=: address.state" liveEdit="off" size="18"/>
+                value=":=: address.state" liveEdit="change" size="18"/>
          <div class="fieldError"
               visible=':= hasError'><%= address.propErrors.get("state") %></div>
       </div>

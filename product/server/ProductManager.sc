@@ -3,7 +3,7 @@ import java.util.TreeSet;
 
 import sc.lang.html.HTMLElement;
 
-import sc.util.BindableTreeMap;
+import sc.util.BTreeMap;
 
 ProductManager {
    List<Product> searchForText(String text) {

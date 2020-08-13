@@ -12,6 +12,6 @@ PageNavMenu {
    object cartMenu extends NavMenuItem {
       name := "cart(" + storeView.orderView.numLineItems + ")";
       icon = "/icons/shopping-cart.svg";
-      url = "/cart";
+      url := "/" + storeView.store.sitePathName + "/cart";
    }
 }

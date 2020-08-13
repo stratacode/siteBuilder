@@ -1,11 +1,14 @@
 package sc.user;
 
-public user.server extends 
-  user.coreui, user.modelImpl, user.postalCodeDB.server, content.server {
-   // The coreuiImpl layer won't be included in the js runtime due to inheriting
-   // the constraint from jetty.schtml. Because this layer exposes remote
-   // methods, we want layers to extend from it but not inherit the runtime
-   // constraint.
+public user.server extends user.coreui, user.modelImpl, user.postalCodeDB.server, content.server {
    exportRuntime = false;
    exportProcess = false;
+
+   void init() {
+   // Exclude the runtimes which do not support the DB features
+      excludeRuntimes("js", "android", "gwt");
+
+      // The LayeredSystem is only available in the default Java runtime.
+      addRuntime(null);
+   }
 }

@@ -21,10 +21,7 @@ MediaManager {
       String fileType = media.fileType;
       String origSuffix = media.suffix;
 
-      String origDir = mediaStore.origDir;
-      String genDir = mediaStore.genDir;
-
-      String origFileName = FileUtil.concat(origDir, FileUtil.addExtension(fileName, origSuffix));
+      String origFileName = getOrigFileName(fileName, origSuffix);
       File origFile = new File(origFileName);
 
       if (!origFile.canRead()) {
@@ -47,7 +44,7 @@ MediaManager {
             int width = stdImageWidths[i];
             if (width > media.width)
                continue;
-            String nextFile = FileUtil.concat(genDir, getFileNameForSize(fileName, media.revision, width, fileType));
+            String nextFile = getGenFileName(fileName, media.revision, width, fileType);
             if (!mediaChanged) {
                if (!(new File(nextFile)).canRead()) {
                   System.out.println("*** Missing generated file for: " + width + ":" + nextFile);;
@@ -108,7 +105,11 @@ MediaManager {
             if (width > media.width)
                continue;
 
-            String genFileName = FileUtil.concat(genDir, getFileNameForSize(fileName, null, width, origSuffix));
+            String genFileName = getGenFileName(fileName,  null, width, origSuffix);
+            String genDir = FileUtil.getParentPath(genFileName);
+            if (genDir != null && genDir.length() > 0)
+               new File(genDir).mkdirs();
+
             String cvtRes = FileUtil.exec("convert", origFileName, "-resize", String.valueOf(width), genFileName);
             if (cvtRes == null) {
                System.err.println("*** System err converting image sizes");
@@ -119,11 +120,18 @@ MediaManager {
       return mediaChanged;
    }
 
-   int removeMediaFiles(String fileName, String suffix) {
+   private String getOrigFileName(String fileName, String origSuffix) {
       String origDir = mediaStore.origDir;
-      String genDir = mediaStore.genDir;
+      return FileUtil.concat(origDir, managerPathName, FileUtil.addExtension(fileName, origSuffix));
+   }
 
-      String origFileName = FileUtil.concat(origDir, FileUtil.addExtension(fileName, suffix));
+   private String getGenFileName(String fileName, String revision, int width, String origSuffix) {
+      String genDir = mediaStore.genDir;
+      return FileUtil.concat(genDir, managerPathName, getFileNameForSize(fileName, revision, width, origSuffix));
+   }
+
+   int removeMediaFiles(String fileName, String suffix) {
+      String origFileName = getOrigFileName(fileName, suffix);
       File origFile = new File(origFileName);
 
       int ct = 0;
@@ -137,7 +145,7 @@ MediaManager {
       for (int i = 0; i < stdImageWidths.length; i++) {
          int width = stdImageWidths[i];
 
-         String genFileName = FileUtil.concat(genDir, getFileNameForSize(fileName, null, width, suffix));
+         String genFileName = getGenFileName(fileName, null, width, suffix);
          File genFile = new File(genFileName);
          if (genFile.delete()) {
             System.out.println("*** Removing gen file: " + genFile);

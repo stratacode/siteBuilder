@@ -22,8 +22,21 @@ class OrderView {
    boolean billToShipping;
    billToShipping =: billToShippingChanged();
 
-   OrderView(Storefront store) {
+   boolean validAddress = false;
+   boolean editAddress = true;
+
+   boolean validPayment = false;
+   boolean editPayment = true;
+
+   /** Set to true after submitting the order for registered users if the address is not the 'homeAddress' */
+   boolean confirmDefaultAddress = false;
+   boolean confirmDefaultPayment = false;
+
+   UserView userView;
+
+   OrderView(Storefront store, UserView userView) {
       this.store = store;
+      this.userView = userView;
    }
 
    void clearErrors() {

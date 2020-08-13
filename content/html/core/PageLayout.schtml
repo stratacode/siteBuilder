@@ -1,5 +1,5 @@
 <%@ @CompilerSettings(constructorProperties="sitePathName") %>
-<html abstract="true" extends="EditablePage">
+<html abstract="true" extends="EditablePage" pageVisitCount="=: siteView.pageVisited()">
    <%!
       String sitePathName;
       SiteView siteView;

@@ -1,14 +1,8 @@
 /* 
- * PayementProvider
-     createTransaction(type, order)
+ * PaymentProvider
 
-
-
- 
-
- 
- if (pan.matches("(51)?(52)?(53)?(54)?(55)?[0-9]{14}")) {
-            return CreditCardType.MASTERCARD;
+    matches("(51)?(52)?(53)?(54)?(55)?[0-9]{14}")
+       return CreditCardType.MASTERCARD;
         }
         if (pan.matches("4[0-9]{15}") || pan.matches("4[0-9]{12}")) {
             return CreditCardType.VISA;
@@ -29,14 +23,6 @@
             return CreditCardType.JCB;
         }
 
-
-   cardHolderName
-   cardNumber
-   cardNumberLastFour
-   cardCvv
-   cardType
-   expDate
-   
    paymentType
    authCode
    requestId
@@ -44,7 +30,6 @@
    declineType - soft/hard
 
    transactionType - authorize, capture, authorize+capture, settled, refund, void, reverseauth, unconfirmed?
-
 
    orderId
    currencyCode
@@ -54,9 +39,30 @@
    tax
    totalPrice
 
-   scale for currency as property of currency
+   scale for currency as property of currency - how many digits
 */
 
 enum CreditCardType {
-   Visa, MasterCard, Amex
+   Visa, MasterCard, Amex, DinersClub;
+
+   static CreditCardType fromNumber(String cardNumber) {
+      char firstDigit = cardNumber.charAt(0);
+      switch (firstDigit) {
+         case '4':
+            return CreditCardType.Visa;
+         case '5':
+            return CreditCardType.MasterCard;
+         case '3':
+            char next = cardNumber.charAt(1);
+            switch (next) {
+               case '4':
+               case '7': // TODO: fix this for logic from above as needed
+                 return CreditCardType.Amex;
+               case '0':
+                 return CreditCardType.DinersClub;
+            }
+            break;
+      }
+      return null;
+   }
 }

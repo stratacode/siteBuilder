@@ -8,7 +8,7 @@ class PageNavMenu extends NavMenu {
       url = "/";
       name := siteContext.siteName;
       icon := siteContext.icon;
-      url := siteContext.sitePathName;
+      url := "/" + siteContext.sitePathName;
    }
 
    void validateSiteView() {

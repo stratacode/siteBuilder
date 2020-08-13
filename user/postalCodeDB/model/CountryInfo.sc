@@ -10,9 +10,8 @@ class CountryInfo {
 
    int postalCodeLen;
 
-   // TODO: add format of postal code for validation - the # of "index chars" - i.e. in the postalCodeDB and a list of valid code lengths
-
    Date lastModified;
 
-   static List<String> csvProperties = Arrays.asList("countryName", "countryCode");
+   // The original countries.csv file has only countryName and countryCode - we compute postalCodeLen from the postal_code_info
+   static List<String> csvProperties = Arrays.asList("countryName", "countryCode", "postalCodeLen");
 }

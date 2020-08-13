@@ -13,4 +13,7 @@ SiteView {
       else
          this.siteContext = ctx;
    }
+
+   void pageVisited() {
+   }
 }

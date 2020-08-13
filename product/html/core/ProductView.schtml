@@ -1,5 +1,5 @@
 <div class="productView">
-   <div id="categoryNavView" extends="CategoryNavView" categoryPath=":= ProductView.this.categoryPath"/>
+   <div id="categoryNavView" extends="CategoryNavView" categoryPath=":= ProductView.this.categoryPath" store=":= storeView.store"/>
    <div id="productDetailView" class="productDetailView">
       <div id="productViewImage" class="productViewImage">
          <img class="viewImage" id="productViewImage" src=":= currentMedia.url" style=':= "width: " + currentMedia.width + "px; height: " + currentMedia.height + "px;"' />

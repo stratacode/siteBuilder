@@ -65,4 +65,9 @@ class Address implements IPropValidator {
       propErrors = DynUtil.validateProperties(this, null);
    }
 
+   // If no fields in the address have been filled out yet, don't display field level errors
+   boolean getTreatAsEmpty() {
+      return TextUtil.isEmpty(name) && TextUtil.isEmpty(address1);
+   }
+
 }
