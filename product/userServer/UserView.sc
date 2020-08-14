@@ -1,6 +1,4 @@
 UserView {
-   boolean savePaymentInfo;
-
    void removePaymentInfo(PaymentInfo pi) {
       if (user != null && user.paymentInfos != null) {
          int ix = user.paymentInfos.indexOf(pi);
@@ -27,7 +25,7 @@ UserView {
             if (setAddrs)
                user.addresses = addrs;
          }
-         if (order.paymentInfo != null && savePaymentInfo) {
+         if (order.paymentInfo != null && user.savePaymentInfo) {
             List<PaymentInfo> infos = user.paymentInfos;
             boolean setPI = false;
             if (infos == null) {
@@ -73,6 +71,7 @@ UserView {
             }
             user.paymentInfos = null;
          }
+         user.savePaymentInfo = false;
       }
    }
 }

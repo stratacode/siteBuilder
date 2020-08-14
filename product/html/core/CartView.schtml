@@ -11,153 +11,160 @@
 
       object quantityConverter extends IntConverter {}
    %>
-   <div id="title" class="cartTitle"><%= store.siteName %> - checkout</div>
-   <div id="cartWrapper" visible=":= order.numLineItems != 0">
-      <div id="checkoutView" visible=":= order.orderNumber == null && order.checkoutStarted">
-         <div id="guestCheckoutBox" visible=":= userView.loginStatus == LoginStatus.NotLoggedIn">
-            <div class="viewTitle">Continue as a guest or <a href="/login">login</a></div>
-            <div id="orderErrorView" visible=":= orderView.orderError != null">
-               Please correct these errors: <%= orderView.orderError %>
-            </div>
-            <div id="emailFieldBox" class="fieldBox">
-               <%!
-                  boolean hasError := TextUtil.hasMapEntry(orderView.propErrors, "emailAddress");
-               %>
-               <label for="emailAddrField" class="fieldLabel">Email address</label>
-               <input id="emailAddrField" class=':= hasError ? "fieldInputError" : "fieldInput"' type="email"
-                      value=":= order.emailAddress" changeEvent="=: orderView.updateEmailAddress(value)"/>
-               <div id="emailError" class="fieldError" visible=":= hasError">
-                  <%= orderView.propErrors.get("emailAddress") %>
+   <div id="cartContentsView" visible=":= !orderView.newOrderSubmitted">
+      <div id="title" class="cartTitle"><%= store.siteName %> - checkout</div>
+      <div id="cartWrapper" visible=":= order.numLineItems != 0">
+         <div id="checkoutView" visible=":= order.orderNumber == null && order.checkoutStarted">
+            <div id="guestCheckoutBox" visible=":= userView.loginStatus == LoginStatus.NotLoggedIn">
+               <div class="viewTitle">Continue as a guest or <a href="/login">login</a></div>
+               <div id="orderErrorView" visible=":= orderView.orderError != null">
+                  Please correct these errors: <%= orderView.orderError %>
                </div>
-            </div>
-         </div>
-         <div id="registeredCheckout" visible=":= userView.loginStatus == LoginStatus.LoggedIn">
-            Order for <%= user.displayName %> using email address <%= user.emailAddress %>
-         </div>
-         <div id="addressView" class="addressView" visible=":= orderView.editAddress">
-            <div id="shippingAddressView" extends="AddressEditView"
-                 address=":= order.shippingAddress"
-                 defaultCountry=":= store.defaultCountry"
-                 countryNames=":= store.countryNames"
-                 addressName="Shipping address"/>
-            <input type="button" id="cancelNewAddress" value="Cancel new address" class="submitSubForm" clickEvent="=: orderView.cancelNewAddress()"/>
-            <div id="alt" class="statusBox">
-               <div>Ship to:</div>
-               <div id="shippingAddressView" class="shippingAddressView" repeat=":= userView.user.addresses" repeatVarName="shipAddr">
-                  <input id="shipChoiceRadio" type="radio" name="shippingAddressChoice" class="selectListRadio"
-                         checked=":= shipAddr == order.shippingAddress"
-                         changeEvent="=: checked ? orderView.changeShippingAddress(shipAddr) : null"/>
-                  <span id="shipAddressBox" extends="AddressDisplayView" address=":= shipAddr"/>
-                  <img class="removeAddressButton" src="/icons/x-square.svg" clickEvent="=: userView.removeAddress(shipAddr)"/>
-               </div>
-               <input type="button" value="New address" class="submitSubForm" clickEvent="=: orderView.startNewAddress()"/>
-            </div>
-         </div>
-         <div id="paymentView" class="paymentView" visible=":= orderView.editPayment">
-            <div class="viewTitle">Payment info</div>
-            <div id="cardHolderFieldBox" class="fieldBox">
-               <%! boolean hasError := TextUtil.hasMapEntry(order.paymentInfo.propErrors, "cardHolder"); %>
-               <label for="cardHolderField">Name on card</label>
-               <input id="cardHolderField" class=':= hasError ? "fieldInputError" : "fieldInput"'
-                      type="text" value=":=: order.paymentInfo.cardHolder" liveEdit="off"/>
-               <div class="fieldError" visible=':= hasError'>
-                  <%= order.paymentInfo.propErrors.get("cardHolder") %>
-               </div>
-            </div>
-            <div id="cardNumberFieldBox" class="fieldBox">
-               <%! boolean hasError := TextUtil.hasMapEntry(order.paymentInfo.propErrors, "cardNumber"); %>
-               <label for="cardNumberField" class="fieldLabel">Card number</label>
-               <input type="text" class=':= hasError ? "fieldInputError" : "fieldInput"'
-                      value=":= order.paymentInfo.cardNumberDisplay"
-                      value="=: order.paymentInfo.updateCardNumber(value)"/>
-               <div class="fieldError" visible=':= hasError'>
-                  <%= order.paymentInfo.propErrors.get("cardNumber") %>
-               </div>
-            </div>
-            <div id="expDateFieldBox" class="fieldBox">
-                <%! boolean hasError := TextUtil.hasMapEntry(order.paymentInfo.propErrors, "expMonth") ||
-                                        TextUtil.hasMapEntry(order.paymentInfo.propErrors, "expYear"); %>
-               <label for="expDateField" class="fieldLabel">Expiration date</label>
-               <input type="text" id="expDateField"
-                      class=':= hasError ? "fieldInputError" : "fieldInput"' placeholder="MM / YY " value=":= order.paymentInfo.expDateString"
-                      value="=: order.paymentInfo.updateExpireDate(value)"/>
-               <div class="fieldError" visible=':= hasError'>
-                  <%= order.paymentInfo.propErrors.get("expMonth") %><%= order.paymentInfo.propErrors.get("expYear") %>
-               </div>
-            </div>
-            <div id="cvvFieldBox" class="fieldBox">
-               <%! boolean hasError := TextUtil.hasMapEntry(order.paymentInfo.propErrors, "cvv"); %>
-               <label for="cvvField" class="fieldLabel">Security code</label>
-               <input type="text" id="cvvField" placeholder="123" value=":= order.paymentInfo.cvv" size="4" minlength="3" maxlength="4"
-                      value="=: order.paymentInfo.updateCvv(value)" pattern="\\d*"/>
-               <div class="fieldError" visible=':= hasError'><%= order.paymentInfo.propErrors.get("cvv") %></div>
-            </div>
-            <div><input id="billToShippingField" type="checkbox" checked=":=: orderView.billToShipping">Bill to shipping address?</div>
-            <div id="billingAddressView" extends="AddressEditView"
-                 visible=":= !orderView.billToShipping"
-                 address=":= order.paymentInfo.billingAddress"
-                 defaultCountry=":= store.defaultCountry"
-                 countryNames=":= store.countryNames"
-                 addressName="Billing address"/>
-            <div id="alt">
-               <div>Use payment info: </div>
-               <div id="paymentInfoView" class="paymentInfoView" repeat=":= userView.user.paymentInfos" repeatVarName="paymentInfo" class="rowStatusBox">
-                  <input id="paymentInfoChoiceRadio" type="radio" name="paymentInfoChoice"
-                         checked=":= paymentInfo == order.paymentInfo"
-                         changeEvent="=: checked ? orderView.changePaymentInfo(paymentInfo) : null"/>
-                  <%= paymentInfo.displaySummary %>
-                  <img class="removePaymentInfoButton" src="/icons/x-square.svg" clickEvent="=: userView.removePaymentInfo(paymentInfo)"/>
-               </div>
-               <input type="button" value="New payment info" class="submitSubForm" clickEvent="=: orderView.startNewPaymentInfo()"/>
-            </div>
-         </div>
-      </div>
-      <div id="cartContents" class="cartContents">
-         <div id="lineItemRepeat" repeat=":= order.lineItems" repeatVarName="lineItem" class="cartLineItem">
-            <img class="cartProductThumb" src="= lineItem.product.mainMedia.thumbUrl"/>
-            <div class="cartProductInfo">
-               <div id="productName"><%= lineItem.product.name %> - <%= lineItem.product.shortDesc %></div>
-               <div id="cartOptions" class="cartOptions">
-                  <div id="cartOption" repeat=":= lineItem.product.sku.optionScheme.options" repeatVarName="option" class="cartOption">
-                     <span><%= option.optionName %>: </span>
-                     <span><%= lineItem.sku.options.get(cartOption.this.repeatIndex).optionValue %></span>
+               <div id="emailFieldBox" class="fieldBox">
+                  <%!
+                     boolean hasError := TextUtil.hasMapEntry(orderView.propErrors, "emailAddress");
+                  %>
+                  <label for="emailAddrField" class="fieldLabel">Email address</label>
+                  <input id="emailAddrField" class=':= hasError ? "fieldInputError" : "fieldInput"' type="email"
+                         value=":= order.emailAddress" changeEvent="=: orderView.updateEmailAddress(value)"/>
+                  <div id="emailError" class="fieldError" visible=":= hasError">
+                     <%= orderView.propErrors.get("emailAddress") %>
                   </div>
                </div>
             </div>
-            <input type="text" class="cartLineItemQuantity"
-                   value=":= quantityConverter.intToString(lineItem.quantity)"
-                   changeEvent="=: orderView.changeQuantity(lineItem, value)"/>
-            <div id="cartStatus" class="cartStatus"><%= lineItem.sku.inStock ? "in stock" : "backordered" %></div>
-            <div id="price" class="cartPrice"><%= lineItem.totalPrice %></div>
-            <img class="cartDeleteItem" id="deleteIcon" src="/icons/x-square.svg" clickEvent="=: orderView.deleteLineItem(lineItem)"/>
-         </div>
-         <div id="totalPrice" class="cartTotalPrice">
-            Total:
-            <span id="cartPrice">
-                <%= order.currency.symbol %><%= order.totalPrice %>
-            </span>
-            <div id="actionButtonBox">
-               <input id="actionButton" type="button"
-                      value=':= order.checkoutStarted ? "Submit order" : "Checkout"'
-                      clickEvent="=: orderView.performAction()"/>
+            <div id="registeredCheckout" visible=":= userView.loginStatus == LoginStatus.LoggedIn">
+               Order for <%= user.displayName %> using email address <%= user.emailAddress %>
+            </div>
+            <div id="addressView" class="addressView" visible=":= orderView.editAddress">
+               <div id="shippingAddressView" extends="AddressEditView"
+                    address=":= order.shippingAddress"
+                    defaultCountry=":= store.defaultCountry"
+                    countryNames=":= store.countryNames"
+                    addressName="Shipping address"/>
+               <input type="button" id="cancelNewAddress" value="Cancel new address"
+                       visible=":= userView.user.homeAddress != null"
+                      class="submitSubForm" clickEvent="=: orderView.cancelNewAddress()"/>
+               <div id="alt" class="statusBox">
+                  <div class="viewTitle">Ship to:</div>
+                  <div id="shippingAddressView" class="shippingAddressView" repeat=":= userView.user.addresses" repeatVarName="shipAddr">
+                     <input id="shipChoiceRadio" type="radio" name="shippingAddressChoice" class="selectListRadio"
+                            checked=":= shipAddr == order.shippingAddress"
+                            changeEvent="=: checked ? orderView.changeShippingAddress(shipAddr) : null"/>
+                     <span id="shipAddressBox" extends="AddressDisplayView" address=":= shipAddr"/>
+                     <img class="removeAddressButton" src="/icons/x-square.svg" clickEvent="=: userView.removeAddress(shipAddr)"/>
+                  </div>
+                  <input type="button" value="New address" class="submitSubForm" clickEvent="=: orderView.startNewAddress()"/>
+               </div>
+            </div>
+            <div id="paymentView" class="paymentView" visible=":= orderView.editPayment">
+               <div class="viewTitle">Payment info</div>
+               <div id="cardHolderFieldBox" class="fieldBox">
+                  <%! boolean hasError := TextUtil.hasMapEntry(order.paymentInfo.propErrors, "cardHolder"); %>
+                  <label for="cardHolderField">Name on card</label>
+                  <input id="cardHolderField" class=':= hasError ? "fieldInputError" : "fieldInput"'
+                         type="text" value=":=: order.paymentInfo.cardHolder" liveEdit="off"/>
+                  <div class="fieldError" visible=':= hasError'>
+                     <%= order.paymentInfo.propErrors.get("cardHolder") %>
+                  </div>
+               </div>
+               <div id="cardNumberFieldBox" class="fieldBox">
+                  <%! boolean hasError := TextUtil.hasMapEntry(order.paymentInfo.propErrors, "cardNumber"); %>
+                  <label for="cardNumberField" class="fieldLabel">Card number</label>
+                  <input type="text" class=':= hasError ? "fieldInputError" : "fieldInput"'
+                         value=":= order.paymentInfo.cardNumberDisplay"
+                         value="=: order.paymentInfo.updateCardNumber(value)"/>
+                  <div class="fieldError" visible=':= hasError'>
+                     <%= order.paymentInfo.propErrors.get("cardNumber") %>
+                  </div>
+               </div>
+               <div id="expDateFieldBox" class="fieldBox">
+                   <%! boolean hasError := TextUtil.hasMapEntry(order.paymentInfo.propErrors, "expMonth") ||
+                                           TextUtil.hasMapEntry(order.paymentInfo.propErrors, "expYear"); %>
+                  <label for="expDateField" class="fieldLabel">Expiration date</label>
+                  <input type="text" id="expDateField"
+                         class=':= hasError ? "fieldInputError" : "fieldInput"' placeholder="MM / YY " value=":= order.paymentInfo.expDateString"
+                         value="=: order.paymentInfo.updateExpireDate(value)"/>
+                  <div class="fieldError" visible=':= hasError'>
+                     <%= order.paymentInfo.propErrors.get("expMonth") %><%= order.paymentInfo.propErrors.get("expYear") %>
+                  </div>
+               </div>
+               <div id="cvvFieldBox" class="fieldBox">
+                  <%! boolean hasError := TextUtil.hasMapEntry(order.paymentInfo.propErrors, "cvv"); %>
+                  <label for="cvvField" class="fieldLabel">Security code</label>
+                  <input type="text" id="cvvField" placeholder="123" value=":= order.paymentInfo.cvv" size="4" minlength="3" maxlength="4"
+                         value="=: order.paymentInfo.updateCvv(value)" pattern="\\d*"/>
+                  <div class="fieldError" visible=':= hasError'><%= order.paymentInfo.propErrors.get("cvv") %></div>
+               </div>
+               <div><input id="billToShippingField" type="checkbox" checked=":=: orderView.billToShipping">Bill to shipping address?</div>
+               <div id="billingAddressView" extends="AddressEditView"
+                    visible=":= !orderView.billToShipping"
+                    address=":= order.paymentInfo.billingAddress"
+                    defaultCountry=":= store.defaultCountry"
+                    countryNames=":= store.countryNames"
+                    addressName="Billing address"/>
+               <div id="alt">
+                  <div class="viewTitle">Use payment info: </div>
+                  <div id="paymentInfoView" class="paymentInfoView" repeat=":= userView.user.paymentInfos" repeatVarName="paymentInfo" class="rowStatusBox">
+                     <input id="paymentInfoChoiceRadio" type="radio" name="paymentInfoChoice"
+                            checked=":= paymentInfo == order.paymentInfo"
+                            changeEvent="=: checked ? orderView.changePaymentInfo(paymentInfo) : null"/>
+                     <span class="paymentSummary"><%= paymentInfo.displaySummary %></span>
+                     <img class="removePaymentInfoButton" src="/icons/x-square.svg" clickEvent="=: userView.removePaymentInfo(paymentInfo)"/>
+                  </div>
+                  <input type="button" value="New payment info" class="submitSubForm" clickEvent="=: orderView.startNewPaymentInfo()"/>
+               </div>
             </div>
          </div>
-      </div>
-      <div id="alt" class="viewTitle">
-         Cart is empty
+         <div id="cartContents" class="cartContents">
+            <div id="lineItemRepeat" repeat=":= order.lineItems" repeatVarName="lineItem" class="cartLineItem">
+               <img class="cartProductThumb" src="= lineItem.product.mainMedia.thumbUrl"/>
+               <div class="cartProductInfo">
+                  <div id="productName"><%= lineItem.product.name %> - <%= lineItem.product.shortDesc %></div>
+                  <div id="cartOptions" class="cartOptions">
+                     <div id="cartOption" repeat=":= lineItem.product.sku.optionScheme.options" repeatVarName="option" class="cartOption">
+                        <span><%= option.optionName %>: </span>
+                        <span><%= lineItem.sku.options.get(cartOption.this.repeatIndex).optionValue %></span>
+                     </div>
+                  </div>
+               </div>
+               <input type="text" class="cartLineItemQuantity"
+                      value=":= quantityConverter.intToString(lineItem.quantity)"
+                      changeEvent="=: orderView.changeQuantity(lineItem, value)"/>
+               <div id="cartStatus" class="cartStatus"><%= lineItem.sku.inStock ? "in stock" : "backordered" %></div>
+               <div id="price" class="cartPrice"><%= lineItem.totalPrice %></div>
+               <img class="cartDeleteItem" id="deleteIcon" src="/icons/x-square.svg" clickEvent="=: orderView.deleteLineItem(lineItem)"/>
+            </div>
+            <div id="totalPrice" class="cartTotalPrice">
+               Total:
+               <span id="cartPrice">
+                   <%= order.currency.symbol %><%= order.totalPrice %>
+               </span>
+               <div id="actionButtonBox">
+                  <input id="actionButton" type="button"
+                         value=':= order.checkoutStarted ? "Submit order" : "Checkout"'
+                         clickEvent="=: orderView.performAction()"/>
+               </div>
+            </div>
+         </div>
+         <div id="alt" class="viewTitle">
+            Cart is empty
+         </div>
       </div>
    </div>
    <div id="completedOrderView">
       <div id="completedOrderView" visible=":= orderView.completedOrder != null">
          <div id="newOrderSubmittedView" visible=":= orderView.newOrderSubmitted">
+            <div class="cartTitle"><%= store.siteName %> - order submitted</div>
             <div class="viewTitle">Thank you for your order!</div>
 
             <div class="statusBox">
-               Order number: <%= orderView.completedOrder.orderSummary %>
+               <%= orderView.completedOrder.orderSummary %>
             </div>
             <div id="completedShipView" class="statusBox">
-               Ship to: <div id="completedShipTo" extends="AddressDisplayView" address=":= orderView.completedOrder.shippingAddress"/>
-               <%= orderView.completedOrder.shippingAddress == user.homeAddress ? "(default address)" : "" %>
+               <div class="viewTitle">Ship to:</div>
+               <div id="completedShipTo" class="completedShipTo" extends="AddressDisplayView" address=":= orderView.completedOrder.shippingAddress">
+                  <%= orderView.completedOrder.shippingAddress == user.homeAddress ? "(default address)" : "" %>
+               </div>
                <div id="confirmAddress" visible=":= orderView.confirmDefaultAddress">
                   <input type="button" value="Use as default address" class="submitSubForm"
                          clickEvent="=: orderView.changeDefaultAddress(orderView.completedOrder.shippingAddress)"/>
@@ -165,29 +172,33 @@
             </div>
 
             <div class="statusBox">
-               Bill to: <%= orderView.completedOrder.paymentInfo.displaySummary %>
-            </div>
-            <div id="savePaymentInfo" visible=":= !userView.user.savePaymentInfo">
-               <input type="button" value="Save payment method" class="submitSubForm"
-                      clickEvent="=: userView.savePaymentInfo(orderView.completedOrder.paymentInfo)"/>
-               <div id="alt">
-                  Saved for faster checkout: <input type="button" value="Remove payment info" clickEvent="=: userView.clearPaymentInfo()"/>
+               <div class="viewTitle">
+                  Bill to: <%= orderView.completedOrder.paymentInfo.displaySummary %> <%= orderView.completedOrder.paymentInfo == userView.user.paymentInfo ? "(primary payment method)" : "" %>
                </div>
+               <span id="confirmPayment" visible=":= orderView.confirmDefaultPayment">
+                  <input type="button" value="Use as primary payment method" class="submitSubForm"
+                         clickEvent="=: orderView.changeDefaultPaymentInfo(orderView.completedOrder.paymentInfo)"/>
+               </span>
             </div>
-            <div id="confirmPayment" visible=":= orderView.confirmDefaultPayment">
-               <input type="button" value="Use as primary payment method" class="submitSubForm"
-                      clickEvent="=: orderView.changeDefaultPaymentInfo(orderView.completedOrder.paymentInfo)"/>
+            <div id="registeredPaymentView" visible=":= userView.user.registered">
+               <div id="savePaymentInfo" visible=":= !userView.user.savePaymentInfo">
+                  <input type="button" value="Save payment method" class="submitSubForm"
+                         clickEvent="=: userView.savePaymentInfo(orderView.completedOrder.paymentInfo)"/>
+                  <div id="alt" class="paymentSavedMessage">
+                     Payment methods saved for faster checkout: <input type="button" value="Don't save payment methods" clickEvent="=: userView.clearPaymentInfo()"/>
+                  </div>
+               </div>
             </div>
             <div id="alt" class="recentOrderMessage">
                Reminder of your recent order: <%= orderView.completedOrder.orderSummary %>
             </div>
          </div>
 
-         <div id="registerAccount" visible=":= userView.loginStatus == LoginStatus.NotLoggedIn">
-            Enter a password to create an account:
-            <input type="password" changeEvent="=: userView.password = value"/>
-            <input type="checkbox" checked=":=: userView.savePaymentInfo"/> Save payment info
-            <input type="button" value="Create account" clickEvent="=: userView.registerAfterOrder(orderView.completedOrder)"/>
+         <div id="registerAccount" visible=":= userView.loginStatus == LoginStatus.NotLoggedIn" class="statusBox">
+            <label for="registerPasswordField">Enter a password to create an account:</label>
+            <input id="registerPasswordField" type="password" changeEvent="=: userView.password = value"/>
+            <input type="button" value="Create account" class="submitSubForm"
+                   clickEvent="=: userView.registerAfterOrder(orderView.completedOrder)"/>
          </div>
       </div>
    </div>

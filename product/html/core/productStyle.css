@@ -222,7 +222,7 @@
    margin-bottom: 10px;
 }
 
-.addressView, .paymentInfoView, .shippingAddressView {
+.addressView, .paymentInfoView, .shippingAddressView, .completedShipTo {
    margin-left: 10px;
 }
 
@@ -230,11 +230,17 @@
    width: 3em;
 }
 
-
 .shippingAddressView {
    display: flex;
-   margin-top: 10px;
+   margin-top: 5px;
    margin-bottom: 5px;
+}
+
+.paymentInfoView {
+   margin-top: 5px;
+   margin-bottom: 5px;
+   display: flex;
+}
 }
 
 .selectListRadio {
@@ -258,5 +264,15 @@
 }
 
 .removeAddressButton, .removePaymentInfoButton {
+   margin-left: 20px;
    vertical-align: middle;
+}
+
+.paymentSummary {
+   min-width: 150px;
+}
+
+.paymentSavedMessage {
+   font-style: italic;
+   font-size: 85%;
 }

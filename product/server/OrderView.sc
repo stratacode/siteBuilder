@@ -47,13 +47,17 @@ OrderView {
             billToShipping = billingAddress == shippingAddress;
 
             boolean validShipping = false;
-            if (shippingAddress != null && !shippingAddress.treatAsEmpty) {
-               shippingAddress.validateAddress();
-               if (shippingAddress.propErrors == null)
-                  validShipping = true;
+            if (shippingAddress != null) {
+               if (shippingAddress.treatAsEmpty)
+                  validShipping = false;
+               else {
+                  shippingAddress.validateAddress();
+                  if (shippingAddress.propErrors == null || shippingAddress.treatAsEmpty)
+                     validShipping = true;
+               }
             }
             validAddress = validShipping;
-            if (!validAddress)
+            if (!validAddress || !user.registered)
                editAddress = true;
             else
                editAddress = false;
