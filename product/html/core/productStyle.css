@@ -217,8 +217,13 @@
    margin-left: 10px;
 }
 
-.addressEditView {
+.submitSubForm {
+   margin-left: 10px;
    margin-bottom: 10px;
+}
+
+.addressView, .paymentInfoView, .shippingAddressView {
+   margin-left: 10px;
 }
 
 .quantityField {

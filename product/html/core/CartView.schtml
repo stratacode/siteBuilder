@@ -34,12 +34,13 @@
          <div id="registeredCheckout" visible=":= userView.loginStatus == LoginStatus.LoggedIn">
             Order for <%= user.displayName %> using email address <%= user.emailAddress %>
          </div>
-         <div id="addressView" visible=":= orderView.editAddress">
+         <div id="addressView" class="addressView" visible=":= orderView.editAddress">
             <div id="shippingAddressView" extends="AddressEditView"
                  address=":= order.shippingAddress"
                  defaultCountry=":= store.defaultCountry"
                  countryNames=":= store.countryNames"
                  addressName="Shipping address"/>
+            <input type="button" id="cancelNewAddress" value="Cancel new address" class="submitSubForm" clickEvent="=: orderView.cancelNewAddress()"/>
             <div id="alt" class="statusBox">
                <div>Ship to:</div>
                <div id="shippingAddressView" class="shippingAddressView" repeat=":= userView.user.addresses" repeatVarName="shipAddr">
@@ -49,7 +50,7 @@
                   <span id="shipAddressBox" extends="AddressDisplayView" address=":= shipAddr"/>
                   <img class="removeAddressButton" src="/icons/x-square.svg" clickEvent="=: userView.removeAddress(shipAddr)"/>
                </div>
-               <input type="button" value="New address" clickEvent="=: orderView.startNewAddress()"/>
+               <input type="button" value="New address" class="submitSubForm" clickEvent="=: orderView.startNewAddress()"/>
             </div>
          </div>
          <div id="paymentView" class="paymentView" visible=":= orderView.editPayment">
@@ -100,14 +101,14 @@
                  addressName="Billing address"/>
             <div id="alt">
                <div>Use payment info: </div>
-               <div id="paymentInfoView" repeat=":= userView.user.paymentInfos" repeatVarName="paymentInfo" class="rowStatusBox">
+               <div id="paymentInfoView" class="paymentInfoView" repeat=":= userView.user.paymentInfos" repeatVarName="paymentInfo" class="rowStatusBox">
                   <input id="paymentInfoChoiceRadio" type="radio" name="paymentInfoChoice"
                          checked=":= paymentInfo == order.paymentInfo"
                          changeEvent="=: checked ? orderView.changePaymentInfo(paymentInfo) : null"/>
                   <%= paymentInfo.displaySummary %>
                   <img class="removePaymentInfoButton" src="/icons/x-square.svg" clickEvent="=: userView.removePaymentInfo(paymentInfo)"/>
                </div>
-               <input type="button" value="New payment info" clickEvent="=: orderView.startNewPaymentInfo()"/>
+               <input type="button" value="New payment info" class="submitSubForm" clickEvent="=: orderView.startNewPaymentInfo()"/>
             </div>
          </div>
       </div>
@@ -158,7 +159,7 @@
                Ship to: <div id="completedShipTo" extends="AddressDisplayView" address=":= orderView.completedOrder.shippingAddress"/>
                <%= orderView.completedOrder.shippingAddress == user.homeAddress ? "(default address)" : "" %>
                <div id="confirmAddress" visible=":= orderView.confirmDefaultAddress">
-                  <input type="button" value="Use as default address"
+                  <input type="button" value="Use as default address" class="submitSubForm"
                          clickEvent="=: orderView.changeDefaultAddress(orderView.completedOrder.shippingAddress)"/>
                </div>
             </div>
@@ -167,17 +168,18 @@
                Bill to: <%= orderView.completedOrder.paymentInfo.displaySummary %>
             </div>
             <div id="savePaymentInfo" visible=":= !userView.user.savePaymentInfo">
-               <input type="button" value="Save payment method" clickEvent="=: userView.savePaymentInfo(orderView.completedOrder.paymentInfo)"/>
+               <input type="button" value="Save payment method" class="submitSubForm"
+                      clickEvent="=: userView.savePaymentInfo(orderView.completedOrder.paymentInfo)"/>
                <div id="alt">
                   Saved for faster checkout: <input type="button" value="Remove payment info" clickEvent="=: userView.clearPaymentInfo()"/>
                </div>
             </div>
             <div id="confirmPayment" visible=":= orderView.confirmDefaultPayment">
-               <input type="button" value="Use as primary payment method"
+               <input type="button" value="Use as primary payment method" class="submitSubForm"
                       clickEvent="=: orderView.changeDefaultPaymentInfo(orderView.completedOrder.paymentInfo)"/>
             </div>
             <div id="alt" class="recentOrderMessage">
-               Recent order: <%= orderView.completedOrder.orderSummary %>
+               Reminder of your recent order: <%= orderView.completedOrder.orderSummary %>
             </div>
          </div>
 

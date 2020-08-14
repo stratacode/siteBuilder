@@ -279,6 +279,13 @@ OrderView {
       editAddress = true;
    }
 
+   void cancelNewAddress() {
+      if (userView.user.homeAddress != null) {
+         order.shippingAddress = userView.user.homeAddress;
+         editAddress = false;
+      }
+   }
+
    void changePaymentInfo(PaymentInfo pi) {
       order.paymentInfo = pi;
    }
