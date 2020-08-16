@@ -35,6 +35,10 @@ class OrderView {
    boolean confirmDefaultPayment = false;
 
    boolean newOrderSubmitted = false;
+   boolean saveOrderPaymentInfo = false;
+
+   boolean showLoginView = false;
+   String loginPassword;
 
    OrderView(StoreView storeView, UserView userView) {
       this.storeView = storeView;

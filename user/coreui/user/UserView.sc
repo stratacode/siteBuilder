@@ -32,12 +32,14 @@ class UserView {
    LoginStatus loginStatus = LoginStatus.NotLoggedIn;
    // The main error if there are more than one  
    String userViewError;
+   String userViewStatus;
    int errorPriority = -1;
    // List of per-property errors
    Map<String,String> propErrors;
 
    void clearErrors() {
       userViewError = null;
+      userViewStatus = null;
       errorPriority = -1;
       propErrors = null;
    }

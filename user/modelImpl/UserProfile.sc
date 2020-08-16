@@ -91,4 +91,9 @@ UserProfile {
          events.add(new UserProfileEvent("loginFailed", newRemoteIp, count));
       }
    }
+
+   static String getHashedPassword(UserProfile user, String password) {
+      String salt = user.salt;
+      return DBUtil.hashPassword(salt, password);
+   }
 }

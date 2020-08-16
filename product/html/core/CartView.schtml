@@ -16,7 +16,7 @@
       <div id="cartWrapper" visible=":= order.numLineItems != 0">
          <div id="checkoutView" visible=":= order.orderNumber == null && order.checkoutStarted">
             <div id="guestCheckoutBox" visible=":= userView.loginStatus == LoginStatus.NotLoggedIn">
-               <div class="viewTitle">Continue as a guest or <a href="/login">login</a></div>
+               <div class="viewTitle">Continue as a guest or <a clickEvent="=: orderView.showLoginView = true">login</a></div>
                <div id="orderErrorView" visible=":= orderView.orderError != null">
                   Please correct these errors: <%= orderView.orderError %>
                </div>
@@ -30,6 +30,12 @@
                   <div id="emailError" class="fieldError" visible=":= hasError">
                      <%= orderView.propErrors.get("emailAddress") %>
                   </div>
+               </div>
+               <div id="loginView" visible=":= orderView.showLoginView" class="fieldBox">
+                  <label for="passwordField" class="fieldLabel">Password</label>
+                  <input id="passwordField" type="password" value="=: orderView.loginPassword"/>
+                  <br/>
+                  <input type="button" value="Login" clickEvent="=: orderView.loginForOrder()"/>
                </div>
             </div>
             <div id="registeredCheckout" visible=":= userView.loginStatus == LoginStatus.LoggedIn">
@@ -95,7 +101,11 @@
                          value="=: order.paymentInfo.updateCvv(value)" pattern="\\d*"/>
                   <div class="fieldError" visible=':= hasError'><%= order.paymentInfo.propErrors.get("cvv") %></div>
                </div>
-               <div><input id="billToShippingField" type="checkbox" checked=":=: orderView.billToShipping">Bill to shipping address?</div>
+               <div id="savePaymentInfoBox">
+                  <input id="savePaymentCheckBox" type="checkbox" checked=":= orderView.saveOrderPaymentInfo" changeEvent="=: orderView.saveOrderPaymentInfo = checked"/>
+                  <label for="savePaymentCheckBox">Save payment info</label>
+               </div>
+               <div id="billToShippingBox"><input id="billToShippingField" type="checkbox" checked=":=: orderView.billToShipping">Bill to shipping address?</div>
                <div id="billingAddressView" extends="AddressEditView"
                     visible=":= !orderView.billToShipping"
                     address=":= order.paymentInfo.billingAddress"
@@ -158,6 +168,9 @@
             <div class="viewTitle">Thank you for your order!</div>
 
             <div class="statusBox">
+               Confirmation email sent to: <%= orderView.completedOrder.emailAddress %>
+               <%= userView.user.registered ? "(registered)" : "(guest checkout)" %>
+               <p/>
                <%= orderView.completedOrder.orderSummary %>
             </div>
             <div id="completedShipView" class="statusBox">
@@ -181,12 +194,8 @@
                </span>
             </div>
             <div id="registeredPaymentView" visible=":= userView.user.registered">
-               <div id="savePaymentInfo" visible=":= !userView.user.savePaymentInfo">
-                  <input type="button" value="Save payment method" class="submitSubForm"
-                         clickEvent="=: userView.savePaymentInfo(orderView.completedOrder.paymentInfo)"/>
-                  <div id="alt" class="paymentSavedMessage">
-                     Payment methods saved for faster checkout: <input type="button" value="Don't save payment methods" clickEvent="=: userView.clearPaymentInfo()"/>
-                  </div>
+               <div class="paymentSavedMessage" visible=":= userView.user.savePaymentInfo">
+                  Payment methods saved for faster checkout: <input type="button" value="Stop saving payment methods" clickEvent="=: userView.clearPaymentInfo()"/>
                </div>
             </div>
             <div id="alt" class="recentOrderMessage">
@@ -196,9 +205,11 @@
 
          <div id="registerAccount" visible=":= userView.loginStatus == LoginStatus.NotLoggedIn" class="statusBox">
             <label for="registerPasswordField">Enter a password to create an account:</label>
-            <input id="registerPasswordField" type="password" changeEvent="=: userView.password = value"/>
+            <input id="registerPasswordField" type="password" changeEvent="=: userView.password = value"
+                   keyUpEvent="=: keyUpEvent.key.equals("Enter") ? orderView.registerAfterOrder() : null"/>
             <input type="button" value="Create account" class="submitSubForm"
-                   clickEvent="=: userView.registerAfterOrder(orderView.completedOrder)"/>
+                   clickEvent="=: orderView.registerAfterOrder()"/>
+            <div class="formErrorView"><%= userView.userViewError %></div>
          </div>
       </div>
    </div>

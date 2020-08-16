@@ -50,7 +50,7 @@ UserView {
             }
             if (loginUser.salt != null) {
                String salt = loginUser.salt;
-               String hashedPassword = DBUtil.hashPassword(salt, password);
+               String hashedPassword = UserProfile.getHashedPassword(loginUser, password);
                if (loginUser.password != null && loginUser.password.equals(hashedPassword)) {
                   if (userAuthToken != null)
                      user.deleteAuthToken(user, userAuthToken);
@@ -84,6 +84,7 @@ UserView {
       emailAddress = "";
       userName = "";
       password = "";
+      clearErrors();
    }
 
    boolean register() {
@@ -136,7 +137,7 @@ UserView {
          user.emailAddress = emailAddress;
          user.userName = newUserName;
          user.salt = DBUtil.createSalt();
-         user.password = DBUtil.hashPassword(user.salt, password);
+         user.password = UserProfile.getHashedPassword(user, password);
       }
       else if (userViewError == null) {
          userViewError = propErrors.toString();
@@ -147,6 +148,8 @@ UserView {
             user.dbInsert(false);
          else
             user.dbUpdate();
+
+         userViewStatus = "User " + user.userName + " registered successfully";
       }
       catch (IllegalArgumentException exc) {
          userViewError = "Register failed due to system error";
@@ -163,6 +166,7 @@ UserView {
    }
 
    boolean update() {
+      userViewStatus = null;
       propErrors = user.dbValidate();
       if (propErrors != null) {
          userViewError = propErrors.toString();

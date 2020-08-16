@@ -8,20 +8,25 @@ OrderView {
       refresh();
    }
 
+   static Order getPendingOrderForUser(UserProfile user) {
+      List<Order> userOrders = Order.findByUserPending(user, true);
+      // TODO: should we have a pendingOrderId in the UserProfile to identify this without a general query?
+      if (userOrders != null && userOrders.size() > 0) {
+         if (userOrders.size() > 1)
+            System.err.println("*** Warning - more than one unsubmitted order for user: " + user);
+
+         return userOrders.get(0);
+      }
+      return null;
+   }
+
    void refresh() {
       UserProfile user = currentUserView.user;
       orderError = null;
       if (user != null && !user.getDBObject().isTransient()) {
-         List<Order> userOrders = Order.findByUserPending(user, true);
-         // TODO: should we have a pendingOrderId in the UserProfile to identify this without a general query?
-         if (userOrders != null && userOrders.size() > 0) {
-            if (userOrders.size() > 1)
-               System.err.println("*** Warning - more than one unsubmitted order for user: " + user);
-
-            Order newOrder = userOrders.get(0);
-            if (newOrder != order) {
-               order = userOrders.get(0);
-            }
+         Order newOrder = getPendingOrderForUser(user);
+         if (newOrder != order) {
+            order = newOrder;
          }
 
          if (order != null) {
@@ -73,6 +78,8 @@ OrderView {
             editAddress = true;
             editPayment = true;
          }
+
+         saveOrderPaymentInfo = user.savePaymentInfo;
       }
    }
 
@@ -219,7 +226,10 @@ OrderView {
                   else if (!user.homeAddress.equals(order.shippingAddress))
                      confirmDefaultAddress = true;
                }
-               if (user.savePaymentInfo && order.paymentInfo != null) {
+            }
+            if (order.paymentInfo != null) {
+               if (saveOrderPaymentInfo) {
+                  user.savePaymentInfo = true;
                   List<PaymentInfo> pis = user.paymentInfos;
                   boolean setPis = false;
                   if (pis == null) {
@@ -236,6 +246,9 @@ OrderView {
 
                   if (setPis)
                      user.paymentInfos = pis;
+               }
+               else {
+                  order.paymentInfo.clearCardInfo();
                }
             }
 
@@ -316,5 +329,38 @@ OrderView {
       if (order.orderNumber == null)
          order.paymentInfo = paymentInfo;
       confirmDefaultPayment = false;
+   }
+
+   void registerAfterOrder() {
+      userView.registerAfterOrder(completedOrder, order);
+   }
+
+   void loginForOrder() {
+      UserProfile anonUser = userView.user;
+      if (anonUser.registered) {
+         orderError = "Already logged in";
+         return;
+      }
+      userView.emailAddress = order.emailAddress;
+      userView.userName = order.emailAddress;
+      userView.password = loginPassword;
+      if (userView.login()) {
+         UserProfile regUser = userView.user;
+         Order regUserOrder = getPendingOrderForUser(regUser);
+         if (regUserOrder == null) {
+            // Make the registered user the owner of the anonymous cart
+            order.user = regUser;
+         }
+         else {
+            // Add the anonymous shopping cart to the existing registered user
+            regUserOrder.appendOrder(order);
+         }
+         order = regUserOrder;
+         refreshLineItems();
+         refresh();
+      }
+      else { // failed
+         orderError = userView.userViewError;
+      }
    }
 }

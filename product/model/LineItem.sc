@@ -36,4 +36,15 @@ class LineItem {
       BigDecimal itemPrice = sku.priceToUse;
       totalPrice = itemPrice.multiply(new BigDecimal(quantity));
    }
+
+   LineItem copyLineItem() {
+      LineItem newLineItem = new LineItem();
+      newLineItem.product = product;
+      newLineItem.sku = sku;
+      newLineItem.quantity = quantity;
+      newLineItem.lineItemCoupons = lineItemCoupons;
+      newLineItem.tax = tax;
+      newLineItem.totalPrice = totalPrice;
+      return newLineItem;
+   }
 }

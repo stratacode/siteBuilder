@@ -10,7 +10,7 @@ UserView {
       }
    }
 
-   void registerAfterOrder(Order order) {
+   void registerAfterOrder(Order order, Order nextOrder) {
       emailAddress = order.emailAddress;
 
       if (register()) {
@@ -24,6 +24,10 @@ UserView {
             addrs.add(order.shippingAddress);
             if (setAddrs)
                user.addresses = addrs;
+            user.homeAddress = order.shippingAddress;
+
+            if (nextOrder != null)
+               nextOrder.shippingAddress = user.homeAddress;
          }
          if (order.paymentInfo != null && user.savePaymentInfo) {
             List<PaymentInfo> infos = user.paymentInfos;
@@ -32,10 +36,14 @@ UserView {
                infos = new BArrayList<PaymentInfo>();
                setPI = true;
             }
-            infos.add(order.paymentInfo);
+            if (!infos.contains(order.paymentInfo))
+               infos.add(order.paymentInfo);
             if (setPI)
                user.paymentInfos = infos;
-            user.savePaymentInfo = true;
+            user.paymentInfo = order.paymentInfo;
+
+            if (nextOrder != null)
+               nextOrder.paymentInfo = order.paymentInfo;
          }
       }
    }
