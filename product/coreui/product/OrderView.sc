@@ -38,17 +38,16 @@ class OrderView {
    boolean saveOrderPaymentInfo = false;
 
    boolean showLoginView = false;
-   String loginPassword;
 
    OrderView(StoreView storeView, UserView userView) {
       this.storeView = storeView;
       this.store = storeView.store;
       this.userView = userView;
+      userView.orderView = this;
    }
 
    void clearErrors() {
       orderError = null;
       propErrors = null;
    }
-
 }

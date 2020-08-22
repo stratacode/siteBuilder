@@ -82,4 +82,37 @@ UserView {
          user.savePaymentInfo = false;
       }
    }
+
+   boolean login() {
+      UserProfile anonUser = user;
+      if (anonUser.registered) {
+         orderView.orderError = "Already logged in";
+         return true;
+      }
+
+      // If the user name is not set directly use the email address from the current order when calling from CartView
+      if (userName == null || userName.length() == 0) {
+         userName = orderView.order.emailAddress;
+         emailAddress = emailAddress;
+      }
+      if (super.login()) {
+         UserProfile regUser = user;
+         Order regUserOrder = OrderView.getPendingOrderForUser(regUser);
+         if (regUserOrder == null) {
+         // Make the registered user the owner of the anonymous cart
+            orderView.order.user = regUser;
+         }
+         else {
+         // Add the anonymous shopping cart to the existing registered user
+            regUserOrder.appendOrder(orderView.order);
+         }
+         orderView.order = regUserOrder;
+         orderView.refreshLineItems();
+         orderView.refresh();
+      }
+      else { // failed
+         orderView.orderError = userViewError;
+      }
+      return true;
+   }
 }

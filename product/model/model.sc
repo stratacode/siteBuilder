@@ -1,4 +1,4 @@
-package sc.product;
+package sc;
 
 import sc.obj.Constant;
 

@@ -1,6 +1,6 @@
-package sc.product;
+package sc;
 
-public product.server extends content.server, product.coreui, user.server, user.modelImpl, product.userServer {
+public product.server extends content.server, product.coreui, user.server, user.modelImpl {
    // But don't export the server only constraint here
    exportRuntime = false;
    exportProcess = false;

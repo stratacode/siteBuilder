@@ -33,9 +33,9 @@
                </div>
                <div id="loginView" visible=":= orderView.showLoginView" class="fieldBox">
                   <label for="passwordField" class="fieldLabel">Password</label>
-                  <input id="passwordField" type="password" value="=: orderView.loginPassword"/>
+                  <input id="passwordField" type="password" value="=: userView.password"/>
                   <br/>
-                  <input type="button" value="Login" clickEvent="=: orderView.loginForOrder()"/>
+                  <input type="button" value="Login" clickEvent="=: userView.login()"/>
                </div>
             </div>
             <div id="registeredCheckout" visible=":= userView.loginStatus == LoginStatus.LoggedIn">

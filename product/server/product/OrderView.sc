@@ -334,33 +334,4 @@ OrderView {
    void registerAfterOrder() {
       userView.registerAfterOrder(completedOrder, order);
    }
-
-   void loginForOrder() {
-      UserProfile anonUser = userView.user;
-      if (anonUser.registered) {
-         orderError = "Already logged in";
-         return;
-      }
-      userView.emailAddress = order.emailAddress;
-      userView.userName = order.emailAddress;
-      userView.password = loginPassword;
-      if (userView.login()) {
-         UserProfile regUser = userView.user;
-         Order regUserOrder = getPendingOrderForUser(regUser);
-         if (regUserOrder == null) {
-            // Make the registered user the owner of the anonymous cart
-            order.user = regUser;
-         }
-         else {
-            // Add the anonymous shopping cart to the existing registered user
-            regUserOrder.appendOrder(order);
-         }
-         order = regUserOrder;
-         refreshLineItems();
-         refresh();
-      }
-      else { // failed
-         orderError = userView.userViewError;
-      }
-   }
 }

@@ -1,3 +1,4 @@
+// Base class for NavMenuItem and NavMenu
 abstract class BaseMenuItem {
    String name;
    String url;
