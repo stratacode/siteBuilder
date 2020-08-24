@@ -20,25 +20,31 @@ class SiteManagerView {
    boolean autoUpdatePath = true;
    boolean siteSaved = false;
 
-   String addTypeName;
+   static String defaultSiteName = "Plain website";
 
-   void updateSiteName(String val) {
-      if (site == null)
-         return;
-      site.siteName = val;
-      if (autoUpdatePath && (val != null && val.length() > 0))
-         site.sitePathName = ManagedResource.convertToPathName(val);
-      if (siteSaved)
-         site.validateProperties();
-      else
-         site.validateProp("siteName");
+   static List<String> newSiteTypes = new ArrayList<String>();
+   static {
+      newSiteTypes.add(defaultSiteName);
    }
 
-   void updatePathName(String pathName) {
-      if (site == null)
-         return;
+   String newSiteName, newSitePathName, newSiteType = defaultSiteName;
+   String newSiteError, newSiteStatus;
+
+   void updateNewSiteName(String val) {
+      newSiteName = val;
+      newSiteError = newSiteStatus = null;
+      if (autoUpdatePath && (val != null && val.length() > 0))
+         newSitePathName = ManagedResource.convertToPathName(val);
+      newSiteError = SiteContext.validateSiteName(val);
+   }
+
+   void updateNewPathName(String pathName) {
       autoUpdatePath = false;
-      site.sitePathName = pathName;
-      site.validateProp("sitePathName");
+      newSitePathName = pathName;
+      newSiteError = SiteContext.validateSitePathName(pathName);
+   }
+
+   void updateNewSiteType(String newType) {
+      newSiteType = newType;
    }
 }

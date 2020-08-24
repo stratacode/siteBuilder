@@ -26,16 +26,6 @@ SiteManagerView {
       validStore = false;
    }
 
-   void startAddStore() {
-      lastSite = site;
-      store = (Storefront) Storefront.getDBTypeDescriptor().createInstance();
-      site = store;
-      showCreateView = true;
-      validSite = false;
-      validStore = false;
-      addTypeName = "Store";
-   }
-
    void completeAddSite() {
       super.completeAddSite();
       if (validSite && site instanceof Storefront) {
@@ -46,5 +36,11 @@ SiteManagerView {
          validStore = false;
          store = null;
       }
+   }
+
+   SiteContext createSite(String siteTypeName) {
+      if (siteTypeName.equals(storeSiteName))
+         return (Storefront) Storefront.getDBTypeDescriptor().createInstance();
+      return super.createSite(siteTypeName);
    }
 }

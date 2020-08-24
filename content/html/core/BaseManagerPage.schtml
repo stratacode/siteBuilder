@@ -25,17 +25,22 @@
          <div class="formError"><%= siteMgr.errorMessage %></div>
 
          <div id="createSiteView" class="formContainer" visible=":= siteMgr.showCreateView">
-            <div class="formTitle">Add <%= siteMgr.addTypeName %></div>
+            <div class="formTitle">Add site</div>
             <div class="formField">
-               <label for="siteNameField"><%= siteMgr.addTypeName %> name</label>
+               <label for="siteTypeSelect">Choose site type</label>
+               <select optionDataSource=":= siteMgr.newSiteTypes" changeEvent="=: siteMgr.updateNewSiteType(selectedValue)"/>
+            </div>
+            <div class="formField">
+               <label for="siteNameField">Site name</label>
                <input type="text" id="siteNameField" placeholder="display name"
-                      value=":= siteMgr.site.siteName" changeEvent="=: siteMgr.updateSiteName(value)"/>
+                      value=":= siteMgr.newSiteName" changeEvent="=: siteMgr.updateNewSiteName(value)"/>
             </div>
             <div class="formField">
-               <label for="sitePathNameField"><%= siteMgr.addTypeName %> path name</label>
+               <label for="sitePathNameField">Site path name</label>
                <input type="text" id="sitePathNameField" placeholder="browser location name (no spaces)"
-                      value=":= siteMgr.site.sitePathName" changeEvent="=: siteMgr.updatePathName(value)"/>
+                      value=":= siteMgr.newSitePathName" changeEvent="=: siteMgr.updateNewPathName(value)"/>
             </div>
+            <div class="formError"><%= siteMgr.newSiteError %></div>
             <div class="formField confirmButtons">
                <input type="button" value="Save" clickEvent="=: siteMgr.completeAddSite()"/>
                <input type="button" value="Cancel" clickEvent="=: siteMgr.cancelAddSite()" class="rightButton"/>

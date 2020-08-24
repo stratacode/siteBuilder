@@ -65,55 +65,78 @@ SiteManagerView {
 
    void startAddSite() {
       lastSite = site;
-      site = (SiteContext) SiteContext.getDBTypeDescriptor().createInstance();
       showCreateView = true;
       validSite = false;
-      addTypeName = "Site";
    }
 
    void completeAddSite() {
-      siteError = siteStatus = null;
+      newSiteError = newSiteStatus = null;
 
       if (currentUserView.loginStatus != LoginStatus.LoggedIn) {
-         errorMessage = "Must be logged in to create a site";
+         newSiteError = "Must be logged in to create a site";
          return;
       }
 
-      if (site == null) {
-         errorMessage = "No site";
+      newSiteError = SiteContext.validateSiteName(newSiteName);
+      if (newSiteError != null)
+         return;
+      newSiteError = SiteContext.validateSitePathName(newSitePathName);
+      if (newSiteError != null)
+         return;
+
+      SiteContext newSite = createSite(newSiteType);
+      if (newSite == null) {
+         newSiteError = "No site";
          return;
       }
 
-      site.validateProperties();
+      newSite.siteName = newSiteName;
+      newSite.sitePathName = newSitePathName;
 
-      if (site.propErrors == null) {
+      newSite.validateProperties();
+
+      if (newSite.propErrors == null) {
          UserProfile user = currentUserView.user;
-         site.siteAdmins = new ArrayList<UserProfile>();
-         site.siteAdmins.add(user);
+         newSite.siteAdmins = new ArrayList<UserProfile>();
+         newSite.siteAdmins.add(user);
          MediaManager newMgr = new MediaManager();
-         newMgr.managerPathName = site.sitePathName;
+         newMgr.managerPathName = newSite.sitePathName;
          newMgr.mediaBaseUrl = "/images/" + newMgr.managerPathName + "/";
          newMgr.genBaseUrl = "/images/gen/" + newMgr.managerPathName + "/";
-         site.mediaManager = newMgr;
+         newSite.mediaManager = newMgr;
          try {
-            site.dbInsert(false);
+            newSite.dbInsert(false);
          }
          catch (IllegalArgumentException exc) {
-            siteError = "Error adding site: " + exc;
+            newSiteError = "Error adding site: " + exc;
+            return;
          }
          if (user.siteList == null) {
             user.siteList = new ArrayList<SiteContext>();
          }
-         if (!user.siteList.contains(site)) {
+         if (!user.siteList.contains(newSite)) {
             System.out.println("*** Reverse relationship did not add do the site list");
-            user.siteList.add(site);
+            user.siteList.add(newSite);
          }
          siteList = user.siteList;
+         changeSite(newSite);
+         if (!validSite)
+            return;
+
          showCreateView = false;
-         validSite = true;
 
          updateSiteSelectList();
+
+         newSiteName = "";
+         newSitePathName = "";
       }
+   }
+
+   SiteContext createSite(String siteTypeName) {
+      if (siteTypeName.equals(defaultSiteName))
+         return (SiteContext) SiteContext.getDBTypeDescriptor().createInstance();
+      newSiteError = "Invalid type for new site: " + siteTypeName;
+      return null;
    }
 
    void cancelAddSite() {

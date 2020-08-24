@@ -1,10 +1,6 @@
 <html>
    <body>
       <div id="mgrFrame">
-         <span id="createButtons">
-            <input id="storeCreate" type="button" value="Create store" visible=":= !siteMgr.showCreateView"
-                   clickEvent="=: siteMgr.startAddStore()" class="rightButton"/>
-         </span>
          <span id="mgrNav">
             <span id="storePages" visible=":= siteMgr.validStore">
                <a id="prodLink" href="/manage/product">Product</a>
