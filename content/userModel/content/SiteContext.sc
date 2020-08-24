@@ -1,4 +1,4 @@
-@DBTypeSettings
+@DBTypeSettings(typeId=1)
 class SiteContext implements IPropValidator {
    List<UserProfile> siteAdmins;
 
@@ -23,6 +23,11 @@ class SiteContext implements IPropValidator {
    String icon;
 
    MediaManager mediaManager;
+
+   // Configurable presentation elements - add to the page menu, add new pages and provide the default page
+   List<BaseMenuItem> menuItems;
+   PageDef homePage;
+   List<PageDef> sitePages;
 
    public String toString() {
       return siteName;

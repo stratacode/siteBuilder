@@ -1,4 +1,6 @@
-<%@ @URL(pattern="/{sitePathName=urlString}/category/{categoryPathName=urlString}", testURLs={"/stratacycles/category/bikes", "/stratacyles/category/road-bikes", "/stratacycles/category/mountain-bikes"}) %>
+<%@ @URL(pattern="/sites/{sitePathName=urlString}/category/{categoryPathName=urlString}",
+         testURLs={"/sites/stratacycles/category/bikes", "/sites/stratacyles/category/road-bikes",
+                   "/sites/stratacycles/category/mountain-bikes"}) %>
 <html extends="BaseStorePage">
    <%!
       String categoryPathName;

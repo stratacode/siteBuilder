@@ -7,7 +7,7 @@
    </head>
    <body>
       <div id="mgrFrame">
-         <div id="mgrView" extends="CategoryManagerView" store=":= storeMgr.store" visible=":= storeMgr.validStore"/>
+         <div id="mgrView" extends="CategoryManagerView" store=":= siteMgr.store" visible=":= siteMgr.validStore"/>
       </div>
    </body>
 </html>

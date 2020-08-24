@@ -1,4 +1,4 @@
-<%@ @URL(pattern="/manage/order") %>
+<%@ @URL(pattern="/manage/product") %>
 <html extends="BaseManagerPage">
    <head>
       <div id="libScripts">
@@ -7,7 +7,7 @@
    </head>
    <body>
       <div id="mgrFrame">
-         <div id="mgrView" extends="OrderManagerView" store=":= storeMgr.store" visible=":= storeMgr.validStore"/>
+         <div id="mgrView" extends="ProductManagerView" store=":= siteMgr.store" visible=":= siteMgr.validStore"/>
       </div>
    </body>
 </html>

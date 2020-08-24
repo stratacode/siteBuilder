@@ -102,7 +102,7 @@ class ProductManager extends BaseProductManager {
          return;
       product.name = val;
       if (autoUpdatePath && (val != null && val.length() > 0))
-         product.pathName = CatalogElement.convertToPathName(val);
+         product.pathName = ManagedResource.convertToPathName(val);
       if (productSaved)
          product.validateProperties();
       else

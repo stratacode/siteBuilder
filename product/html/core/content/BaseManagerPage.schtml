@@ -1,0 +1,17 @@
+<html>
+   <body>
+      <div id="mgrFrame">
+         <span id="createButtons">
+            <input id="storeCreate" type="button" value="Create store" visible=":= !siteMgr.showCreateView"
+                   clickEvent="=: siteMgr.startAddStore()" class="rightButton"/>
+         </span>
+         <span id="mgrNav">
+            <span id="storePages" visible=":= siteMgr.validStore">
+               <a id="prodLink" href="/manage/product">Product</a>
+               <a id="catLink" href="/manage/category">Category</a>
+               <a id="skuLink" href="/manage/sku">Sku</a>
+            </span>
+         </span>
+      </div>
+   </body>
+</html>

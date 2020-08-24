@@ -1,4 +1,4 @@
-<%@ @URL(pattern="/{sitePathName=urlString}/cart", testURLs={"/stratacycles/cart"}) %>
+<%@ @URL(pattern="/sites/{sitePathName=urlString}/cart", testURLs={"/sites/stratacycles/cart"}) %>
 <html extends="BaseStorePage">
    <body>
       <div id="appFrame">

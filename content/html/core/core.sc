@@ -1,6 +1,8 @@
 import sc.content.PageLayout;
 
-public content.html.core extends content.coreui, content.server, html.schtml {
+import sc.content.BaseManagerPage;
+
+public content.html.core extends content.coreui, content.server, html.schtml, summernote.core, content.userCoreui {
    inheritProcess = false;
    inheritRuntime = false;
 }

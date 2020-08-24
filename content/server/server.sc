@@ -1,4 +1,4 @@
-public content.server extends model, coreui {
+public content.server extends model, userCoreui {
    exportRuntime = false;
    void init() {
       excludeRuntimes("js", "gwt");

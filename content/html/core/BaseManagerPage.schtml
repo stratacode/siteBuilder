@@ -1,5 +1,5 @@
 <html abstract="true">
-   <%! object storeMgr extends StoreManagerView {} %>
+   <%! object siteMgr extends SiteManagerView {} %>
 
    <head exec="server">
       <div id="libScripts" bodyOnly="true">
@@ -9,43 +9,42 @@
 
    <body>
       <div id="mgrFrame" visible=":= currentUserView.loginStatus == LoginStatus.LoggedIn">
-         <select id="storeSelect" optionDataSource=":= storeMgr.storeSelectList"
-                 changeEvent="=: storeMgr.changeStoreWithIndex(selectedIndex)"
-                 disabled=":= storeMgr.showCreateView"
-                 selectedIndex=":= storeMgr.storeIndex"/>
-         <input type="button" value="Create store" visible=":= !storeMgr.showCreateView"
-                clickEvent="=: storeMgr.startAddStore()" class="rightButton"/>
-         <span id="mgrNav" visible=":= storeMgr.validStore">
-            <a href="/manage/order">Order</a>
-            <a href="/manage/user">User</a>
-            <a href="/manage/product">Product</a>
-            <a href="/manage/category">Category</a>
-            <a href="/manage/media">Media</a>
-            <a href="/manage/sku">Sku</a>
+         <select id="siteSelect" optionDataSource=":= siteMgr.siteSelectList"
+                 changeEvent="=: siteMgr.changeSiteWithIndex(selectedIndex)"
+                 disabled=":= siteMgr.showCreateView"
+                 selectedIndex=":= siteMgr.siteIndex"/>
+         <span id="createButtons">
+            <input id="siteCreate" type="button" value="Create site" visible=":= !siteMgr.showCreateView"
+                   clickEvent="=: siteMgr.startAddSite()" class="rightButton"/>
          </span>
-         <div class="formError"><%= storeMgr.errorMessage %></div>
+         <span id="mgrNav" visible=":= siteMgr.validSite">
+            <a id="userLink" href="/manage/user">User</a>
+            <a id="pageLink" href="/manage/page">Page</a>
+            <a id="mediaLink" href="/manage/media">Media</a>
+         </span>
+         <div class="formError"><%= siteMgr.errorMessage %></div>
 
-         <div id="createStoreView" class="formContainer" visible=":= storeMgr.showCreateView">
-            <div class="formTitle">Add store</div>
+         <div id="createSiteView" class="formContainer" visible=":= siteMgr.showCreateView">
+            <div class="formTitle">Add <%= siteMgr.addTypeName %></div>
             <div class="formField">
-               <label for="siteNameField">Site name</label>
+               <label for="siteNameField"><%= siteMgr.addTypeName %> name</label>
                <input type="text" id="siteNameField" placeholder="display name"
-                      value=":= storeMgr.store.siteName" changeEvent="=: storeMgr.updateSiteName(value)"/>
+                      value=":= siteMgr.site.siteName" changeEvent="=: siteMgr.updateSiteName(value)"/>
             </div>
             <div class="formField">
-               <label for="sitePathNameField">Site path name</label>
+               <label for="sitePathNameField"><%= siteMgr.addTypeName %> path name</label>
                <input type="text" id="sitePathNameField" placeholder="browser location name (no spaces)"
-                      value=":= storeMgr.store.sitePathName" changeEvent="=: storeMgr.updatePathName(value)"/>
+                      value=":= siteMgr.site.sitePathName" changeEvent="=: siteMgr.updatePathName(value)"/>
             </div>
             <div class="formField confirmButtons">
-               <input type="button" value="Save store" clickEvent="=: storeMgr.completeAddStore()"/>
-               <input type="button" value="Cancel" clickEvent="=: storeMgr.cancelAddStore()" class="rightButton"/>
+               <input type="button" value="Save" clickEvent="=: siteMgr.completeAddSite()"/>
+               <input type="button" value="Cancel" clickEvent="=: siteMgr.cancelAddSite()" class="rightButton"/>
             </div>
          </div>
 
          <div id="alt">
             <div id="loginView" visible=":= currentUserView.loginStatus == LoginStatus.NotLoggedIn">
-               <div class="formTitle">Login to manage stores</div>
+               <div class="formTitle">Login to manage sites</div>
                <div class="formField">
                   <label for="userNameField">User name</label>
                   <input type="text" placeholder="user name" value=":=: currentUserView.userName"/>

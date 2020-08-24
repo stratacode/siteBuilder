@@ -1,6 +1,6 @@
 @Component
 @CompilerSettings(constructorProperties="siteView,pathName")
-abstract class CatalogElementView {
+abstract class CatalogElementView implements IView {
    SiteView siteView;
    StoreView storeView := (StoreView) siteView;
 

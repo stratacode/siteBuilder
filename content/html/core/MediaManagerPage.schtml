@@ -4,7 +4,7 @@
    <body>
       <div id="mgrFrame">
          <div id="mgrView">
-            <div id="mediaManagerView" extends="MediaManagerView" store=":= MediaManagerPage.this.storeMgr.store"/>
+            <div id="mediaManagerView" extends="MediaManagerView" site=":= MediaManagerPage.this.siteMgr.site"/>
          </div>
       </div>
    </body>

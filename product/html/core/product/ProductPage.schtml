@@ -1,4 +1,4 @@
-<%@ @URL(pattern="/{sitePathName=urlString}/product/{productPathName=urlString}", testURLs={"/stratacycles/product/surly", "/stratacycles/product/maverick", "/stratacycles/product/four-corners"}) %>
+<%@ @URL(pattern="/sites/{sitePathName=urlString}/product/{productPathName=urlString}", testURLs={"/sites/stratacycles/product/surly", "/sites/stratacycles/product/maverick", "/sites/stratacycles/product/four-corners"}) %>
 <html extends="BaseStorePage">
    <%! 
       String productPathName;

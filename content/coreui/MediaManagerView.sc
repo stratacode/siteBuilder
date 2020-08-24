@@ -4,6 +4,8 @@
 class MediaManagerView {
    MediaManager mediaManager;
 
+   SiteContext site;
+
    String searchText;
 
    List<ManagedMedia> currentMedia;
@@ -25,4 +27,7 @@ class MediaManagerView {
       currentMediaStatus = null;
       currentMediaError = null;
    }
+
+   override @Exec(serverOnly=true)
+   mediaManager := site.mediaManager;
 }

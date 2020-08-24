@@ -1,0 +1,4 @@
+<div>
+   <%! SiteContext site; %>
+
+</div>

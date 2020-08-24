@@ -82,7 +82,7 @@ abstract class BaseProductManager extends BaseManager {
          return;
       category.name = val;
       if (autoUpdateCategoryPath && (val != null && val.length() > 0))
-         category.pathName = CatalogElement.convertToPathName(val);
+         category.pathName = ManagedResource.convertToPathName(val);
       if (categorySaved)
          category.validateProperties();
       else
