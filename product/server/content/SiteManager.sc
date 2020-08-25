@@ -1,4 +1,4 @@
-SiteManagerView {
+SiteManager {
    void start() {
       super.start();
       if (site instanceof Storefront) {

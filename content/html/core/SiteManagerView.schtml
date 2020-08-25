@@ -1,0 +1,130 @@
+<div>
+   <%! SiteManager siteMgr; %>
+
+   <div id="findSiteView" class="findSiteView">
+      <div id="findSiteForm" class="formField">
+         <label for="searchSiteField">Find site:</label><input type="text" value=":=: siteMgr.searchText" changeEvent="=: siteMgr.doSearch()"/>
+         <input type="image" class="findSiteButton" src="/icons/search.svg" clickEvent="=: siteMgr.doSearch()"/>
+         <input type="image" class="clearSiteButton" src="/icons/x-square.svg" clickEvent="=: siteMgr.clearSearch()"/>
+      </div>
+   </div>
+
+   <div id="siteDetailForm" visible=":= siteMgr.validSite">
+      <div class="formTitle">
+         Manage <%= siteMgr.getSiteTypeName(siteMgr.site) %>: <%= siteMgr.site.siteName %>
+      </div>
+
+      <div class="formField">
+         <label for="siteNameField">Site name</label>
+         <input type="text" id="siteNameField" placeholder="display name"
+                value=":= siteMgr.site.siteName" changeEvent="=: siteMgr.updateSiteName(value)"/>
+      </div>
+      <div class="formFieldError"><%= siteMgr.site.propErrors.get("siteName") %></div>
+      <div class="formField">
+         <label for="sitePathNameField">Site path name</label>
+         <input type="text" id="sitePathNameField" placeholder="browser location name (no spaces)"
+                value=":= siteMgr.site.sitePathName" changeEvent="=: siteMgr.updatePathName(value)"/>
+      </div>
+      <div class="formFieldError"><%= siteMgr.site.propErrors.get("sitePathName") %></div>
+      <div class="formField">
+         <label for="visibleCheckbox">Visible</label>
+         <input type="checkbox" id="visibleCheckbox" checked=":= siteMgr.site.visible"/>
+      </div>
+
+      <div id="menuItemsView">
+         <div class="subFormTitle" visible=":= siteMgr.site.menuItems.size() > 0">
+            Custom menu items
+            <div id="alt" class="formStatus">No custom menu items</div>
+         </div>
+         <div id="menuItemRepeat" repeat=":= siteMgr.site.menuItems" repeatVarName="menuItem" class=':= menuItem == siteMgr.currentMenuItem ? "selectedMenuItemEntry" : "menuItemEntry"'>
+            <div id="menuItemSel" clickEvent="=: siteMgr.currentMenuItem = menuItem"><%= menuItem.name %> › <%= menuItem.url %></div>
+            <input type="image" class="removeMenuButton" src="/icons/x-square.svg"
+                   clickEvent="=: siteMgr.removeMenuItem(menuItem)"/>
+         </div>
+         <div id="menuItemDetail" visible=":= curMenuItem != null" class="menuItemDetail">
+            <%! BaseMenuItem curMenuItem := siteMgr.currentMenuItem; %>
+            <div class="subFormTitle">Edit menu item</div>
+            <div id="menuItemNameView" class="formField">
+               <label for="menuItemNameField">Menu name</label>
+               <input id="menuItemNameField" type="text" value=":=: curMenuItem.name" liveEdit="change" changeEvent="=: siteMgr.saveMenuItems()"/>
+            </div>
+            <div id="menuItemLinkView" class="formField">
+               <label for="menuItemLinkField">Menu link</label>
+               <input id="menuItemLinkField" type="text" value=":=: curMenuItem.url" liveEdit="change" changeEvent="=: siteMgr.saveMenuItems()"/>
+            </div>
+            <div id="menuItemIconView" class="formField">
+               <label for="menuItemIconField">Icon</label>
+               <input id="menuItemIconField" type="text" value=":=: curMenuItem.icon" liveEdit="change" changeEvent="=: siteMgr.saveMenuItems()"/>
+            </div>
+            <div id="menuItemOrderView" class="formField">
+               <%! object orderConverter extends NumberConverter {} %>
+               <label for="menuItemOrderField">Order</label>
+               <input id="menuItemOrderField" type="number" value=":=: orderConverter.numberToString(curMenuItem.orderValue)"/>
+            </div>
+            <div id="childMenuItems" visible=":= navMenu != null" class="childMenuItems">
+               <%!
+                  NavMenuDef navMenu := curMenuItem instanceof NavMenuDef ? (NavMenuDef) curMenuItem : null;
+                  NavMenuItem curNavMenuItem := siteMgr.currentNavMenuItem;
+               %>
+               <div id="navMenuItems" repeat=":= navMenu.subMenuItems" repeatVarName="navMenuItem"
+                    class=':= navMenuItem == curNavMenuItem ? "selectedNavMenuItem" : "navMenuItem"'
+                    clickEvent="=: siteMgr.currentNavMenuItem = (NavMenuItem) navMenuItem">
+                  <%= navMenuItem.name %> › <%= navMenuItem.url %>
+                  <input type="image" class="removeMenuButton" src="/icons/x-square.svg"
+                         clickEvent="=: siteMgr.removeNavMenuItem(navMenu, navMenuItem)"/>
+               </div>
+               <div id="navMenuItemDetail" visible=":= curNavMenuItem != null">
+                  <div class="subFormTitle">Edit sub menu item</div>
+                  <div id="navMenuItemNameView" class="formField">
+                     <label for="navMenuItemNameField">Sub menu name</label>
+                     <input id="navMenuItemNameField" type="text" value=":=: curNavMenuItem.name" liveEdit="change" changeEvent="=: siteMgr.saveMenuItems()"/>
+                  </div>
+                  <div id="navMenuItemLinkView" class="formField">
+                     <label for="navMenuItemLinkField">Sub menu link</label>
+                     <input id="navMenuItemLinkField" type="text" value=":=: curNavMenuItem.url" liveEdit="change" changeEvent="=: siteMgr.saveMenuItems()"/>
+                  </div>
+                  <div id="navMenuItemIconView" class="formField">
+                     <label for="navMenuItemIconField">Sub menu icon</label>
+                     <input id="navMenuItemIconField" type="text" value=":=: curNavMenuItem.icon" liveEdit="change" changeEvent="=: siteMgr.saveMenuItems()"/>
+                  </div>
+                  <div id="navMenuItemOrderView" class="formField">
+                     <%! object orderConverter extends NumberConverter {} %>
+                     <label for="navMenuItemOrderField">Order</label>
+                     <input id="navMenuItemOrderField" type="number" value=":=: orderConverter.numberToString(curNavMenuItem.orderValue)"
+                            liveEdit="change" changeEvent="=: siteMgr.saveMenuItems()"/>
+                  </div>
+               </div>
+               <div id="addSubMenuButtons" class="confirmButtons">
+                  <input type="button" value="Add sub-menu item" clickEvent="=: siteMgr.addSubMenuItem(navMenu)"/>
+                  <input type="button" value="Done" clickEvent="=: siteMgr.currentNavMenuItem = null" visible=":= siteMgr.currentNavMenuItem != null"/>
+               </div>
+            </div>
+         </div>
+         <div id="addMenuItemButtons" class="confirmButtons">
+            <input type="button" value="Add menu item" clickEvent="=: siteMgr.addMenuItem()"/>
+            <input type="button" value="Add nav menu" clickEvent="=: siteMgr.addNavMenu()"/>
+            <input type="button" value="Done" clickEvent="=: siteMgr.currentMenuItem = null" visible=":= siteMgr.currentMenuItem != null"/>
+         </div>
+      </div>
+   </div>
+
+   <div id="currentSitesView">
+      <div class="headerRow" visible=":= siteMgr.currentSites != null && siteMgr.currentSites.size() > 0">
+         <span class="wideHeaderColumn">Site name</span>
+         <span class="wideHeaderColumn">Site path name</span>
+         <span class="smallHeaderColumn">Visible</span>
+         <span class="smallHeaderColumn">Remove</span>
+      </div>
+      <div id="siteRepeat" repeat=":= siteMgr.currentSites" repeatVarName="currentSite"
+           class=':= currentSite == siteMgr.site ? "selectedSiteRow" : "siteRow"' >
+        <span class="wideSiteColumn" clickEvent="=: siteMgr.site = currentSite">
+           <input type="checkbox" checked=":= siteMgr.site == currentSite"/>
+           <%= currentSite.siteName %>
+        </span>
+        <span class="wideSiteColumn"> <%= currentSite.sitePathName %> </span>
+        <input type="checkbox" checked=":=: currentSite.visible" class="smallSiteColumn"/>
+        <input type="image" class="removeSiteButton" src="/icons/x-square.svg" class="smallSiteColumn"
+               clickEvent="=: siteMgr.removeSite(currentSite.id)"/>
+      </div>
+   </div>
+</div>

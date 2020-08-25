@@ -29,6 +29,8 @@ class SiteContext implements IPropValidator {
    PageDef homePage;
    List<PageDef> sitePages;
 
+   boolean visible = true;
+
    public String toString() {
       return siteName;
    }
@@ -44,4 +46,5 @@ class SiteContext implements IPropValidator {
    static String validateSitePathName(String sitePathName) {
       return ManagedResource.validatePathName("site path name", sitePathName);
    }
+
 }

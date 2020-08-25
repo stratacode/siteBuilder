@@ -1,4 +1,4 @@
-SiteManagerView {
+SiteManager {
    void start() {
       UserView uv = currentUserView;
 
@@ -167,4 +167,39 @@ SiteManagerView {
             siteIndex = siteIx + 1; // For the header message
       }
    }
+
+   void removeSite(long siteId) {
+      SiteContext toRemove = (SiteContext) SiteContext.getDBTypeDescriptor().findById(siteId);
+      if (toRemove != null) {
+         boolean changeCurrentSite = site == toRemove;
+         try {
+            if (currentSites != null)
+               currentSites.remove(toRemove);
+            currentUserView.user.siteList.remove(toRemove);
+            currentUserView.user.dbUpdate();
+
+            toRemove.dbDelete(false);
+         }
+         catch (IllegalArgumentException exc) {
+            errorMessage = "Unable to remove site: " + exc.toString();
+            return;
+         }
+         if (changeCurrentSite) {
+            changeSite(null);
+         }
+         updateSiteSelectList();
+      }
+   }
+
+   void saveMenuItems() {
+      // Need to call the setX method here to trigger the DB to save the value because we changed properties inside
+      // the object.
+      site.menuItems = site.menuItems;
+   }
+
+   void removeNavMenuItem(NavMenuDef navMenu, BaseMenuItem toRem) {
+      navMenu.subMenuItems.remove(toRem);
+      saveMenuItems();
+   }
+
 }

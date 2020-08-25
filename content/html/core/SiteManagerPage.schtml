@@ -1,0 +1,13 @@
+<%@ @URL(pattern="/manage/site") %>
+<html extends="BaseManagerPage">
+   <head>
+      <div id="libScripts">
+         <script extends="TextEditorScripts"/>
+      </div>
+   </head>
+   <body>
+      <div id="mgrFrame">
+         <div id="mgrView" extends="SiteManagerView" siteMgr=":= SiteManagerPage.this.siteMgr" visible=":= siteMgr.validSite"/>
+      </div>
+   </body>
+</html>

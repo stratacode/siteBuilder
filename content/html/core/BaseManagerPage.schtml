@@ -1,5 +1,5 @@
 <html abstract="true">
-   <%! object siteMgr extends SiteManagerView {} %>
+   <%! object siteMgr extends SiteManager {} %>
 
    <head exec="server">
       <div id="libScripts" bodyOnly="true">
@@ -18,9 +18,10 @@
                    clickEvent="=: siteMgr.startAddSite()" class="rightButton"/>
          </span>
          <span id="mgrNav" visible=":= siteMgr.validSite">
-            <a id="userLink" href="/manage/user">User</a>
+            <a id="userLink" href="/manage/site">Site</a>
             <a id="pageLink" href="/manage/page">Page</a>
             <a id="mediaLink" href="/manage/media">Media</a>
+            <a id="userLink" href="/manage/user">User</a>
          </span>
          <div class="formError"><%= siteMgr.errorMessage %></div>
 
@@ -28,7 +29,7 @@
             <div class="formTitle">Add site</div>
             <div class="formField">
                <label for="siteTypeSelect">Choose site type</label>
-               <select optionDataSource=":= siteMgr.newSiteTypes" changeEvent="=: siteMgr.updateNewSiteType(selectedValue)"/>
+               <select optionDataSource=":= siteMgr.newSiteTypes" changeEvent="=: siteMgr.updateNewSiteType((String) selectedValue)"/>
             </div>
             <div class="formField">
                <label for="siteNameField">Site name</label>

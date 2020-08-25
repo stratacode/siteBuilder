@@ -11,6 +11,8 @@ class UserView {
 
    String emailAddress = "";
    String userName = "";
+
+   @Sync(syncMode=SyncMode.ClientToServer)
    String password = "";
 
    @Sync(syncMode=SyncMode.Disabled)
