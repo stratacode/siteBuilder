@@ -218,13 +218,13 @@
 }
 
 .menuItemEntry, .selectedMenuItemEntry {
-   margin-left: 21%;
-   width: 30%;
+   margin-left: 15%;
+   width: 70%;
 }
 
 .navMenuItem, .selectedNavMenuItem {
-   margin-left: 21%;
-   width: 30%;
+   margin-left: 20%;
+   width: 60%;
 }
 
 .childMenuItems {
@@ -373,4 +373,8 @@
    padding-bottom: 5px;
    margin-top: 10px;
    margin-right: 20px;
+}
+
+#addMenuItemButtons {
+   padding-top: 5px;
 }

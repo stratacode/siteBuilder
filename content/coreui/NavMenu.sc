@@ -18,4 +18,9 @@ class NavMenu extends BaseMenuItem {
       }
       return res;
    }
+
+   String getDetailString() {
+      return "nav menu " + (name == null || name.length() == 0 ? "..." : name) +
+                       (url != null && url.length() > 0 ? " to: " + url : "");
+   }
 }

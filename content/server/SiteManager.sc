@@ -197,6 +197,12 @@ SiteManager {
       site.menuItems = site.menuItems;
    }
 
+   void navMenuItemChanged() {
+      saveMenuItems();
+      if (currentMenuItem instanceof NavMenu)
+         Bind.sendChangedEvent(currentMenuItem, "detailString");
+   }
+
    void removeNavMenuItem(NavMenuDef navMenu, BaseMenuItem toRem) {
       navMenu.subMenuItems.remove(toRem);
       saveMenuItems();

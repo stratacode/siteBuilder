@@ -37,7 +37,7 @@
             <div id="alt" class="formStatus">No custom menu items</div>
          </div>
          <div id="menuItemRepeat" repeat=":= siteMgr.site.menuItems" repeatVarName="menuItem" class=':= menuItem == siteMgr.currentMenuItem ? "selectedMenuItemEntry" : "menuItemEntry"'>
-            <div id="menuItemSel" clickEvent="=: siteMgr.currentMenuItem = menuItem"><%= menuItem.name %> › <%= menuItem.url %></div>
+            <div id="menuItemSel" clickEvent="=: siteMgr.currentMenuItem = menuItem"><%= menuItem.detailString %></div>
             <input type="image" class="removeMenuButton" src="/icons/x-square.svg"
                    clickEvent="=: siteMgr.removeMenuItem(menuItem)"/>
          </div>
@@ -66,10 +66,14 @@
                   NavMenuDef navMenu := curMenuItem instanceof NavMenuDef ? (NavMenuDef) curMenuItem : null;
                   NavMenuItem curNavMenuItem := siteMgr.currentNavMenuItem;
                %>
+               <div class="subFormTitle" visible=":= navMenu.subMenuItems != null && navMenu.subMenuItems.size() > 0">
+                  Sub menu items
+                  <div id="alt" class="formStatus">No sub menu items</div>
+               </div>
                <div id="navMenuItems" repeat=":= navMenu.subMenuItems" repeatVarName="navMenuItem"
                     class=':= navMenuItem == curNavMenuItem ? "selectedNavMenuItem" : "navMenuItem"'
                     clickEvent="=: siteMgr.currentNavMenuItem = (NavMenuItem) navMenuItem">
-                  <%= navMenuItem.name %> › <%= navMenuItem.url %>
+                  <%= navMenuItem.detailString %>
                   <input type="image" class="removeMenuButton" src="/icons/x-square.svg"
                          clickEvent="=: siteMgr.removeNavMenuItem(navMenu, navMenuItem)"/>
                </div>
@@ -77,21 +81,21 @@
                   <div class="subFormTitle">Edit sub menu item</div>
                   <div id="navMenuItemNameView" class="formField">
                      <label for="navMenuItemNameField">Sub menu name</label>
-                     <input id="navMenuItemNameField" type="text" value=":=: curNavMenuItem.name" liveEdit="change" changeEvent="=: siteMgr.saveMenuItems()"/>
+                     <input id="navMenuItemNameField" type="text" value=":=: curNavMenuItem.name" liveEdit="change" changeEvent="=: siteMgr.navMenuItemChanged()"/>
                   </div>
                   <div id="navMenuItemLinkView" class="formField">
                      <label for="navMenuItemLinkField">Sub menu link</label>
-                     <input id="navMenuItemLinkField" type="text" value=":=: curNavMenuItem.url" liveEdit="change" changeEvent="=: siteMgr.saveMenuItems()"/>
+                     <input id="navMenuItemLinkField" type="text" value=":=: curNavMenuItem.url" liveEdit="change" changeEvent="=: siteMgr.navMenuItemChanged()"/>
                   </div>
                   <div id="navMenuItemIconView" class="formField">
                      <label for="navMenuItemIconField">Sub menu icon</label>
-                     <input id="navMenuItemIconField" type="text" value=":=: curNavMenuItem.icon" liveEdit="change" changeEvent="=: siteMgr.saveMenuItems()"/>
+                     <input id="navMenuItemIconField" type="text" value=":=: curNavMenuItem.icon" liveEdit="change" changeEvent="=: siteMgr.navMenuItemChanged()"/>
                   </div>
                   <div id="navMenuItemOrderView" class="formField">
                      <%! object orderConverter extends NumberConverter {} %>
                      <label for="navMenuItemOrderField">Order</label>
                      <input id="navMenuItemOrderField" type="number" value=":=: orderConverter.numberToString(curNavMenuItem.orderValue)"
-                            liveEdit="change" changeEvent="=: siteMgr.saveMenuItems()"/>
+                            liveEdit="change" changeEvent="=: siteMgr.navMenuItemChanged()"/>
                   </div>
                </div>
                <div id="addSubMenuButtons" class="confirmButtons">

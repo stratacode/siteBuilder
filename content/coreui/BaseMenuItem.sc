@@ -17,8 +17,14 @@ abstract class BaseMenuItem {
          selectedCount++;
    }
 
-   public List<BaseMenuItem> getMenuItems() {
+   List<BaseMenuItem> getMenuItems() {
       return null;
    }
+
+   name =: Bind.sendChangedEvent(this, "detailString");
+   url =: Bind.sendChangedEvent(this, "detailString");
+
+   @Bindable(manual=true)
+   abstract String getDetailString();
 
 }
