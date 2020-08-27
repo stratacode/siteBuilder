@@ -1,0 +1,4 @@
+@Sync
+@Component
+class BaseManager {
+}

@@ -26,8 +26,6 @@ class SiteContext implements IPropValidator {
 
    // Configurable presentation elements - add to the page menu, add new pages and provide the default page
    List<BaseMenuItem> menuItems;
-   PageDef homePage;
-   List<PageDef> sitePages;
 
    boolean visible = true;
 

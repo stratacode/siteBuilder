@@ -1,0 +1,26 @@
+<div extends="BaseViewEditor">
+   <%!
+      ProductViewEditor(Element parentNode, String id, PageManager pageMgr, ViewDef def, int ix) {
+         super(parentNode, id, pageMgr, def, ix);
+         this.productDef = (ProductViewDef) def;
+      }
+      ProductViewDef productDef;
+      List<Product> matchingProds;
+   %>
+
+   <div id="viewEditorTitle" class="viewEditorTitle"><span id="titleText" clickEvent="=: pageMgr.currentChildView = viewDef">Product view</span>
+      <input type="image" class="removeViewButton" src="/icons/x-square.svg" clickEvent="=: pageMgr.removeViewDef(viewDef)"/>
+   </div>
+   <div class="formField">
+      <label for="productPathField">Product path name</label>
+      <input type="text" id="productPathField"
+             list="= suggestions.getId()" keyUpEvent="=: matchingProds = BaseManager.getMatchingProducts(pageMgr.store, value)"
+             class=':= productDef.propErrors.get("productPathName") == null ? "fieldInput" : "fieldInputError"'
+             value=":=: productDef.productPathName" liveEdit="change" changeEvent="=: pageMgr.updateViewDef(productDef)"/>
+      <div class="formFieldError"><%= productDef.propErrors.get("productPathName") %></div>
+      <datalist id="suggestions">
+         <option repeat=":= matchingProds" repeatVarName="matchingProd" value=":= matchingProd.pathName"/>
+      </datalist>
+   </div>
+
+</div>

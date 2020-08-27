@@ -1,6 +1,7 @@
 package sc.content;
 
 import sc.content.MediaManagerView;
+import sc.content.BaseManager;
 
 import sc.content.SiteView;
 import sc.content.IView;

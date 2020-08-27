@@ -1,4 +1,89 @@
 <div>
-   <%! SiteContext site; %>
+   <%!
+      SiteContext site;
+      object pageMgr extends PageManager {
+         site := PageManagerView.this.site;
+      }
+   %>
+   <div id="findPageView" class="findPageView">
+      <div id="findPageForm" class="formField">
+         <label for="searchSiteField">Find page:</label><input type="text" value=":=: pageMgr.searchText" changeEvent="=: pageMgr.doSearch()"/>
+         <input type="image" class="findSiteButton" src="/icons/search.svg" clickEvent="=: pageMgr.doSearch()"/>
+         <input type="image" class="clearSiteButton" src="/icons/x-square.svg" clickEvent="=: pageMgr.clearSearch()"/>
+      </div>
+   </div>
+
+   <div id="addPageButtons" class="confirmButtons">
+      <label for="siteTypeSelect">New page type</label>
+      <select id="siteTypeSelect" optionDataSource="= pageMgr.pageTypes" changeEvent="=: pageMgr.updateNewPageType((PageType) selectedValue)"/>
+      <input type="button" value="Add page" clickEvent="=: pageMgr.startCreatePage()"/>
+   </div>
+
+   <div id="pageDetailForm" visible=":= pageMgr.currentPage != null">
+      <div class="formTitle">
+         <%= pageMgr.newPage ? "Create" : "Edit" %> page
+      </div>
+
+      <div class="formField">
+         <label for="siteNameField">Page name</label>
+         <input type="text" id="pageNameField" placeholder="display name"
+                value=":= pageMgr.currentPage.pageName" changeEvent="=: pageMgr.updatePageName(value)"/>
+      </div>
+      <div class="formFieldError"><%= pageMgr.currentPage.propErrors.get("pageName") %></div>
+      <div class="formField">
+         <label for="sitePathNameField">Page path name</label>
+         <input type="text" id="pagePathNameField" placeholder="browser location name (no spaces)"
+                value=":= pageMgr.currentPage.pagePathName" changeEvent="=: pageMgr.updatePathName(value)"/>
+      </div>
+      <div class="formFieldError"><%= pageMgr.currentPage.propErrors.get("sitePathName") %></div>
+      <div class="formField">
+         <label for="visibleCheckbox">Visible</label>
+         <input type="checkbox" id="visibleCheckbox" checked=":=: pageMgr.currentPage.visible"/>
+      </div>
+      <div class="formField">
+         <label for="homePageCheckbox">Home page</label>
+         <input type="checkbox" id="homePageCheckbox" checked=":=: pageMgr.currentPage.homePage"/>
+      </div>
+
+      <div id="childViewsView">
+         <div class="subFormTitle" visible=":= pageMgr.currentPage.childViews.size() > 0">
+            Page views
+            <div id="alt" class="formStatus">No views in page</div>
+         </div>
+         <div id="childViewRepeat" repeat=":= pageMgr.currentPage.childViews" repeatVarName="childView" repeatWrapper="ChildViewWrapper"
+              pageMgr=":= PageManagerView.this.pageMgr" class=':= childView == pageMgr.currentChildView ? "selectedChildView" : "childView"'/>
+      </div>
+
+      <div id="addViewButtons" class="confirmButtons">
+         New view type <select id="newViewTypeSelect" optionDataSource=":= pageMgr.viewTypes" changeEvent="=: pageMgr.newViewType = (ViewType) selectedValue"/>
+         <input type="button" value=':= pageMgr.currentChildView != null ? "Add before" : "Add to start"' clickEvent="=: pageMgr.addNewView(false)"/>
+         <input type="button" value=':= pageMgr.currentChildView != null ? "Add after" : "Add to end"' clickEvent="=: pageMgr.addNewView(true)"/>
+      </div>
+      <div id="savePageButtons" class="confirmButtons">
+         <input type="button" value=':= pageMgr.newPage ? "Save page" : "Done editing page"'
+                clickEvent="=: pageMgr.savePageEdits()" visible=":= pageMgr.currentPage != null"/>
+         <input type="button" value='Cancel' visible=":= pageMgr.newPage" clickEvent="=: pageMgr.cancelCreatePage()"/>
+      </div>
+   </div>
+
+   <div id="currentSitesView">
+      <div class="headerRow" visible=":= pageMgr.currentPages != null && pageMgr.currentPages.size() > 0">
+         <span class="wideHeaderColumn">Page name</span>
+         <span class="wideHeaderColumn">Page path name</span>
+         <span class="smallHeaderColumn">Visible</span>
+         <span class="smallHeaderColumn">Remove</span>
+      </div>
+      <div id="pageRepeat" repeat=":= pageMgr.currentPages" repeatVarName="curRowPage"
+           class=':= curRowPage == pageMgr.currentPage ? "selectedPageRow" : "pageRow"' >
+         <span class="widePageColumn" clickEvent="=: pageMgr.currentPage = curRowPage">
+            <input type="checkbox" checked=":= pageMgr.currentPage == curRowPage"/>
+            <%= curRowPage.pageName %>
+         </span>
+         <span class="wideSiteColumn"> <%= curRowPage.pagePathName %> </span>
+         <input type="checkbox" checked=":=: curRowPage.visible" class="smallSiteColumn"/>
+         <input type="image" class="removeSiteButton" src="/icons/x-square.svg" class="smallSiteColumn"
+                clickEvent="=: pageMgr.removePage(curRowPage.id)"/>
+      </div>
+   </div>
 
 </div>

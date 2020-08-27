@@ -1,3 +1,3 @@
 abstract class ParentDef extends ViewDef {
-   List<ViewDef> childViewParams;
+   List<ViewDef> childViews;
 }

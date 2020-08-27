@@ -375,6 +375,29 @@
    margin-right: 20px;
 }
 
-#addMenuItemButtons {
+#addMenuItemButtons, #addViewButtons, #savePageButtons {
    padding-top: 5px;
+}
+
+.viewEditorBox, .selectedViewEditorBox {
+   border : solid 1px rgba(170,170,170,1);
+   padding-top: 5px;
+   padding-bottom: 5px;
+}
+
+.selectedViewEditorBox {
+   background: #dde1ee;
+}
+
+.viewEditorTitle {
+   font-size: 105%;
+   margin-top: 5px;
+   margin-bottom: 5px;
+   margin-left: 21%;
+   display: flex;
+   cursor: pointer;
+}
+
+.removeViewButton {
+   padding-left: 20px;
 }

@@ -1,0 +1,11 @@
+<div abstract="true" class=':= viewDef == pageMgr.currentChildView ? "selectedViewEditorBox" : "viewEditorBox"'>
+   <%!
+      PageManager pageMgr;
+      ViewDef viewDef;
+      BaseViewEditor(Element parentNode, String id, PageManager pageMgr, ViewDef viewDef, int repeatIx) {
+         super(parentNode, id, viewDef, repeatIx);
+         this.pageMgr = pageMgr;
+         this.viewDef = viewDef;
+      }
+   %>
+</div>

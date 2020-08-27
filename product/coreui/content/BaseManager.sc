@@ -1,0 +1,3 @@
+BaseManager {
+   Storefront store;
+}

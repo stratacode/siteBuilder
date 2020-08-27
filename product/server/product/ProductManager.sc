@@ -439,20 +439,7 @@ ProductManager {
    }
 
    void updateMatchingCategories(String pattern) {
-      if (pattern == null || pattern.length() < 2)
-         return;
-      TreeSet<String> found = new TreeSet<String>();
-      ArrayList<Category> res = new ArrayList<Category>();
-      List<Category> allMatches = (List<Category>) Category.getDBTypeDescriptor().searchQuery(pattern, null, null, null, searchOrderBy, 0, 20);
-      for (Category match:allMatches) {
-         if (!found.contains(match.pathName)) {
-            res.add(match);
-            found.add(match.pathName);
-            if (res.size() == 10)
-               break;
-         }
-      }
-      matchingCategories = res;
+      matchingCategories = getMatchingCategories(store, pattern);
    }
 
    void updateParentCategory(String pathName) {

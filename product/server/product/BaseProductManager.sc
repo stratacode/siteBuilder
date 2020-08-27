@@ -22,15 +22,6 @@ BaseProductManager {
    }
 
 
-   static final List<String> searchOrderBy = Arrays.asList("-lastModified");
-   static final List<String> searchStore = Arrays.asList("store");
-
-   List<Object> getSearchStoreValues() {
-      ArrayList<Object> res = new ArrayList<Object>();
-      res.add(store);
-      return res;
-   }
-
    String getMediaFilterPattern() {
       return null;
    }
