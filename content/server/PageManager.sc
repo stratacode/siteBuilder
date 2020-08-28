@@ -15,18 +15,18 @@ PageManager {
    }
 
    void updateNewPageType(PageType newPageType) {
-      this.newPageType = newPageType;
+      this.pageType = newPageType;
    }
 
    void createPageInstance() {
-      Object pageType = DynUtil.findType(newPageType.pageClassName);
-      if (pageType == null)
-         throw new IllegalArgumentException("No pageClassName: " + newPageType.pageClassName);
-      currentPage = (PageDef) DynUtil.newInnerInstance(pageType, null, null);
+      Object pageClass = DynUtil.findType(this.pageType.pageClassName);
+      if (pageClass == null)
+         throw new IllegalArgumentException("No pageClassName: " + this.pageType.pageClassName);
+      currentPage = (PageDef) DynUtil.newInnerInstance(pageClass, null, null);
    }
 
    void startCreatePage() {
-      this.newPage = true;
+      this.addInProgress = true;
       createPageInstance();
    }
 
@@ -54,7 +54,7 @@ PageManager {
    void addNewView(boolean append) {
       if (currentPage == null)
          return;
-      ViewDef newView = createViewDef(newViewType);
+      ViewDef newView = createViewDef(viewType);
       ViewDef curView = currentChildView;
       List<ViewDef> childViews = currentPage.childViews;
       boolean set = false;
@@ -106,9 +106,9 @@ PageManager {
    void savePageEdits() {
       if (currentPage == null)
          return;
-      if (newPage && currentPage.getDBObject().isTransient()) {
+      if (addInProgress && currentPage.getDBObject().isTransient()) {
          currentPage.dbInsert(true);
-         newPage = false;
+         addInProgress = false;
          if (currentPages == null)
             currentPages = new ArrayList<PageDef>();
          currentPages.add(0, currentPage);
@@ -118,7 +118,7 @@ PageManager {
 
    void cancelCreatePage() {
       currentPage = null;
-      newPage = false;
+      addInProgress = false;
    }
 
    void removeViewDef(ViewDef viewDef) {
@@ -131,8 +131,17 @@ PageManager {
    }
 
    void updateViewDef(ViewDef viewDef) {
+      viewDef.site = site;
       viewDef.validateProperties();
       updateChildViews();
    }
+
+   void updateCurrentPage(PageDef newPageDef) {
+      currentPage = newPageDef;
+      if (newPageDef != null) {
+         pageType = getPageTypeFromName(newPageDef.pageType);
+      }
+   }
+
 }
 

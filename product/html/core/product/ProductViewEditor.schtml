@@ -21,6 +21,14 @@
       <datalist id="suggestions">
          <option repeat=":= matchingProds" repeatVarName="matchingProd" value=":= matchingProd.pathName"/>
       </datalist>
+
+      <div id="prodDispView" visible=":= productDef.product != null">
+         <span visible=":= productDef.product.mainMedia != null">
+            <img src=":= productDef.product.mainMedia.thumbUrl"/>
+            <span id="alt" class="formStatus">No main media</span>
+         </span>
+         <span>Short description: <%= productDef.product.shortDesc %> </span>
+      </div>
    </div>
 
 </div>

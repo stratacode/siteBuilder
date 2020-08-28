@@ -3,7 +3,7 @@ class ChildViewWrapper extends sc.lang.html.Div implements sc.lang.html.IRepeatW
 
    Element createElement(Object viewDefObj, int ix, Element oldTag) {
       ViewDef viewDef = (ViewDef) viewDefObj;
-      ViewType viewType = PageManager.getViewTypeForViewDef(viewDef);
+      ViewType viewType = pageMgr.getViewTypeForViewDef(viewDef);
       if (viewType == null)
          throw new IllegalArgumentException("Missing ViewType for view def");
 

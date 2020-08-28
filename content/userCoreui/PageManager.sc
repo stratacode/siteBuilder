@@ -5,18 +5,18 @@ class PageManager extends BaseManager {
    List<PageDef> currentPages;
    PageDef currentPage;
 
-   boolean newPage = false; // Creating a new page or editing an existing one
+   boolean addInProgress = false;
 
-   PageType newPageType = plainPageType;
+   PageType pageType = plainPageType;
 
    String templateSearchText;
    PageDef newPageTemplate;
 
    ViewDef currentChildView;
 
-   ViewType newViewType = contentViewType;
+   ViewType viewType = contentViewType;
 
-   static PageType plainPageType = new PageType("Plain page", "sites", "sc.content.PageDef");
+   static PageType plainPageType = new PageType(null, "Plain page", "sites", "sc.content.PageDef");
 
    static List<PageType> pageTypes = new ArrayList<PageType>();
    static {
@@ -25,20 +25,29 @@ class PageManager extends BaseManager {
 
    static ViewType contentViewType = new ViewType("Content view", "sc.content.ContentViewDef", "sc.content.ContentViewEditor");
 
-   static List<ViewType> viewTypes = new ArrayList<ViewType>();
    static {
-      viewTypes.add(contentViewType);
+      plainPageType.viewTypes = new ArrayList<ViewType>();
+      plainPageType.viewTypes.add(contentViewType);
    }
 
-   static ViewType getViewTypeByClassName(String className) {
-      for (ViewType vt:viewTypes)
+   ViewType getViewTypeByClassName(String className) {
+      for (ViewType vt:pageType.viewTypes)
          if (vt.viewClassName.equals(className))
             return vt;
       return null;
    }
 
-   static ViewType getViewTypeForViewDef(ViewDef viewDef) {
+   ViewType getViewTypeForViewDef(ViewDef viewDef) {
       String className = viewDef.getClass().getName();
       return getViewTypeByClassName(className);
+   }
+
+   static PageType getPageTypeFromName(String pageTypeName) {
+      for (PageType pt:pageTypes) {
+         if (pt.pageTypeName.equals(pageTypeName)) {
+            return pt;
+         }
+      }
+      return null;
    }
 }

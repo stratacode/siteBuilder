@@ -4,7 +4,8 @@
          super(parentNode, id, pageMgr, def, ix);
          this.categoryDef = (CategoryViewDef) def;
       }
-      CategoryViewDef categoryDef; 
+      CategoryViewDef categoryDef;
+      List<Category> matchingCats;
    %>
 
    <div id="viewEditorTitle" class="viewEditorTitle"><span id="titleText" clickEvent="=: pageMgr.currentChildView = viewDef">Category view</span>
@@ -13,7 +14,17 @@
    <div class="formField">
       <label for="categoryPathField">Category path name</label>
       <input type="text" id="categoryPathField" value=":=: categoryDef.categoryPathName" liveEdit="change"
-             changeEvent="=: pageMgr.updateChildViews()"/>
+             list="= suggestions.getId()" keyUpEvent="=: matchingCats = BaseManager.getMatchingCategories(pageMgr.store, value)"
+             class=':= categoryDef.propErrors.get("categoryPathName") == null ? "fieldInput" : "fieldInputError"'
+             changeEvent="=: pageMgr.updateViewDef(categoryDef)"/>
+      <div class="formFieldError"><%= categoryDef.propErrors.get("categoryPathName") %></div>
+      <datalist id="suggestions">
+         <option repeat=":= matchingCats" repeatVarName="matchingCat" value=":= matchingCat.pathName"/>
+      </datalist>
+
+      <div id="prodDispView">
+         <img src=":= categoryDef.category.mainMedia.thumbUrl"/>
+      </div>
    </div>
 
 </div>

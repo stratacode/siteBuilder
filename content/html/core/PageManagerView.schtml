@@ -5,7 +5,7 @@
          site := PageManagerView.this.site;
       }
    %>
-   <div id="findPageView" class="findPageView">
+   <div id="findPageView" class="findPageView" visible=":= !pageMgr.addInProgress">
       <div id="findPageForm" class="formField">
          <label for="searchSiteField">Find page:</label><input type="text" value=":=: pageMgr.searchText" changeEvent="=: pageMgr.doSearch()"/>
          <input type="image" class="findSiteButton" src="/icons/search.svg" clickEvent="=: pageMgr.doSearch()"/>
@@ -13,7 +13,7 @@
       </div>
    </div>
 
-   <div id="addPageButtons" class="confirmButtons">
+   <div id="addPageButtons" class="confirmButtons" visible=":= !pageMgr.addInProgress">
       <label for="siteTypeSelect">New page type</label>
       <select id="siteTypeSelect" optionDataSource="= pageMgr.pageTypes" changeEvent="=: pageMgr.updateNewPageType((PageType) selectedValue)"/>
       <input type="button" value="Add page" clickEvent="=: pageMgr.startCreatePage()"/>
@@ -21,7 +21,7 @@
 
    <div id="pageDetailForm" visible=":= pageMgr.currentPage != null">
       <div class="formTitle">
-         <%= pageMgr.newPage ? "Create" : "Edit" %> page
+         <%= pageMgr.addInProgress ? "Create" : "Edit" %> page
       </div>
 
       <div class="formField">
@@ -55,14 +55,14 @@
       </div>
 
       <div id="addViewButtons" class="confirmButtons">
-         New view type <select id="newViewTypeSelect" optionDataSource=":= pageMgr.viewTypes" changeEvent="=: pageMgr.newViewType = (ViewType) selectedValue"/>
+         New view type <select id="newViewTypeSelect" optionDataSource=":= pageMgr.pageType.viewTypes" changeEvent="=: pageMgr.viewType = (ViewType) selectedValue"/>
          <input type="button" value=':= pageMgr.currentChildView != null ? "Add before" : "Add to start"' clickEvent="=: pageMgr.addNewView(false)"/>
          <input type="button" value=':= pageMgr.currentChildView != null ? "Add after" : "Add to end"' clickEvent="=: pageMgr.addNewView(true)"/>
       </div>
       <div id="savePageButtons" class="confirmButtons">
-         <input type="button" value=':= pageMgr.newPage ? "Save page" : "Done editing page"'
+         <input type="button" value=':= pageMgr.addInProgress ? "Save page" : "Done editing page"'
                 clickEvent="=: pageMgr.savePageEdits()" visible=":= pageMgr.currentPage != null"/>
-         <input type="button" value='Cancel' visible=":= pageMgr.newPage" clickEvent="=: pageMgr.cancelCreatePage()"/>
+         <input type="button" value='Cancel' visible=":= pageMgr.addInProgress" clickEvent="=: pageMgr.cancelCreatePage()"/>
       </div>
    </div>
 
@@ -75,13 +75,13 @@
       </div>
       <div id="pageRepeat" repeat=":= pageMgr.currentPages" repeatVarName="curRowPage"
            class=':= curRowPage == pageMgr.currentPage ? "selectedPageRow" : "pageRow"' >
-         <span class="widePageColumn" clickEvent="=: pageMgr.currentPage = curRowPage">
+         <span class="widePageColumn" clickEvent="=: pageMgr.updateCurrentPage(curRowPage)">
             <input type="checkbox" checked=":= pageMgr.currentPage == curRowPage"/>
             <%= curRowPage.pageName %>
          </span>
-         <span class="wideSiteColumn"> <%= curRowPage.pagePathName %> </span>
-         <input type="checkbox" checked=":=: curRowPage.visible" class="smallSiteColumn"/>
-         <input type="image" class="removeSiteButton" src="/icons/x-square.svg" class="smallSiteColumn"
+         <span class="widePageColumn"> <%= curRowPage.pagePathName %> </span>
+         <input type="checkbox" checked=":=: curRowPage.visible" class="smallPageColumn"/>
+         <input type="image" class="removeSiteButton" src="/icons/x-square.svg" class="smallPageColumn"
                 clickEvent="=: pageMgr.removePage(curRowPage.id)"/>
       </div>
    </div>
