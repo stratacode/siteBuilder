@@ -15,13 +15,13 @@
 
    <div id="addPageButtons" class="confirmButtons" visible=":= !pageMgr.addInProgress">
       <label for="siteTypeSelect">New page type</label>
-      <select id="siteTypeSelect" optionDataSource="= pageMgr.pageTypes" changeEvent="=: pageMgr.updateNewPageType((PageType) selectedValue)"/>
+      <select id="siteTypeSelect" optionDataSource=":= pageMgr.pageTypes" changeEvent="=: pageMgr.updateNewPageType((PageType) selectedValue)"/>
       <input type="button" value="Add page" clickEvent="=: pageMgr.startCreatePage()"/>
    </div>
 
    <div id="pageDetailForm" visible=":= pageMgr.currentPage != null">
       <div class="formTitle">
-         <%= pageMgr.addInProgress ? "Create" : "Edit" %> page
+         <%= pageMgr.addInProgress ? "Unsaved" : "Edit" %> <%= pageMgr.pageType.pageTypeName %>
       </div>
 
       <div class="formField">

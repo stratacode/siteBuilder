@@ -1,7 +1,9 @@
 class PageManager extends BaseManager {
    SiteContext site;
 
-   String searchText;
+   site =: siteChanged();
+
+   String searchText = "";
    List<PageDef> currentPages;
    PageDef currentPage;
 
@@ -16,11 +18,13 @@ class PageManager extends BaseManager {
 
    ViewType viewType = contentViewType;
 
+   List<PageType> pageTypes = contentPageTypes;
+
    static PageType plainPageType = new PageType(null, "Plain page", "sites", "sc.content.PageDef");
 
-   static List<PageType> pageTypes = new ArrayList<PageType>();
+   static List<PageType> contentPageTypes = new ArrayList<PageType>();
    static {
-      pageTypes.add(plainPageType);
+      contentPageTypes.add(plainPageType);
    }
 
    static ViewType contentViewType = new ViewType("Content view", "sc.content.ContentViewDef", "sc.content.ContentViewEditor");
@@ -42,7 +46,7 @@ class PageManager extends BaseManager {
       return getViewTypeByClassName(className);
    }
 
-   static PageType getPageTypeFromName(String pageTypeName) {
+   PageType getPageTypeFromName(String pageTypeName) {
       for (PageType pt:pageTypes) {
          if (pt.pageTypeName.equals(pageTypeName)) {
             return pt;
@@ -50,4 +54,15 @@ class PageManager extends BaseManager {
       }
       return null;
    }
+
+   void siteChanged() {
+      clearSearch();
+   }
+
+   void clearSearch() {
+      searchText = "";
+      currentPages = null;
+      currentPage = null;
+   }
+
 }

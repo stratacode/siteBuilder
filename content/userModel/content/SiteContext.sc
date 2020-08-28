@@ -44,5 +44,4 @@ class SiteContext implements IPropValidator {
    static String validateSitePathName(String sitePathName) {
       return ManagedResource.validatePathName("site path name", sitePathName);
    }
-
 }

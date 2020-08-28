@@ -2,15 +2,12 @@ import java.util.Arrays;
 
 PageManager {
    static List<String> searchPropNames = Arrays.asList("site");
+
+   boolean autoUpdatePath = true;
+
    void doSearch() {
       List<PageDef> pageDefs = (List<PageDef>) PageDef.getDBTypeDescriptor().searchQuery(searchText, searchPropNames, Arrays.asList(site), null, null, 0, 20);
       currentPages = pageDefs;
-      currentPage = null;
-   }
-
-   void clearSearch() {
-      searchText = "";
-      currentPages = null;
       currentPage = null;
    }
 
@@ -23,20 +20,25 @@ PageManager {
       if (pageClass == null)
          throw new IllegalArgumentException("No pageClassName: " + this.pageType.pageClassName);
       currentPage = (PageDef) DynUtil.newInnerInstance(pageClass, null, null);
+      currentPage.pageType = pageType.pageTypeName;
+      currentPage.site = site;
    }
 
    void startCreatePage() {
       this.addInProgress = true;
       createPageInstance();
+      autoUpdatePath = true;
    }
 
    void updatePageName(String name) {
       currentPage.pageName = name;
-      currentPage.validateProp("pageName");
+      if (currentPage.validateProp("pageName") && autoUpdatePath)
+         currentPage.pagePathName = ManagedResource.convertToPathName(name);
    }
 
    void updatePathName(String name) {
       currentPage.pagePathName = name;
+      autoUpdatePath = false;
       currentPage.validateProp("pagePathName");
    }
 
@@ -99,7 +101,7 @@ PageManager {
    }
 
    void updateChildViews() {
-      if (currentPage == null) // Update the DB copy by calling the setX method here
+      if (currentPage != null) // Update the DB copy by calling the setX method here
          currentPage.childViews = currentPage.childViews;
    }
 
@@ -139,7 +141,17 @@ PageManager {
    void updateCurrentPage(PageDef newPageDef) {
       currentPage = newPageDef;
       if (newPageDef != null) {
-         pageType = getPageTypeFromName(newPageDef.pageType);
+         PageType newPageType = getPageTypeFromName(newPageDef.pageType);
+         if (newPageType == null)
+            System.err.println("*** Did not find pageType for current page");
+         else if (newPageType != pageType) {
+            pageType = newPageType;
+            viewType = pageType.viewTypes.get(0);
+         }
+      }
+      else {
+         pageType = null;
+         viewType = null;
       }
    }
 
