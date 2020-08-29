@@ -43,7 +43,7 @@ PageManager {
    }
 
    ViewDef createViewDef(ViewType type) {
-      String className = type.viewClassName;
+      String className = type.viewDefClassName;
       Object viewType = DynUtil.findType(className);
       if (viewType == null)
          throw new IllegalArgumentException("No view type found: " + className);

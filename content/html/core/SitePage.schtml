@@ -1,0 +1,32 @@
+<%@
+   @CompilerSettings(constructorProperties="sitePathName,pagePathName")
+   @URL(pattern="/sites/{sitePathName=urlString}[/{pagePathName=urlString}]", testURLs={"/sites/stratacycles", "/sites/stratacycles/about"})
+%>
+<html extends="PageLayout">
+   <%!
+      PageView pageView;
+      String pagePathName;
+
+      SitePage(String sitePathName, String pagePathName) {
+         siteView = new SiteView(sitePathName);
+         this.pagePathName = pagePathName;
+         pageView = siteView.getPageView(pagePathName);
+      }
+      /*
+      object siteViewDef extends SiteView {
+         pathName := SitePage.this.sitePathName;
+      }
+      siteView = siteViewDef;
+      String pagePathName;
+      PageView pageView := siteView.getPageView(pagePathName);
+      */
+   %>
+   <body>
+      <div id="appFrame">
+         <div id="pageBody">
+             <div id="formError"><%= pageView.errorMessage %></div>
+             <div id="pageChildView" repeat=":= SitePage.this.pageView.pageDef.childViews" pageView=":= SitePage.this.pageView" repeatWrapper="ChildViewWrapper"/>
+         </div>
+      </div>
+   </body>
+</html>

@@ -17,4 +17,17 @@ class PageType {
    public String toString() {
       return pageTypeName;
    }
+
+   ViewType getViewTypeByDefClassName(String className) {
+      for (ViewType vt:viewTypes)
+         if (vt.viewDefClassName.equals(className))
+            return vt;
+      return null;
+   }
+
+   ViewType getViewTypeForViewDef(ViewDef viewDef) {
+      String className = viewDef.getClass().getName();
+      return getViewTypeByDefClassName(className);
+   }
+
 }

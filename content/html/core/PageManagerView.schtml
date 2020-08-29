@@ -50,7 +50,7 @@
             Page views
             <div id="alt" class="formStatus">No views in page</div>
          </div>
-         <div id="childViewRepeat" repeat=":= pageMgr.currentPage.childViews" repeatVarName="childView" repeatWrapper="ChildViewWrapper"
+         <div id="childViewRepeat" repeat=":= pageMgr.currentPage.childViews" repeatVarName="childView" repeatWrapper="ChildViewEditorWrapper"
               pageMgr=":= PageManagerView.this.pageMgr" class=':= childView == pageMgr.currentChildView ? "selectedChildView" : "childView"'/>
       </div>
 

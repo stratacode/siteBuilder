@@ -2,6 +2,8 @@
 class PageDef extends ParentDef {
    SiteContext site;
    String pageName;
+
+   @FindBy(with="site", orderBy="-lastModified")
    String pagePathName;
 
    String pageType; // store, blog, plain etc - determines the URL and the template class used to render the page
@@ -11,6 +13,8 @@ class PageDef extends ParentDef {
 
    // Should this page be available as a template for new pagres
    boolean useAsTemplate;
+
+   Date lastModified;
 
    String validatePageName(String pageName) {
       return IPropValidator.validateRequired("page name", pageName);

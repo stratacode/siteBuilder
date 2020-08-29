@@ -4,6 +4,8 @@ abstract class CatalogElementView implements IView {
    SiteView siteView;
    StoreView storeView := (StoreView) siteView;
 
+   ViewDef viewDef;
+
    @Sync(syncMode=SyncMode.Disabled)
    String pathName;
 
@@ -61,6 +63,14 @@ abstract class CatalogElementView implements IView {
 
    boolean mediaIsAvailable(ManagedMedia media) {
       return media.available;
+   }
+
+   void setViewDef(ViewDef viewDef) {
+      this.viewDef = viewDef;
+   }
+
+   ViewDef getViewDef() {
+      return viewDef;
    }
 
 }

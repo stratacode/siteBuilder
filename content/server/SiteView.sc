@@ -17,4 +17,11 @@ SiteView {
    void pageVisited() {
       pageVisitCount++;
    }
+
+   PageView getPageView(String pathName) {
+      List<PageDef> pageDefs = PageDef.findByPagePathName(pathName, siteContext);
+      if (pageDefs == null || pageDefs.size() == 0)
+         return new PageView(this, null, pathName);
+      return new PageView(this, pageDefs.get(0), pathName);
+   }
 }

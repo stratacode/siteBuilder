@@ -22,32 +22,31 @@ class PageManager extends BaseManager {
 
    static PageType plainPageType = new PageType(null, "Plain page", "sites", "sc.content.PageDef");
 
+   static List<PageType> allPageTypes = new ArrayList<PageType>();
    static List<PageType> contentPageTypes = new ArrayList<PageType>();
    static {
       contentPageTypes.add(plainPageType);
+      allPageTypes.addAll(contentPageTypes);
    }
 
-   static ViewType contentViewType = new ViewType("Content view", "sc.content.ContentViewDef", "sc.content.ContentViewEditor");
+   static ViewType contentViewType = new ViewType("Content view", "sc.content.ContentViewDef", "sc.content.ContentViewEditor", "sc.content.ContentView");
 
    static {
       plainPageType.viewTypes = new ArrayList<ViewType>();
       plainPageType.viewTypes.add(contentViewType);
    }
 
-   ViewType getViewTypeByClassName(String className) {
-      for (ViewType vt:pageType.viewTypes)
-         if (vt.viewClassName.equals(className))
-            return vt;
+   PageType getPageTypeFromName(String pageTypeName) {
+      for (PageType pt:pageTypes) {
+         if (pt.pageTypeName.equals(pageTypeName)) {
+            return pt;
+         }
+      }
       return null;
    }
 
-   ViewType getViewTypeForViewDef(ViewDef viewDef) {
-      String className = viewDef.getClass().getName();
-      return getViewTypeByClassName(className);
-   }
-
-   PageType getPageTypeFromName(String pageTypeName) {
-      for (PageType pt:pageTypes) {
+   static PageType findPageType(String pageTypeName) {
+      for (PageType pt:allPageTypes) {
          if (pt.pageTypeName.equals(pageTypeName)) {
             return pt;
          }

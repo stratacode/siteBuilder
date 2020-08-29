@@ -1,25 +1,23 @@
 class ChildViewWrapper extends sc.lang.html.Div implements sc.lang.html.IRepeatWrapper {
-   PageManager pageMgr;
+   PageView pageView;
 
    Element createElement(Object viewDefObj, int ix, Element oldTag) {
       ViewDef viewDef = (ViewDef) viewDefObj;
-      ViewType viewType = pageMgr.getViewTypeForViewDef(viewDef);
+      ViewType viewType = pageView.pageType.getViewTypeForViewDef(viewDef);
       if (viewType == null)
          throw new IllegalArgumentException("Missing ViewType for view def");
 
-      Object editorClass = DynUtil.findType(viewType.viewEditorClassName);
+      Object editorClass = DynUtil.findType(viewType.viewClassName);
       if (editorClass == null)
          throw new IllegalArgumentException("Missing view editor class");
       if (oldTag == null || editorClass != oldTag.getClass()) {
-         Element newEditor = (Element) DynUtil.newInnerInstance(editorClass, null,
-                   "Lsc/lang/html/Element;Ljava/lang/String;Lsc/content/PageManager;Lsc/content/ViewDef;I",
-                   this, this.allocUniqueId("childView"), pageMgr, viewDef, ix);
-         return newEditor;
+         Element newView = viewDef.createViewInstance(this, pageView, ix);
+         return newView;
       }
       else {
-         BaseViewEditor viewEditor = (BaseViewEditor) oldTag;
-         if (viewDef != viewEditor.viewDef)
-            viewEditor.viewDef = viewDef;
+         IView oldView = (IView) oldTag;
+         if (viewDef != oldView.getViewDef())
+            oldView.setViewDef(viewDef);
       }
       return oldTag;
    }

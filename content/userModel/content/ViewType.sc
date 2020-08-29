@@ -1,12 +1,14 @@
 class ViewType {
    String viewName;
-   String viewClassName;
+   String viewDefClassName;
    String viewEditorClassName;
+   String viewClassName;
 
-   ViewType(String vn, String vcn, String vecn) {
+   ViewType(String vn, String vdcn, String vecn, String vcn) {
       viewName = vn;
-      viewClassName = vcn;
+      viewDefClassName = vdcn;
       viewEditorClassName = vecn;
+      viewClassName = vcn;
    }
 
    String toString() {

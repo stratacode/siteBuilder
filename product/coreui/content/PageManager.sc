@@ -6,8 +6,9 @@ PageManager {
    static {
       storePageTypes.add(storePageType);
 
-      storePageType.viewTypes.add(new ViewType("Product view", "sc.product.ProductViewDef", "sc.product.ProductViewEditor"));
-      storePageType.viewTypes.add(new ViewType("Category view", "sc.product.CategoryViewDef", "sc.product.CategoryViewEditor"));
+      storePageType.viewTypes.add(new ViewType("Product view", "sc.product.ProductViewDef", "sc.product.ProductViewEditor", "sc.product.ProductView"));
+      storePageType.viewTypes.add(new ViewType("Category view", "sc.product.CategoryViewDef", "sc.product.CategoryViewEditor", "sc.product.CategoryView"));
+      allPageTypes.addAll(storePageTypes);
    }
 
    void siteChanged() {

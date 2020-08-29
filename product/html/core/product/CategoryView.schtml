@@ -1,4 +1,13 @@
 <div class="categoryView">
+<%!
+   CategoryViewDef viewDef;
+   CategoryView(PageView pageView, Element parentNode, String id, CategoryViewDef viewDef, int ix) {
+      super(parentNode, id, viewDef, ix);
+      this.siteView = pageView.siteView;
+      this.pathName = viewDef.categoryPathName;
+      this.viewDef = viewDef;
+   }
+%>
    <div id="categoryNavView" extends="CategoryNavView" categoryPath=":= CategoryView.this.categoryPath" store=":= storeView.store"/>
    <div id="categoryDetailView" class="categoryDetailView">
       <div id="categoryNameView" class="categoryNameView"><%= category.name %></div>
