@@ -1,21 +1,21 @@
 class PageType {
-   PageType(PageType inheritFrom, String pageTypeName, String pageTypePathName, String className) {
-      this.pageTypeName = pageTypeName;
+   PageType(PageType inheritFrom, String pageDisplayName, String pageTypePathName, String className) {
+      this.pageDisplayName = pageDisplayName;
       this.pageTypePathName = pageTypePathName;
-      this.pageClassName = className;
+      this.pageDefClassName = className;
       this.viewTypes = new ArrayList<ViewType>();
       if (inheritFrom != null)
          this.viewTypes.addAll(inheritFrom.viewTypes);
    }
 
-   String pageTypeName;
-   String pageTypePathName;
-   String pageClassName;
+   String pageDisplayName; // e.g. Store page
+   String pageTypePathName; // e.g. stores
+   String pageDefClassName; // e.g. sc.content.PageDef - class name of the def object for this page type
 
    List<ViewType> viewTypes;
 
    public String toString() {
-      return pageTypeName;
+      return pageDisplayName;
    }
 
    ViewType getViewTypeByDefClassName(String className) {

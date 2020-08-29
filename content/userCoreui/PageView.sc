@@ -16,7 +16,7 @@ class PageView {
          return;
       }
 
-      pageType = PageManager.findPageType(pageDef.pageType);
+      pageType = PageManager.findPageType(pageDef.pageTypePathName);
       if (pageType == null)
          errorMessage = "No page type found: " + pageDef.pageType;
    }

@@ -21,7 +21,7 @@
 
    <div id="pageDetailForm" visible=":= pageMgr.currentPage != null">
       <div class="formTitle">
-         <%= pageMgr.addInProgress ? "Unsaved" : "Edit" %> <%= pageMgr.pageType.pageTypeName %>
+         <%= pageMgr.addInProgress ? "Unsaved" : "Edit" %> <%= pageMgr.pageType.pageDisplayName %>
       </div>
 
       <div class="formField">

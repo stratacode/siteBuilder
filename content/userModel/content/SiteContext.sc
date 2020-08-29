@@ -29,8 +29,14 @@ class SiteContext implements IPropValidator {
 
    boolean visible = true;
 
-   public String toString() {
+   Date lastModified;
+
+   String toString() {
       return siteName;
+   }
+
+   String getSitePathTypeName() {
+      return "sites";
    }
 
    @Bindable

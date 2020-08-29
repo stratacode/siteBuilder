@@ -36,18 +36,18 @@ class PageManager extends BaseManager {
       plainPageType.viewTypes.add(contentViewType);
    }
 
-   PageType getPageTypeFromName(String pageTypeName) {
+   PageType getPageTypeFromName(String pageTypePathName) {
       for (PageType pt:pageTypes) {
-         if (pt.pageTypeName.equals(pageTypeName)) {
+         if (pt.pageTypePathName.equals(pageTypePathName)) {
             return pt;
          }
       }
       return null;
    }
 
-   static PageType findPageType(String pageTypeName) {
+   static PageType findPageType(String pageTypePathName) {
       for (PageType pt:allPageTypes) {
-         if (pt.pageTypeName.equals(pageTypeName)) {
+         if (pt.pageTypePathName.equals(pageTypePathName)) {
             return pt;
          }
       }

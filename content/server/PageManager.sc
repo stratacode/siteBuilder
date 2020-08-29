@@ -16,11 +16,11 @@ PageManager {
    }
 
    void createPageInstance() {
-      Object pageClass = DynUtil.findType(this.pageType.pageClassName);
+      Object pageClass = DynUtil.findType(this.pageType.pageDefClassName);
       if (pageClass == null)
-         throw new IllegalArgumentException("No pageClassName: " + this.pageType.pageClassName);
+         throw new IllegalArgumentException("No pageClassName: " + this.pageType.pageDefClassName);
       currentPage = (PageDef) DynUtil.newInnerInstance(pageClass, null, null);
-      currentPage.pageType = pageType.pageTypeName;
+      currentPage.pageTypePathName = pageType.pageTypePathName;
       currentPage.site = site;
    }
 
@@ -141,7 +141,7 @@ PageManager {
    void updateCurrentPage(PageDef newPageDef) {
       currentPage = newPageDef;
       if (newPageDef != null) {
-         PageType newPageType = getPageTypeFromName(newPageDef.pageType);
+         PageType newPageType = getPageTypeFromName(newPageDef.pageTypePathName);
          if (newPageType == null)
             System.err.println("*** Did not find pageType for current page");
          else if (newPageType != pageType) {

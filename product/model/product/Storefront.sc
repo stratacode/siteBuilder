@@ -17,4 +17,8 @@ class Storefront extends SiteContext {
    public boolean supportsCurrency(Currency cur) {
       return cur == defaultCurrency || (supportedCurrencies != null && supportedCurrencies.contains(cur.currencyName));
    }
+
+   String getSitePathTypeName() {
+      return "stores";
+   }
 }

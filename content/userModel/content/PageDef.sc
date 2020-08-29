@@ -4,9 +4,11 @@ class PageDef extends ParentDef {
    String pageName;
 
    @FindBy(with="site", orderBy="-lastModified")
-   String pagePathName;
+   String pagePathName; // e.g. about, featured-products -
 
-   String pageType; // store, blog, plain etc - determines the URL and the template class used to render the page
+   String pageTypePathName; // e.g. stores, blogs, sites etc - determines the URL and the template class used to render the page
+
+   transient PageType pageType;
 
    boolean visible = true;
    boolean homePage = false;
