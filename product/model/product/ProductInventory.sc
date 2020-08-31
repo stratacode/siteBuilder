@@ -25,13 +25,7 @@ class ProductInventory implements IPropValidator, IChangeable {
 
    static String getMinNextAvailDateStr() {
       Date today = new Date();
-      return (today.getYear() + 1900) + "-" + twoDigit(today.getMonth() + 1) + "-" + twoDigit(today.getDate());
-   }
-
-   private static String twoDigit(int val) {
-      if (val < 10)
-         return "0" + val;
-      return String.valueOf(val);
+      return TextUtil.formatUserDate(today, false);
    }
 
    void updateNextAvailStr(String value) {

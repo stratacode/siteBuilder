@@ -11,6 +11,8 @@ class LineItem {
    int quantity;
    Date lastModified;
 
+   Date shippedOn;
+
    @DBPropertySettings(columnType="jsonb")
    List<Coupon> lineItemCoupons;
 

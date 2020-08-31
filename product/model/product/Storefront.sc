@@ -6,7 +6,7 @@ class Storefront extends SiteContext {
    String orderPrefix = "sc";
 
    Currency getDefaultCurrency() {
-      return Currency.currencyForName.get(defaultCurrencyName);
+      return Currency.getCurrencyForName(defaultCurrencyName);
    }
 
    List<String> supportedCurrencies;

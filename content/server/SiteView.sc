@@ -19,7 +19,11 @@ SiteView {
    }
 
    PageView getPageView(String pathName) {
-      List<PageDef> pageDefs = PageDef.findByPagePathName(pathName, siteContext);
+      List<PageDef> pageDefs;
+      if (pathName == null)
+         pageDefs = PageDef.findByHomePage(true, siteContext);
+      else
+         pageDefs = PageDef.findByPagePathName(pathName, siteContext);
       if (pageDefs == null || pageDefs.size() == 0)
          return new PageView(this, null, pathName);
       return new PageView(this, pageDefs.get(0), pathName);

@@ -13,6 +13,11 @@ class Currency implements sc.obj.IObjectId {
    final static HashMap<String,Currency> currencyForLanguageTag = new HashMap<String,Currency>();
    final static HashMap<String,Currency> currencyForName = new HashMap<String,Currency>();
 
+   static Currency getCurrencyForName(String name) {
+      initCurrencies();
+      return currencyForName.get(name);
+   }
+
    static void addCurrency(Currency c, String languageTag) {
       currencyForLanguageTag.put(languageTag, c);
       currencyForName.put(c.currencyName, c);

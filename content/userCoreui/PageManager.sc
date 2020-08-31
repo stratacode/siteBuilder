@@ -20,16 +20,16 @@ class PageManager extends BaseManager {
 
    List<PageType> pageTypes = contentPageTypes;
 
-   static PageType plainPageType = new PageType(null, "Plain page", "sites", "sc.content.PageDef");
+   final static PageType plainPageType = new PageType(null, "Plain page", "sites", "sc.content.PageDef");
 
-   static List<PageType> allPageTypes = new ArrayList<PageType>();
-   static List<PageType> contentPageTypes = new ArrayList<PageType>();
+   final static List<PageType> allPageTypes = new ArrayList<PageType>();
+   final static List<PageType> contentPageTypes = new ArrayList<PageType>();
    static {
       contentPageTypes.add(plainPageType);
       allPageTypes.addAll(contentPageTypes);
    }
 
-   static ViewType contentViewType = new ViewType("Content view", "sc.content.ContentViewDef", "sc.content.ContentViewEditor", "sc.content.ContentView");
+   final static ViewType contentViewType = new ViewType("Content view", "sc.content.ContentViewDef", "sc.content.ContentViewEditor", "sc.content.ContentView");
 
    static {
       plainPageType.viewTypes = new ArrayList<ViewType>();
@@ -63,5 +63,4 @@ class PageManager extends BaseManager {
       currentPages = null;
       currentPage = null;
    }
-
 }

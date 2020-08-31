@@ -1,6 +1,6 @@
 <%@
    @CompilerSettings(constructorProperties="sitePathName,productPathName")
-   @URL(pattern="/sites/{sitePathName=urlString}/product/{productPathName=urlString}", testURLs={"/sites/stratacycles/product/surly", "/sites/stratacycles/product/maverick", "/sites/stratacycles/product/four-corners"})
+   @URL(pattern="/stores/{sitePathName=urlString}/product/{productPathName=urlString}", testURLs={"/stores/stratacycles/product/surly", "/stores/stratacycles/product/maverick", "/stores/stratacycles/product/four-corners"})
 %>
 <html extends="BaseStorePage">
    <%! 

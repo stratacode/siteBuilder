@@ -1,7 +1,7 @@
 import java.util.Arrays;
 
 PageManager {
-   static List<String> searchPropNames = Arrays.asList("site");
+   final static List<String> searchPropNames = Arrays.asList("site");
 
    boolean autoUpdatePath = true;
 
@@ -154,6 +154,5 @@ PageManager {
          viewType = null;
       }
    }
-
 }
 

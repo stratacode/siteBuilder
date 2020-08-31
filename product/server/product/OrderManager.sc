@@ -48,8 +48,9 @@ OrderManager {
       }
    }
 
-   void markOrderDelivered(Order order) {
-      order.deliveredOn = new Date();
+   void markOrderShipped(Order order) {
+      order.shippedOn = new Date();
+      order.shipmentStarted = true;
       List<String> unavailableSkus = new ArrayList<String>();
       for (LineItem lineItem: order.lineItems) {
          Sku sku = lineItem.sku;
@@ -64,15 +65,33 @@ OrderManager {
                   unavailableSkus.add(psku.skuCode);
             }
          }
+         lineItem.shippedOn = order.shippedOn;
       }
       if (unavailableSkus.size() > 0) {
-         orderErrorMessage = "No inventory for skus: " + unavailableSkus;
+         orderErrorMessage = "Warning: No inventory to ship skus: " + unavailableSkus;
          orderStatusMessage = null;
       }
       else {
-         orderStatusMessage = "Order marked as delivered";
+         orderStatusMessage = "Order marked as shipped";
          orderErrorMessage = null;
       }
+      Bind.sendChangedEvent(order, "displayStatus");
+   }
+
+   void markItemShipped(Order order, LineItem lineItem) {
+      lineItem.shippedOn = new Date();
+      order.shipmentStarted = true;
+      boolean notShipped = false;
+      for (LineItem nextLineItem:order.lineItems) {
+         if (nextLineItem.shippedOn == null) {
+            notShipped = true;
+            break;
+         }
+      }
+      if (!notShipped)
+         markOrderShipped(order);
+      else
+         Bind.sendChangedEvent(order, "displayStatus");
    }
 
    void updateSearchType(OrderSearchType searchType) {

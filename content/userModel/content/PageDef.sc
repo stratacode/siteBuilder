@@ -11,6 +11,8 @@ class PageDef extends ParentDef {
    transient PageType pageType;
 
    boolean visible = true;
+
+   @FindBy(with="site", orderBy="-lastModified")
    boolean homePage = false;
 
    // Should this page be available as a template for new pagres

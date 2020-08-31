@@ -7,8 +7,8 @@
    </head>
    <body>
       <div id="mgrFrame">
-         <div id="mgrView" extends="OrderManagerView" store=":= siteMgr.store" visible=":= siteMgr.validSite">
-            <div id="alt" class="mgrViewStatus"> Site <%= siteMgr.site.siteName %> is not an online store.</div>
+         <div id="mgrView" extends="OrderManagerView" store=":= siteMgr.store" visible=":= siteMgr.validStore">
+            <div id="alt" class="mgrViewStatus" visible=":= siteMgr.validSite"> Site <%= siteMgr.site.siteName %> is not an online store.</div>
          </div>
       </div>
    </body>

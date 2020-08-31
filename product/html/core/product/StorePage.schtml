@@ -8,6 +8,7 @@
       String pagePathName;
 
       StorePage(String sitePathName, String pagePathName) {
+         super(sitePathName);
          siteView = new StoreView(sitePathName);
          this.pagePathName = pagePathName;
          pageView = siteView.getPageView(pagePathName);

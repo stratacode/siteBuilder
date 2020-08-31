@@ -24,11 +24,13 @@ class Order {
    boolean checkoutStarted;
    String orderNumber;
    boolean pending := orderNumber == null;
-   boolean delivered := deliveredOn != null;
-   boolean submitted := submittedOn != null && deliveredOn == null;
+   boolean delivered := shippedOn != null;
+   boolean submitted := submittedOn != null && shippedOn == null;
+
+   boolean shipmentStarted = false;
 
    Date submittedOn;
-   Date deliveredOn;
+   Date shippedOn;
    Date lastModified;
 
    PaymentInfo paymentInfo;
@@ -61,8 +63,11 @@ class Order {
          return "pending checkout";
       else if (submittedOn == null)
          return "pending submit";
-      else if (deliveredOn == null)
-         return "pending delivery";
+      else if (shippedOn == null) {
+         if (shipmentStarted)
+            return "partially shipped";
+         return "pending shipment";
+      }
       else
          return "order complete";
    }

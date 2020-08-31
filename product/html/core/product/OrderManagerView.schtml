@@ -29,12 +29,15 @@
             <span class="headerColumn">Price</span>
             <span class="headerColumn">Discount price</span>
             <span class="headerColumn">In stock</span>
+            <span class="wideHeaderColumn">Shipped</span>
          </div>
          <div repeat=":= order.lineItems" repeatVarName="lineItem" id="orderLineItemsView" class="orderRow">
             <span id="skuCode" class="wideOrderColumn"> <%= lineItem.sku.skuCode %> </span>
             <span id="price" class="orderColumn"> <%= lineItem.sku.price %> </span>
             <span id="discount" class="orderColumn"> <%= lineItem.sku.discountPrice %> </span>
             <span id="tax" class="orderColumn"> <%= lineItem.sku.available %> </span>
+            <span id="shipped" class="wideOrderColumn"> <input type="button" visible=":= lineItem.shippedOn == null"
+                  value="Mark as shipped" clickEvent="=: markItemShipped(order, lineItem)"/> <span id="alt"><%= TextUtil.formatUserDate(lineItem.shippedOn, true) %></span> </span>
          </div>
       </div>
    </div>
@@ -44,8 +47,8 @@
          <span class="wideHeaderColumn">Order #</span>
          <span class="wideHeaderColumn">Customer email</span>
          <span class="headerColumn">Total price</span>
-         <span class="headerColumn">Submitted</span>
-         <span class="headerColumn">Delivered</span>
+         <span class="wideHeaderColumn">Submitted</span>
+         <span class="wideHeaderColumn">Shipped</span>
       </div>
       <div id="orderElemView" repeat=":= orderList" repeatVarName="orderElem"
            class=':= orderElem == order ? "selectedOrderRow" : "orderRow"'>
@@ -59,18 +62,20 @@
         <span class="orderColumn"><%= orderElem.totalPrice %> </span>
         <span class="wideOrderColumn">
            <span visible=":= orderElem.submittedOn != null">
-              <%= DynUtil.formatDate(orderElem.submittedOn) %>
+              <%= TextUtil.formatUserDate(orderElem.submittedOn, true) %>
               <span id="alt">pending <%= orderElem.checkoutStarted ? "checkout" : "submit" %> </span>
            </span>
         </span>
         <span class="wideOrderColumn">
            <span visible=":= orderElem.orderNumber != null">
-              <span visible=":= orderElem.deliveredOn != null">
-                 <%= DynUtil.formatDate(orderElem.deliveredOn) %>
-                 <span id="alt"><input type="button" value="Mark delivered" clickEvent="=: markOrderDelivered(orderElem)"/> </span>
+              <span visible=":= orderElem.shippedOn != null">
+                 <%= TextUtil.formatUserDate(orderElem.shippedOn, true) %>
+                 <span id="alt"><input type="button" value="Mark as shipped" clickEvent="=: markOrderShipped(orderElem)"/> </span>
               </span>
            </span>
         </span>
       </div>
    </div>
+   <div class="formStatus"><%= orderStatusMessage %></div>
+   <div class="formError"><%= orderErrorMessage %></div>
 </div>

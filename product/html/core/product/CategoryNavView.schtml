@@ -5,7 +5,7 @@
       List<Category> categoryPath;
    %>
    <span id="categoryPathView" class="categoryPath" repeat=":= categoryPath" repeatVarName="category">
-      <a href='= "/sites/" + store.sitePathName + "/category/" + category.pathName' class="categoryLink"><%= category.name %></a>
+      <a href='= "/stores/" + store.sitePathName + "/category/" + category.pathName' class="categoryLink"><%= category.name %></a>
       <span visible=":= lastPath != categoryPathView.this.repeatIndex">›</span>
    </span>
 </div>

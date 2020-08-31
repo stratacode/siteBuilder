@@ -1,3 +1,4 @@
+<%@ @CompilerSettings(constructorProperties="sitePathName") %>
 <html extends="PageLayout" abstract="true">
    <%!
       object storeView extends StoreView {
