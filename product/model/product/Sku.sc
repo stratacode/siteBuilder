@@ -9,7 +9,7 @@ class Sku implements IPropValidator {
    // list to update in the reverse side
    //Product parentProduct;
 
-   @FindBy(orderBy="-lastModified") @DBPropertySettings(indexed=true, required=true)
+   @FindBy(orderBy="-lastModified",with="store") @DBPropertySettings(indexed=true, required=true)
    String skuCode;
    String barCode;
 
@@ -98,15 +98,6 @@ class Sku implements IPropValidator {
       return newSku;
    }
 
-   @Bindable(manual=true)
-   String getDisplaySummary() {
-      if (store == null)
-         return skuCode + " (no store)";
-      BigDecimal priceToUse = getPriceToUse();
-      String priceStr = priceToUse == null ? "(no price)" : " " + store.defaultCurrency.symbol + priceToUse;
-      return (skuCode == null ? "" : skuCode) + priceStr;
-   }
-
    void updatePrice(String priceStr) {
       try {
          price = new BigDecimal(priceStr);
@@ -122,7 +113,6 @@ class Sku implements IPropValidator {
          addPropError("price", "Invalid price");
       }
       Bind.sendChangedEvent(this, "priceStr");
-      Bind.sendChangedEvent(this, "displaySummary");
       Bind.sendChangedEvent(this, "priceDisplayStr");
    }
 
@@ -215,5 +205,9 @@ class Sku implements IPropValidator {
 
    ProductInventory getInventory() {
       return null;
+   }
+
+   String getInventoryDisplayStr() {
+      return "n/a";
    }
 }

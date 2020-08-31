@@ -4,14 +4,15 @@ import java.util.Arrays;
 
 MediaManagerView {
    static final List<String> searchOrderBy = Arrays.asList("-lastModified");
+   static final List<String> searchProps = Arrays.asList("manager");
 
-   static ArrayList<ManagedMedia> searchForText(String text) {
-      return new ArrayList<ManagedMedia>((List<ManagedMedia>)ManagedMedia.getDBTypeDescriptor().searchQuery(text, null, null, null, searchOrderBy, 0, 20));
+   static ArrayList<ManagedMedia> searchForText(String text, MediaManager manager) {
+      return new ArrayList<ManagedMedia>((List<ManagedMedia>)ManagedMedia.getDBTypeDescriptor().searchQuery(text, searchProps, Arrays.asList(manager), null, searchOrderBy, 0, 20));
    }
 
    void doSearch() {
       String txt = searchText == null ? "" : searchText;
-      currentMedia = searchForText(txt);
+      currentMedia = searchForText(txt, mediaManager);
    }
 
    void clearSearch() {
@@ -30,7 +31,7 @@ MediaManagerView {
          String nameWithRev = (String) resList.get(0);
          String fileName = stripFileRevision(nameWithRev);
          // Here we want to find all versions of the file uploaded just for context
-         currentMedia = searchForText(fileName);
+         currentMedia = searchForText(fileName, mediaManager);
          int selIx = -1;
          for (int i = 0; i < currentMedia.size(); i++) {
             if (currentMedia.get(i).uniqueFileName.equals(nameWithRev)) {
@@ -48,7 +49,7 @@ MediaManagerView {
          ArrayList<ManagedMedia> newMedia = new ArrayList<ManagedMedia>();
          for (Object resElem:resList) {
             String resText = (String) resElem;
-            newMedia.addAll(searchForText(resText));
+            newMedia.addAll(searchForText(resText, mediaManager));
          }
          currentMedia = newMedia;
          selectedMedia = null;

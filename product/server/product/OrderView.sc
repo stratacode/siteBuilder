@@ -8,8 +8,8 @@ OrderView {
       refresh();
    }
 
-   static Order getPendingOrderForUser(UserProfile user) {
-      List<Order> userOrders = Order.findByUserPending(user, true);
+   static Order getPendingOrderForUser(UserProfile user, Storefront store) {
+      List<Order> userOrders = Order.findByUserPending(user, true, store);
       // TODO: should we have a pendingOrderId in the UserProfile to identify this without a general query?
       if (userOrders != null && userOrders.size() > 0) {
          if (userOrders.size() > 1)
@@ -24,7 +24,7 @@ OrderView {
       UserProfile user = currentUserView.user;
       orderError = null;
       if (user != null && !user.getDBObject().isTransient()) {
-         Order newOrder = getPendingOrderForUser(user);
+         Order newOrder = getPendingOrderForUser(user, store);
          if (newOrder != order) {
             order = newOrder;
          }

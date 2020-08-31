@@ -18,5 +18,9 @@ class OrderManager extends BaseManager {
    void resetForm() {
       orderStatusMessage = null;
       orderErrorMessage = null;
+
+      orderList = null;
+      order = null;
+      searchText = null;
    }
 }

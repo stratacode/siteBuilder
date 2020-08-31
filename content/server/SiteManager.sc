@@ -61,6 +61,7 @@ SiteManager {
       UserView uv = currentUserView;
       if (uv != null)
          uv.lastSite = newSite;
+      updateSiteSelectList();
    }
 
    void startAddSite() {

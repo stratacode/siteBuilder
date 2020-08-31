@@ -7,16 +7,16 @@
       </div>
       <div id="orderTypeForm">
          <input type="radio" id="allOrderType" name="orderSearchType" checked=":= orderSearchType == OrderSearchType.All"
-                changeEvent="=: orderSearchType = OrderSearchType.All"/>
+                changeEvent="=: updateSearchType(OrderSearchType.All)"/>
          <label for="allOrderType">All</label>
          <input type="radio" id="cartOrderType" name="orderSearchType" checked=":= orderSearchType == OrderSearchType.Pending"
-                changeEvent="=: orderSearchType = OrderSearchType.Pending"/>
+                changeEvent="=: updateSearchType(OrderSearchType.Pending)"/>
          <label for="cartOrderType">Pending</label>
          <input type="radio" id="submittedOrderType" name="orderSearchType" checked=":= orderSearchType == OrderSearchType.Submitted"
-                changeEvent="=: orderSearchType = OrderSearchType.Submitted"/>
+                changeEvent="=: updateSearchType(OrderSearchType.Submitted)"/>
          <label for="submittedOrderType">Submitted</label>
          <input type="radio" id="submittedOrderType" name="orderSearchType" checked=":= orderSearchType == OrderSearchType.Delivered"
-                changeEvent="=: orderSearchType = OrderSearchType.Delivered"/>
+                changeEvent="=: updateSearchType(OrderSearchType.Delivered)"/>
          <label for="submittedOrderType">Delivered</label>
       </div>
    </div>
@@ -24,13 +24,25 @@
    <div id="extraFormView">
       <div id="detailFormView" class="formContainer" visible=':= order != null'>
          <div class="formTitle"> Order: <span visible=":= order.orderNumber != null"><%= order.orderNumber %>:</span><span><%= order.displayStatus %></span></div>
+         <div class="headerRow">
+            <span class="wideHeaderColumn">Sku code</span>
+            <span class="headerColumn">Price</span>
+            <span class="headerColumn">Discount price</span>
+            <span class="headerColumn">In stock</span>
+         </div>
+         <div repeat=":= order.lineItems" repeatVarName="lineItem" id="orderLineItemsView" class="orderRow">
+            <span id="skuCode" class="wideOrderColumn"> <%= lineItem.sku.skuCode %> </span>
+            <span id="price" class="orderColumn"> <%= lineItem.sku.price %> </span>
+            <span id="discount" class="orderColumn"> <%= lineItem.sku.discountPrice %> </span>
+            <span id="tax" class="orderColumn"> <%= lineItem.sku.available %> </span>
+         </div>
       </div>
    </div>
 
    <div id="listView">
       <div class="headerRow" visible=":= orderList != null && orderList.size() > 0">
          <span class="wideHeaderColumn">Order #</span>
-         <span class="headerColumn">Customer email</span>
+         <span class="wideHeaderColumn">Customer email</span>
          <span class="headerColumn">Total price</span>
          <span class="headerColumn">Submitted</span>
          <span class="headerColumn">Delivered</span>
@@ -41,8 +53,8 @@
            <input type="checkbox" checked=":= order == orderElem"/>
            <%= orderElem.orderNumber %>
         </span>
-        <span class="orderColumn" clickEvent="=: doSelectOrder(orderElem)">
-           <%= order.emailAddress %>
+        <span class="wideOrderColumn" clickEvent="=: doSelectOrder(orderElem)">
+           <%= orderElem.emailAddress %>
         </span>
         <span class="orderColumn"><%= orderElem.totalPrice %> </span>
         <span class="wideOrderColumn">
@@ -52,9 +64,11 @@
            </span>
         </span>
         <span class="wideOrderColumn">
-           <span visible=":= orderElem.deliveredOn != null">
-              <%= DynUtil.formatDate(orderElem.deliveredOn) %>
-              <span id="alt"><input type="button" value="Mark delivered" clickEvent="=: markOrderDelivered(orderElem)"/> </span>
+           <span visible=":= orderElem.orderNumber != null">
+              <span visible=":= orderElem.deliveredOn != null">
+                 <%= DynUtil.formatDate(orderElem.deliveredOn) %>
+                 <span id="alt"><input type="button" value="Mark delivered" clickEvent="=: markOrderDelivered(orderElem)"/> </span>
+              </span>
            </span>
         </span>
       </div>

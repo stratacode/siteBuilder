@@ -245,7 +245,7 @@ class PaymentInfo {
    String validateCardHolder(String newName) {
       int len = newName == null ? 0 : newName.length();
       if (len == 0)
-         return "Missing card harder name";
+         return "Missing card holder name";
       if (len < 2)
          return "Card holder name too short";
       if (len > 40)

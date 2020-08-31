@@ -53,7 +53,7 @@ class MediaUploadPage extends UploadPage {
 
          String revision = null;
 
-         List<ManagedMedia> oldMedia = ManagedMedia.findByFileName(fileName);
+         List<ManagedMedia> oldMedia = ManagedMedia.findByFileName(fileName, useManager);
          String origFileName = FileUtil.concat(mediaStore.origDir, useManager.managerPathName, fileNameWithExt);
          File orig = new File(origFileName);
          boolean found = false;

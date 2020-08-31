@@ -3,8 +3,12 @@
 @Sync(onDemand=true)
 class OptionScheme implements IPropValidator {
    /* Name of this group of product options */
-   @FindBy @DBPropertySettings(indexed=true,required=true)
-   String schemeName; 
+   @FindBy(with="store")
+   @DBPropertySettings(indexed=true,required=true)
+   String schemeName;
+
+   @DBPropertySettings(indexed=true)
+   Storefront store;
 
    @DBPropertySettings(columnType="jsonb")
    List<ProductOption> options;

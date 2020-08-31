@@ -25,7 +25,12 @@ class Currency implements sc.obj.IObjectId {
    final static Currency australianDollar = new Currency("AUD", "$");
    final static Currency newZealandDollar = new Currency("NZD", "$");
 
-   static {
+   private static boolean inited = false;
+
+   static void initCurrencies() {
+      if (inited)
+         return;
+      inited = true;
       addCurrency(usDollars, "en-US");
       addCurrency(caDollars, "en-CA");
       addCurrency(englishPound, "en-GB");
@@ -37,6 +42,7 @@ class Currency implements sc.obj.IObjectId {
    }
 
    static Currency getForName(String name) {
+      initCurrencies();
       Currency res = currencyForName.get(name);
       if (res == null)
          res = usDollars;
@@ -45,5 +51,15 @@ class Currency implements sc.obj.IObjectId {
 
    public String getObjectId() {
       return "Current_" + currencyName;
+   }
+
+   private static List<String> currencyNames = null;
+   @Bindable(manual=true) @Constant
+   public static List<String> getCurrencyNames() {
+      if (currencyNames == null) {
+         initCurrencies();
+         currencyNames = new ArrayList<String>(currencyForName.keySet());
+      }
+      return currencyNames;
    }
 }

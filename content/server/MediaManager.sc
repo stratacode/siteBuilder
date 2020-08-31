@@ -102,8 +102,9 @@ MediaManager {
 
          for (int i = 0; i < stdImageWidths.length; i++) {
             int width = stdImageWidths[i];
-            if (width > media.width)
-               continue;
+            //if (width > media.width) {
+            //   continue;
+            //}
 
             String genFileName = getGenFileName(fileName,  null, width, origSuffix);
             String genDir = FileUtil.getParentPath(genFileName);

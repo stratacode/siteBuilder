@@ -187,32 +187,39 @@
    </div>
 
    <div id="listView">
-      <div class="headerRow" visible=":= productList != null && productList.size() > 0">
+      <div id="resultsHeader" class="headerRow" visible=":= productList != null && productList.size() > 0">
          <span class="wideHeaderColumn">Name</span>
          <span class="headerColumn">Media</span>
          <span class="headerColumn">Pathname</span>
          <span class="headerColumn">Category</span>
          <span class="headerColumn">Sku code</span>
+         <span class="smallHeaderColumn">Price</span>
+         <span class="headerColumn">Inventory</span>
          <span class="headerColumn">Options</span>
-         <span class="headerColumn">Visible</span>
-         <span class="headerColumn">Remove</span>
+         <span class="smallHeaderColumn">Visible</span>
+         <span class="smallHeaderColumn">Remove</span>
+         <div id="alt" class="formStatus">
+            <%= searchStatusMessage %>
+         </div>
       </div>
       <div id="productElemView" repeat=":= productList" repeatVarName="productElem"
            class=':= productElem == product ? "selectedProductRow" : "productRow"'>
-        <span class="wideHeaderColumn" clickEvent="=: doSelectProduct(productElem)">
+        <span class="wideProductColumn" clickEvent="=: doSelectProduct(productElem)">
            <input type="checkbox" checked=":= product == productElem"/>
            <%= productElem.name %>
         </span>
-        <span class="headerColumn" clickEvent="=: doSelectProduct(productElem)">
+        <span class="productColumn" clickEvent="=: doSelectProduct(productElem)">
            <img src=":= productElem.mainMedia.thumbUrl"/>
         </span>
-        <span class="headerColumn"> <%= productElem.pathName %> </span>
-        <span class="headerColumn"> <%= productElem.parentCategory == null ? "none" : productElem.parentCategory.pathName %> </span>
-        <span class="headerColumn"> <%= productElem.sku == null ? "no sku" : productElem.sku.getDisplaySummary() %> </span>
-        <span class="headerColumn"> 
+        <span class="productColumn"> <a target="productView" href=':= "/sites/" + store.sitePathName + "/product/" + productElem.pathName'><%= productElem.pathName %></a></span>
+        <span class="productColumn"> <%= productElem.parentCategory == null ? "none" : productElem.parentCategory.pathName %> </span>
+        <span class="productColumn"> <%= productElem.sku == null ? "no sku" : productElem.sku.skuCode%> </span>
+        <span class="smallProductColumn"> <%= productElem.sku == null ? "n/a" : productElem.sku.priceDisplayStr %> </span>
+        <span class="productColumn"> <%= productElem.sku == null ? "n/a" : productElem.sku.inventoryDisplayStr %> </span>
+        <span class="productColumn">
            <%= productElem.sku == null || productElem.sku.optionScheme == null ? "n/a" : productElem.sku.optionScheme.schemeName %>
          </span>
-        <span class="headerColumn"> <input type="checkbox" checked=":=: productElem.visible"/> </span>
+        <span class="smallProductColumn"> <input type="checkbox" checked=":=: productElem.visible"/> </span>
         <input type="image" class="removeProductButton" src="/icons/x-square.svg" clickEvent="=: removeProduct(productElem.id)"/>
       </div>
    </div>

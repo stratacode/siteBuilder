@@ -13,6 +13,13 @@ ProductManager {
    void doSearch() {
       String txt = searchText == null ? "" : searchText;
       productList = searchForText(txt);
+      if (productList.size() == 0) {
+         int numProducts = Product.getDBTypeDescriptor().searchCountQuery("", searchStore, getSearchStoreValues());
+         if (numProducts == 0)
+            searchStatusMessage = "No products in store";
+         else
+            searchStatusMessage = "No products found out of: " + numProducts + " in store";
+      }
    }
 
    void doSelectProduct(Product toSel) {
@@ -418,7 +425,7 @@ ProductManager {
          return;
       }
 
-      List<Sku> skus = Sku.findBySkuCode(skuCode);
+      List<Sku> skus = Sku.findBySkuCode(skuCode, store);
       if (skus != null && skus.size() > 0) {
          Sku newSku = skus.get(0);
          product.sku = newSku;
@@ -472,6 +479,7 @@ ProductManager {
    void startNewOptionScheme() {
       optionScheme = (OptionScheme) OptionScheme.getDBTypeDescriptor().createInstance();
       optionScheme.schemeName = product.pathName;
+      optionScheme.store = store;
 
       optionScheme.options = new ArrayList<ProductOption>();
       addNewOption();
@@ -521,7 +529,7 @@ ProductManager {
          return;
       }
 
-      List<OptionScheme> schemes = OptionScheme.findBySchemeName(optionSchemeName);
+      List<OptionScheme> schemes = OptionScheme.findBySchemeName(optionSchemeName, store);
       OptionScheme newScheme = null;
       if (schemes != null) {
          if (schemes.size() == 1) {
@@ -745,6 +753,12 @@ ProductManager {
       if (toRem == null) {
          skuAddErrorMessage = "Sku not found to remove";
          System.err.println("*** removeSku - sku with id: " + skuId + " not found");
+         return;
+      }
+      // Security check to be sure we're allowed to manage this sku since we did the lookup by ID only
+      if (toRem.store != store) {
+         skuAddErrorMessage = "Sku not part of current store";
+         System.err.println("*** removeSku - sku with bad store: " + skuId + " not found");
          return;
       }
       List<Object> propValues = Arrays.asList(sku);

@@ -97,7 +97,7 @@ UserView {
       }
       if (super.login()) {
          UserProfile regUser = user;
-         Order regUserOrder = OrderView.getPendingOrderForUser(regUser);
+         Order regUserOrder = OrderView.getPendingOrderForUser(regUser, orderView.store);
          if (regUserOrder == null) {
          // Make the registered user the owner of the anonymous cart
             orderView.order.user = regUser;

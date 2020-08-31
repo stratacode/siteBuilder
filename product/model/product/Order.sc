@@ -1,5 +1,5 @@
 @DBTypeSettings
-@FindBy(name="userPending", with="user,pending", orderBy="-lastModified")
+@FindBy(name="userPending", with="user,pending,store", orderBy="-lastModified")
 class Order {
    List<LineItem> lineItems;
    BigDecimal tax;

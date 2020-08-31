@@ -4,7 +4,6 @@ import java.util.Arrays;
 import sc.lang.html.HTMLElement;
 
 BaseProductManager {
-   store =: storeChanged();
    longDescHtml =: updateLongDesc(longDescHtml);
 
    void storeChanged() {
@@ -45,7 +44,7 @@ BaseProductManager {
 
    void updateElementMedia(String uniqueFileName) {
       String fileName = MediaManager.removeRevisionFromFile(uniqueFileName);
-      List<ManagedMedia> mediaList = ManagedMedia.findByFileName(fileName);
+      List<ManagedMedia> mediaList = ManagedMedia.findByFileName(fileName, store.mediaManager);
       mediaStatusMessage = null;
       mediaErrorMessage = null;
       findMediaText = uniqueFileName;
@@ -126,7 +125,7 @@ BaseProductManager {
       if (resList.size() == 1) {
          String nameWithRev = (String) resList.get(0);
          // Here we want to find all versions of the file uploaded just for context
-         List<ManagedMedia> mediaRes = MediaManagerView.searchForText(nameWithRev);
+         List<ManagedMedia> mediaRes = MediaManagerView.searchForText(nameWithRev, store.mediaManager);
          int selIx = -1;
          ManagedMedia newMedia = null;
          for (int i = 0; i < mediaRes.size(); i++) {

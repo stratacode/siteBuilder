@@ -11,7 +11,7 @@
 
    <div id="siteDetailForm" visible=":= siteMgr.validSite">
       <div class="formTitle">
-         Manage <%= siteMgr.getSiteTypeName(siteMgr.site) %>: <%= siteMgr.site.siteName %>
+         Update <%= siteMgr.getSiteTypeName(siteMgr.site).toLowerCase() %>: <%= siteMgr.site.siteName %>
       </div>
 
       <div class="formField">
@@ -31,11 +31,9 @@
          <input type="checkbox" id="visibleCheckbox" checked=":= siteMgr.site.visible"/>
       </div>
 
-      <div id="menuItemsView">
-         <div class="subFormTitle" visible=":= siteMgr.site.menuItems.size() > 0">
-            Custom menu items
-            <div id="alt" class="formStatus">No custom menu items</div>
-         </div>
+      <div id="menuItemsView" class="subFormView">
+         <div class="subFormTitle">Custom menu items</div>
+         <div id="noItemsView" visible=":= siteMgr.site.menuItems == null || siteMgr.site.menuItems.size() == 0" class="formStatus menuItemsEmptyTitle">No custom menu items</div>
          <div id="menuItemRepeat" repeat=":= siteMgr.site.menuItems" repeatVarName="menuItem" class=':= menuItem == siteMgr.currentMenuItem ? "selectedMenuItemEntry" : "menuItemEntry"'>
             <div id="menuItemSel" clickEvent="=: siteMgr.currentMenuItem = menuItem"><%= menuItem.detailString %></div>
             <input type="image" class="removeMenuButton" src="/icons/x-square.svg"
@@ -109,6 +107,9 @@
             <input type="button" value="Add nav menu" clickEvent="=: siteMgr.addNavMenu()"/>
             <input type="button" value="Done" clickEvent="=: siteMgr.currentMenuItem = null" visible=":= siteMgr.currentMenuItem != null"/>
          </div>
+
+         <div id="extraFields">
+         </div>
       </div>
    </div>
 
@@ -121,7 +122,7 @@
       </div>
       <div id="siteRepeat" repeat=":= siteMgr.currentSites" repeatVarName="currentSite"
            class=':= currentSite == siteMgr.site ? "selectedSiteRow" : "siteRow"' >
-        <span class="wideSiteColumn" clickEvent="=: siteMgr.site = currentSite">
+        <span class="wideSiteColumn" clickEvent="=: siteMgr.changeSite(currentSite)">
            <input type="checkbox" checked=":= siteMgr.site == currentSite"/>
            <%= currentSite.siteName %>
         </span>

@@ -91,7 +91,7 @@
                          class=':= hasError ? "fieldInputError" : "fieldInput"' placeholder="MM / YY " value=":= order.paymentInfo.expDateString"
                          value="=: order.paymentInfo.updateExpireDate(value)"/>
                   <div class="fieldError" visible=':= hasError'>
-                     <%= order.paymentInfo.propErrors.get("expMonth") %><%= order.paymentInfo.propErrors.get("expYear") %>
+                     <%= order.paymentInfo.propErrors.get("expMonth") %> <%= order.paymentInfo.propErrors.get("expYear") %>
                   </div>
                </div>
                <div id="cvvFieldBox" class="fieldBox">

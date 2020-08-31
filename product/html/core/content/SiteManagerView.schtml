@@ -1,0 +1,63 @@
+<div>
+   <div id="siteDetailForm">
+
+      <div id="extraFields">
+         <div id="storeFields" visible=":= siteMgr.validStore">
+            <div id="editCurrency" class="subFormView">
+               <div class="subFormTitle">Currencies supported</div>
+               <div class="headerRow">
+                  <span class="headerColumn">Default</span>
+                  <span class="headerColumn">Name</span>
+                  <span class="headerColumn">Remove</span>
+               </div>
+               <div>
+                  <div class="currencyRow" id="currencyView"
+                       repeat=":= siteMgr.store.supportedCurrencies" repeatVarName="supportedCurrency">
+                     <span class="currencyColumn">
+                        <input type="checkbox" checked=":= siteMgr.store.defaultCurrencyName.equals(supportedCurrency)" changeEvent="=: siteMgr.changeDefaultCurrency(supportedCurrency)"/>
+                     </span>
+                     <span class="currencyColumn">
+                        <%= supportedCurrency %>
+                     </span>
+                     <span class="currencyColumn">
+                        <input type="image" src="/icons/x-square.svg" clickEvent="=: siteMgr.store.supportedCurrencies.remove(supportedCurrency)"/>
+                     </span>
+                  </div>
+               </div>
+               <div id="addCurrencyView" class="formButtonRow">
+                  <select id="currencyChoice" optionDataSource=":= Currency.currencyNames"/>
+                  <input type="button" value="Add currency" clickEvent="=: siteMgr.addSupportedCurrency((String)currencyChoice.selectedValue)"/>
+               </div>
+            </div>
+
+            <div id="editCountries" class="subFormView">
+               <div class="subFormTitle">Countries supported</div>
+               <div>
+                  <div class="headerRow">
+                     <span class="headerColumn">Default</span>
+                     <span class="wideHeaderColumn">Name</span>
+                     <span class="headerColumn">Remove</span>
+                  </div>
+                  <div class="countryRow" id="countryView"
+                       repeat=":= siteMgr.store.countryNames" repeatVarName="countryName">
+                     <span class="countryColumn" clickEvent="=: siteMgr.store.defaultCountry = countryName">
+                        <input type="checkbox" checked=":= siteMgr.store.defaultCountry.equals(countryName)"
+                               changeEvent="=: siteMgr.changeDefaultCountry(countryName)"/>
+                     </span>
+                     <span class="wideCountryColumn" clickEvent="=: siteMgr.store.defaultCountry = countryName">
+                        <%= countryName %>
+                     </span>
+                     <span class="countryColumn">
+                        <input type="image" src="/icons/x-square.svg" clickEvent="=: siteMgr.store.countryNames.remove(countryName)"/>
+                     </span>
+                  </div>
+               </div>
+               <div id="addCountryView" class="formButtonRow">
+                  <select id="countryChoice" optionDataSource=":= SiteManager.availableCountries"/>
+                  <input type="button" value="Add country" clickEvent="=: siteMgr.addCountry((String)countryChoice.selectedValue)"/>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

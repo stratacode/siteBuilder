@@ -62,6 +62,8 @@ class ProductManager extends BaseProductManager {
    @Sync(initDefault=true)
    List<Sku> invalidSkuOptions;
 
+   String searchStatusMessage = "";
+
    void resetForm() {
       super.resetForm();
       productList = null;
@@ -69,6 +71,7 @@ class ProductManager extends BaseProductManager {
       productSaved = false;
       clearFormErrors();
       parentCategoryPathName = "";
+      searchStatusMessage = "";
    }
 
    void clearFormErrors() {

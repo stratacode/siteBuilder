@@ -10,7 +10,7 @@
 // We want to instantiate the object as a prototype so that bindings and other values can be used in the
 // match query.
 class ManagedMedia extends ManagedResource {
-   @FindBy
+   @FindBy(with="manager")
    String fileName;
 
    String fileType;

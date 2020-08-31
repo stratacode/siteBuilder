@@ -5,6 +5,10 @@ BaseManager {
    static final List<String> searchOrderBy = Arrays.asList("-lastModified");
    static final List<String> searchStore = Arrays.asList("store");
 
+   void storeChanged() {
+      resetForm();
+   }
+
    List<Object> getSearchStoreValues() {
       ArrayList<Object> res = new ArrayList<Object>();
       res.add(store);

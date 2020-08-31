@@ -50,5 +50,34 @@ OrderManager {
 
    void markOrderDelivered(Order order) {
       order.deliveredOn = new Date();
+      List<String> unavailableSkus = new ArrayList<String>();
+      for (LineItem lineItem: order.lineItems) {
+         Sku sku = lineItem.sku;
+         if (sku instanceof PhysicalSku) {
+            PhysicalSku psku = (PhysicalSku) sku;
+            if (psku.inventory != null) {
+               int quant = psku.inventory.quantity;
+               if (quant > 0) {
+                  psku.inventory.quantity = quant - 1;
+               }
+               else
+                  unavailableSkus.add(psku.skuCode);
+            }
+         }
+      }
+      if (unavailableSkus.size() > 0) {
+         orderErrorMessage = "No inventory for skus: " + unavailableSkus;
+         orderStatusMessage = null;
+      }
+      else {
+         orderStatusMessage = "Order marked as delivered";
+         orderErrorMessage = null;
+      }
    }
+
+   void updateSearchType(OrderSearchType searchType) {
+      orderSearchType = searchType;
+      doSearch();
+   }
+
 }

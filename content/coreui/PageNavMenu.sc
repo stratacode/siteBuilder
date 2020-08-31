@@ -1,7 +1,7 @@
 class PageNavMenu extends NavMenu {
    SiteView siteView;
-   SiteContext siteContext;
 
+   SiteContext siteContext := siteView.siteContext;
    siteView =: validateSiteView();
 
    object homeItem extends NavMenuItem {
@@ -12,7 +12,7 @@ class PageNavMenu extends NavMenu {
    }
 
    void validateSiteView() {
-      siteContext = siteView == null ? null : siteView.siteContext;
+      //siteContext = siteView == null ? null : siteView.siteContext;
    }
 
    List<BaseMenuItem> getMenuItems() {
