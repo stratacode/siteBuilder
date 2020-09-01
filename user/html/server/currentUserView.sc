@@ -18,6 +18,14 @@ currentUserView {
       if (cookie != null)
          this.userAuthToken = cookie.getValue();
 
+      HttpSession session = req.getSession(false);
+      if (session != null) {
+         sessionMarker = (String) session.getAttribute("_sc_sessionMarker");
+         if (sessionMarker == null)
+            sessionMarker = DBUtil.createMarkerToken();
+         session.setAttribute("_sc_sessionMarker", sessionMarker);
+      }
+
       super.init();
 
       if (user != null) {

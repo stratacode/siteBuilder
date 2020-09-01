@@ -16,6 +16,7 @@ SiteView {
 
    void pageVisited() {
       pageVisitCount++;
+      currentUserView.addPageEvent(siteContext, pathName);
    }
 
    PageView getPageView(String pathName) {

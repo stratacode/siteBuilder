@@ -27,8 +27,10 @@ CategoryView {
             validateCurrentMedia();
 
             categoryViewError = null;
-            startCategorySync();;
-
+            startCategorySync();
+            UserSession us = storeView.getUserSession();
+            if (us != null)
+               us.addCategoryEvent(category);
          }
          else {
             categoryViewError = "No category found for: " + (pathName == null ? "(root)" : pathName);

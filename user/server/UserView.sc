@@ -1,4 +1,8 @@
+import java.util.HashMap;
+
 UserView {
+   Map<Long,UserSession> userSessions;
+
    void init() {
       if (userAuthToken != null) {
          user = UserProfile.findByAuthToken(userAuthToken);
@@ -203,5 +207,26 @@ UserView {
       }
    }
 
+   synchronized UserSession getUserSession(SiteContext site) {
+      if (sessionMarker == null)
+         return null;
+      if (userSessions == null) {
+         userSessions = new HashMap<Long,UserSession>();
+      }
+      UserSession session = userSessions.get(site.id);
+      if (session == null) {
+         session = new UserSession();
+         session.user = user;
+         session.sessionMarker = sessionMarker;
+         userSessions.put(site.id, session);
+      }
+      return session;
+   }
+
+   void addPageEvent(SiteContext site, String pathName) {
+      UserSession session = getUserSession(site);
+      if (session != null)
+         session.addPageEvent(pathName);
+   }
 }
 

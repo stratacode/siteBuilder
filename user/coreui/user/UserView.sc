@@ -39,6 +39,8 @@ class UserView {
    // List of per-property errors
    Map<String,String> propErrors;
 
+   String sessionMarker;
+
    SiteContext lastSite;
 
    void clearErrors() {

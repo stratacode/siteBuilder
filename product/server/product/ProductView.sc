@@ -29,6 +29,10 @@ ProductView {
             validateCurrentMedia();
 
             productViewError = null;
+
+            UserSession us = storeView.getUserSession();
+            if (us != null)
+               us.addProductEvent(product);
          }
          else {
             productViewError = "No product found for: " + pathName;
@@ -198,6 +202,9 @@ ProductView {
 
    void addToCart() {
       storeView.orderView.addLineItem(product, currentSku, currentQuantity);
+      UserSession us = storeView.getUserSession();
+      if (us != null)
+         us.addAddToCartEvent(product);
    }
 
    void startProductSync() {

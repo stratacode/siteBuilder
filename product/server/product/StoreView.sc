@@ -22,4 +22,8 @@ StoreView {
          orderView.pageVisited();
    }
 
+   UserSession getUserSession() {
+      return orderView.userView.getUserSession(store);
+   }
+
 }
