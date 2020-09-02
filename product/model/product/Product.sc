@@ -83,4 +83,67 @@ class Product extends CatalogElement {
    }
 
    override @FindBy(paged=true,orderBy="-lastModified",with="store") pathName;
+
+   ManagedMedia getMediaForSku(Sku mediaSku) {
+      if (mediaSku == null || mediaSku.options == null)
+         return mainMedia;
+
+      ManagedMedia defaultMedia = null;
+
+      List<ManagedMedia> mediaList = altMedia;
+      for (int i = 0; i < mediaList.size(); i++) {
+         ManagedMedia media = mediaList.get(i);
+         String filterPattern = media.filterPattern;
+         if (filterPattern == null) {
+            if (defaultMedia == null)
+               defaultMedia = media;
+         }
+         else {
+            String next = filterPattern;
+            boolean match = true;
+            List<OptionValue> skuOpts = mediaSku.options;
+            do {
+               int rix = next.indexOf(",");
+               String optStr = rix == -1 ? next : next.substring(0, rix);
+               int eix = optStr.indexOf("=");
+               if (eix == -1) {
+                  match = false;
+                  System.err.println("*** Invalid filterPattern for media: " + media.uniqueFileName);
+                  break;
+               }
+               String optName = optStr.substring(0, eix);
+               if (optStr.length() <= eix + 1) {
+                  match = false;
+                  break;
+               }
+               String optVal = optStr.substring(eix+1);
+               boolean found = false;
+               for (int j = 0; j < skuOpts.size(); j++) {
+                  if (sku.optionScheme.options.get(j).optionName.equals(optName)) {
+                     if (!skuOpts.get(j).optionValue.equals(optVal)) {
+                        match = false;
+                        break;
+                     }
+                     found = true;
+                     break;
+                  }
+               }
+               if (!found) {
+                  System.err.println("*** Option: " + optStr + " in filterPattern for media: " + media.uniqueFileName + " not found in optionScheme: " + sku.optionScheme);
+                  match = false;
+                  break;
+               }
+               if (rix == -1 || next.length() <= rix+1)
+                  break;
+               next = next.substring(rix+1);
+            } while(true);
+            if (match) {
+               return media;
+            }
+         }
+         if (defaultMedia != null)
+            return defaultMedia;
+      }
+      return mainMedia;
+   }
 }

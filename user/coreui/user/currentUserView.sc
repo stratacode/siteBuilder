@@ -1,3 +1,3 @@
 object currentUserView extends UserView {
-   mgr = currentUserManager.mgr;
+   userbase = currentUserbase.userbase;
 }

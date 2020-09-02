@@ -25,6 +25,9 @@ class ProductView extends CatalogElementView {
 
    // This method runs on both client and server so the inputs are synchronized, but not the outputs
    void validateProduct() {
+      optionScheme = product.sku == null ? null : product.sku.optionScheme;
+      currentQuantity = product.defaultQuantity;
+
       validateCurrentMedia();
    }
 
@@ -53,7 +56,7 @@ class ProductView extends CatalogElementView {
       if (!super.mediaIsAvailable(media))
          return false;
       String filterPattern = media.filterPattern;
-      if (filterPattern == null || optionScheme == null)
+      if (filterPattern == null || optionScheme == null || optionViews == null)
          return true;
 
       String next = filterPattern;

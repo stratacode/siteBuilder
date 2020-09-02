@@ -100,7 +100,7 @@ SiteManager {
          UserProfile user = currentUserView.user;
          newSite.siteAdmins = new ArrayList<UserProfile>();
          newSite.siteAdmins.add(user);
-         newSite.userManager = user.mgr;
+         newSite.userbase = user.userbase;
          MediaManager newMgr = new MediaManager();
          newMgr.managerPathName = newSite.sitePathName;
          newMgr.mediaBaseUrl = "/images/" + newMgr.managerPathName + "/";

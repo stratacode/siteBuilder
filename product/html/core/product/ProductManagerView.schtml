@@ -211,7 +211,7 @@
         <span class="productColumn" clickEvent="=: doSelectProduct(productElem)">
            <img src=":= productElem.mainMedia.thumbUrl"/>
         </span>
-        <span class="productColumn"> <a target="productView" href=':= "/sites/" + store.sitePathName + "/product/" + productElem.pathName'><%= productElem.pathName %></a></span>
+        <span class="productColumn"> <a target="productView" href=':= "/stores/" + store.sitePathName + "/product/" + productElem.pathName'><%= productElem.pathName %></a></span>
         <span class="productColumn"> <%= productElem.parentCategory == null ? "none" : productElem.parentCategory.pathName %> </span>
         <span class="productColumn"> <%= productElem.sku == null ? "no sku" : productElem.sku.skuCode%> </span>
         <span class="smallProductColumn"> <%= productElem.sku == null ? "n/a" : productElem.sku.priceDisplayStr %> </span>

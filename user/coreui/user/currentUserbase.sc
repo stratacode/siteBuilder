@@ -1,7 +1,7 @@
 @Sync(syncMode=SyncMode.Disabled)
 @Component scope<global>
-object currentUserManager {
-   UserManager mgr;
+object currentUserbase {
+   Userbase userbase;
 
    static final String defaultAppName = "scDefaultApp";
 

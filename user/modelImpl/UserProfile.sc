@@ -14,7 +14,7 @@ UserProfile {
    }
 
    String createAuthToken() {
-      Date expireDate = new Date(System.currentTimeMillis() + mgr.authTokenDurationMillis);
+      Date expireDate = new Date(System.currentTimeMillis() + userbase.authTokenDurationMillis);
       UserAuthToken newToken = new UserAuthToken();
       newToken.createdDate = new Date();
       newToken.user = this;
@@ -57,7 +57,7 @@ UserProfile {
    }
 
    void loginSuccess(String remoteIp) {
-      if (mgr.recordStats) {
+      if (userbase.recordStats) {
          UserProfileStats stats = getOrCreateStats();
          String prevRemoteIp = stats.lastRemoteIp;
          stats.lastRemoteIp = remoteIp;
@@ -67,7 +67,7 @@ UserProfile {
    }
 
    void loginFailed(String remoteIp) {
-      if (mgr.recordStats) {
+      if (userbase.recordStats) {
          UserProfileStats stats = getOrCreateStats();
          String prevRemoteIp = remoteIp;
          stats.lastRemoteIp = remoteIp;
@@ -78,14 +78,14 @@ UserProfile {
 
    void profileEvent(String eventName, String prevRemoteIp, String newRemoteIp, int count) {
       // Adding a new event only when the remoteIp has changed since we keep counts at a higher level
-      if (mgr.recordEvents && !DynUtil.equalObjects(prevRemoteIp, newRemoteIp)) {
+      if (userbase.recordEvents && !DynUtil.equalObjects(prevRemoteIp, newRemoteIp)) {
          UserProfileStats stats = userProfileStats;
          List<UserProfileEvent> events = stats.profileEvents;
          if (events == null) {
             events = new ArrayList<UserProfileEvent>();
             stats.profileEvents = events;
          }
-         if (events.size() > mgr.maxProfileEvents) {
+         if (events.size() > userbase.maxProfileEvents) {
             events.remove(0);
          }
          events.add(new UserProfileEvent("loginFailed", newRemoteIp, count));

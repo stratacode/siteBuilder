@@ -14,7 +14,7 @@ currentUserView {
       this.remoteIp = remoteIp;
       this.acceptLanguage = req.getHeader("Accept-Language");
       this.userAgent = req.getHeader("User-agent");
-      Cookie cookie = ctx.getCookie(mgr.cookieName);
+      Cookie cookie = ctx.getCookie(userbase.cookieName);
       if (cookie != null)
          this.userAuthToken = cookie.getValue();
 
@@ -40,17 +40,17 @@ currentUserView {
    void persistAuthToken(String token) {
       Context ctx = Context.getCurrentContext();
       HttpServletResponse resp = ctx.response;
-      Cookie cookie = new Cookie(mgr.cookieName, token);
-      if (mgr.secureCookie)
+      Cookie cookie = new Cookie(userbase.cookieName, token);
+      if (userbase.secureCookie)
          cookie.setSecure(true);
-      if (mgr.cookieDomain != null)
-         cookie.setDomain(mgr.cookieDomain);
-      if (mgr.cookiePath != null)
-         cookie.setPath(mgr.cookiePath);
+      if (userbase.cookieDomain != null)
+         cookie.setDomain(userbase.cookieDomain);
+      if (userbase.cookiePath != null)
+         cookie.setPath(userbase.cookiePath);
       if (token.length() == 0)
          cookie.setMaxAge(0);
       else
-         cookie.setMaxAge(mgr.cookieDurationSeconds);
+         cookie.setMaxAge(userbase.cookieDurationSeconds);
       resp.addCookie(cookie);
    }
    void clearAuthToken() {

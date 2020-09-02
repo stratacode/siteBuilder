@@ -1,7 +1,7 @@
 @DBTypeSettings(typeId=1)
 class SiteContext implements IPropValidator {
    List<UserProfile> siteAdmins;
-   UserManager userManager;
+   Userbase userbase;
 
    // Inner class used without DBTypeSettings with FindBy. Generates a findBy method that will create
    // an instance of the inner class (and a prototype of the outer one if necessary), populate properties

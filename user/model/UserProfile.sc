@@ -4,12 +4,12 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 @DBTypeSettings
-@FindBy(name="userNamePassword", with="mgr,userName,password",findOne=true)
-@FindBy(name="userName", with="mgr,userName",findOne=true)
+@FindBy(name="userNamePassword", with="userbase,userName,password",findOne=true)
+@FindBy(name="userName", with="userbase,userName",findOne=true)
 class UserProfile {
    @Sync(syncMode=SyncMode.Disabled)
    @DBPropertySettings(required=true)
-   UserManager mgr;
+   Userbase userbase;
 
    @DBPropertySettings(indexed=true)
    String emailAddress; 
@@ -74,8 +74,8 @@ class UserProfile {
       boolean foundLetter = false;
       boolean foundIllegal = false;
       int len = password.length();
-      if (len < mgr.passwordMinLen)
-         return "Password must have at least " + mgr.passwordMinLen + " characters";
+      if (len < userbase.passwordMinLen)
+         return "Password must have at least " + userbase.passwordMinLen + " characters";
       for (int i = 0; i < len; i++) {
          char cur = password.charAt(i);
          if (!foundUpper && Character.isUpperCase(cur))
@@ -87,17 +87,17 @@ class UserProfile {
          else if (Character.isLetter(cur))
             foundLetter = true;
          else {
-            if (mgr.passwordIllegalChars.indexOf(cur) != -1)
+            if (userbase.passwordIllegalChars.indexOf(cur) != -1)
                foundIllegal = true;
             foundSpecial = true;
          }
       }
-      if (mgr.passwordRequireUpperAndLower && (!foundUpper || !foundLower))
+      if (userbase.passwordRequireUpperAndLower && (!foundUpper || !foundLower))
          return "Password must contain at least one upper and one lower case character";
-      if (mgr.passwordRequireLetterAndDigit && (!foundDigit || !foundLetter))
+      if (userbase.passwordRequireLetterAndDigit && (!foundDigit || !foundLetter))
          return "Password must contain at least one number and one letter";
       if (foundIllegal)
-         return "Password must not contain one of: " + mgr.passwordIllegalChars;
+         return "Password must not contain one of: " + userbase.passwordIllegalChars;
       return null;
    }
 

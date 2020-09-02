@@ -6,14 +6,14 @@ UserView {
    void init() {
       if (userAuthToken != null) {
          user = UserProfile.findByAuthToken(userAuthToken);
-         if (user == null || user.mgr != mgr)
+         if (user == null || user.userbase != userbase)
             userAuthToken = null; // Invalid token
       }
       if (user == null && userName.length() > 0 && password.length() > 0) {
          login();
       }
 
-      if (user == null && mgr.createAnonymousUser) {
+      if (user == null && userbase.createAnonymousUser) {
          resetUser();
          userAuthToken = user.createAuthToken();
          persistAuthToken(userAuthToken);
@@ -26,7 +26,7 @@ UserView {
 
    void resetUser() {
       user = new UserProfile();
-      user.mgr = mgr;
+      user.userbase = userbase;
       user.initDefaultFields();
 
       DBUtil.addTestIdInstance(user, "new-anon-profile");
@@ -46,7 +46,7 @@ UserView {
       }
 
       if (userViewError == null) {
-         UserProfile loginUser = UserProfile.findByUserName(mgr, userName);
+         UserProfile loginUser = UserProfile.findByUserName(userbase, userName);
          if (loginUser != null) {
             if (!loginUser.active) {
                priorityError("Account is not active - contact support for assistance");
@@ -99,7 +99,7 @@ UserView {
          error("emailAddress", emailError, 10);
          return false;
       }
-      if (mgr.useEmailForUserName)
+      if (userbase.useEmailForUserName)
          userName = emailAddress;
       String userNameError = user.validateUserName(userName);
       if (userNameError != null) {
@@ -114,7 +114,7 @@ UserView {
 
       String newUserName = StringUtil.isEmpty(userName) ? emailAddress : userName;
 
-      UserProfile existing = UserProfile.findByUserName(mgr, newUserName);
+      UserProfile existing = UserProfile.findByUserName(userbase, newUserName);
       if (existing != null) {
          priorityError("Account already exists with userName: " + newUserName);
          return false;
@@ -217,6 +217,7 @@ UserView {
       if (session == null) {
          session = new UserSession();
          session.user = user;
+         session.createTime = new Date();
          session.sessionMarker = sessionMarker;
          userSessions.put(site.id, session);
       }

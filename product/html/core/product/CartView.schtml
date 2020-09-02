@@ -127,7 +127,7 @@
          </div>
          <div id="cartContents" class="cartContents">
             <div id="lineItemRepeat" repeat=":= order.lineItems" repeatVarName="lineItem" class="cartLineItem">
-               <img class="cartProductThumb" src="= lineItem.product.mainMedia.thumbUrl"/>
+               <img class="cartProductThumb" src="= lineItem.product.getMediaForSku(lineItem.sku).thumbUrl"/>
                <div class="cartProductInfo">
                   <div id="productName"><%= lineItem.product.name %> - <%= lineItem.product.shortDesc %></div>
                   <div id="cartOptions" class="cartOptions">

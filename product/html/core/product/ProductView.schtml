@@ -13,9 +13,9 @@
       <div id="productViewImage" class="productViewImage">
          <img class="viewImage" id="productViewImage" src=":= currentMedia.url" style=':= "width: " + currentMedia.width + "px; height: " + currentMedia.height + "px;"' />
          <div id="thumbNailsView" class="thumbNailsView">
-            <div id="altMediaView" repeat=":= product.altMedia" repeatVarName="altMedia"
+            <div id="altMediaView" repeat=":= altMedia" repeatVarName="altMediaElem"
                  class='= "thumbView" + (altMediaIndex == repeatIndex ? " thumbViewSelected" : "")' >
-               <img src=":= altMedia.thumbUrl" clickEvent="=: altMediaIndex = altMediaView.this.repeatIndex"/>
+               <img src=":= altMediaElem.thumbUrl" clickEvent="=: altMediaIndex = altMediaView.this.repeatIndex"/>
             </div>
          </div>
       </div>

@@ -4,10 +4,10 @@ import java.util.TreeMap;
 import sc.util.StringUtil;
 
 @Component
-@CompilerSettings(constructorProperties="mgr")
+@CompilerSettings(constructorProperties="userbase")
 class UserView {
    @Sync(syncMode=SyncMode.Disabled)
-   UserManager mgr;
+   Userbase userbase;
 
    String emailAddress = "";
    String userName = "";
@@ -68,6 +68,6 @@ class UserView {
    }
 
    String getUserNameDisplay() {
-      return !mgr.useEmailForUserName ? "user name" : "email address";
+      return !userbase.useEmailForUserName ? "user name" : "email address";
    }
 }

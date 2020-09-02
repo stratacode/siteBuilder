@@ -4,7 +4,7 @@
  */
 @DBTypeSettings
 @Sync(syncMode=SyncMode.Disabled)
-class UserManager {
+class Userbase {
    @FindBy
    @DBPropertySettings(unique=true, required=true, indexed=true)
    String appName;

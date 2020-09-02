@@ -24,7 +24,7 @@ ProductView {
             if (PTypeUtil.testMode)
                DBUtil.addTestIdInstance(product, "product/" + pathName);
 
-            currentQuantity = product.defaultQuantity;
+            initOptions();
             altMediaIndex = 0;
             validateCurrentMedia();
 
@@ -52,13 +52,11 @@ ProductView {
       else
          inStock = false;
 
-      initOptions();
    }
 
    void initOptions() {
       if (product == null)
          return;
-      optionScheme = product.sku == null ? null : product.sku.optionScheme;
       OptionScheme scheme = optionScheme;
       if (scheme != null) {
          List<Sku> skuOptions = product.sku.skuOptions;
@@ -198,6 +196,7 @@ ProductView {
             System.err.println("*** No sku found for selected options in product: " + product);
       }
       optionsValid = true;
+      validateCurrentMedia();
    }
 
    void addToCart() {

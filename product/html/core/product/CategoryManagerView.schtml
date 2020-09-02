@@ -137,7 +137,7 @@
         <span class="headerColumn" clickEvent="=: doSelectCategory(categoryElem)">
            <img src=":= categoryElem.mainMedia.thumbUrl"/>
         </span>
-        <span class="headerColumn"> <%= categoryElem.pathName %> </span>
+        <span class="headerColumn"> <a target="productView" href=':= "/stores/" + store.sitePathName + "/category/" + categoryElem.pathName'><%= categoryElem.pathName %></a> </span>
         <span class="headerColumn"> <%= categoryElem.parentCategory == null ? "none" : categoryElem.parentCategory.pathName %> </span>
         <span class="headerColumn"> <input type="checkbox" checked=":=: categoryElem.visible"/> </span>
         <input type="image" class="removeCategoryButton" src="/icons/x-square.svg" clickEvent="=: removeCategory(categoryElem.id)"/>

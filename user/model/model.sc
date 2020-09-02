@@ -1,7 +1,7 @@
 package sc.user;
 
 import sc.user.UserProfile;
-import sc.user.UserManager;
+import sc.user.Userbase;
 import sc.user.Address;
 import sc.user.LoginStatus;
 
