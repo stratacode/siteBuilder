@@ -26,7 +26,7 @@
 }
 
 .selectedMediaRow, .selectedProductRow, .selectedCategoryRow, .selectedSkuRow, .selectedPageRow, .selectedOrderRow {
-   background-color: #ddddff;
+   background-color: #eef1ff;
 }
 
 .smallMediaColumn, .smallHeaderColumn, .smallProductColumn, .smallSkuColumn, .smallSiteColumn, .smallPageColumn, .smallOrderColumn {
