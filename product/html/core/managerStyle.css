@@ -14,22 +14,24 @@
 }
 
 .mediaRow, .selectedMediaRow, .headerRow, .productRow, .selectedProductRow, .categoryRow, .selectedCategoryRow, .mainSkuRow,
-.siteRow, .selectedSiteRow, .pageRow, .selectedPageRow, .orderRow, .selectedOrderRow, .currencyRow, .countryRow {
+.siteRow, .selectedSiteRow, .pageRow, .selectedPageRow, .orderRow, .selectedOrderRow, .currencyRow, .countryRow, .userRow, .selectedUserRow,
+ .sessionRow, .eventRow {
    display: flex;
    align-items: center;
 }
 
 .mediaRow, .selectedMediaRow, .productRow, .selectedProductRow, .categoryRow, .selectedCategoryRow, .mainSkuRow, .selectedSkuRow,
-.pageRow, .selectedPageRow, .orderRow, .selectedOrderRow {
+.pageRow, .selectedPageRow, .orderRow, .selectedOrderRow, .userRow, .selectedUserRow, .sessionRow, .eventRow {
    cursor: pointer;
    margin-bottom: 5px;
 }
 
-.selectedMediaRow, .selectedProductRow, .selectedCategoryRow, .selectedSkuRow, .selectedPageRow, .selectedOrderRow {
+.selectedMediaRow, .selectedProductRow, .selectedCategoryRow, .selectedSkuRow, .selectedPageRow, .selectedOrderRow, .selectedUserRow {
    background-color: #eef1ff;
 }
 
-.smallMediaColumn, .smallHeaderColumn, .smallProductColumn, .smallSkuColumn, .smallSiteColumn, .smallPageColumn, .smallOrderColumn {
+.smallMediaColumn, .smallHeaderColumn, .smallProductColumn, .smallSkuColumn, .smallSiteColumn, .smallPageColumn,
+.smallOrderColumn, .smallUserColumn, .smallSessionRow, .smallEventRow {
    padding: 2px;
    width: 60px;
    flex-grow: 0;
@@ -37,7 +39,7 @@
    overflow: auto;
 }
 
-.mediaColumn, .headerColumn, .productColumn, .skuColumn, .categoryColumn, .pageColumn, .orderColumn, .currencyColumn, .countryColumn {
+.mediaColumn, .headerColumn, .productColumn, .skuColumn, .categoryColumn, .pageColumn, .orderColumn, .currencyColumn, .countryColumn, .userColumn, .eventColumn, .sessionColumn {
    padding: 2px;
    width: 100px;
    flex-grow: 0;
@@ -45,7 +47,8 @@
    overflow: auto;
 }
 
-.wideMediaColumn, .wideHeaderColumn, .wideProductColumn, .wideSkuColumn, .wideCategoryColumn, .wideSiteColumn, .widePageColumn, .wideOrderColumn, .wideCountryColumn {
+.wideMediaColumn, .wideHeaderColumn, .wideProductColumn, .wideSkuColumn, .wideCategoryColumn, .wideSiteColumn, .widePageColumn, .wideOrderColumn, .wideCountryColumn, .wideUserColumn,
+ .wideSessionColumn, .wideEventColumn {
    padding: 2px;
    width: 180px;
    flex-grow: 0;
@@ -67,7 +70,7 @@
    margin-bottom: 10px;
 }
 
-#listView, #startAddView, #findProductsView, #findCategoriesView, #findMediaView, #currentSitesView {
+#listView, #startAddView, #findProductsView, #findCategoriesView, #findMediaView, #currentSitesView, #currentUsersView {
    margin-bottom: 10px;
    margin-top: 10px;
 }
@@ -105,7 +108,7 @@
 }
 
 .confirmButtons, .formTitle, .checkFormView, .skuOptionsSummary, .formError, .formStatus,
-#addSkuButtons, .subFormTitle, .skuListTitle, .formMessage, #orderTypeForm, .formButtonRow {
+#addSkuButtons, .subFormTitle, .skuListTitle, .formMessage, #orderTypeForm, .formButtonRow, #userTypeForm {
    margin-left: 21%;
 }
 
@@ -416,4 +419,9 @@
 
 .removeViewButton {
    padding-left: 20px;
+}
+
+/* Nesting of tables in UserManager */
+#userDetailView, #sessionEventBox {
+   margin-left: 20px;
 }

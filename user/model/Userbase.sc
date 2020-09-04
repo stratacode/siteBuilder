@@ -15,7 +15,8 @@ class Userbase {
    boolean recordEvents = true;
    boolean useEmailForUserName = true;
    boolean storeAnonymousProfiles = true;
-   int maxProfileEvents = 20;
+   int maxProfileEvents = 20; // login/logout etc
+   int maxSessionEvents = 100; // number of page view and application events for each UserSession
    // 30 days
    int cookieDurationSeconds = 30*24*60*60;
    long authTokenDurationMillis = 30*24*60*60*1000L;

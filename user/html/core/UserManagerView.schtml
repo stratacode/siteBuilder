@@ -1,0 +1,88 @@
+<div>
+   <%!
+      SiteContext site;
+      SiteManager siteMgr;
+      boolean isAdmin := userMgr.siteMgr.userView.user.superAdmin;
+      object userMgr extends UserManager {
+         site := UserManagerView.this.site;
+         siteMgr := UserManagerView.this.siteMgr;
+      }
+      UserProfile currentUser := userMgr.currentUser;
+   %>
+   <div id="findUserView" class="findUserView">
+      <div id="findUserForm" class="formField">
+         <label for="searchUserField">Find user:</label><input id="searchUserField" type="text" value=":=: userMgr.searchText" changeEvent="=: userMgr.doSearch()"/>
+         <input type="image" class="findUserButton" src="/icons/search.svg" clickEvent="=: userMgr.doSearch()"/>
+         <input type="image" class="clearUserButton" src="/icons/x-square.svg" clickEvent="=: userMgr.clearSearch()"/>
+      </div>
+      <div id="userTypeForm">
+         <span visible=":= isAdmin"><label for="allSitesCheckbox">Search all sites</label><input type="checkbox" id="allSitesCheckbox" checked=":=: userMgr.searchAcrossSites"/></span>
+         <label for="showGuestCheckbox">Show guests</label><input type="checkbox" id="showGuestCheckbox" checked=":=: userMgr.showGuests"/>
+         <span id="extraSearchOptions"/>
+      </div>
+   </div>
+
+   <div id="currentUsersView">
+      <div class="headerRow" visible=":= userMgr.currentUsers != null && userMgr.currentUsers.size() > 0">
+         <span class="smallHeaderColumn">User id</span>
+         <span class="wideHeaderColumn">Email address</span>
+         <span class="smallHeaderColumn">Visits</span>
+         <span class="smallHeaderColumn">Clicks</span>
+         <span class="smallHeaderColumn">Locked</span>
+         <span class="smallHeaderColumn">Limited</span>
+         <span class="wideHeaderColumn">Created</span>
+         <span class="wideHeaderColumn">Last login</span>
+         <span class="wideHeaderColumn">Last activity</span>
+      </div>
+      <div id="userRepeat" repeat=":= userMgr.currentUsers" repeatVarName="curRowUser"
+           class=':= curRowUser == currentUser ? "selectedUserRow" : "userRow"' >
+         <span class="smallUserColumn" clickEvent="=: userMgr.updateCurrentUser(curRowUser)">
+            <input type="checkbox" checked=":= currentUser == curRowUser"/>
+            <%= curRowUser.id %>
+         </span>
+         <span class="wideUserColumn"> <%= curRowUser.emailAddress %> </span>
+         <span class="smallUserColumn"> <%= curRowUser.numUserSessions %> </span>
+         <span class="smallUserColumn"> <%= curRowUser.userProfileStats.numSessionEvents %> </span>
+         <span class="smallUserColumn"><input type="checkbox" checked=":= curRowUser.locked" changeEvent="=: userMgr.updateLocked(curRowUser, checked)" disabled=":= !isAdmin"/></span>
+         <span class="smallUserColumn"><input type="checkbox" checked=":=: curRowUser.limitExceeded"/></span>
+         <span class="wideUserColumn"> <%= curRowUser.userProfileStats.registered %> </span>
+         <span class="wideUserColumn"> <%= curRowUser.userProfileStats.lastLogin %> </span>
+         <span class="wideUserColumn"> <%= curRowUser.userProfileStats.lastActivity %> </span>
+      </div>
+   </div>
+
+   <div id="userDetailView" visible=":= currentUser != null">
+      <%! List<UserSession> userSessions := userMgr.sessionsByUserId.get(currentUser.id); %>
+      <div class="subFormTitle">User: <%= currentUser.emailAddress == null ? "guest" : currentUser.emailAddress %> (id: <%= currentUser.id %>)</div>
+      <div class="headerRow">
+         <span class="headerColumn">User sessions</span>
+         <span class="wideHeaderColumn">Created</span>
+         <span class="headerColumn">Duration</span>
+         <span class="headerColumn">Num events</span>
+      </div>
+      <div id="userSessionRepeat" repeat=":= userSessions" repeatVarName="userSession" >
+         <%! boolean openPageViews = false; %>
+
+         <div class="sessionRow">
+            <span class="sessionColumn"><input type="checkbox" id="openCheck" checked=":=: openPageViews"/> <%= userSessionRepeat.this.repeatIndex %></span>
+            <span class="wideSessionColumn"><%= TextUtil.formatUserDate(userSession.createTime, true) %></span>
+            <span class="sessionColumn"><%= PTypeUtil.getTimeDelta(userSession.createTime.getTime(), userSession.lastModified.getTime()) %></span>
+            <span class="sessionColumn"><%= userSession.sessionEvents.size() %></span>
+         </div>
+         <div id="sessionEventBox" visible=":= openPageViews">
+            <div id="sessionEventsHeader" class="headerRow">
+               <span class="headerColumn">Event</span>
+               <span class="wideHeaderColumn">For</span>
+               <span class="wideHeaderColumn">When</span>
+            </div>
+            <div id="sessionEventsRepeat" repeat=":= userSession.sessionEvents" repeatVarName="sessionEvent" class="eventRow">
+               <span class="eventColumn"><%= sessionEvent.eventName %></span>
+               <span class="wideEventColumn"><a target="productView" href='= sessionEvent.getEventTarget(site)' bodyOnly=":= !sessionEvent.hasLink"><%= sessionEvent.eventDetail %></a></span>
+               <span class="wideEventColumn">
+                  <%= userSession.getEventTimeDisplay(sessionEventsRepeat.this.repeatIndex) %>
+               </span>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

@@ -1,0 +1,3 @@
+UserManager {
+   boolean showOrders;
+}

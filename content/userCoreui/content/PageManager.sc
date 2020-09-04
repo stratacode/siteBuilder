@@ -1,8 +1,4 @@
 class PageManager extends BaseManager {
-   SiteContext site;
-
-   site =: siteChanged();
-
    String searchText = "";
    List<PageDef> currentPages;
    PageDef currentPage;
@@ -54,9 +50,6 @@ class PageManager extends BaseManager {
       return null;
    }
 
-   void siteChanged() {
-      clearSearch();
-   }
 
    void clearSearch() {
       searchText = "";

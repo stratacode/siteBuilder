@@ -18,8 +18,8 @@ OrderManager {
             propNames.add("submitted");
             propValues.add(true);
             break;
-         case Delivered:
-            propNames.add("delivered");
+         case Shipped:
+            propNames.add("shipped");
             propValues.add(true);
             break;
          default:

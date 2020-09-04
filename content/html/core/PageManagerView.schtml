@@ -1,8 +1,10 @@
 <div>
    <%!
       SiteContext site;
+      SiteManager siteMgr;
       object pageMgr extends PageManager {
          site := PageManagerView.this.site;
+         siteMgr := PageManagerView.this.siteMgr;
       }
    %>
    <div id="findPageView" class="findPageView" visible=":= !pageMgr.addInProgress">

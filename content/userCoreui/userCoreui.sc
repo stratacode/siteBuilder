@@ -1,3 +1,5 @@
+package sc;
+
 import sc.content.SiteManager;
 import sc.content.PageType;
 import sc.content.PageManager;

@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 UserProfile {
    static UserProfile findByAuthToken(String tokenStr) {
       UserAuthToken authToken = UserAuthToken.findByToken(tokenStr);
@@ -56,6 +58,16 @@ UserProfile {
       return userProfileStats;
    }
 
+   void registerSuccess(String remoteIp) {
+      if (userbase.recordStats) {
+         UserProfileStats stats = getOrCreateStats();
+         String prevRemoteIp = stats.lastRemoteIp;
+         stats.lastRemoteIp = remoteIp;
+         stats.registered = new Date();
+         profileEvent("registered", prevRemoteIp, remoteIp, stats.loginCt);
+      }
+   }
+
    void loginSuccess(String remoteIp) {
       if (userbase.recordStats) {
          UserProfileStats stats = getOrCreateStats();
@@ -79,16 +91,8 @@ UserProfile {
    void profileEvent(String eventName, String prevRemoteIp, String newRemoteIp, int count) {
       // Adding a new event only when the remoteIp has changed since we keep counts at a higher level
       if (userbase.recordEvents && !DynUtil.equalObjects(prevRemoteIp, newRemoteIp)) {
-         UserProfileStats stats = userProfileStats;
-         List<UserProfileEvent> events = stats.profileEvents;
-         if (events == null) {
-            events = new ArrayList<UserProfileEvent>();
-            stats.profileEvents = events;
-         }
-         if (events.size() > userbase.maxProfileEvents) {
-            events.remove(0);
-         }
-         events.add(new UserProfileEvent("loginFailed", newRemoteIp, count));
+         UserProfileStats stats = getOrCreateStats();
+         stats.addProfileEvent(new UserProfileEvent("loginFailed", newRemoteIp, count));
       }
    }
 
@@ -96,4 +100,13 @@ UserProfile {
       String salt = user.salt;
       return DBUtil.hashPassword(salt, password);
    }
+
+   int getNumUserSessions() {
+      return UserSession.getDBTypeDescriptor().searchCountQuery(null, Arrays.asList("user"), Arrays.asList(this));
+   }
+
+   List<UserSession> getUserSessions(int startIx, int count) {
+      return (List<UserSession>) UserSession.getDBTypeDescriptor().findBy(Arrays.asList("user"), Arrays.asList(this), null, Arrays.asList("id"), startIx, count);
+   }
+
 }

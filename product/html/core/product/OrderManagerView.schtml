@@ -15,9 +15,9 @@
          <input type="radio" id="submittedOrderType" name="orderSearchType" checked=":= orderSearchType == OrderSearchType.Submitted"
                 changeEvent="=: updateSearchType(OrderSearchType.Submitted)"/>
          <label for="submittedOrderType">Submitted</label>
-         <input type="radio" id="submittedOrderType" name="orderSearchType" checked=":= orderSearchType == OrderSearchType.Delivered"
-                changeEvent="=: updateSearchType(OrderSearchType.Delivered)"/>
-         <label for="submittedOrderType">Delivered</label>
+         <input type="radio" id="submittedOrderType" name="orderSearchType" checked=":= orderSearchType == OrderSearchType.Shipped"
+                changeEvent="=: updateSearchType(OrderSearchType.Shipped)"/>
+         <label for="submittedOrderType">Shipped</label>
       </div>
    </div>
 

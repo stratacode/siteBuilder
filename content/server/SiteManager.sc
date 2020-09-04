@@ -1,8 +1,8 @@
 SiteManager {
    void start() {
-      UserView uv = currentUserView;
+      userView = currentUserView;
 
-      if (uv.loginStatus == LoginStatus.NotLoggedIn) {
+      if (userView.loginStatus == LoginStatus.NotLoggedIn) {
          siteList = new ArrayList<SiteContext>();
          changeSite(null);
          // Not clearing this error on login... it seems unnecessary anyway
@@ -10,13 +10,13 @@ SiteManager {
          return;
       }
 
-      siteList = uv.user.siteList;
+      siteList = userView.user.siteList;
       //if (siteList == null) {
       //   siteList = new ArrayListSiteContext>();
       //   uv.user.siteList = siteList;
       //}
 
-      SiteContext newSite = uv.lastSite;
+      SiteContext newSite = userView.lastSite;
       errorMessage = null;
       if (pathName != null) {
          newSite = SiteContext.findBySitePathName(pathName);
@@ -26,7 +26,7 @@ SiteManager {
       }
       else {
          if (siteList.size() == 0)
-            errorMessage = "No current sites for user: " + uv.user.userName;
+            errorMessage = "No current sites for user: " + userView.user.userName;
          else if (newSite == null)
             newSite = siteList.get(0);
       }
@@ -97,7 +97,7 @@ SiteManager {
       newSite.validateProperties();
 
       if (newSite.propErrors == null) {
-         UserProfile user = currentUserView.user;
+         UserProfile user = userView.user;
          newSite.siteAdmins = new ArrayList<UserProfile>();
          newSite.siteAdmins.add(user);
          newSite.userbase = user.userbase;
@@ -151,7 +151,7 @@ SiteManager {
    void updateSiteSelectList() {
       ArrayList<String> res = new ArrayList<String>();
       if (siteList == null) {
-         res.add("User: " + currentUserView.user.userName + " admin for no sites");
+         res.add("User: " + userView.user.userName + " admin for no sites");
       }
       else {
          res.add("Select a site");
@@ -177,8 +177,8 @@ SiteManager {
          try {
             if (currentSites != null)
                currentSites.remove(toRemove);
-            currentUserView.user.siteList.remove(toRemove);
-            currentUserView.user.dbUpdate();
+            userView.user.siteList.remove(toRemove);
+            userView.user.dbUpdate();
 
             toRemove.dbDelete(false);
          }

@@ -142,6 +142,8 @@ UserView {
          user.userName = newUserName;
          user.salt = DBUtil.createSalt();
          user.password = UserProfile.getHashedPassword(user, password);
+
+         user.registerSuccess(remoteIp);
       }
       else if (userViewError == null) {
          userViewError = propErrors.toString();
@@ -219,6 +221,7 @@ UserView {
          session.user = user;
          session.createTime = new Date();
          session.sessionMarker = sessionMarker;
+         session.site = site;
          userSessions.put(site.id, session);
       }
       return session;

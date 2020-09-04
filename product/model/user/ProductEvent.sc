@@ -1,6 +1,20 @@
 class ProductEvent extends SessionEvent {
-   long productId;
-   ProductEvent(long pId) {
-      productId = pId;
+   String productPathName;
+   ProductEvent(Product p) {
+      productPathName = p.pathName;
+   }
+   ProductEvent() {
+   }
+
+   String getEventName() {
+      return "product view";
+   }
+
+   String getEventDetail() {
+      return productPathName;
+   }
+
+   String getEventTarget(SiteContext site) {
+      return "/" + site.sitePathTypeName + "/page/" + productPathName;
    }
 }

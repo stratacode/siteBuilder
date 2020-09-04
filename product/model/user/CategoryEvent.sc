@@ -1,6 +1,20 @@
 class CategoryEvent extends SessionEvent {
-   long categoryId;
-   CategoryEvent(long pId) {
-      categoryId = pId;
+   String categoryPathName;
+   CategoryEvent(Category c) {
+      categoryPathName = c.pathName;
+   }
+   CategoryEvent() { // for json serialization
+   }
+
+   String getEventName() {
+      return "category view";
+   }
+
+   String getEventDetail() {
+      return categoryPathName;
+   }
+
+   String getEventTarget(SiteContext site) {
+      return "/" + site.sitePathTypeName + "/category/" + categoryPathName;
    }
 }

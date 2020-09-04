@@ -5,6 +5,8 @@ class SiteManager {
    SiteContext site;
    SiteContext lastSite;
 
+   UserView userView;
+
    List<String> siteSelectList;
 
    String errorMessage;

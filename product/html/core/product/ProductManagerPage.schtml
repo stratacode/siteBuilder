@@ -7,7 +7,7 @@
    </head>
    <body>
       <div id="mgrFrame">
-         <div id="mgrView" extends="ProductManagerView" store=":= siteMgr.store" visible=":= siteMgr.validStore">
+         <div id="mgrView" extends="ProductManagerView" siteMgr=":= ProductManagerPage.this.siteMgr" store=":= siteMgr.store" visible=":= siteMgr.validStore">
             <div id="alt" class="mgrViewStatus" visible=":= siteMgr.validSite"> Site <%= siteMgr.site.siteName %> is not an online store.</div>
          </div>
       </div>

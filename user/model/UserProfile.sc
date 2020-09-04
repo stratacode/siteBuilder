@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 class UserProfile {
    @Sync(syncMode=SyncMode.Disabled)
    @DBPropertySettings(required=true)
+   /** Separate Userbase's will be separate collections of user objects, perhaps shared or separate for different sites */
    Userbase userbase;
 
    @DBPropertySettings(indexed=true)
@@ -16,16 +17,23 @@ class UserProfile {
 
    @DBPropertySettings(indexed=true)
    String userName;
+
+   @Sync(syncMode=SyncMode.ClientToServer)
    String password;
+   @Sync(syncMode=SyncMode.Disabled)
    String salt;
 
    String firstName, lastName, salutation;
+   @Sync(syncMode=SyncMode.ServerToClient)
    boolean emailVerified;
 
    Date lastModified;
 
+   @Sync(syncMode=SyncMode.ServerToClient)
    boolean locked;
+   @Sync(syncMode=SyncMode.ServerToClient)
    boolean limitExceeded;
+   @Sync(syncMode=SyncMode.ServerToClient)
    Date limitRestoreDate;
 
    Address homeAddress;
@@ -38,6 +46,7 @@ class UserProfile {
 
    final static int MIN_USER_NAME_LEN = 6;
 
+   @Sync(syncMode=SyncMode.ServerToClient)
    long userPrivMask = 0;
 
    // Uses a bidirectional binding to map from boolean to bit in the bit-mask in both directions
@@ -46,6 +55,7 @@ class UserProfile {
    boolean siteAdmin :=: (userPrivMask & PRIV_SITE_ADMIN) != 0;
    boolean registered :=: (userPrivMask & PRIV_REGISTERED) != 0;
 
+   @Sync(syncMode=SyncMode.ServerToClient)
    UserProfileStats userProfileStats;
 
    private transient Locale locale;

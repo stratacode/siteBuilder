@@ -23,4 +23,8 @@ class OrderManager extends BaseManager {
       order = null;
       searchText = null;
    }
+
+   void clearSearch() {
+      resetForm();
+   }
 }
