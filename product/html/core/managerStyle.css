@@ -425,3 +425,30 @@
 #userDetailView, #sessionEventBox {
    margin-left: 20px;
 }
+
+#userNav {
+   margin-left: 20px;
+}
+
+#loginMenu {
+   position: fixed;
+   z-index: 5;
+   padding-left: 10px;
+   padding-right: 10px;
+   padding-top: 2px;
+   padding-bottom: 2px;
+   background-color: #fff;
+   top: +40px;
+   border: solid 1px #aaa;
+}
+
+#loginMenu a, #userNav a {
+   text-decoration: none;
+   color: inherit;
+}
+
+.logoutIcon {
+   position: relative;
+   top: 5px;
+   padding-right: 5px;
+}

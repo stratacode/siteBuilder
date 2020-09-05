@@ -15,6 +15,6 @@ class AddToCartEvent extends SessionEvent {
    }
 
    String getEventTarget(SiteContext site) {
-      return "/" + site.sitePathTypeName + "/page/" + productPathName;
+      return "/" + site.sitePathTypeName + "/" + site.sitePathName + "/page/" + productPathName;
    }
 }

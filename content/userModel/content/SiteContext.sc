@@ -1,6 +1,8 @@
 @DBTypeSettings(typeId=1)
 class SiteContext implements IPropValidator {
+   @Sync(syncMode=SyncMode.ServerToClient)
    List<UserProfile> siteAdmins;
+   @Sync(syncMode=SyncMode.ServerToClient)
    Userbase userbase;
 
    // Inner class used without DBTypeSettings with FindBy. Generates a findBy method that will create
@@ -23,6 +25,7 @@ class SiteContext implements IPropValidator {
 
    String icon;
 
+   @Sync(syncMode=SyncMode.ServerToClient)
    MediaManager mediaManager;
 
    // Configurable presentation elements - add to the page menu, add new pages and provide the default page

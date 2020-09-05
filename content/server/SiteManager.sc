@@ -210,4 +210,19 @@ SiteManager {
       saveMenuItems();
    }
 
+
+   void updateSiteAdmin(UserProfile profile, boolean newVal) {
+      if (newVal) {
+         if (site.siteAdmins == null)
+            site.siteAdmins = new BArrayList<UserProfile>();
+         if (site.siteAdmins.contains(profile))
+            return;
+         site.siteAdmins.add(profile);
+      }
+      else {
+         if (site.siteAdmins == null)
+            return;
+         site.siteAdmins.remove(profile);
+      }
+   }
 }

@@ -10,6 +10,6 @@ class PageEvent extends SessionEvent {
    }
 
    String getEventTarget(SiteContext site) {
-      return "/" + site.sitePathTypeName + "/page/" + pathName;
+      return "/" + site.sitePathTypeName + "/" + site.sitePathName + "/page/" + pathName;
    }
 }

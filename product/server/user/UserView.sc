@@ -96,22 +96,25 @@ UserView {
          emailAddress = emailAddress;
       }
       if (super.login()) {
-         UserProfile regUser = user;
-         Order regUserOrder = OrderView.getPendingOrderForUser(regUser, orderView.store);
-         if (regUserOrder == null) {
-         // Make the registered user the owner of the anonymous cart
-            orderView.order.user = regUser;
+         if (orderView != null) {
+            UserProfile regUser = user;
+            Order regUserOrder = OrderView.getPendingOrderForUser(regUser, orderView.store);
+            if (regUserOrder == null) {
+            // Make the registered user the owner of the anonymous cart
+               orderView.order.user = regUser;
+            }
+            else {
+            // Add the anonymous shopping cart to the existing registered user
+               regUserOrder.appendOrder(orderView.order);
+            }
+            orderView.order = regUserOrder;
+            orderView.refreshLineItems();
+            orderView.refresh();
          }
-         else {
-         // Add the anonymous shopping cart to the existing registered user
-            regUserOrder.appendOrder(orderView.order);
-         }
-         orderView.order = regUserOrder;
-         orderView.refreshLineItems();
-         orderView.refresh();
       }
       else { // failed
-         orderView.orderError = userViewError;
+         if (orderView != null)
+            orderView.orderError = userViewError;
       }
       return true;
    }

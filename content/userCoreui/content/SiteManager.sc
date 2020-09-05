@@ -135,4 +135,8 @@ class SiteManager {
       }
       currentNavMenuItem = newItem;
    }
+
+   boolean isSiteAdmin(UserProfile profile) {
+      return site.siteAdmins != null && site.siteAdmins.contains(profile);
+   }
 }

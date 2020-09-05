@@ -12,7 +12,10 @@ class PageView {
       pageDef = pd;
       pagePathName =  pathName;
       if (pd == null) {
-         if (pathName == null)
+         SiteContext site = siteView.siteContext;
+         if (site == null)
+            errorMessage = "No site for path";
+         else if (pathName == null)
             errorMessage = "No home page for site: " + siteView.siteContext.siteName;
          else
             errorMessage = "No page found with path name: " + pathName + " for site: " + siteView.siteContext.siteName;

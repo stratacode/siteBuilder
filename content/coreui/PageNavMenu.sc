@@ -17,6 +17,8 @@ class PageNavMenu extends NavMenu {
 
    List<BaseMenuItem> getMenuItems() {
       List<BaseMenuItem> ores = super.getMenuItems();
+      if (siteContext == null)
+         return ores;
       List<BaseMenuItem> dres = siteContext.menuItems;
       ArrayList<BaseMenuItem> res = new ArrayList<BaseMenuItem>();
       if (ores != null)

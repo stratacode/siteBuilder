@@ -2,7 +2,7 @@
    <%!
       SiteContext site;
       SiteManager siteMgr;
-      boolean isAdmin := userMgr.siteMgr.userView.user.superAdmin;
+      boolean isAdmin := siteMgr.userView.user.superAdmin;
       object userMgr extends UserManager {
          site := UserManagerView.this.site;
          siteMgr := UserManagerView.this.siteMgr;
@@ -54,6 +54,10 @@
    <div id="userDetailView" visible=":= currentUser != null">
       <%! List<UserSession> userSessions := userMgr.sessionsByUserId.get(currentUser.id); %>
       <div class="subFormTitle">User: <%= currentUser.emailAddress == null ? "guest" : currentUser.emailAddress %> (id: <%= currentUser.id %>)</div>
+      <div id="privsView">
+         <span>Super admin: <input type="checkbox" checked=":=: currentUser.superAdmin" disabled=":= !isAdmin"/></span>
+         <span>Site admin: <input type="checkbox" checked=":= siteMgr.isSiteAdmin(currentUser)" changeEvent="=: siteMgr.updateSiteAdmin(currentUser, checked)"/></span>
+      </div>
       <div class="headerRow">
          <span class="headerColumn">User sessions</span>
          <span class="wideHeaderColumn">Created</span>

@@ -82,8 +82,8 @@ UserView {
       loginStatus = LoginStatus.NotLoggedIn;
       clearAuthToken();
       userAuthToken = null;
-      if (user != null)
-         DynUtil.dispose(user);
+      //if (user != null)
+      //   DynUtil.dispose(user);
       resetUser();
       emailAddress = "";
       userName = "";

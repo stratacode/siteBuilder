@@ -15,6 +15,6 @@ class CategoryEvent extends SessionEvent {
    }
 
    String getEventTarget(SiteContext site) {
-      return "/" + site.sitePathTypeName + "/category/" + categoryPathName;
+      return "/" + site.sitePathTypeName + "/" + site.sitePathName + "/category/" + categoryPathName;
    }
 }
