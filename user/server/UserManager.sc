@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import sc.db.Query;
 
 UserManager {
    void doSearch() {
@@ -26,7 +27,12 @@ UserManager {
          newUsers = new ArrayList<UserProfile>();
       }
       if (showSessions) {
-         List<UserSession> sessions = (List<UserSession>) UserSession.findBySite(site, startIndex, numUsersPerPage);
+         //List<UserSession> sessions = (List<UserSession>) UserSession.findBySite(site, startIndex, numUsersPerPage);
+         List<UserSession> sessions = (List<UserSession>) UserSession.getDBTypeDescriptor().query(
+             Query.and(Query.eq("site", site),
+                       Query.or(Query.match("user.emailAddress", searchText),
+                                Query.match("user.firstName", searchText))), null, null, startIndex, numUsersPerPage);
+
          if (sessions != null) {
             for (int i = 0; i < sessions.size(); i++) {
                UserSession session = sessions.get(i);

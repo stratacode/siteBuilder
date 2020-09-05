@@ -13,6 +13,8 @@ class UserSession {
    @DBPropertySettings(columnType="jsonb")
    List<SessionEvent> sessionEvents;
 
+   String remoteIp;
+
    void addPageEvent(String pathName) {
       PageEvent event = new PageEvent();
       event.pathName = pathName;

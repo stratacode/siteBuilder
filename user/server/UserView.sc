@@ -222,6 +222,7 @@ UserView {
          session.createTime = new Date();
          session.sessionMarker = sessionMarker;
          session.site = site;
+         session.remoteIp = remoteIp;
          userSessions.put(site.id, session);
       }
       return session;

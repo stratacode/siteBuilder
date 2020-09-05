@@ -59,6 +59,7 @@
          <span class="wideHeaderColumn">Created</span>
          <span class="headerColumn">Duration</span>
          <span class="headerColumn">Num events</span>
+         <span class="headerColumn">Remote ip</span>
       </div>
       <div id="userSessionRepeat" repeat=":= userSessions" repeatVarName="userSession" >
          <%! boolean openPageViews = false; %>
@@ -68,6 +69,7 @@
             <span class="wideSessionColumn"><%= TextUtil.formatUserDate(userSession.createTime, true) %></span>
             <span class="sessionColumn"><%= PTypeUtil.getTimeDelta(userSession.createTime.getTime(), userSession.lastModified.getTime()) %></span>
             <span class="sessionColumn"><%= userSession.sessionEvents.size() %></span>
+            <span class="sessionColumn"><%= userSession.remoteIp %></span>
          </div>
          <div id="sessionEventBox" visible=":= openPageViews">
             <div id="sessionEventsHeader" class="headerRow">
