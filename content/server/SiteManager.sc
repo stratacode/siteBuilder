@@ -10,6 +10,10 @@ SiteManager {
          return;
       }
 
+      refreshSiteForUser();
+   }
+
+   void refreshSiteForUser() {
       siteList = userView.user.siteList;
       //if (siteList == null) {
       //   siteList = new ArrayListSiteContext>();
@@ -223,6 +227,13 @@ SiteManager {
          if (site.siteAdmins == null)
             return;
          site.siteAdmins.remove(profile);
+      }
+   }
+
+
+   void login() {
+      if (userView.login()) {
+         refreshSiteForUser();
       }
    }
 }

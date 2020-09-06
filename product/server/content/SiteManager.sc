@@ -37,8 +37,8 @@ SiteManager {
          store.countryNames.add(country);
    }
 
-   void start() {
-      super.start();
+   void refreshSiteForUser() {
+      super.refreshSiteForUser();
       if (site instanceof Storefront) {
          store = (Storefront) site;
          validateStore();
