@@ -39,6 +39,8 @@ class UserView {
    // List of per-property errors
    Map<String,String> propErrors;
 
+   String updatePasswordStatus;
+
    String sessionMarker;
 
    SiteContext lastSite;
@@ -56,10 +58,14 @@ class UserView {
          errorPriority = priority;
       }
       if (property != null) {
-         if (propErrors == null)
-            propErrors = new TreeMap<String,String>();
-         propErrors.put(property, message);
+         addPropError(property, message);
       }
+   }
+
+   void addPropError(String property, String message) {
+      if (propErrors == null)
+         propErrors = new TreeMap<String,String>();
+      propErrors.put(property, message);
    }
 
    void priorityError(String error) {

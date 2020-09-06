@@ -1,3 +1,4 @@
+<%@ @URL(pattern="/register") %>
 <html extends="PageLayout">
 <body>
    <div id="pageBody">

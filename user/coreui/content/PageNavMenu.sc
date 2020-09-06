@@ -18,15 +18,16 @@ PageNavMenu {
          visible := !loggedIn;
       }
 
-      object signoutMenuItem extends NavMenuItem {
-         name = "Sign out";
-         url = "/logout";
+      object editProfileMenuItem extends NavMenuItem {
+         name = "Edit profile";
+         url = "/profile";
          visible := loggedIn;
       }
 
-      object forgetMenuItem extends NavMenuItem {
-         name = "Clear session";
+      object signoutMenuItem extends NavMenuItem {
+         name := loggedIn ? "Sign out" : "Clear session";
          url = "/logout";
       }
+
    }
 }

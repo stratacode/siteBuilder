@@ -233,5 +233,26 @@ UserView {
       if (session != null)
          session.addPageEvent(pathName);
    }
+
+   void updateProfile() {
+      // TODO: add validation to the user object and check for propErrors here
+      userViewError = null;
+      userViewStatus = "Profile updated";
+   }
+
+   void updatePassword() {
+      updatePasswordStatus = null;
+      if (propErrors != null)
+         propErrors.remove("password");
+
+      String passwordError = user.validatePassword(password);
+      if (passwordError != null) {
+         addPropError("password", passwordError);
+         return;
+      }
+
+      user.password = UserProfile.getHashedPassword(user, password);
+      updatePasswordStatus = "Password changed";
+   }
 }
 
