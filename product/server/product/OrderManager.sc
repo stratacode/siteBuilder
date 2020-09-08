@@ -46,6 +46,7 @@ OrderManager {
       // We might have just removed this order so don't make it current again
       if (((DBObject)toSel.getDBObject()).isActive()) {
          if (toSel == order) {
+            order = null;
          }
          else {
             order = toSel;

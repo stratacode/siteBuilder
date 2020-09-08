@@ -21,6 +21,12 @@ class Order {
       return Currency.getForName(currencyName);
    }
 
+   String getCurrencySymbol() {
+      if (totalPrice == null)
+         return "";
+      return currency.symbol;
+   }
+
    boolean checkoutStarted;
    String orderNumber;
    boolean pending := orderNumber == null;
@@ -74,9 +80,9 @@ class Order {
          if (shipmentStarted)
             return "partially shipped";
          if (cancelledOn != null) {
-            return "cancelled";
+            return "cancelled " + TextUtil.formatUserDate(cancelledOn, true);
          }
-         return "pending shipment";
+         return "submitted " + TextUtil.formatUserDate(submittedOn, true);
       }
       else
          return "shipped " + TextUtil.formatUserDate(shippedOn, true);

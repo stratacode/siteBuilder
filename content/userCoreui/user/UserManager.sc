@@ -29,6 +29,9 @@ class UserManager extends BaseManager {
    }
 
    void updateCurrentUser(UserProfile newUser) {
-      currentUser = newUser;
+      if (newUser == currentUser)
+         currentUser = null;
+      else
+         currentUser = newUser;
    }
 }

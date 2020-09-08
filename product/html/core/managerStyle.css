@@ -117,6 +117,8 @@
 }
 
 .subFormView {
+   margin-left: 5px;
+   margin-right: 5px;
    margin-top: 10px;
    margin-bottom: 10px;
    border: solid 1px #aaa;
@@ -134,10 +136,19 @@
 .formContainer {
    margin-top: 10px;
    margin-bottom: 10px;
-   padding: 5px;
+   /* padding: 5px; */
    display: flex;
    flex-direction: column;
    border: solid 1px #aaa;
+}
+
+.subFormContainer {
+   margin-top: 5px;
+   margin-bottom: 5px;
+   display: flex;
+   flex-direction: column;
+   border: solid 1px #aaa;
+   background: #eef1ff;
 }
 
 .rightButton {
@@ -426,7 +437,16 @@
    margin-left: 20px;
 }
 
+.sessionEventBox {
+   background-color: #eef1ff;
+}
+
+
 #userNav {
+   margin-left: 20px;
+}
+
+.orderDetailForm {
    margin-left: 20px;
 }
 
@@ -452,3 +472,9 @@
    top: 5px;
    padding-right: 5px;
 }
+
+.orderElemView {
+   display: flex;
+   flex-direction: column;
+}
+

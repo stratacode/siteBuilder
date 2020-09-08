@@ -24,34 +24,6 @@
       </div>
    </div>
 
-   <div id="extraFormView">
-      <div id="detailFormView" class="formContainer" visible=':= order != null'>
-         <div class="formTitle"> Order: <span visible=":= order.orderNumber != null"><%= order.orderNumber %>:</span><span><%= order.displayStatus %></span></div>
-         <div class="headerRow">
-            <span class="wideHeaderColumn">Sku code</span>
-            <span class="headerColumn">Price</span>
-            <span class="headerColumn">Discount price</span>
-            <span class="headerColumn">In stock</span>
-            <span class="wideHeaderColumn">Shipped</span>
-         </div>
-         <div repeat=":= order.lineItems" repeatVarName="lineItem" id="orderLineItemsView" class="orderRow">
-            <span id="skuCode" class="wideOrderColumn"> <%= lineItem.sku.skuCode %> </span>
-            <span id="price" class="orderColumn"> <%= lineItem.sku.price %> </span>
-            <span id="discount" class="orderColumn"> <%= lineItem.sku.discountPrice %> </span>
-            <span id="tax" class="orderColumn"> <%= lineItem.sku.available %> </span>
-            <span id="shipped" class="wideOrderColumn">
-               <span id="pendingShipActions" visible=":= lineItem.shippedOn == null">
-                  <input type="button"
-                         value="Shipped" clickEvent="=: markItemShipped(order, lineItem)"/>
-                  <input type="button"
-                         value="Cancel" clickEvent="=: cancelLineItem(order, lineItem)"/>
-                  <span id="alt"><%= TextUtil.formatUserDate(lineItem.shippedOn, true) %></span>
-               </span>
-            </span>
-         </div>
-      </div>
-   </div>
-
    <div id="listView">
       <div class="headerRow" visible=":= orderList != null && orderList.size() > 0">
          <span class="wideHeaderColumn">Order #</span>
@@ -60,25 +32,52 @@
          <span class="wideHeaderColumn">Submitted</span>
          <span class="wideHeaderColumn">Actions</span>
       </div>
-      <div id="orderElemView" repeat=":= orderList" repeatVarName="orderElem"
-           class=':= orderElem == order ? "selectedOrderRow" : "orderRow"'>
-        <span class="wideOrderColumn" clickEvent="=: doSelectOrder(orderElem)">
-           <input type="checkbox" checked=":= order == orderElem"/>
-           <%= orderElem.orderNumber %>
-        </span>
-        <span class="wideOrderColumn" clickEvent="=: doSelectOrder(orderElem)">
-           <%= orderElem.emailAddress %>
-        </span>
-        <span class="orderColumn"><%= orderElem.totalPrice %> </span>
-        <span class="wideOrderColumn">
-           <span><%= orderElem.displayStatus %></span>
-        </span>
-        <span class="wideOrderColumn">
-           <span visible=":= orderElem.pendingShip">
-              <input type="button" value="Shipped" clickEvent="=: markOrderShipped(orderElem)"/>
-              <input type="button" value="Cancel" clickEvent="=: cancelOrder(orderElem)"/>
+      <div id="orderElemView" repeat=":= orderList" repeatVarName="orderElem" class="orderElemView">
+        <div id="orderElemRow" class=':= orderElem == order ? "selectedOrderRow" : "orderRow"'>
+           <span class="wideOrderColumn" clickEvent="=: doSelectOrder(orderElem)">
+              <input type="checkbox" checked=":= order == orderElem"/>
+              <%= orderElem.orderNumber %>
            </span>
-        </span>
+           <span class="wideOrderColumn" clickEvent="=: doSelectOrder(orderElem)">
+              <%= orderElem.emailAddress %>
+           </span>
+           <span class="orderColumn"><%= orderElem.currencySymbol %><%= orderElem.totalPrice %> </span>
+           <span class="wideOrderColumn"><%= orderElem.displayStatus %></span>
+           <span class="wideOrderColumn">
+              <span visible=":= orderElem.pendingShip">
+                 <input type="button" value="Shipped" clickEvent="=: markOrderShipped(orderElem)"/>
+                 <input type="button" value="Cancel" clickEvent="=: cancelOrder(orderElem)"/>
+              </span>
+           </span>
+        </div>
+        <div id="extraFormView" class="orderDetailForm">
+            <div id="detailFormView" class="subFormContainer" visible=':= order == orderElem'>
+               <div class="subFormTitle">Order <span visible=":= order.orderNumber != null">#<%= order.orderNumber %> status:</span><span><%= order.displayStatus %></span></div>
+               <div class="headerRow" visible=":= order.lineItems != null && order.lineItems.size() > 0">
+                  <span class="wideHeaderColumn">Sku code</span>
+                  <span class="headerColumn">Price</span>
+                  <span class="headerColumn">Discount price</span>
+                  <span class="headerColumn">In stock</span>
+                  <span class="wideHeaderColumn">Shipped</span>
+                  <div id="alt" class="formStatus">No line items in order</div>
+               </div>
+               <div repeat=":= order.lineItems" repeatVarName="lineItem" id="orderLineItemsView" class="orderRow">
+                  <span id="skuCode" class="wideOrderColumn"> <%= lineItem.sku.skuCode %> </span>
+                  <span id="price" class="orderColumn"> <%= lineItem.sku.price %> </span>
+                  <span id="discount" class="orderColumn"> <%= lineItem.sku.discountPrice %> </span>
+                  <span id="tax" class="orderColumn"> <%= lineItem.sku.available %> </span>
+                  <span id="shipped" class="wideOrderColumn">
+                     <span id="pendingShipActions" visible=":= lineItem.shippedOn == null && order.pendingShip">
+                        <input type="button"
+                               value="Shipped" clickEvent="=: markItemShipped(order, lineItem)"/>
+                        <input type="button"
+                               value="Cancel" clickEvent="=: cancelLineItem(order, lineItem)"/>
+                        <span id="alt"><%= TextUtil.formatUserDate(lineItem.shippedOn, true) %></span>
+                     </span>
+                  </span>
+               </div>
+            </div>
+         </div>
       </div>
    </div>
    <div id="messages">
