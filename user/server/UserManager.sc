@@ -50,6 +50,7 @@ UserManager {
          }
          sessionsByUserId = newSessionsById;
       }
+      //searchForExtraUsers(newUsers);
       currentUsers = newUsers;
    }
 

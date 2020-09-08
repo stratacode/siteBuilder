@@ -207,7 +207,8 @@ class Sku implements IPropValidator {
       return null;
    }
 
+   @Bindable(manual=true)
    String getInventoryDisplayStr() {
-      return "n/a";
+      return "";
    }
 }

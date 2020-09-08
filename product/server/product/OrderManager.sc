@@ -10,16 +10,20 @@ OrderManager {
       switch (searchType) {
          case All:
             break;
-         case Pending:
+         case PendingCheckout:
             propNames.add("orderNumber");
             propValues.add(null);
             break;
-         case Submitted:
-            propNames.add("submitted");
+         case PendingShip:
+            propNames.add("pendingShip");
             propValues.add(true);
             break;
          case Shipped:
             propNames.add("shipped");
+            propValues.add(true);
+            break;
+         case Cancelled:
+            propNames.add("cancelled");
             propValues.add(true);
             break;
          default:
@@ -37,7 +41,8 @@ OrderManager {
    }
 
    void doSelectOrder(Order toSel) {
-      resetForm();
+      orderStatusMessage = null;
+      orderErrorMessage = null;
       // We might have just removed this order so don't make it current again
       if (((DBObject)toSel.getDBObject()).isActive()) {
          if (toSel == order) {
@@ -58,10 +63,7 @@ OrderManager {
             PhysicalSku psku = (PhysicalSku) sku;
             if (psku.inventory != null) {
                int quant = psku.inventory.quantity;
-               if (quant > 0) {
-                  psku.inventory.quantity = quant - 1;
-               }
-               else
+               if (quant <= 0)
                   unavailableSkus.add(psku.skuCode);
             }
          }
@@ -75,6 +77,36 @@ OrderManager {
          orderStatusMessage = "Order marked as shipped";
          orderErrorMessage = null;
       }
+      Bind.sendChangedEvent(order, "displayStatus");
+   }
+
+   void cancelOrder(Order order) {
+      if (!order.pendingShip) {
+         orderErrorMessage = "Unable to cancel order not yet submitted";
+         return;
+      }
+      order.cancelledOn = new Date();
+      List<LineItem> shippedItems = new ArrayList<LineItem>();
+      int numCancelled = 0;
+      for (LineItem lineItem: order.lineItems) {
+         if (lineItem.shippedOn != null) {
+            shippedItems.add(lineItem);
+            continue;
+         }
+         numCancelled++;
+         Sku sku = lineItem.sku;
+         if (sku instanceof PhysicalSku) {
+            PhysicalSku psku = (PhysicalSku) sku;
+            if (psku.inventory != null) {
+               psku.inventory.quantity += lineItem.quantity;
+            }
+         }
+      }
+      if (shippedItems.size() > 0) {
+         orderStatusMessage = "Cancelled remaining " + numCancelled + " line items - " + shippedItems.size() + " already shipped";
+      }
+      else
+         orderStatusMessage = "Order cancelled";
       Bind.sendChangedEvent(order, "displayStatus");
    }
 
@@ -92,6 +124,16 @@ OrderManager {
          markOrderShipped(order);
       else
          Bind.sendChangedEvent(order, "displayStatus");
+   }
+
+   void cancelLineItem(Order order, LineItem lineItem) {
+      if (!order.lineItems.remove(lineItem))
+         return;
+      if (order.lineItems.size() == 0)
+         cancelOrder(order);
+      else
+         order.refreshLineItems();
+      Bind.sendChangedEvent(order, "displayStatus");
    }
 
    void updateSearchType(OrderSearchType searchType) {

@@ -56,4 +56,76 @@ Order {
          numLineItems = lineItems.size();
       }
    }
+
+   String allocateInventory() {
+      if (lineItems != null) {
+         Map<String,Integer> skuCodeQuantities = new java.util.HashMap<String,Integer>();
+         ArrayList<Sku> invSkus = new ArrayList<Sku>();
+         for (LineItem lineItem:lineItems) {
+            if (lineItem.sku instanceof PhysicalSku) {
+               PhysicalSku sku = (PhysicalSku) lineItem.sku;
+               ProductInventory inventory = sku.inventory;
+               if (inventory != null) {
+                  // Account for two line items referring to the same sku
+                  Integer alloced = skuCodeQuantities.get(sku.skuCode);
+                  if (alloced == null)
+                     alloced = 0;
+
+                  int needed = lineItem.quantity + alloced;
+                  if (inventory.quantity == 0) {
+                     return "Sku: " + sku.skuCode + " is out of stock";
+                  }
+                  else if (inventory.quantity < needed) {
+                     return "Sku: " + sku.skuCode + " has only: " + inventory.quantity + " available - order requires: " + needed;
+                  }
+                  if (skuCodeQuantities.put(sku.skuCode, lineItem.quantity + alloced) == null)
+                     invSkus.add(sku);
+               }
+            }
+         }
+
+         if (invSkus.size() > 0) {
+            DBTransaction curr = DBTransaction.getCurrent();
+            if (curr != null)
+               curr.commit();
+
+            DBTransaction itx = DBTransaction.getOrCreate();
+            for (Sku invSku:invSkus) {
+               Integer quant = skuCodeQuantities.get(invSku.skuCode);
+               ProductInventory inv = invSku.inventory;
+               if (inv.quantity >= quant) {
+                  inv.quantity = inv.quantity - quant;
+                  Bind.sendChangedEvent(invSku, "inventoryDisplayStr");
+               }
+               else {
+                  itx.rollback();
+                  String message = "Inventory for product: " + invSku.skuCode + ": " + inv.quantity + " changed! It's now less than the required inventory for order: " + quant;
+                  DBUtil.error("Rolling back inventory transaction: " + message);
+                  return message;
+               }
+            }
+            try {
+               itx.commit();
+               return null;
+            }
+            catch (Exception exc) {
+               DBUtil.error("Exception committing inventory: " + exc);
+            }
+            return "Error committing inventory changes for order";
+         }
+      }
+      return null;
+   }
+
+   int getReservedInventory(PhysicalSku sku) {
+      if (lineItems == null)
+         return 0;
+      int ct = 0;
+      for (LineItem lineItem:lineItems) {
+         if (lineItem.sku == sku)
+            ct += lineItem.quantity;
+      }
+      return ct;
+   }
+
 }

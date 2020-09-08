@@ -24,13 +24,15 @@ class Order {
    boolean checkoutStarted;
    String orderNumber;
    boolean pending := orderNumber == null;
-   boolean delivered := shippedOn != null;
-   boolean submitted := submittedOn != null && shippedOn == null;
+   boolean shipped := shippedOn != null;
+   boolean cancelled := cancelledOn != null;
+   boolean pendingShip := !pending && !shipped && !cancelled;
 
    boolean shipmentStarted = false;
 
    Date submittedOn;
    Date shippedOn;
+   Date cancelledOn;
    Date lastModified;
 
    PaymentInfo paymentInfo;
@@ -53,6 +55,11 @@ class Order {
       totalPrice = res;
    }
 
+   void refreshLineItems() {
+      numLineItems = lineItems == null ? 0 : lineItems.size();
+      refreshTotalPrice();
+   }
+
    String validateEmailAddress(String emailAddress) {
       return TextUtil.validateEmailAddress(emailAddress);
    }
@@ -66,10 +73,13 @@ class Order {
       else if (shippedOn == null) {
          if (shipmentStarted)
             return "partially shipped";
+         if (cancelledOn != null) {
+            return "cancelled";
+         }
          return "pending shipment";
       }
       else
-         return "order complete";
+         return "shipped " + TextUtil.formatUserDate(shippedOn, true);
    }
 
    public String getOrderSummary() {

@@ -1,3 +1,3 @@
 enum OrderSearchType {
-   All, Pending, Submitted, Shipped
+   All, PendingCheckout, PendingShip, Shipped, Cancelled
 }

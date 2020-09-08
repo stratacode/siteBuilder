@@ -29,7 +29,7 @@ SiteManager {
          }
       }
       else {
-         if (siteList.size() == 0)
+         if (siteList == null || siteList.size() == 0)
             errorMessage = "No current sites for user: " + userView.user.userName;
          else if (newSite == null)
             newSite = siteList.get(0);

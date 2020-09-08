@@ -4,6 +4,11 @@ ProductView {
    // Here so we only run it once and sync the results
    pathName =: validateProductPath();
 
+   pageVisitCount =: validateInStock();
+
+   ProductInventory inventory := currentSku.inventory;
+   inventory =: validateInStock();
+
    void init() {
       if (storeView.store == null)
          return;
@@ -43,15 +48,36 @@ ProductView {
       if (product != null) {
          available = product.available;
       }
-      if (available) {
-         if (!(currentSku instanceof PhysicalSku))
-            inStock = true;
-         else
-            inStock = currentSku.inStock;
-      }
-      else
-         inStock = false;
+      validateInStock();
+   }
 
+   void validateInStock() {
+      // Note: numInCart here only should be set to > 0 when we are tracking inventory
+      if (available) {
+         if (!(currentSku instanceof PhysicalSku)) {
+            inStock = true;
+            numInCart = 0;
+         }
+         else {
+            inStock = currentSku.inStock;
+            if (inStock) {
+               OrderView orderView = storeView.orderView;
+               Order cart = orderView.order;
+               if (cart != null) {
+                  PhysicalSku psku = (PhysicalSku)currentSku;
+                  numInCart = cart.getReservedInventory(psku);
+
+                  inStock = psku.inventory.quantity >= (numInCart + currentQuantity);
+               }
+            }
+            else
+               numInCart = 0;
+         }
+      }
+      else {
+         inStock = false;
+         numInCart = 0;
+      }
    }
 
    void initOptions() {
@@ -204,6 +230,7 @@ ProductView {
       UserSession us = storeView.getUserSession();
       if (us != null)
          us.addAddToCartEvent(product);
+      validateInStock();
    }
 
    void startProductSync() {

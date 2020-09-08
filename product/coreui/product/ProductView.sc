@@ -16,6 +16,9 @@ class ProductView extends CatalogElementView {
    boolean inStock;
 
    @Sync
+   int numInCart; // Set to non-zero value when tracking inventory to display detailed inventory info
+
+   @Sync
    String productViewError;
 
    @Sync(initDefault=true)

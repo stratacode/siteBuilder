@@ -23,15 +23,15 @@
    </div>
 
    <div id="currentUsersView">
-      <div class="headerRow" visible=":= userMgr.currentUsers != null && userMgr.currentUsers.size() > 0">
+      <div id="headerRow" class="headerRow" visible=":= userMgr.currentUsers != null && userMgr.currentUsers.size() > 0">
          <span class="smallHeaderColumn">User id</span>
          <span class="wideHeaderColumn">Email address</span>
          <span class="smallHeaderColumn">Visits</span>
          <span class="smallHeaderColumn">Clicks</span>
+         <span id="extraHeaders" bodyOnly="true"/>
          <span class="smallHeaderColumn">Locked</span>
          <span class="smallHeaderColumn">Limited</span>
-         <span class="wideHeaderColumn">Created</span>
-         <span class="wideHeaderColumn">Last login</span>
+         <span class="wideHeaderColumn">Registered</span>
          <span class="wideHeaderColumn">Last activity</span>
       </div>
       <div id="userRepeat" repeat=":= userMgr.currentUsers" repeatVarName="curRowUser"
@@ -43,11 +43,11 @@
          <span class="wideUserColumn"> <%= curRowUser.emailAddress %> </span>
          <span class="smallUserColumn"> <%= curRowUser.numUserSessions %> </span>
          <span class="smallUserColumn"> <%= curRowUser.userProfileStats.numSessionEvents %> </span>
+         <span id="extraColumns" bodyOnly="true"/>
          <span class="smallUserColumn"><input type="checkbox" checked=":= curRowUser.locked" changeEvent="=: userMgr.updateLocked(curRowUser, checked)" disabled=":= !isAdmin"/></span>
          <span class="smallUserColumn"><input type="checkbox" checked=":=: curRowUser.limitExceeded"/></span>
-         <span class="wideUserColumn"> <%= curRowUser.userProfileStats.registered %> </span>
-         <span class="wideUserColumn"> <%= curRowUser.userProfileStats.lastLogin %> </span>
-         <span class="wideUserColumn"> <%= curRowUser.userProfileStats.lastActivity %> </span>
+         <span class="wideUserColumn"> <%= TextUtil.formatUserDate(curRowUser.userProfileStats.registered, true) %> </span>
+         <span class="wideUserColumn"> <%= TextUtil.formatUserDate(curRowUser.userProfileStats.lastActivity, true) %> </span>
       </div>
    </div>
 
@@ -75,8 +75,8 @@
             <span class="sessionColumn"><%= userSession.sessionEvents.size() %></span>
             <span class="sessionColumn"><%= userSession.remoteIp %></span>
          </div>
-         <div id="sessionEventBox" visible=":= openPageViews">
-            <div id="sessionEventsHeader" class="headerRow">
+         <div id="sessionEventBox" class="sessionEventBox" visible=":= openPageViews">
+            <div id="sessionEventsHeader" class="headerRow sessionEventsHeader">
                <span class="headerColumn">Event</span>
                <span class="wideHeaderColumn">For</span>
                <span class="wideHeaderColumn">When</span>

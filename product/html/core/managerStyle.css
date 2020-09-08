@@ -422,7 +422,7 @@
 }
 
 /* Nesting of tables in UserManager */
-#userDetailView, #sessionEventBox {
+#userDetailView, .sessionEventBox {
    margin-left: 20px;
 }
 

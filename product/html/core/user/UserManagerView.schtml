@@ -1,0 +1,58 @@
+<div>
+   <%!
+      userMgr {
+         store := UserManagerView.this.siteMgr.store;
+      }
+      object orderMgr extends OrderManager {
+         siteMgr := UserManagerView.this.siteMgr;
+         store := UserManagerView.this.siteMgr.store;
+      }
+   %>
+   <div id="currentUsersView">
+     <div id="headerRow">
+        <span id="extraHeaders">
+           <span class="headerColumn"># of orders</span>
+           <span class="headerColumn">lifetime value</span>
+        </span>
+     </div>
+
+     <div id="userRepeat">
+        <span id="extraColumns">
+           <span class="orderColumn"><%= curRowUser.numOrders %></span>
+           <span class="orderColumn"><%= siteMgr.store.defaultCurrency.symbol %><%= curRowUser.totalPurchased %></span>
+        </span>
+     </div>
+   </div>
+   <div id="userDetailView">
+      <%! List<Order> userOrders := userMgr.getOrdersForUser(currentUser); %>
+
+      <div class="headerRow">
+         <span class="wideHeaderColumn">Order #</span>
+         <span class="headerColumn">Total price</span>
+         <span class="wideHeaderColumn">Submitted</span>
+         <span class="wideHeaderColumn">Shipped</span>
+      </div>
+
+      <div id="ordersRepeat" repeat=":= userOrders" repeatVarName="orderElem" class="orderRow">
+        <span class="wideOrderColumn" clickEvent="=: orderMgr.doSelectOrder(orderElem)">
+           <input type="checkbox" checked=":= orderMgr.order == orderElem"/>
+           <%= orderElem.orderNumber %>
+        </span>
+        <span class="orderColumn"><%= orderElem.totalPrice %> </span>
+        <span class="wideOrderColumn">
+           <span visible=":= orderElem.submittedOn != null">
+              <%= TextUtil.formatUserDate(orderElem.submittedOn, true) %>
+              <span id="alt">pending <%= orderElem.checkoutStarted ? "checkout" : "submit" %> </span>
+           </span>
+        </span>
+        <span class="wideOrderColumn">
+           <span visible=":= orderElem.orderNumber != null">
+              <span visible=":= orderElem.shippedOn != null">
+                 <%= TextUtil.formatUserDate(orderElem.shippedOn, true) %>
+                 <span id="alt"><input type="button" value="Mark as shipped" clickEvent="=: orderMgr.markOrderShipped(orderElem)"/> </span>
+              </span>
+           </span>
+        </span>
+      </div>
+   </div>
+</div>

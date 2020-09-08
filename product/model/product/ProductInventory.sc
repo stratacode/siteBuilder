@@ -1,8 +1,11 @@
 import sc.bind.IChangeable;
 
+@DBTypeSettings(versionProp="version")
 class ProductInventory implements IPropValidator, IChangeable {
    int quantity;
    Date nextAvail;
+
+   long version;
 
    @Bindable
    @DBPropertySettings(persist=false)
@@ -36,5 +39,12 @@ class ProductInventory implements IPropValidator, IChangeable {
       catch (IllegalArgumentException exc) {
          addPropError("nextAvail", "Invalid date format");
       }
+   }
+
+   String getNextAvailDisplayStr() {
+      if (nextAvail != null) {
+         return "Available on: " + TextUtil.formatUserDate(nextAvail, false);
+      }
+      return "";
    }
 }

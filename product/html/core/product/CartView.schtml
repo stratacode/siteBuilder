@@ -17,9 +17,6 @@
          <div id="checkoutView" visible=":= order.orderNumber == null && order.checkoutStarted">
             <div id="guestCheckoutBox" visible=":= userView.loginStatus == LoginStatus.NotLoggedIn">
                <div class="viewTitle">Continue as a guest or <a clickEvent="=: orderView.showLoginView = true">login</a></div>
-               <div id="orderErrorView" visible=":= orderView.orderError != null">
-                  Please correct these errors: <%= orderView.orderError %>
-               </div>
                <div id="emailFieldBox" class="fieldBox">
                   <%!
                      boolean hasError := TextUtil.hasMapEntry(orderView.propErrors, "emailAddress");
@@ -137,7 +134,7 @@
                      </div>
                   </div>
                </div>
-               <input type="text" class="cartLineItemQuantity"
+               <input type="number" class="cartLineItemQuantity" min="0"
                       value=":= quantityConverter.intToString(lineItem.quantity)"
                       changeEvent="=: orderView.changeQuantity(lineItem, value)"/>
                <div id="cartStatus" class="cartStatus"><%= lineItem.sku.inStock ? "in stock" : "backordered" %></div>
@@ -149,6 +146,9 @@
                <span id="cartPrice">
                    <%= order.currency.symbol %><%= order.totalPrice %>
                </span>
+               <div id="orderErrorView" visible=":= orderView.orderError != null">
+                  <%= orderView.orderError %>
+               </div>
                <div id="actionButtonBox">
                   <input id="actionButton" type="button"
                          value=':= order.checkoutStarted ? "Submit order" : "Checkout"'

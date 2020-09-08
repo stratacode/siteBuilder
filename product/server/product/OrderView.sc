@@ -20,6 +20,10 @@ OrderView {
       return null;
    }
 
+   static List<Order> getSubmittedOrdersForUser(UserProfile user, Storefront store) {
+      return Order.findByUserPending(user, false, store);
+   }
+
    void refresh() {
       UserProfile user = currentUserView.user;
       orderError = null;
@@ -104,11 +108,35 @@ OrderView {
    }
 
    void refreshLineItems() {
-      order.numLineItems = order.lineItems.size();
-      order.refreshTotalPrice();
+      order.refreshLineItems();
+      Map<String,Integer> reservedItems = new java.util.HashMap<String,Integer>();
+      for (int i = 0; i < order.lineItems.size(); i++) {
+         LineItem lineItem = order.lineItems.get(i);
+         Sku sku = lineItem.sku;
+         if (sku instanceof PhysicalSku) {
+            PhysicalSku psku = (PhysicalSku) sku;
+            if (psku.inventory != null) {
+               int numLeft = psku.inventory.quantity;
+               int numNeeded = lineItem.quantity;
+               Integer cartQ = reservedItems.get(sku.skuCode);
+               if (cartQ != null) {
+                  numNeeded += cartQ;
+               }
+               if (numNeeded > numLeft) {
+                  if (numLeft == 0)
+                     orderError = "Item is now out of stock";
+                  else
+                     orderError = "Only " + numLeft + " and cart has " + numNeeded;
+               }
+               reservedItems.put(sku.skuCode, numNeeded);
+            }
+         }
+      }
    }
 
    void changeQuantity(LineItem lineItem, String quantityStr) {
+      orderError = null;
+
       int quantity;
       try {
          quantity = Integer.parseInt(quantityStr);
@@ -127,6 +155,21 @@ OrderView {
          else if (quantity > Storefront.MaxQuantity)
             orderError = "Quantity is greater than the max: " + Storefront.MaxQuantity;
          else {
+            if (lineItem.sku instanceof PhysicalSku) {
+               PhysicalSku psku = (PhysicalSku) lineItem.sku;
+               if (!psku.inStock)
+                  orderError = "Item is no longer in stock";
+               else if (psku.inventory != null) {
+                  int old = lineItem.quantity;
+                  int numInCart = order.getReservedInventory(psku);
+                  if (numInCart + quantity - old > psku.inventory.quantity) {
+                     lineItem.quantity = quantity;
+                     lineItem.quantity = old; // To force a change event here set it back
+                     orderError = "Only: " + psku.inventory.quantity + " left with " + numInCart + " in cart";
+                     return;
+                  }
+               }
+            }
             lineItem.quantity = quantity;
             lineItem.refreshLineItemPrice();
             order.refreshTotalPrice();
@@ -190,9 +233,19 @@ OrderView {
       }
       order.paymentInfo.validatePaymentInfo();
       orderError = order.validateForSubmit();
-      if (propErrors == null && order.paymentInfo.billingAddress.propErrors == null && order.shippingAddress.propErrors == null &&
-          orderError == null && order.paymentInfo.propErrors == null) {
 
+      boolean hasErrors = propErrors != null || orderError != null || order.paymentInfo.billingAddress.propErrors != null ||
+                          order.shippingAddress.propErrors != null || order.paymentInfo.propErrors != null;
+
+      if (!hasErrors) {
+         String noInventory = order.allocateInventory();
+         if (noInventory != null) {
+            orderError = noInventory;
+            hasErrors = true;
+         }
+      }
+
+      if (!hasErrors) {
          newOrderSubmitted = true;
          order.orderNumber = order.store.makeOrderNumber(order);
          order.submittedOn = new Date();
@@ -257,6 +310,7 @@ OrderView {
             UserSession us = storeView.getUserSession();
             if (us != null)
                us.addOrderSubmitEvent();
+            user.orderSubmitted(order);
 
             order = Order.createDraft(store, user);
          }
@@ -347,5 +401,17 @@ OrderView {
 
    void registerAfterOrder() {
       userView.registerAfterOrder(completedOrder, order);
+   }
+
+   boolean getSkuInStock(PhysicalSku sku) {
+      if (order != null) {
+         ProductInventory inventory = sku.inventory;
+         if (inventory != null) {
+            int reservedCount = order.getReservedInventory(sku);
+            if (reservedCount >= inventory.quantity)
+               return false;
+         }
+      }
+      return sku.inStock;
    }
 }

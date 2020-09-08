@@ -4,6 +4,7 @@ class PhysicalSku extends Sku {
    BigDecimal weight, height, width, length;
 
    inventory =: Bind.sendChangedEvent(this, "displaySummary");
+   inventory =: Bind.sendChangedEvent(this, "inventoryDisplayStr");
 
    PhysicalSku createOptionSku() {
       PhysicalSku res = new PhysicalSku();

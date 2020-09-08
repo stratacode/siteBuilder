@@ -3,6 +3,10 @@ UserProfile {
 
    PaymentInfo paymentInfo;
 
+   int numOrders;
+
+   BigDecimal totalPurchased;
+
    @DBPropertySettings(columnType="jsonb")
    List<PaymentInfo> paymentInfos;
 }

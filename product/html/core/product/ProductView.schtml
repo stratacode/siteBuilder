@@ -35,10 +35,22 @@
             </div>
          </div>
          <div id="longDesc" class="longDesc"><%= product.longDesc %></div>
-         <div id="skuCode" class="skuCode">SKU: <%= currentSku.skuCode %></div>
+         <div id="skuCode" class="skuCode">SKU: <%= currentSku.skuCode %> <%= currentSku.inventoryDisplayStr %></div>
          <div id="addToCartForm">
-            <input type="button" value="Add to cart" id="addToCartButton" clickEvent="=: addToCart()"/>
-            <input type="number" id="quantityField" class="quantityField" value=":=: currentQuantityStr"/>
+            <input type="button" value="Add to cart" id="addToCartButton" disabled=":= !inStock" clickEvent="=: addToCart()"/>
+            <input type="number" id="quantityField" min="1" max=":= Storefront.MaxQuantity" class="quantityField" value=":=: currentQuantityStr"/>
+            <span visible=":= numInCart > 0">(<%= numInCart %> in cart)</span>
+            <div id="notAvailView" visible=":= !inStock">
+               <div id="outOfStockView" visible=":= !currentSku.inStock">
+                  Out of stock
+                  <%= currentSku.inventory.nextAvailDisplayStr %>
+                  <div id="alt">
+                     Only <%= currentSku.inventory.quantity %> available with
+                     <%= numInCart %> in cart
+                  </div>
+               </div>
+            </div>
+
          </div>
       </div>
    </div>

@@ -25,6 +25,8 @@ abstract class CatalogElementView implements IView {
 
    altMediaIndex =: validateCurrentMedia();
 
+   int pageVisitCount := siteView.pageVisitCount;
+
    abstract CatalogElement getCatalogElement();
 
    void validateCurrentMedia() {
