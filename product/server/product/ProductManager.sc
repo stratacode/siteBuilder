@@ -151,8 +151,11 @@ ProductManager {
       try {
          int toRemIx = productList == null ? -1 : productList.indexOf(prod);
          element = null;
-         if (prod.parentCategory != null)
+         Category oldCat = prod.parentCategory;
+         if (oldCat != null) {
             prod.parentCategory = null; // Will remove this from category.products
+            oldCat.validateAllProducts();
+         }
          prod.dbDelete(false);
 
          if (toRemIx != -1) {
@@ -453,6 +456,8 @@ ProductManager {
       parentCategoryPathName = pathName;
       if (pathName == null || pathName.trim().length() == 0) {
          product.parentCategory = null;
+         if (category != null)
+            category.validateAllProducts();
          category = null;
          product.removePropError("parentCategory");
          return;
@@ -468,6 +473,7 @@ ProductManager {
          // because of the bi-directional relationship - the category is already added so once we set the product
          // to point to the category, the category wants to point to the product and adds it.
          category = cats.get(0);
+         category.validateAllProducts();
       }
       else {
          product.addPropError("parentCategory", "No category with path name: " + pathName);
@@ -709,8 +715,11 @@ ProductManager {
    }
 
    void newCategoryCompleted(Category cat) {
-      if (!addInProgress)
+      if (!addInProgress) {
          product.parentCategory = cat;
+         if (cat != null)
+            cat.validateAllProducts();
+      }
       product.removePropError("parentCategory");
       parentCategoryPathName = cat.pathName;
    }

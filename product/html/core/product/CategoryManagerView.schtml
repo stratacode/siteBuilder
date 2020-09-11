@@ -103,6 +103,39 @@
             </div>
          </div>
 
+         <div id="productsView" class="subFormView">
+            <span class="subFormTitle">Add products to category</span>
+            <span id="productDispTitle" visible=":= category.allProducts == null || category.allProducts.size() == 0">
+               <span class="productEmptyTitle">No products in category - add child or linked products or rule to include matching products </span>
+            </span>
+            <div class="productImageList">
+               <div id="prodListElement" class="prodMediaView" repeat=":= category.allProducts" repeatVarName="product">
+                  <img src=":= product.mainMedia.thumbUrl"/>
+                  <span class="productInfoText"><%= product.name %></span>
+                  <span class="productInfoText">
+                     (<%= product.parentCategory == category ? "child" : category.linkedProducts != null && category.linkedProducts.contains(product) ? "link" : "query" %>)
+                     <input type="image" class="clearMediaButton" src="/icons/x-square-sm.svg" clickEvent="=: removeChildProduct(product)"/>
+                  </span>
+               </div>
+            </div>
+            <div id="findProducts" class="formField">
+               <label for="findProductsField">Product path name</label>
+               <input id="findProductsField" type="text" list="= findProductSuggestions.getId()" value=":=: findProductsText"
+                       keyUpEvent="=: updateMatchingProducts(value)" changeEvent="=: updateSelectedProduct(value)" placeholder="search for products to add"/>
+               <datalist id="findProductSuggestions">
+                  <option repeat=":= matchingProducts" repeatVarName="matchedProduct" value=":= matchedProduct.pathName"/>
+               </datalist>
+            </div>
+            <div class="formStatus"><%= addProductStatus %></div>
+            <div class="formError"><%= addProductError %></div>
+            <div class="formField confirmButtons">
+               <input id="addProductChildButton" type="button" disabled=":= !productAddValid || selectedProduct.parentCategory != null" value="Add child product"
+                      clickEvent="=: addChildProduct(selectedProduct, false)"/>
+               <input id="addProductLinkButton" type="button" disabled=":= !productAddValid" value="Add link to product" class="rightButton"
+                      clickEvent="=: addChildProduct(selectedProduct, true)"/>
+            </div>
+         </div>
+
          <div id="addCancel" visible=":= addCategoryInProgress" class="formField confirmButtons">
             <input type="button" value="Save category" disabled=":= category == null || category.propErrors != null" clickEvent="=: completeAddCategory()"/>
             <input type="button" class="rightButton" value="Cancel" clickEvent="=: cancelAddCategory()"/>

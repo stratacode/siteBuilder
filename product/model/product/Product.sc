@@ -32,7 +32,7 @@
 @Sync(onDemand=true)
 @DBTypeSettings(typeId=1)
 class Product extends CatalogElement {
-   override @DBPropertySettings(reverseProperty="products") parentCategory;
+   override @DBPropertySettings(reverseProperty="childProducts") parentCategory;
 
    // Theses are all additional text segments you can display.  As they are populated
    // the template will adjust itself to display them.
@@ -56,6 +56,8 @@ class Product extends CatalogElement {
    /** The main SKU for the product */
    @Sync(resetState=true,initDefault=true)
    Sku sku;
+
+   boolean saleItem := sku.discountPrice != null;
 
    // Could be in a promotions layer but also pretty basic so might be best left in the core model but enabled in various layer configurations.
    @DBPropertySettings(columnType="jsonb")

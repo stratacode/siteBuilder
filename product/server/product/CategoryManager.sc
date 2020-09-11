@@ -35,6 +35,7 @@ CategoryManager {
             else
                categoryEditable = false;
             parentCategoryPathName = category.parentCategory != null ? category.parentCategory.pathName : "";
+            category.validateAllProducts();
          }
       }
    }
@@ -227,5 +228,101 @@ CategoryManager {
       }
       else
          category.addPropError("parentCategory", "No category with path name: " + pathName);
+   }
+
+   void updateMatchingProducts(String pattern) {
+      TreeSet<String> found = new TreeSet<String>();
+      ArrayList<Product> res = new ArrayList<Product>();
+      List<Product> allMatches = (List<Product>) Product.getDBTypeDescriptor().searchQuery(pattern, null, null, null, searchOrderBy, 0, 20);
+      for (Product match:allMatches) {
+         if (!found.contains(match.pathName)) {
+            res.add(match);
+            found.add(match.pathName);
+            if (res.size() == 10)
+               break;
+         }
+      }
+      matchingProducts = res;
+   }
+
+   void updateSelectedProduct(String pathName) {
+      addProductError = null;
+      addProductStatus = null;
+      List<Product> products = Product.findByPathName(pathName, store, 0, 1);
+      if (products == null || products.size() == 0) {
+         selectedProduct = null;
+         productAddValid = false;
+      }
+      else {
+         selectedProduct = products.get(0);
+         if (category.allProducts != null && category.allProducts.contains(selectedProduct)) {
+            productAddValid = false;
+            if (selectedProduct.parentCategory == category)
+               addProductError = "Product already a child of this category";
+            else if (category.linkedProducts != null && category.linkedProducts.contains(selectedProduct))
+               addProductError = "Product already linked by this category";
+            else if (category.productQuery != null)
+               addProductError = "Product matched by product query";
+            else
+               System.err.println("**** Invalid case for updateSelectedProduct");
+         }
+         else {
+            productAddValid = true;
+         }
+      }
+   }
+
+   void addChildProduct(Product product, boolean addAsLink) {
+      addProductError = null;
+      addProductStatus = null;
+      if (category == null)
+         return;
+      if (addAsLink) {
+         if (category.linkedProducts == null)
+            category.linkedProducts = new BArrayList<Product>();
+         if (category.linkedProducts.contains(product)) {
+            addProductError = "Already a linked product of this category";
+            return;
+         }
+         category.linkedProducts.add(product);
+      }
+      else {
+         // This will update the childProducts
+         product.parentCategory = category;
+         if (!category.childProducts.contains(product)) {
+            System.err.println("*** Child product not added automatically when setting parent category");
+            category.childProducts.add(product);
+         }
+      }
+      category.validateAllProducts();
+
+      addProductStatus = "Product " + product.name + " added";
+
+      selectedProduct = null;
+      productAddValid = false;
+      findProductsText = "";
+   }
+
+   void removeChildProduct(Product product) {
+      addProductError = null;
+      addProductStatus = null;
+      if (category == null)
+         return;
+      if (category.childProducts != null) {
+         if (category.childProducts.indexOf(product) != -1) {
+            product.parentCategory = null;
+            addProductStatus = "Child product removed from category";
+            category.validateAllProducts();
+            return;
+         }
+      }
+      if (category.linkedProducts != null) {
+         if (category.linkedProducts.remove(product)) {
+            addProductStatus = "Linked product removed from category";
+            category.validateAllProducts();
+            return;
+         }
+      }
+      addProductError = "Unable to remove product added by query - alter query or product data so it no longer matches.";
    }
 }

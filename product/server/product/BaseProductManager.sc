@@ -244,4 +244,5 @@ BaseProductManager {
       categoryStatusMessage = null;
       showCategoryView = false;
    }
+
 }

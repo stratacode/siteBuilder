@@ -24,8 +24,8 @@
             </a>
          </div>
       </div>
-      <div id="productsView" class="productsView" visible=":= category.products != null">
-         <div id="productView" repeat=":= category.products" repeatVarName="product" class="thumbView">
+      <div id="productsView" class="productsView" visible=":= category.childProducts != null">
+         <div id="productView" repeat=":= category.childProducts" repeatVarName="product" class="thumbView">
             <a href=':= "/stores/" + storeView.store.sitePathName + "/product/" + product.pathName' class="thumbNavLink">
                <img class="thumbImage" src=":= product.mainMedia.thumbUrl"/>
                <span><%= product.name %></span>

@@ -4,6 +4,13 @@ class CategoryManager extends BaseProductManager {
    @Sync(resetState=true, initDefault=true)
    Category parentCategory;
 
+   String findProductsText;
+   List<Product> matchingProducts;
+   Product selectedProduct;
+   boolean productAddValid = false;
+   String addProductStatus;
+   String addProductError;
+
    void updateElementInstance(CatalogElement el) {
       category = (Category) el;
    }

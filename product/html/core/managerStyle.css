@@ -163,7 +163,7 @@
    margin-left: 1%;
 }
 
-.mediaImageList {
+.mediaImageList, .productImageList {
    display: flex;
    align-items: baseline;
 }
@@ -175,7 +175,7 @@
    padding-bottom: 25px;
 }
 
-.mediaImageList, .mediaEmptyTitle {
+.mediaImageList, .mediaEmptyTitle, .productImageList {
    background: #eef1ff;
 }
 
@@ -336,7 +336,7 @@
    width: 5em;
 }
 
-.mediaInfoText {
+.mediaInfoText, .productInfoText {
    max-width: 100px;
    font-size: 75%;
    overflow: hidden;

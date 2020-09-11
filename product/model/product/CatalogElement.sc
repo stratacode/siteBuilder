@@ -43,6 +43,8 @@ abstract class CatalogElement extends ManagedResource {
    @Sync(resetState=true,initDefault=true)
    List<ManagedMedia> altMedia;
 
+   boolean featured;
+
    static String validateName(String name) {
       return IPropValidator.validateRequired("name", name);
    }
