@@ -11,6 +11,11 @@ class CategoryManager extends BaseProductManager {
    String addProductStatus;
    String addProductError;
 
+   String productQueryText;
+   List<String> productQuerySuggestions;
+   String productQueryStatus;
+   String productQueryError;
+
    void updateElementInstance(CatalogElement el) {
       category = (Category) el;
    }

@@ -166,6 +166,7 @@
 .mediaImageList, .productImageList {
    display: flex;
    align-items: baseline;
+   overflow: auto;
 }
 
 .mediaEmptyTitle, .menuItemsEmptyTitle {

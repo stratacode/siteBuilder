@@ -110,11 +110,13 @@
             </span>
             <div class="productImageList">
                <div id="prodListElement" class="prodMediaView" repeat=":= category.allProducts" repeatVarName="product">
+                  <%! String childType := product.parentCategory == category ? "child" : category.linkedProducts != null && category.linkedProducts.contains(product) ? "link" : "query"; %>
                   <img src=":= product.mainMedia.thumbUrl"/>
                   <span class="productInfoText"><%= product.name %></span>
                   <span class="productInfoText">
-                     (<%= product.parentCategory == category ? "child" : category.linkedProducts != null && category.linkedProducts.contains(product) ? "link" : "query" %>)
-                     <input type="image" class="clearMediaButton" src="/icons/x-square-sm.svg" clickEvent="=: removeChildProduct(product)"/>
+                     (<%= childType %>)
+                     <input type="image" class="clearMediaButton" src="/icons/x-square-sm.svg"
+                            visible=":= !childType.equals("query")" clickEvent="=: removeChildProduct(product)"/>
                   </span>
                </div>
             </div>
@@ -134,6 +136,16 @@
                <input id="addProductLinkButton" type="button" disabled=":= !productAddValid" value="Add link to product" class="rightButton"
                       clickEvent="=: addChildProduct(selectedProduct, true)"/>
             </div>
+            <div id="productQueryView" class="formField">
+               <label for="productQueryField">Product query</label>
+               <input id="productQueryField" type="text" list="= productQuerySuggestionList.getId()" value=":=: productQueryText" class="wideTextField"
+                       keyUpEvent="=: updateProductQuerySuggestions(value)" changeEvent="=: updateProductQuery(value)" placeholder="product property expression (e.g. 'featured && saleItem')"/>
+               <datalist id="productQuerySuggestionList">
+                  <option repeat=":= productQuerySuggestions" repeatVarName="queryString" value=":= queryString"/>
+               </datalist>
+            </div>
+            <div class="formStatus"><%= productQueryStatus %></div>
+            <div class="formError"><%= productQueryError %></div>
          </div>
 
          <div id="addCancel" visible=":= addCategoryInProgress" class="formField confirmButtons">

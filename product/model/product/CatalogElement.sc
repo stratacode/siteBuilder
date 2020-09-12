@@ -25,11 +25,7 @@ abstract class CatalogElement extends ManagedResource {
    @DBPropertySettings(indexed=true)
    Storefront store;
 
-   /** Used for the direct linking URL */
-   String primaryKeywords;
-
-   /** Used as page meta data for SEO */
-   List<String> altKeywords;
+   String keywords;
 
    /** For the primary display for this element (images, video, etc) */
    @Sync(resetState=true,initDefault=true)

@@ -170,6 +170,16 @@
             </div>
          </div>
 
+         <div id="visibleView" class="formField">
+            <label for="visibleField">Product is featured</label>
+            <input id="visibleField" type="checkbox" checked=":=: product.featured"/>
+         </div>
+
+         <div id="keywordsView" class="formField">
+            <label for="shortDescField">Keywords</label>
+            <input id="shortDescField" type="text" value=":=: product.keywords" class="wideTextField" placeholder="keywords describing product for search or categorization"/>
+         </div>
+
          <div id="addCancel" visible=":= addInProgress" class="formField confirmButtons">
             <input type="button" value="Save product" disabled=":= product == null || product.propErrors != null" clickEvent="=: completeAddProduct()"/>
             <input type="button" class="rightButton" value="Cancel" clickEvent="=: cancelAddProduct()"/>

@@ -12,9 +12,13 @@ abstract class BaseProductManager extends BaseManager {
       element = el;
       updateElementInstance(el);
       Bind.sendChange(this, "element", el);
+      validateElement();
    }
    CatalogElement getElement() {
       return element;
+   }
+
+   void validateElement() {
    }
 
    abstract void updateElementInstance(CatalogElement el);
