@@ -9,6 +9,7 @@ PageManager {
       List<PageDef> pageDefs = (List<PageDef>) PageDef.getDBTypeDescriptor().searchQuery(searchText, searchPropNames, Arrays.asList(site), null, null, 0, 20);
       currentPages = pageDefs;
       currentPage = null;
+      currentParentDef = null;
    }
 
    void updateNewPageType(PageType newPageType) {
@@ -22,6 +23,7 @@ PageManager {
       currentPage = (PageDef) DynUtil.newInnerInstance(pageClass, null, null);
       currentPage.pageTypePathName = pageType.pageTypePathName;
       currentPage.site = site;
+      currentParentDef = currentPage;
    }
 
    void startCreatePage() {
@@ -54,11 +56,13 @@ PageManager {
    }
 
    void addNewView(boolean append) {
-      if (currentPage == null)
+      if (currentParentDef == null) {
+         System.err.println("*** No current parent for add child");
          return;
+      }
       ViewDef newView = createViewDef(viewType);
       ViewDef curView = currentChildView;
-      List<ViewDef> childViews = currentPage.childViews;
+      List<ViewDef> childViews = currentParentDef.childViews;
       boolean set = false;
       if (childViews == null) {
          childViews = new ArrayList<ViewDef>();
@@ -81,7 +85,8 @@ PageManager {
             childViews.add(ix, newView);
       }
       if (set)
-         currentPage.childViews = childViews;
+         currentParentDef.childViews = childViews;
+      updateChildViews();
    }
 
    void removePage(long id) {
@@ -94,15 +99,22 @@ PageManager {
       if (currentPages != null)
          currentPages.remove(toRem);
 
-      if (isCurrent)
+      if (isCurrent) {
          currentPage = null;
+         currentParentDef = null;
+         currentChildView = null;
+      }
 
       toRem.dbDelete(false);
    }
 
    void updateChildViews() {
-      if (currentPage != null) // Update the DB copy by calling the setX method here
+      if (currentPage != null && currentPage.childViews != null) {
+         // Updates the root property that stores the DB version by calling the setX method here (TODO: should have an api for this like 'DBObject.updateProperty()')
          currentPage.childViews = currentPage.childViews;
+         // Need to mark the childViews array list itself as changed to trigger bindings that listen for the value
+         Bind.sendEvent(sc.bind.IListener.VALUE_CHANGED, currentPage.childViews, null);
+      }
    }
 
    void savePageEdits() {
@@ -116,20 +128,48 @@ PageManager {
          currentPages.add(0, currentPage);
       }
       currentPage = null;
+      currentParentDef = null;
+      currentChildView = null;
    }
 
    void cancelCreatePage() {
       currentPage = null;
+      currentParentDef = null;
+      currentChildView = null;
       addInProgress = false;
    }
 
-   void removeViewDef(ViewDef viewDef) {
-      if (currentPage == null || currentPage.childViews == null)
-         return;
-      if (!currentPage.childViews.remove(viewDef))
+   void removeViewDef(ViewDef viewDef, ParentDef parentDef) {
+      if (!removeChildView(parentDef, viewDef))
          System.err.println("*** Failed to find child view def to remove");
       else
          updateChildViews();
+   }
+
+   boolean removeChildView(ParentDef parentDef, ViewDef viewDef) {
+      if (parentDef.childViews != null) {
+         if (parentDef.childViews.remove(viewDef))
+            return true;
+         /*
+         for (ViewDef childView:parentDef.childViews) {
+            if (childView instanceof ParentDef) {
+               if (removeChildView((ParentDef) childView, viewDef))
+                  return true;
+            }
+         }
+         */
+      }
+      return false;
+   }
+
+   void selectViewDef(ViewDef viewDef, ParentDef parentDef) {
+      if (viewDef == currentChildView) {
+         currentChildView = null;
+      }
+      else {
+         currentChildView = viewDef;
+         currentParentDef = parentDef;
+      }
    }
 
    void updateViewDef(ViewDef viewDef) {
@@ -140,6 +180,7 @@ PageManager {
 
    void updateCurrentPage(PageDef newPageDef) {
       currentPage = newPageDef;
+      currentParentDef = newPageDef;
       if (newPageDef != null) {
          PageType newPageType = getPageTypeFromName(newPageDef.pageTypePathName);
          if (newPageType == null)
@@ -153,6 +194,11 @@ PageManager {
          pageType = null;
          viewType = null;
       }
+   }
+
+   void selectParent(ParentDef newParent) {
+      if (newParent != currentParentDef)
+         currentParentDef = newParent;
    }
 }
 

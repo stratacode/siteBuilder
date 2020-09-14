@@ -42,4 +42,6 @@ class Category extends CatalogElement {
    @DBPropertySettings(persist=false)
    @sc.obj.Sync(onDemand=true, initDefault=true)
    List<Product> allProducts;
+
+   String pageUrl :=  "/" + store.sitePathTypeName + "/" + store.sitePathName + "/category/" + pathName;
 }

@@ -1,6 +1,6 @@
 <%@
    @CompilerSettings(constructorProperties="sitePathName,pagePathName")
-   @URL(pattern="/sites/{sitePathName=urlString}[/{pagePathName=urlString}]", testURLs={"/sites/stratacycles", "/sites/stratacycles/about"})
+   @URL(pattern="/sites/{sitePathName=urlString}[/page/{pagePathName=urlString}]", testURLs={"/sites/stratacycles", "/sites/stratacycles/page/about"})
 %>
 <html extends="PageLayout">
    <%!

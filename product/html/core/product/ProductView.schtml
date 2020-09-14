@@ -1,10 +1,10 @@
 <div class="productView">
    <%!
       ProductViewDef viewDef;
+      pathName := viewDef.productPathName;
       ProductView(PageView pageView, Element parentNode, String id, ProductViewDef viewDef, int ix) {
          super(parentNode, id, viewDef, ix);
          this.siteView = pageView.siteView;
-         this.pathName = viewDef.productPathName;
          this.viewDef = viewDef;
       }
    %>

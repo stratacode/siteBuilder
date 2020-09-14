@@ -1,0 +1,2 @@
+class SlideshowDef extends ParentDef {
+}

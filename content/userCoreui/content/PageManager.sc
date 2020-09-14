@@ -12,6 +12,8 @@ class PageManager extends BaseManager {
 
    ViewDef currentChildView;
 
+   ParentDef currentParentDef;
+
    ViewType viewType = contentViewType;
 
    List<PageType> pageTypes = contentPageTypes;
@@ -26,10 +28,12 @@ class PageManager extends BaseManager {
    }
 
    final static ViewType contentViewType = new ViewType("Content view", "sc.content.ContentViewDef", "sc.content.ContentViewEditor", "sc.content.ContentView");
+   final static ViewType slideShowViewType = new ViewType("Slideshow view", "sc.content.SlideshowDef", "sc.content.SlideshowViewEditor", "sc.content.SlideshowView");
 
    static {
       plainPageType.viewTypes = new ArrayList<ViewType>();
       plainPageType.viewTypes.add(contentViewType);
+      plainPageType.viewTypes.add(slideShowViewType);
    }
 
    PageType getPageTypeFromName(String pageTypePathName) {

@@ -17,6 +17,8 @@ CategoryView {
             if (PTypeUtil.testMode)
                DBUtil.addTestIdInstance(category, "category/" + pathName);
 
+            category.validateAllProducts();
+
             ManagedMedia mainMedia = category.mainMedia;
             if (category.altMedia != null) {
                altMedia = new ArrayList<ManagedMedia>();

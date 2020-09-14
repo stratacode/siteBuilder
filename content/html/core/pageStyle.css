@@ -54,3 +54,36 @@
 .confirmButtons, .formTitle, .formError, .formStatus, .subFormTitle, .formMessage {
    margin-left: 21%;
 }
+
+.slideNavRow {
+   position: relative;
+   top: 0;
+   left: 0;
+   background: transparent;
+}
+
+.selectDot, .selectedDot {
+   width: 14px;
+   height: 14px;
+   border-radius: 50%;
+   background-color: transparent;
+   border: 1px solid #ccc;
+   padding: 0;
+   color: #fff;
+   cursor: pointer;
+   display: inline-block;
+   margin-left: 2px;
+   margin-right: 2px;
+}
+
+.selectDot:hover {
+   background-color: #aaa;
+}
+
+.selectedDot {
+   background-color: #777;
+}
+
+.leftSlideArrow, .rightSlideArrow {
+   cursor:pointer
+}

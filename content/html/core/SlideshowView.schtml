@@ -1,0 +1,46 @@
+<div>
+<%!
+   PageView pageView;
+
+   SlideshowDef slideshowDef;
+
+   int currentSlide;
+   int numSlides := slideshowDef.childViews.size();
+
+   SlideshowView(PageView pageView, Element parentNode, String id, SlideshowDef viewDef, int ix) {
+      super(parentNode, id, viewDef, ix);
+      this.pageView = pageView;
+      this.slideshowDef = viewDef;
+   }
+
+   ViewDef getViewDef() {
+      return slideshowDef;
+   }
+   void setViewDef(ViewDef viewDef) {
+      this.slideshowDef = (SlideshowDef) viewDef;
+   }
+
+   void changeSlide(int slideIx) {
+      if (slideIx < 0)
+         currentSlide = 0;
+      else if (slideIx >= numSlides)
+         currentSlide = numSlides - 1;
+      else
+         currentSlide = slideIx;
+   }
+%>
+
+   <div id="slideViewContainer">
+      <div id="childViewRepeat"
+           repeat=":= slideshowDef.childViews" slideshow="= SlideshowView.this"
+           pageView=":= SlideshowView.this.pageView" repeatWrapper="SlideshowWrapper"/>
+
+      <div class="slideNavRow">
+         <span id="leftSlideArrow" class="leftSlideArrow" clickEvent="=: changeSlide(currentSlide - 1)">❮</span>
+         <span class="centerSlideButtons">
+            <span id="selectDot" class=':= repeatIndex == currentSlide ? "selectedDot" : "selectDot"' clickEvent="=: changeSlide(repeatIndex)" repeat=":= slideshowDef.childViews"/>
+         </span>
+         <span id="rightSlideArrow" class="rightSlideArrow" clickEvent="=: changeSlide(currentSlide + 1)">❯</span>
+      </div>
+   </div>
+</div>

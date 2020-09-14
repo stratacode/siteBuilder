@@ -1,30 +1,46 @@
 <div extends="BaseViewEditor">
-   <%! 
-      CategoryViewEditor(Element parentNode, String id, PageManager pageMgr, ViewDef def, int ix) {
-         super(parentNode, id, pageMgr, def, ix);
-         this.categoryDef = (CategoryViewDef) def;
+   <%!
+      pageTitle = "Category";
+      CategoryViewEditor(Element parentNode, String id, PageManager pageMgr, ViewDef def, ParentDef parentDef, int ix) {
+         super(parentNode, id, pageMgr, def, parentDef, ix);
       }
-      CategoryViewDef categoryDef;
+      CategoryViewDef categoryDef := (CategoryViewDef) viewDef;
+      categoryDef =: categoryDef.validateCategoryPathName(categoryDef.categoryPathName);
       List<Category> matchingCats;
+
+      void updateShowContentsOnly(boolean val) {
+         categoryDef.showContentsOnly = val;
+         pageMgr.updateViewDef(categoryDef);
+      }
    %>
 
-   <div id="viewEditorTitle" class="viewEditorTitle"><span id="titleText" clickEvent="=: pageMgr.currentChildView = viewDef">Category view</span>
-      <input type="image" class="removeViewButton" src="/icons/x-square.svg" clickEvent="=: pageMgr.removeViewDef(viewDef)"/>
-   </div>
-   <div class="formField">
-      <label for="categoryPathField">Category path name</label>
-      <input type="text" id="categoryPathField" value=":=: categoryDef.categoryPathName" liveEdit="change"
-             list="= suggestions.getId()" keyUpEvent="=: matchingCats = BaseManager.getMatchingCategories(pageMgr.store, value)"
-             class=':= categoryDef.propErrors.get("categoryPathName") == null ? "fieldInput" : "fieldInputError"'
-             changeEvent="=: pageMgr.updateViewDef(categoryDef)"/>
-      <div class="formFieldError"><%= categoryDef.propErrors.get("categoryPathName") %></div>
-      <datalist id="suggestions">
-         <option repeat=":= matchingCats" repeatVarName="matchingCat" value=":= matchingCat.pathName"/>
-      </datalist>
+   <div id="viewEditor">
+      <div class="boxRow">
+         <div class="viewEditorForm">
+            <div id="categoryPathField" class="formField">
+               <label for="categoryPathField">Category path name</label>
+               <input type="text" id="categoryPathField" value=":=: categoryDef.categoryPathName" liveEdit="change"
+                      list="= suggestions.getId()" keyUpEvent="=: matchingCats = BaseManager.getMatchingCategories(pageMgr.store, value)"
+                      class=':= categoryDef.propErrors.get("categoryPathName") == null ? "fieldInput" : "fieldInputError"'
+                      changeEvent="=: pageMgr.updateViewDef(categoryDef)"/>
+               <div class="formFieldError"><%= categoryDef.propErrors.get("categoryPathName") %></div>
+               <datalist id="suggestions">
+                  <option repeat=":= matchingCats" repeatVarName="matchingCat" value=":= matchingCat.pathName"/>
+               </datalist>
+            </div>
 
-      <div id="prodDispView">
-         <img src=":= categoryDef.category.mainMedia.thumbUrl"/>
+            <div id="categoryShowContentsField" class="formField" clickEvent="=: updateShowContentsOnly(!showContentsCheckbox.checked)">
+               <label for="showContentsCheckbox">Show contents only</label>
+               <input id="showContentsCheckbox" type="checkbox" checked=":= categoryDef.showContentsOnly"/>
+            </div>
+         </div>
+
+         <div class="formLabelImage">
+            <img src=":= categoryDef.category.mainMedia.thumbUrl" height="64" visible=":= categoryDef.category.mainMedia != null"/>
+         </div>
       </div>
+
    </div>
+
 
 </div>

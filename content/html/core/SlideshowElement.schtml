@@ -1,0 +1,13 @@
+<div style=':= repeatIndex == slideshow.currentSlide ? "display: block" : "display: none"'>
+   <%!  
+       SlideshowView slideshow;
+       Element slideElement;
+
+       SlideshowElement(SlideshowView slideshow, String id, Element slideElement, int ix) {
+          super(slideshow, id, slideElement, ix);
+          this.slideshow = slideshow;
+          this.slideElement = slideElement;
+       }
+   %>
+   <div id="slideElementView" replaceWith=":= slideElement"/>
+</div>

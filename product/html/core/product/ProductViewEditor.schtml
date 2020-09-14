@@ -1,17 +1,14 @@
 <div extends="BaseViewEditor">
    <%!
-      ProductViewEditor(Element parentNode, String id, PageManager pageMgr, ViewDef def, int ix) {
-         super(parentNode, id, pageMgr, def, ix);
-         this.productDef = (ProductViewDef) def;
+      pageTitle = "Product view";
+
+      ProductViewEditor(Element parentNode, String id, PageManager pageMgr, ViewDef def, ParentDef parentDef, int ix) {
+         super(parentNode, id, pageMgr, def, parentDef, ix);
       }
-      ProductViewDef productDef;
+      ProductViewDef productDef := (ProductViewDef) viewDef;
       List<Product> matchingProds;
    %>
-
-   <div id="viewEditorTitle" class="viewEditorTitle"><span id="titleText" clickEvent="=: pageMgr.currentChildView = viewDef">Product view</span>
-      <input type="image" class="removeViewButton" src="/icons/x-square.svg" clickEvent="=: pageMgr.removeViewDef(viewDef)"/>
-   </div>
-   <div class="formField">
+   <div id="viewEditor" class="formField">
       <label for="productPathField">Product path name</label>
       <input type="text" id="productPathField"
              list="= suggestions.getId()" keyUpEvent="=: matchingProds = BaseManager.getMatchingProducts(pageMgr.store, value)"

@@ -1,6 +1,8 @@
 class CategoryViewDef extends ViewDef {
    String categoryPathName;
 
+   boolean showContentsOnly = false;
+
    transient Category category;
 
    Storefront getStore() {

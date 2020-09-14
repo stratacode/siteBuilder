@@ -20,6 +20,8 @@ class PageDef extends ParentDef {
 
    Date lastModified;
 
+   String pageUrl := "/" + site.sitePathTypeName + "/" + site.sitePathName + "/page/" + pagePathName;
+
    String validatePageName(String pageName) {
       return IPropValidator.validateRequired("page name", pageName);
    }

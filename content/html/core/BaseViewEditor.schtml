@@ -1,11 +1,23 @@
-<div abstract="true" class=':= viewDef == pageMgr.currentChildView ? "selectedViewEditorBox" : "viewEditorBox"'>
+<div abstract="true">
    <%!
       PageManager pageMgr;
       ViewDef viewDef;
-      BaseViewEditor(Element parentNode, String id, PageManager pageMgr, ViewDef viewDef, int repeatIx) {
+      ParentDef parentDef;
+      String pageTitle;
+      boolean open = true;
+      BaseViewEditor(Element parentNode, String id, PageManager pageMgr, ViewDef viewDef, ParentDef parentDef, int repeatIx) {
          super(parentNode, id, viewDef, repeatIx);
          this.pageMgr = pageMgr;
          this.viewDef = viewDef;
+         this.parentDef = parentDef;
       }
    %>
+   <div id="viewEditorTitle" class=':= viewDef == pageMgr.currentChildView ? "selectedViewEditorTitle" : "viewEditorTitle"'
+        clickEvent="=: pageMgr.selectViewDef(viewDef, parentDef)">
+      <input type="image" class="openViewButton" src=':= open ? "/icons/minus-square.svg" : "/icons/plus-square.svg"' clickEvent="=: open = !open"/>
+      <span class="viewEditorTitleText" ><%= pageTitle %></span>
+      <input type="image" class="removeViewButton" src="/icons/x-square.svg" clickEvent="=: pageMgr.removeViewDef(viewDef, parentDef)"/>
+   </div>
+
+   <div id="viewEditor" visible=":= open"/>
 </div>

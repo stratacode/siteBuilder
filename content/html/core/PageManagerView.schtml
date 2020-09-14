@@ -24,6 +24,7 @@
    <div id="pageDetailForm" visible=":= pageMgr.currentPage != null">
       <div class="formTitle">
          <%= pageMgr.addInProgress ? "Unsaved" : "Edit" %> <%= pageMgr.pageType.pageDisplayName %>
+            <span visible=":= !pageMgr.addInProgress"><a target="productView" href=':= pageMgr.currentPage.pageUrl'>(open)</a></span>
       </div>
 
       <div class="formField">
@@ -47,13 +48,17 @@
          <input type="checkbox" id="homePageCheckbox" checked=":=: pageMgr.currentPage.homePage"/>
       </div>
 
-      <div id="childViewsView">
-         <div class="subFormTitle" visible=":= pageMgr.currentPage.childViews.size() > 0">
+      <div id="childViewsView" class=':= pageMgr.currentParentDef == pageMgr.currentPage ? "selectedChildViewsView" : "childViewsView"'>
+         <div class="childViewsTitle">
             Page views
-            <div id="alt" class="formStatus">No views in page</div>
          </div>
-         <div id="childViewRepeat" repeat=":= pageMgr.currentPage.childViews" repeatVarName="childView" repeatWrapper="ChildViewEditorWrapper"
-              pageMgr=":= PageManagerView.this.pageMgr" class=':= childView == pageMgr.currentChildView ? "selectedChildView" : "childView"'/>
+         <div id="childViewContainer" clickEvent="=: pageMgr.selectParent(pageMgr.currentPage)" class="childViewContainer">
+            <div class="noViewsTitle" visible=":= pageMgr.currentPage.childViews.size() == 0">
+               No views in page
+            </div>
+            <div id="childViewRepeat" repeat=":= pageMgr.currentPage.childViews" repeatVarName="childView" repeatWrapper="ChildViewEditorWrapper"
+                 pageMgr=":= PageManagerView.this.pageMgr" parentDef=":= pageMgr.currentPage" class=':= childView == pageMgr.currentChildView ? "selectedChildView" : "childView"'/>
+         </div>
       </div>
 
       <div id="addViewButtons" class="confirmButtons">
@@ -81,7 +86,7 @@
             <input type="checkbox" checked=":= pageMgr.currentPage == curRowPage"/>
             <%= curRowPage.pageName %>
          </span>
-         <span class="widePageColumn"> <%= curRowPage.pagePathName %> </span>
+         <span class="widePageColumn"> <a target="productView" href=":= curRowPage.pageUrl"><%= curRowPage.pagePathName %></a> </span>
          <input type="checkbox" checked=":=: curRowPage.visible" class="smallPageColumn"/>
          <input type="image" class="removeSiteButton" src="/icons/x-square.svg" class="smallPageColumn"
                 clickEvent="=: pageMgr.removePage(curRowPage.id)"/>

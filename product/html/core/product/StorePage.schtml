@@ -1,11 +1,13 @@
 <%@
    @CompilerSettings(constructorProperties="sitePathName,pagePathName")
-   @URL(pattern="/stores/{sitePathName=urlString}[/{pagePathName=urlString}]", testURLs={"/stores/stratacycles", "/stores/stratacycles/about"})
+   @URL(pattern="/stores/{sitePathName=urlString}[/page/{pagePathName=urlString}]", testURLs={"/stores/stratacycles", "/stores/stratacycles/page/about"})
 %>
-<html extends="PageLayout">
+<html extends="PageLayout" pageVisitCount="=: refreshPage()">
    <%!
       PageView pageView;
       String pagePathName;
+      List<ViewDef> childViews := pageView.pageDef.childViews;
+      childViews =: refreshPage();
 
       StorePage(String sitePathName, String pagePathName) {
          super(sitePathName);
@@ -13,6 +15,11 @@
          this.pagePathName = pagePathName;
          pageView = siteView.getPageView(pagePathName);
       }
+
+      void refreshPage() {
+         body.appFrame.pageBody.pageChildView_Repeat.rebuildRepeat();
+      }
+
    %>
    <head exec="server">
       <link id="docStyle" rel="stylesheet" href="/productStyle.css" type="text/css"/>
@@ -21,7 +28,7 @@
       <div id="appFrame">
          <div id="pageBody">
              <div id="formError"><%= pageView.errorMessage %></div>
-             <div id="pageChildView" repeat=":= StorePage.this.pageView.pageDef.childViews" pageView=":= StorePage.this.pageView" repeatWrapper="sc.content.ChildViewWrapper"/>
+             <div id="pageChildView" repeat=":= childViews" pageView=":= StorePage.this.pageView" repeatWrapper="sc.content.ChildViewWrapper"/>
          </div>
       </div>
    </body>

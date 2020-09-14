@@ -74,6 +74,8 @@ class Product extends CatalogElement {
    @DBPropertySettings(columnType="jsonb")
    List<Product> productUpSells;
 
+   String pageUrl := "/" + store.sitePathTypeName + "/" + store.sitePathName + "/product/" + pathName;
+
    @sc.obj.EditorCreate(constructorParamNames="parentCategory, name, pathName")
    static Product createProduct(Category parentCategory, String name, String pathName) {
       Product newProduct = new Product();

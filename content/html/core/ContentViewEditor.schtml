@@ -1,17 +1,14 @@
 <div extends="BaseViewEditor">
    <%!
-      PageManager pageMgr;
-      ContentViewDef contentDef;
-      ContentViewEditor(Element parentNode, String id, PageManager mgr, ViewDef contentDef, int ix) {
-         super(parentNode, id, mgr, contentDef, ix);
-         this.contentDef = (ContentViewDef) contentDef;
+      pageTitle = "Html content";
+      ContentViewDef contentDef := (ContentViewDef) viewDef;
+      ContentViewEditor(Element parentNode, String id, PageManager mgr, ViewDef contentDef, ParentDef parentDef, int ix) {
+         super(parentNode, id, mgr, contentDef, parentDef, ix);
       }
    %>
 
-   <div class="viewEditorTitle">
-      <span clickEvent="=: pageMgr.currentChildView = viewDef">Content for page</span>
-      <input type="image" class="removeViewButton" src="/icons/x-square.svg" clickEvent="=: pageMgr.removeViewDef(viewDef)"/>
+   <div id="viewEditor">
+      <div id="longDescText" class="longDescText" extends="HtmlTextEditor" placeholder="rich text or html for view content"
+           content=":= contentDef.contentHtml" content="=: contentDef.contentHtml = content" content="=: pageMgr.updateChildViews()"/>
    </div>
-   <div id="longDescText" class="longDescText" extends="HtmlTextEditor" placeholder="rich text or html for view content"
-        content=":= contentDef.contentHtml" content="=: contentDef.contentHtml = content" content="=: pageMgr.updateChildViews()"/>
 </div>
