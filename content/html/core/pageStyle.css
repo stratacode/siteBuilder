@@ -56,9 +56,6 @@
 }
 
 .slideNavRow {
-   position: relative;
-   top: 0;
-   left: 0;
    background: transparent;
 }
 
@@ -85,5 +82,26 @@
 }
 
 .leftSlideArrow, .rightSlideArrow {
-   cursor:pointer
+   cursor:pointer;
+   font-size: 180%;
+}
+
+.leftSlideArrow {
+   position: absolute;
+   top: 50%;
+   left: 20px;
+}
+
+.rightSlideArrow {
+   position: absolute;
+   top: 50%;
+   right: 20px;
+}
+
+.centerSlideButtons {
+   margin:auto;
+   position: relative;
+   bottom: 30px;
+   left: 45%;
+   background: transparent;
 }

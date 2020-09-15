@@ -10,4 +10,8 @@
        }
    %>
    <div id="slideElementView" replaceWith=":= slideElement"/>
+   <div class="centerSlideButtons">
+      <span id="selectDot" class=':= repeatIndex == slideshow.currentSlide ? "selectedDot" : "selectDot"'
+            clickEvent="=: slideshow.changeSlide(repeatIndex)" repeat=":= slideshow.slideshowDef.childViews"/>
+   </div>
 </div>

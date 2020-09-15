@@ -21,6 +21,10 @@ class ManagedMedia extends ManagedResource {
       return manager.getDisplayUrl(fileName, revision, suffix);
    }
 
+   String getSrcSet() {
+      return manager.getDisplaySrcSet(fileName, revision, suffix, width);
+   }
+
    String captionText;
    String altText;
 

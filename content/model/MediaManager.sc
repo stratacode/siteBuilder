@@ -10,9 +10,11 @@ class MediaManager {
    String genBaseUrl;
 
    int displaySize = 640;
+   int minDisplaySize = 320;
+   int maxDisplaySize = 640;
    int thumbSize = 100;
    int zoomSize = 2048;
-   int[] stdImageWidths = {100, 640, 1024, 2048};
+   int[] stdImageWidths = {100, 320, 640, 1024, 2048};
 
    String getOrigFileName(String fileName, String revision, String ext) {
       return fileName + (revision == null ? "" : RevisionSep + revision) + "." + ext;
@@ -28,6 +30,22 @@ class MediaManager {
 
    String getDisplayUrl(String fileName, String revision, String ext) {
       return getUrl(fileName, revision, ext, displaySize);
+   }
+
+   String getDisplaySrcSet(String fileName, String revision, String ext, int nativeRes) {
+      StringBuilder sb = new StringBuilder();
+      for (int i = 0; i < stdImageWidths.length; i++) {
+         int width = stdImageWidths[i];
+         if (width < minDisplaySize || width > maxDisplaySize || width > nativeRes)
+            continue;
+         if (sb.length() != 0)
+            sb.append(",");
+         sb.append(getUrl(fileName, revision, ext, width));
+         sb.append(" ");
+         sb.append(width);
+         sb.append("w");
+      }
+      return sb.toString();
    }
 
    String getThumbUrl(String fileName, String revision, String ext) {

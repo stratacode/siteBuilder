@@ -12,6 +12,10 @@
    <div id="siteDetailForm" visible=":= siteMgr.validSite">
       <div class="formTitle">
          Update <%= siteMgr.getSiteTypeName(siteMgr.site).toLowerCase() %>: <%= siteMgr.site.siteName %>
+         <span class="titleDetailLink" visible=":= siteMgr.hasHomePage">
+             <a target="productView" href=':= siteMgr.site.homeUrl'>(open home page in new tab)</a>
+            <span id="alt" class="formStatus"><a href="/manage/page">Add home page</a></span>
+         </span>
       </div>
 
       <div class="formField">

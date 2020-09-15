@@ -1,5 +1,9 @@
-<html abstract="true" pageVisitCount="=: loginMenuVisible = false">
+<html abstract="true" pageVisitCount="=: pageVisited()">
    <%! object siteMgr extends SiteManager {}
+       void pageVisited() {
+          siteMgr.pageVisited();
+          loginMenuVisible = false;
+       }
        boolean loginMenuVisible = false; %>
 
    <head exec="server">

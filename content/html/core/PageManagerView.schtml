@@ -24,7 +24,7 @@
    <div id="pageDetailForm" visible=":= pageMgr.currentPage != null">
       <div class="formTitle">
          <%= pageMgr.addInProgress ? "Unsaved" : "Edit" %> <%= pageMgr.pageType.pageDisplayName %>
-            <span visible=":= !pageMgr.addInProgress"><a target="productView" href=':= pageMgr.currentPage.pageUrl'>(open)</a></span>
+         <span class="titleDetailLink" visible=":= !pageMgr.addInProgress"><a target="productView" href=':= pageMgr.currentPage.pageUrl'>(open page in new tab)</a></span>
       </div>
 
       <div class="formField">
@@ -48,12 +48,13 @@
          <input type="checkbox" id="homePageCheckbox" checked=":=: pageMgr.currentPage.homePage"/>
       </div>
 
-      <div id="childViewsView" class=':= pageMgr.currentParentDef == pageMgr.currentPage ? "selectedChildViewsView" : "childViewsView"'>
-         <div class="childViewsTitle">
+      <div id="childViewsView" class=':= pageMgr.currentParentDef == pageMgr.currentPage ? "selectedChildViewsView" : "childViewsView"'
+            clickEvent="=: pageMgr.selectParent(pageMgr.currentPage)">
+         <div class="childViewsTitle" >
             Page views
          </div>
-         <div id="childViewContainer" clickEvent="=: pageMgr.selectParent(pageMgr.currentPage)" class="childViewContainer">
-            <div class="noViewsTitle" visible=":= pageMgr.currentPage.childViews.size() == 0">
+         <div id="childViewContainer" class="childViewContainer">
+            <div class="noViewsTitle" visible=":= pageMgr.currentPage.childViews == null || pageMgr.currentPage.childViews.size() == 0">
                No views in page
             </div>
             <div id="childViewRepeat" repeat=":= pageMgr.currentPage.childViews" repeatVarName="childView" repeatWrapper="ChildViewEditorWrapper"

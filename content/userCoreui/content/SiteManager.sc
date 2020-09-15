@@ -17,6 +17,8 @@ class SiteManager {
    boolean showCreateView;
    boolean validSite;
 
+   boolean hasHomePage;
+
    int siteIndex;
 
    boolean autoUpdatePath = true;
@@ -138,5 +140,8 @@ class SiteManager {
 
    boolean isSiteAdmin(UserProfile profile) {
       return site.siteAdmins != null && site.siteAdmins.contains(profile);
+   }
+
+   void pageVisited() {
    }
 }

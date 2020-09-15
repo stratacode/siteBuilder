@@ -95,4 +95,5 @@ SiteManager {
          return (Storefront) Storefront.getDBTypeDescriptor().createInstance();
       return super.createSite(siteTypeName);
    }
+
 }

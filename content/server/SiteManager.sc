@@ -55,6 +55,8 @@ SiteManager {
          else {
             validSite = true;
             site = newSite;
+
+            validateSite();
          }
       }
       else {
@@ -66,6 +68,16 @@ SiteManager {
       if (uv != null)
          uv.lastSite = newSite;
       updateSiteSelectList();
+   }
+
+   void validateSite() {
+      if (site != null) {
+         List<PageDef> homePages = PageDef.findByHomePage(true, site);
+         if (homePages == null || homePages.size() == 0)
+            hasHomePage = false;
+         else
+            hasHomePage = true;
+      }
    }
 
    void startAddSite() {
@@ -235,5 +247,11 @@ SiteManager {
       if (userView.login()) {
          refreshSiteForUser();
       }
+   }
+
+   void pageVisited() {
+      super.pageVisited();
+      if (site != null)
+         validateSite();
    }
 }
