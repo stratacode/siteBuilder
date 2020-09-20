@@ -34,13 +34,15 @@ class Category extends CatalogElement {
    override @FindBy(paged=true,orderBy="-lastModified",with="store") pathName;
 
    @DBPropertySettings(columnType="jsonb")
+   @Sync(syncMode=SyncMode.Disabled)
    Query productQuery;
 
    @DBPropertySettings(columnType="jsonb")
+   @Sync(syncMode=SyncMode.Disabled)
    Query subCategoryQuery;
 
    @DBPropertySettings(persist=false)
-   @sc.obj.Sync(onDemand=true, initDefault=true)
+   @sc.obj.Sync(initDefault=true)
    List<Product> allProducts;
 
    String pageUrl :=  "/" + store.sitePathTypeName + "/" + store.sitePathName + "/category/" + pathName;

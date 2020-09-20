@@ -1,6 +1,9 @@
+@Sync(onDemand=true)
 class ProductViewDef extends ViewDef {
+   @Sync(initDefault=true)
    String productPathName;
 
+   @Sync(initDefault=true)
    transient Product product;
 
    Storefront getStore() {

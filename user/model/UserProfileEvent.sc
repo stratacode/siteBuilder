@@ -1,3 +1,4 @@
+@Sync(onDemand=true)
 class UserProfileEvent {
    String eventName;
    String remoteIp;

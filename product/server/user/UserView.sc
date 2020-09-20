@@ -86,7 +86,8 @@ UserView {
    boolean login() {
       UserProfile anonUser = user;
       if (anonUser.registered) {
-         orderView.orderError = "Already logged in";
+         if (orderView != null)
+             orderView.orderError = "Already logged in";
          return true;
       }
 

@@ -176,7 +176,7 @@
    padding-bottom: 25px;
 }
 
-.mediaImageList, .mediaEmptyTitle, .productImageList, .noViewsTitle {
+.mediaImageList, .mediaEmptyTitle, .productImageList, .noViewsTitle, .menuItemsEmptyTitle {
    background: #eef1ff;
 }
 
@@ -356,7 +356,7 @@
    font-size: 85%;
 }
 
-.formStatus, .formMessage, .mediaEmptyTitle, .mgrViewStatus, .noViewsTitle {
+.formStatus, .formMessage, .mediaEmptyTitle, .mgrViewStatus, .noViewsTitle, .menuItemsEmptyTitle, .addHomePageTitle {
    font-style: italic;
    font-size: 85%;
 }

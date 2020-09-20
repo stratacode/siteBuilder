@@ -55,7 +55,7 @@ class UserProfile {
    boolean siteAdmin :=: (userPrivMask & PRIV_SITE_ADMIN) != 0;
    boolean registered :=: (userPrivMask & PRIV_REGISTERED) != 0;
 
-   @Sync(syncMode=SyncMode.ServerToClient)
+   @Sync(syncMode=SyncMode.ServerToClient,initDefault=true)
    UserProfileStats userProfileStats;
 
    private transient Locale locale;

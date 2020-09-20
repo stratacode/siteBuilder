@@ -1,3 +1,4 @@
+@Sync(onDemand=true)
 class CategoryEvent extends SessionEvent {
    String categoryPathName;
    CategoryEvent(Category c) {

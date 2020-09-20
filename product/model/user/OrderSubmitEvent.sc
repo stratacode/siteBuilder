@@ -1,3 +1,4 @@
+@Sync(onDemand=true)
 class OrderSubmitEvent extends SessionEvent {
    String getEventName() {
       return "order submit";

@@ -1,12 +1,19 @@
 @Component @Sync
 class SiteManager {
+   @Sync(resetState=true,initDefault=true)
    String pathName;
+
+   @Sync(initDefault=true)
    List<SiteContext> siteList;
+   @Sync(initDefault=true)
    SiteContext site;
+   @Sync(initDefault=true)
    SiteContext lastSite;
 
-   UserView userView;
+   @Sync(syncMode=SyncMode.Disabled)
+   UserView userView = currentUserView;
 
+   @Sync(initDefault=true)
    List<String> siteSelectList;
 
    String errorMessage;
@@ -14,14 +21,20 @@ class SiteManager {
    String siteError;
    String siteStatus;
 
+   @Sync(initDefault=true)
    boolean showCreateView;
+   @Sync(initDefault=true)
    boolean validSite;
 
+   @Sync(initDefault=true)
    boolean hasHomePage;
 
+   @Sync(initDefault=true)
    int siteIndex;
 
+   @Sync(initDefault=true)
    boolean autoUpdatePath = true;
+   @Sync(initDefault=true)
    boolean siteSaved = false;
 
    static final String defaultSiteName = "Plain website";
@@ -35,12 +48,16 @@ class SiteManager {
    String newSiteName, newSitePathName, newSiteType = defaultSiteName;
    String newSiteError, newSiteStatus;
 
+   @Sync(initDefault=true)
    String searchText = "";
+   @Sync(initDefault=true)
    List<SiteContext> currentSites;
 
    // Top-level selected navMenu or navMenuItem
+   @Sync(initDefault=true)
    BaseMenuItem currentMenuItem;
    // Second-level menuItem
+   @Sync(initDefault=true)
    NavMenuItem currentNavMenuItem;
 
    void doSearch() {
@@ -139,6 +156,8 @@ class SiteManager {
    }
 
    boolean isSiteAdmin(UserProfile profile) {
+      if (profile == null)
+         return false;
       return site.siteAdmins != null && site.siteAdmins.contains(profile);
    }
 

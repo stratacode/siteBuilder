@@ -223,6 +223,7 @@ UserView {
          session.sessionMarker = sessionMarker;
          session.site = site;
          session.remoteIp = remoteIp;
+         user.getOrCreateStats().numUserSessions++;
          userSessions.put(site.id, session);
       }
       return session;

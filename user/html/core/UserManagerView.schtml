@@ -41,7 +41,7 @@
             <%= curRowUser.id %>
          </span>
          <span class="wideUserColumn"> <%= curRowUser.emailAddress %> </span>
-         <span class="smallUserColumn"> <%= curRowUser.numUserSessions %> </span>
+         <span class="smallUserColumn"> <%= curRowUser.userProfileStats.numUserSessions %> </span>
          <span class="smallUserColumn"> <%= curRowUser.userProfileStats.numSessionEvents %> </span>
          <span id="extraColumns" bodyOnly="true"/>
          <span class="smallUserColumn"><input type="checkbox" checked=":= curRowUser.locked" changeEvent="=: userMgr.updateLocked(curRowUser, checked)" disabled=":= !isAdmin"/></span>
@@ -52,7 +52,7 @@
    </div>
 
    <div id="userDetailView" visible=":= currentUser != null">
-      <%! List<UserSession> userSessions := userMgr.sessionsByUserId.get(currentUser.id); %>
+      <%! List<UserSession> userSessions := userMgr.sessionsByUserId.get(String.valueOf(currentUser.id)); %>
       <div class="subFormTitle">User: <%= currentUser.emailAddress == null ? "guest" : currentUser.emailAddress %> (id: <%= currentUser.id %>)</div>
       <div id="privsView">
          <span>Super admin: <input type="checkbox" checked=":=: currentUser.superAdmin" disabled=":= !isAdmin"/></span>

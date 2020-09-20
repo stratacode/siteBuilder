@@ -1,7 +1,9 @@
 PageManager {
    store := site instanceof Storefront ? (Storefront) site : null;
 
+   @Sync(syncMode=SyncMode.Disabled)
    static List<PageType> storePageTypes = new ArrayList<PageType>(contentPageTypes);
+   @Sync(syncMode=SyncMode.Disabled)
    static PageType storePageType = new PageType(plainPageType, "Store page", "stores", "sc.content.PageDef");
    static {
       storePageTypes.add(storePageType);

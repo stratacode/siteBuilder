@@ -1,3 +1,4 @@
+@Sync(onDemand=true)
 class PageType {
    PageType(PageType inheritFrom, String pageDisplayName, String pageTypePathName, String className) {
       this.pageDisplayName = pageDisplayName;
@@ -8,10 +9,17 @@ class PageType {
          this.viewTypes.addAll(inheritFrom.viewTypes);
    }
 
+   PageType() {
+   }
+
+   @Sync(initDefault=true)
    String pageDisplayName; // e.g. Store page
+   @Sync(initDefault=true)
    String pageTypePathName; // e.g. stores
+   @Sync(initDefault=true)
    String pageDefClassName; // e.g. sc.content.PageDef - class name of the def object for this page type
 
+   @Sync(initDefault=true)
    List<ViewType> viewTypes;
 
    public String toString() {

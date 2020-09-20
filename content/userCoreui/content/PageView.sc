@@ -1,3 +1,4 @@
+@Sync
 class PageView {
    String pagePathName;
    PageDef pageDef;

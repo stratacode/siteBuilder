@@ -1,4 +1,5 @@
 @DBTypeSettings
+@Sync(onDemand=true)
 class UserProfileStats {
    @DBPropertySettings(reverseProperty="userProfileStats", required=true)
    UserProfile userProfile;
@@ -16,6 +17,8 @@ class UserProfileStats {
 
    // We record some fixed number of these each time the remoteIp changes
    List<UserProfileEvent> profileEvents;
+
+   int numUserSessions;
 
    int numSessionEvents;
 

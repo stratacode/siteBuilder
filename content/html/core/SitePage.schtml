@@ -4,14 +4,13 @@
 %>
 <html extends="PageLayout">
    <%!
-      PageView pageView;
       String pagePathName;
+      PageView pageView := siteView.getPageView(pagePathName);
 
       SitePage(String sitePathName, String pagePathName) {
          super(sitePathName);
          siteView = new SiteView(sitePathName);
          this.pagePathName = pagePathName;
-         pageView = siteView.getPageView(pagePathName);
       }
       /*
       object siteViewDef extends SiteView {

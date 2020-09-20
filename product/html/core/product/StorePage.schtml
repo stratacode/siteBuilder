@@ -1,19 +1,19 @@
 <%@
    @CompilerSettings(constructorProperties="sitePathName,pagePathName")
+   @sc.js.JSSettings(dependentTypes="sc.product.StoreView,sc.product.ProductView,sc.product.CategoryView,sc.product.OrderView")
+   @sc.obj.SyncTypeFilter(typeNames={"sc.product.StoreView", "sc.product.ProductView", "sc.product.CategoryView", "sc.product.OrderView"})
    @URL(pattern="/stores/{sitePathName=urlString}[/page/{pagePathName=urlString}]", testURLs={"/stores/stratacycles", "/stores/stratacycles/page/about"})
 %>
-<html extends="PageLayout" pageVisitCount="=: refreshPage()">
+<html extends="BaseStorePage" pageVisitCount="=: refreshPage()">
    <%!
-      PageView pageView;
       String pagePathName;
       List<ViewDef> childViews := pageView.pageDef.childViews;
       childViews =: refreshPage();
+      PageView pageView := siteView.getPageView(pagePathName);
 
       StorePage(String sitePathName, String pagePathName) {
          super(sitePathName);
-         siteView = new StoreView(sitePathName);
          this.pagePathName = pagePathName;
-         pageView = siteView.getPageView(pagePathName);
       }
 
       void refreshPage() {

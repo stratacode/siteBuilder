@@ -1,16 +1,7 @@
-<div extends="BaseViewEditor">
+<div>
    <%!
-      pageTitle = "Category";
       CategoryViewEditor(Element parentNode, String id, PageManager pageMgr, ViewDef def, ParentDef parentDef, int ix) {
          super(parentNode, id, pageMgr, def, parentDef, ix);
-      }
-      CategoryViewDef categoryDef := (CategoryViewDef) viewDef;
-      categoryDef =: categoryDef.validateCategoryPathName(categoryDef.categoryPathName);
-      List<Category> matchingCats;
-
-      void updateShowContentsOnly(boolean val) {
-         categoryDef.showContentsOnly = val;
-         pageMgr.updateViewDef(categoryDef);
       }
    %>
 
@@ -39,8 +30,5 @@
             <img src=":= categoryDef.category.mainMedia.thumbUrl" height="64" visible=":= categoryDef.category.mainMedia != null"/>
          </div>
       </div>
-
    </div>
-
-
 </div>

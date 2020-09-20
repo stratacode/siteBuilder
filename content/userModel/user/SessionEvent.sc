@@ -1,3 +1,4 @@
+@Sync(onDemand=true)
 abstract class SessionEvent {
    Date eventTime;
    public SessionEvent() {

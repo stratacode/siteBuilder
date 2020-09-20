@@ -1,3 +1,4 @@
+@Sync
 class CheckoutStartEvent extends SessionEvent {
    String getEventName() {
       return "checkout start";

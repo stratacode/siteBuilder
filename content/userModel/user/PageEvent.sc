@@ -1,3 +1,4 @@
+@Sync(onDemand=true)
 class PageEvent extends SessionEvent {
    String pathName;
 

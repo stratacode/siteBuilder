@@ -1,10 +1,5 @@
 <div abstract="true">
    <%!
-      PageManager pageMgr;
-      ViewDef viewDef;
-      ParentDef parentDef;
-      String pageTitle;
-      boolean open = true;
       BaseViewEditor(Element parentNode, String id, PageManager pageMgr, ViewDef viewDef, ParentDef parentDef, int repeatIx) {
          super(parentNode, id, viewDef, repeatIx);
          this.pageMgr = pageMgr;

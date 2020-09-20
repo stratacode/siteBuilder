@@ -5,7 +5,7 @@ UserManager {
    void doSearch() {
       boolean isAdmin = siteMgr.userView.user.superAdmin;
 
-      HashMap<Long,List<UserSession>> newSessionsById = new HashMap<Long,List<UserSession>>();
+      HashMap<String,List<UserSession>> newSessionsById = new HashMap<String,List<UserSession>>();
 
       List<UserProfile> newUsers;
       if (searchAcrossSites && isAdmin) {
@@ -19,7 +19,7 @@ UserManager {
                      startIndex, numUsersPerPage);
          if (showSessions) {
             for (UserProfile user:newUsers) {
-               newSessionsById.put(user.id, UserSession.findByUser(user));
+               newSessionsById.put(String.valueOf(user.id), UserSession.findByUser(user));
             }
          }
       }
@@ -31,7 +31,7 @@ UserManager {
          List<UserSession> sessions = (List<UserSession>) UserSession.getDBTypeDescriptor().query(
              Query.and(Query.eq("site", site),
                        Query.or(Query.match("user.emailAddress", searchText),
-                                Query.match("user.firstName", searchText))), null, null, startIndex, numUsersPerPage);
+                                Query.match("user.firstName", searchText))), null, Arrays.asList("-lastModified"), startIndex, numUsersPerPage);
 
          if (sessions != null) {
             for (int i = 0; i < sessions.size(); i++) {
@@ -39,10 +39,10 @@ UserManager {
                UserProfile user = session.user;
                if (!showGuests && !user.registered)
                   continue;
-               List<UserSession> userSessions = newSessionsById.get(user.id);
+               List<UserSession> userSessions = newSessionsById.get(String.valueOf(user.id));
                if (userSessions == null) {
                   userSessions = new ArrayList<UserSession>();
-                  newSessionsById.put(user.id, userSessions);
+                  newSessionsById.put(String.valueOf(user.id), userSessions);
                   newUsers.add(user);
                }
                userSessions.add(session);

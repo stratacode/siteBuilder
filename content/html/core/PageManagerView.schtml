@@ -17,7 +17,7 @@
 
    <div id="addPageButtons" class="confirmButtons" visible=":= !pageMgr.addInProgress">
       <label for="siteTypeSelect">New page type</label>
-      <select id="siteTypeSelect" optionDataSource=":= pageMgr.pageTypes" changeEvent="=: pageMgr.updateNewPageType((PageType) selectedValue)"/>
+      <select id="siteTypeSelect" selectedIndex="0" optionDataSource=":= pageMgr.pageTypes" changeEvent="=: pageMgr.updateNewPageType((PageType) selectedValue)"/>
       <input type="button" value="Add page" clickEvent="=: pageMgr.startCreatePage()"/>
    </div>
 
@@ -63,7 +63,7 @@
       </div>
 
       <div id="addViewButtons" class="confirmButtons">
-         New view type <select id="newViewTypeSelect" optionDataSource=":= pageMgr.pageType.viewTypes" changeEvent="=: pageMgr.viewType = (ViewType) selectedValue"/>
+         New view type <select id="newViewTypeSelect" selectedIndex="0" optionDataSource=":= pageMgr.pageType.viewTypes" changeEvent="=: pageMgr.viewType = (ViewType) selectedValue"/>
          <input type="button" value=':= pageMgr.currentChildView != null ? "Add before" : "Add to start"' clickEvent="=: pageMgr.addNewView(false)"/>
          <input type="button" value=':= pageMgr.currentChildView != null ? "Add after" : "Add to end"' clickEvent="=: pageMgr.addNewView(true)"/>
       </div>

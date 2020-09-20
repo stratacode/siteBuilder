@@ -1,5 +1,6 @@
 @Component
 @CompilerSettings(constructorProperties="siteView,pathName")
+@Sync(onDemand=true)
 abstract class CatalogElementView implements IView {
    SiteView siteView;
    StoreView storeView := (StoreView) siteView;

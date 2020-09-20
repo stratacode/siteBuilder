@@ -43,6 +43,8 @@ class Order {
 
    PaymentInfo paymentInfo;
 
+   lastModified =: Bind.sendChangedEvent(this, "displayStatus");
+
    void refreshTotalPrice() {
       BigDecimal res = new BigDecimal("0.00");
       List<LineItem> items = lineItems;

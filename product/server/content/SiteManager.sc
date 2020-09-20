@@ -28,8 +28,16 @@ SiteManager {
          store.supportedCurrencies.add(newCurrency.currencyName);
    }
 
+   void removeSupportedCurrency(String removeName) {
+      store.supportedCurrencies.remove(removeName);
+   }
+
    void changeDefaultCountry(String country) {
       store.defaultCountry = country;
+   }
+
+   void removeCountry(String countryName) {
+      store.countryNames.remove(countryName);
    }
 
    void addCountry(String country) {

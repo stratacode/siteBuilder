@@ -1,3 +1,4 @@
+@Sync(onDemand=true)
 class SlideshowView implements IView {
    PageView pageView;
 

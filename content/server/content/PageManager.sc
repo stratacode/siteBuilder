@@ -17,9 +17,9 @@ PageManager {
    }
 
    void createPageInstance() {
-      Object pageClass = DynUtil.findType(this.pageType.pageDefClassName);
+      Object pageClass = DynUtil.findType(pageType.pageDefClassName);
       if (pageClass == null)
-         throw new IllegalArgumentException("No pageClassName: " + this.pageType.pageDefClassName);
+         throw new IllegalArgumentException("No pageClassName: " + pageType.pageDefClassName);
       currentPage = (PageDef) DynUtil.newInnerInstance(pageClass, null, null);
       currentPage.pageTypePathName = pageType.pageTypePathName;
       currentPage.site = site;

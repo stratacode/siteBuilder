@@ -20,12 +20,12 @@
                         <%= supportedCurrency %>
                      </span>
                      <span class="currencyColumn">
-                        <input type="image" src="/icons/x-square.svg" clickEvent="=: siteMgr.store.supportedCurrencies.remove(supportedCurrency)"/>
+                        <input type="image" src="/icons/x-square.svg" clickEvent="=: siteMgr.removeSupportedCurrency(supportedCurrency)"/>
                      </span>
                   </div>
                </div>
                <div id="addCurrencyView" class="formButtonRow">
-                  <select id="currencyChoice" optionDataSource=":= Currency.currencyNames"/>
+                  <select id="currencyChoice" optionDataSource=":= Currency.currencyNames" selectedIndex="0"/>
                   <input type="button" value="Add currency" clickEvent="=: siteMgr.addSupportedCurrency((String)currencyChoice.selectedValue)"/>
                </div>
             </div>
@@ -48,11 +48,11 @@
                         <%= countryName %>
                      </span>
                      <span class="countryColumn">
-                        <input type="image" src="/icons/x-square.svg" clickEvent="=: siteMgr.store.countryNames.remove(countryName)"/>
+                        <input type="image" src="/icons/x-square.svg" clickEvent="=: siteMgr.removeCountry(countryName)"/>
                      </span>
                   </div>
                </div>
-               <div id="addCountryView" class="formButtonRow">
+               <div id="addCountryView" class="formButtonRow" exec="server">
                   <select id="countryChoice" optionDataSource=":= SiteManager.availableCountries"/>
                   <input type="button" value="Add country" clickEvent="=: siteMgr.addCountry((String)countryChoice.selectedValue)"/>
                </div>

@@ -1,8 +1,13 @@
 // Base class for NavMenuItem and NavMenu
+@Sync(onDemand=true)
 abstract class BaseMenuItem {
+   @Sync(initDefault=true)
    String name;
+   @Sync(initDefault=true)
    String url;
+   @Sync(initDefault=true)
    String icon;
+   @Sync(initDefault=true)
    double orderValue = 0.0;
 
    // State that's changed at runtime - not stored in the DB

@@ -1,3 +1,4 @@
+@Sync(onDemand=true)
 class ProductEvent extends SessionEvent {
    String productPathName;
    ProductEvent(Product p) {

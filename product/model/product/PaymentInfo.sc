@@ -9,12 +9,14 @@ class PaymentInfo {
    // the payment processor that can run on either the client or
    // server that takes this info and returns a token to identify
    // this payment source (or null if it's a one-time deal)
+   @Sync(syncMode=SyncMode.ClientToServer)
    String cardNumber;
    String token;
 
    // The x1234 digits or however we display this number to the user
    String last4;
 
+   @Sync(syncMode=SyncMode.ClientToServer)
    String cvv;
 
    String expMonth;

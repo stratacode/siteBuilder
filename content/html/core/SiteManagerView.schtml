@@ -14,7 +14,7 @@
          Update <%= siteMgr.getSiteTypeName(siteMgr.site).toLowerCase() %>: <%= siteMgr.site.siteName %>
          <span class="titleDetailLink" visible=":= siteMgr.hasHomePage">
              <a target="productView" href=':= siteMgr.site.homeUrl'>(open home page in new tab)</a>
-            <span id="alt" class="formStatus"><a href="/manage/page">Add home page</a></span>
+            <span id="alt" class="addHomePageTitle"><a href="/manage/page">Add home page</a></span>
          </span>
       </div>
 
@@ -37,7 +37,7 @@
 
       <div id="menuItemsView" class="subFormView">
          <div class="subFormTitle">Custom menu items</div>
-         <div id="noItemsView" visible=":= siteMgr.site.menuItems == null || siteMgr.site.menuItems.size() == 0" class="formStatus menuItemsEmptyTitle">No custom menu items</div>
+         <div id="noItemsView" visible=":= siteMgr.site.menuItems == null || siteMgr.site.menuItems.size() == 0" class="menuItemsEmptyTitle">No custom menu items</div>
          <div id="menuItemRepeat" repeat=":= siteMgr.site.menuItems" repeatVarName="menuItem" class=':= menuItem == siteMgr.currentMenuItem ? "selectedMenuItemEntry" : "menuItemEntry"'>
             <div id="menuItemSel" clickEvent="=: siteMgr.currentMenuItem = menuItem"><%= menuItem.detailString %></div>
             <input type="image" class="removeMenuButton" src="/icons/x-square.svg"
@@ -107,9 +107,9 @@
             </div>
          </div>
          <div id="addMenuItemButtons" class="confirmButtons">
-            <input type="button" value="Add menu item" clickEvent="=: siteMgr.addMenuItem()"/>
-            <input type="button" value="Add nav menu" clickEvent="=: siteMgr.addNavMenu()"/>
-            <input type="button" value="Done" clickEvent="=: siteMgr.currentMenuItem = null" visible=":= siteMgr.currentMenuItem != null"/>
+            <input id="addMenuItem" type="button" value="Add menu item" clickEvent="=: siteMgr.addMenuItem()"/>
+            <input id="addNavMenu" type="button" value="Add nav menu" clickEvent="=: siteMgr.addNavMenu()"/>
+            <input id="doneMenuEdit" type="button" value="Done" clickEvent="=: siteMgr.currentMenuItem = null" visible=":= siteMgr.currentMenuItem != null"/>
          </div>
 
          <div id="extraFields">

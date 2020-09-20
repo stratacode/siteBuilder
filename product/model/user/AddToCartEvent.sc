@@ -1,3 +1,4 @@
+@Sync(onDemand=true)
 class AddToCartEvent extends SessionEvent {
    String productPathName;
    AddToCartEvent(Product product) {

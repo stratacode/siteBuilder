@@ -29,6 +29,7 @@ class SiteContext implements IPropValidator {
    MediaManager mediaManager;
 
    // Configurable presentation elements - add to the page menu, add new pages and provide the default page
+   @Sync(initDefault=true)
    List<BaseMenuItem> menuItems;
 
    boolean visible = true;

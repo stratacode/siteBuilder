@@ -31,6 +31,8 @@
 // Make synchronized and persistent as a sub-type of CatalogElement with sub-type id 1
 @Sync(onDemand=true)
 @DBTypeSettings(typeId=1)
+@sc.js.JSSettings(dependentTypes="sc.product.PhysicalSku,sc.content.ManagedImage")
+@sc.obj.SyncTypeFilter(typeNames={"sc.product.PhysicalSku", "sc.content.ManagedImage"})
 class Product extends CatalogElement {
    override @DBPropertySettings(reverseProperty="childProducts") parentCategory;
 

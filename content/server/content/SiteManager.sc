@@ -1,7 +1,5 @@
 SiteManager {
    void start() {
-      userView = currentUserView;
-
       if (userView.loginStatus == LoginStatus.NotLoggedIn) {
          siteList = new ArrayList<SiteContext>();
          changeSite(null);

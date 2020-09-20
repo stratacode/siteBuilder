@@ -1,6 +1,9 @@
+@Sync(onDemand=true)
 class CategoryViewDef extends ViewDef {
+   @Sync(initDefault=true)
    String categoryPathName;
 
+   @Sync(initDefault=true)
    boolean showContentsOnly = false;
 
    transient Category category;

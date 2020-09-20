@@ -1,4 +1,4 @@
-@Component @Sync
+@Component @Sync(onDemand=true)
 class OrderView {
    Storefront store;
    StoreView storeView;
