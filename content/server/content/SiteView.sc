@@ -19,6 +19,7 @@ SiteView {
       currentUserView.addPageEvent(siteContext, pathName);
    }
 
+   /*
    PageView getPageView(String pathName) {
       List<PageDef> pageDefs;
       if (pathName == null)
@@ -29,4 +30,5 @@ SiteView {
          return new PageView(this, null, pathName);
       return new PageView(this, pageDefs.get(0), pathName);
    }
+      */
 }

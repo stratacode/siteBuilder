@@ -36,7 +36,7 @@ class MediaManager {
       StringBuilder sb = new StringBuilder();
       for (int i = 0; i < stdImageWidths.length; i++) {
          int width = stdImageWidths[i];
-         if (width < minDisplaySize || width > maxDisplaySize || width > nativeRes)
+         if (width < minDisplaySize || width > maxDisplaySize)
             continue;
          if (sb.length() != 0)
             sb.append(",");

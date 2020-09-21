@@ -1,25 +1,22 @@
 <%@
    @CompilerSettings(constructorProperties="sitePathName,pagePathName")
-   @sc.js.JSSettings(dependentTypes="sc.product.StoreView,sc.product.ProductView,sc.product.CategoryView,sc.product.OrderView")
-   @sc.obj.SyncTypeFilter(typeNames={"sc.product.StoreView", "sc.product.ProductView", "sc.product.CategoryView", "sc.product.OrderView"})
+   @sc.js.JSSettings(dependentTypes="sc.product.StoreView,sc.product.ProductView,sc.product.CategoryView,sc.product.OrderView,sc.user.currentUserView")
+   @sc.obj.SyncTypeFilter(typeNames={"sc.product.StoreView", "sc.product.ProductView", "sc.product.CategoryView", "sc.product.OrderView", "sc.user.currentUserView"})
    @URL(pattern="/stores/{sitePathName=urlString}[/page/{pagePathName=urlString}]", testURLs={"/stores/stratacycles", "/stores/stratacycles/page/about"})
 %>
-<html extends="BaseStorePage" pageVisitCount="=: refreshPage()">
+<html extends="BaseStorePage">
    <%!
       String pagePathName;
-      List<ViewDef> childViews := pageView.pageDef.childViews;
-      childViews =: refreshPage();
-      PageView pageView := siteView.getPageView(pagePathName);
+      @Sync(initDefault=true)
+      object pageView extends PageView {
+         siteView := StorePage.this.siteView;
+         pagePathName := StorePage.this.pagePathName;
+      }
 
       StorePage(String sitePathName, String pagePathName) {
          super(sitePathName);
          this.pagePathName = pagePathName;
       }
-
-      void refreshPage() {
-         body.appFrame.pageBody.pageChildView_Repeat.rebuildRepeat();
-      }
-
    %>
    <head exec="server">
       <link id="docStyle" rel="stylesheet" href="/productStyle.css" type="text/css"/>
@@ -28,7 +25,7 @@
       <div id="appFrame">
          <div id="pageBody">
              <div id="formError"><%= pageView.errorMessage %></div>
-             <div id="pageChildView" repeat=":= childViews" pageView=":= StorePage.this.pageView" repeatWrapper="sc.content.ChildViewWrapper"/>
+             <div id="pageChildView" repeat=":= pageView.childViews" repeatWrapper="sc.content.ChildViewWrapper"/>
          </div>
       </div>
    </body>

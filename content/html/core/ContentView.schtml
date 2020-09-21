@@ -5,7 +5,6 @@
       @sc.obj.HTMLSettings(returnsHTML=true)
       String contentHtml;
 
-      ViewDef viewDef;
 
       ContentView(PageView pageView, String contentHtml, Element parentNode, String id, ContentViewDef viewDef, int ix) {
          super(parentNode, id, viewDef, ix);

@@ -12,5 +12,6 @@ class StoreView extends SiteView {
    }
    */
 
+   @Sync(initDefault=true)
    OrderView orderView; 
 }

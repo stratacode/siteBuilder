@@ -5,14 +5,15 @@
       this.pageView = pageView;
       this.slideshowDef = viewDef;
    }
+
 %>
 
    <div id="slideViewContainer">
       <div id="childViewRepeat"
-           repeat=":= slideshowDef.childViews" slideshow="= SlideshowView.this"
-           pageView=":= SlideshowView.this.pageView" repeatWrapper="SlideshowWrapper"/>
+           repeat=":= childViews" slideshow="= SlideshowView.this"
+           repeatWrapper="SlideshowWrapper"/>
 
-      <div class="slideNavRow">
+      <div class="slideNavRow" id="slideNavRow">
          <span id="leftSlideArrow" class="leftSlideArrow" clickEvent="=: changeSlide(currentSlide - 1)">❮</span>
          <span id="rightSlideArrow" class="rightSlideArrow" clickEvent="=: changeSlide(currentSlide + 1)">❯</span>
       </div>

@@ -5,7 +5,10 @@
 <html extends="PageLayout">
    <%!
       String pagePathName;
-      PageView pageView := siteView.getPageView(pagePathName);
+      object pageView extends PageView {
+         siteView := SitePage.this.siteView;
+         pagePathName := SitePage.this.pagePathName;
+      }
 
       SitePage(String sitePathName, String pagePathName) {
          super(sitePathName);
@@ -25,7 +28,7 @@
       <div id="appFrame">
          <div id="pageBody">
              <div id="formError"><%= pageView.errorMessage %></div>
-             <div id="pageChildView" repeat=":= SitePage.this.pageView.pageDef.childViews" pageView=":= SitePage.this.pageView" repeatWrapper="ChildViewWrapper"/>
+             <div id="pageChildView" repeat=":= SitePage.this.pageView.pageDef.childViews" repeatWrapper="ChildViewWrapper"/>
          </div>
       </div>
    </body>

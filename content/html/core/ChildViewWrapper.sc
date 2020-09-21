@@ -1,7 +1,11 @@
 class ChildViewWrapper extends sc.lang.html.Div implements sc.lang.html.IRepeatWrapper {
-   PageView pageView;
-
    Element createElement(Object viewDefObj, int ix, Element oldTag) {
+      Element elem = (Element) viewDefObj;
+      elem.parentNode = this;
+      elem.id = allocUniqueId("childView");
+      return elem;
+
+      /*
       ViewDef viewDef = (ViewDef) viewDefObj;
       ViewType viewType = pageView.pageType.getViewTypeForViewDef(viewDef);
       if (viewType == null)
@@ -20,6 +24,7 @@ class ChildViewWrapper extends sc.lang.html.Div implements sc.lang.html.IRepeatW
             oldView.setViewDef(viewDef);
       }
       return oldTag;
+      */
    }
 
    void repeatTagsChanged() {

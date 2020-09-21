@@ -7,6 +7,8 @@ class SlideshowView implements IView {
    int currentSlide;
    int numSlides := slideshowDef.childViews.size();
 
+   List<IView> childViews;
+
    ViewDef getViewDef() {
       return slideshowDef;
    }
