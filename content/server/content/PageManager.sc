@@ -62,30 +62,30 @@ PageManager {
       }
       ViewDef newView = createViewDef(viewType);
       ViewDef curView = currentChildView;
-      List<ViewDef> childViews = currentParentDef.childViews;
+      List<ViewDef> childViewDefs = currentParentDef.childViewDefs;
       boolean set = false;
-      if (childViews == null) {
-         childViews = new ArrayList<ViewDef>();
+      if (childViewDefs == null) {
+         childViewDefs = new ArrayList<ViewDef>();
          set = true;
       }
       currentChildView = newView;
       if (curView == null) {
          if (append)
-            childViews.add(newView);
+            childViewDefs.add(newView);
          else
-            childViews.add(0, newView);
+            childViewDefs.add(0, newView);
       }
       else {
-         int ix = childViews.indexOf(curView);
-         if (ix == -1 || (append && ix == childViews.size()-1))
-            childViews.add(newView);
+         int ix = childViewDefs.indexOf(curView);
+         if (ix == -1 || (append && ix == childViewDefs.size()-1))
+            childViewDefs.add(newView);
          else if (append)
-            childViews.add(ix+1, newView);
+            childViewDefs.add(ix+1, newView);
          else
-            childViews.add(ix, newView);
+            childViewDefs.add(ix, newView);
       }
       if (set)
-         currentParentDef.childViews = childViews;
+         currentParentDef.childViewDefs = childViewDefs;
       updateChildViews();
    }
 
@@ -109,11 +109,11 @@ PageManager {
    }
 
    void updateChildViews() {
-      if (currentPage != null && currentPage.childViews != null) {
+      if (currentPage != null && currentPage.childViewDefs != null) {
          // Updates the root property that stores the DB version by calling the setX method here (TODO: should have an api for this like 'DBObject.updateProperty()')
-         currentPage.childViews = currentPage.childViews;
-         // Need to mark the childViews array list itself as changed to trigger bindings that listen for the value
-         Bind.sendEvent(sc.bind.IListener.VALUE_CHANGED, currentPage.childViews, null);
+         currentPage.childViewDefs = currentPage.childViewDefs;
+         // Need to mark the childViewDefs array list itself as changed to trigger bindings that listen for the value
+         Bind.sendEvent(sc.bind.IListener.VALUE_CHANGED, currentPage.childViewDefs, null);
       }
    }
 
@@ -140,20 +140,20 @@ PageManager {
    }
 
    void removeViewDef(ViewDef viewDef, ParentDef parentDef) {
-      if (!removeChildView(parentDef, viewDef))
+      if (!removeChildViewDef(parentDef, viewDef))
          System.err.println("*** Failed to find child view def to remove");
       else
          updateChildViews();
    }
 
-   boolean removeChildView(ParentDef parentDef, ViewDef viewDef) {
-      if (parentDef.childViews != null) {
-         if (parentDef.childViews.remove(viewDef))
+   boolean removeChildViewDef(ParentDef parentDef, ViewDef viewDef) {
+      if (parentDef.childViewDefs != null) {
+         if (parentDef.childViewDefs.remove(viewDef))
             return true;
          /*
-         for (ViewDef childView:parentDef.childViews) {
+         for (ViewDef childView:parentDef.childViewDefs) {
             if (childView instanceof ParentDef) {
-               if (removeChildView((ParentDef) childView, viewDef))
+               if (removeChildViewDef((ParentDef) childView, viewDef))
                   return true;
             }
          }

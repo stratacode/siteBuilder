@@ -40,15 +40,16 @@
          <span class="headerColumn">File size</span>
       </div>
       <div id="mediaRepeat" repeat=":= currentMedia" repeatVarName="media"
+           clickEvent="=: selectedMedia = media"
            class=':= media == selectedMedia ? "selectedMediaRow" : "mediaRow"' >
-        <span class="wideMediaColumn" clickEvent="=: selectedMedia = media">
-           <input type="checkbox" checked=":= selectedMedia == media"/>
+        <span class="wideMediaColumn">
+           <input type="checkbox" checked=":= media == selectedMedia"/>
            <%= media.uniqueFileName %>
         </span>
         <span class="smallMediaColumn"> <%= media.fileType %> </span>
         <span class="mediaColumn"> <%= media.width %>x<%= media.height%> </span>
         <span class="mediaColumn"> <%= media.fileSize %> bytes </span>
-        <img src=":= media.thumbUrl" class="mediaListThumb" clickEvent="=: selectedMedia = media"/>
+        <img src=":= media.thumbUrl" class="mediaListThumb"/>
         <input type="image" class="removeMediaButton" src="/icons/x-square.svg" clickEvent="=: removeMedia(media.id)"/>
       </div>
    </div>

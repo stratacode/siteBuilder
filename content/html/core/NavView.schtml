@@ -1,6 +1,8 @@
 <div>
    <%! 
       SiteView siteView;
+
+      @Sync scope<appSession>
       object navMenu extends PageNavMenu {
          siteView := NavView.this.siteView;
       }

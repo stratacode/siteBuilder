@@ -1,5 +1,6 @@
 @Sync(onDemand=true)
 @CompilerSettings(constructorProperties="siteView,pagePathName")
+scope<appSession>
 class PageView {
    String pagePathName;
    PageDef pageDef;

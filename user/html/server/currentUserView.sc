@@ -3,7 +3,7 @@ import javax.servlet.http.Cookie;
 
 // TODO: this should be per-user manager where we pull the user manager out of a
 // a global Site object (broken out of Storefront)
-scope<session>
+scope<appSession>
 currentUserView {
    void init() {
       Context ctx = Context.getCurrentContext();

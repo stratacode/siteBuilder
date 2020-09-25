@@ -14,11 +14,11 @@
             Slideshow views
          </div>
          <div id="childViewContainer" class="childViewContainer">
-            <div class="noViewsTitle" visible=":= SlideshowViewEditor.this.slideshowDef.childViews.size() == 0">
+            <div class="noViewsTitle" visible=":= SlideshowViewEditor.this.slideshowDef.childViewDefs.size() == 0">
                No views in slideshow
             </div>
-            <div id="childViewRepeat" repeat=":= SlideshowViewEditor.this.slideshowDef.childViews" repeatVarName="childView" repeatWrapper="ChildViewEditorWrapper"
-                 pageMgr=":= SlideshowViewEditor.this.pageMgr" parentDef=":= slideshowDef" class=':= childView == pageMgr.currentChildView ? "selectedChildView" : "childView"'/>
+            <div id="childViewRepeat" repeat=":= SlideshowViewEditor.this.slideshowDef.childViewDefs" repeatVarName="childViewDef" repeatWrapper="ChildViewEditorWrapper"
+                 pageMgr=":= SlideshowViewEditor.this.pageMgr" parentDef=":= slideshowDef" class=':= childViewDef == pageMgr.currentChildView ? "selectedChildView" : "childView"'/>
          </div>
       </div>
    </div>

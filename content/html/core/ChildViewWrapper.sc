@@ -33,4 +33,8 @@ class ChildViewWrapper extends sc.lang.html.Div implements sc.lang.html.IRepeatW
 
    void updateElementIndexes(int fromIx) {
    }
+
+   void removeRepeatElement(Element old) {
+      // Not calling dispose here like the default because this object was allocated elsewhere
+   }
 }

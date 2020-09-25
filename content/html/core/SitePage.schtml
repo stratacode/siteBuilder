@@ -1,10 +1,14 @@
 <%@
    @CompilerSettings(constructorProperties="sitePathName,pagePathName")
    @URL(pattern="/sites/{sitePathName=urlString}[/page/{pagePathName=urlString}]", testURLs={"/sites/stratacycles", "/sites/stratacycles/page/about"})
+   @Sync(onDemand=true)
 %>
 <html extends="PageLayout">
    <%!
       String pagePathName;
+
+      @Sync(initDefault=true)
+      scope<appSession>
       object pageView extends PageView {
          siteView := SitePage.this.siteView;
          pagePathName := SitePage.this.pagePathName;
@@ -28,7 +32,7 @@
       <div id="appFrame">
          <div id="pageBody">
              <div id="formError"><%= pageView.errorMessage %></div>
-             <div id="pageChildView" repeat=":= SitePage.this.pageView.pageDef.childViews" repeatWrapper="ChildViewWrapper"/>
+             <div id="pageChildView" repeat=":= SitePage.this.pageView.childViews" repeatWrapper="ChildViewWrapper"/>
          </div>
       </div>
    </body>

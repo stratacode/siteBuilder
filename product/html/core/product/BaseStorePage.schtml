@@ -1,6 +1,7 @@
 <%@ @CompilerSettings(constructorProperties="sitePathName") %>
 <html extends="PageLayout" abstract="true">
    <%!
+      scope<appSession>
       object storeView extends StoreView {
          pathName := BaseStorePage.this.sitePathName;
       }

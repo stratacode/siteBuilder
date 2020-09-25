@@ -9,7 +9,9 @@ class UserView {
    @Sync(syncMode=SyncMode.Disabled)
    Userbase userbase;
 
+   @Sync(initDefault=true)
    String emailAddress = "";
+   @Sync(initDefault=true)
    String userName = "";
 
    @Sync(syncMode=SyncMode.ClientToServer)
@@ -28,9 +30,10 @@ class UserView {
    // Stores the current user profile associated with this view. For anonymous users
    // it will get auto-created to represent the anonymous profile, and source of properties for
    // the register form.
+   @Sync(initDefault=true)
    UserProfile user;
 
-   @Sync(syncMode=SyncMode.ServerToClient)
+   @Sync(syncMode=SyncMode.ServerToClient, initDefault=true)
    LoginStatus loginStatus = LoginStatus.NotLoggedIn;
    // The main error if there are more than one  
    String userViewError;

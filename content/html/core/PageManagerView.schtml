@@ -54,10 +54,10 @@
             Page views
          </div>
          <div id="childViewContainer" class="childViewContainer">
-            <div class="noViewsTitle" visible=":= pageMgr.currentPage.childViews == null || pageMgr.currentPage.childViews.size() == 0">
+            <div class="noViewsTitle" visible=":= pageMgr.currentPage.childViewDefs == null || pageMgr.currentPage.childViewDefs.size() == 0">
                No views in page
             </div>
-            <div id="childViewRepeat" repeat=":= pageMgr.currentPage.childViews" repeatVarName="childView" repeatWrapper="ChildViewEditorWrapper"
+            <div id="childViewRepeat" repeat=":= pageMgr.currentPage.childViewDefs" repeatVarName="childView" repeatWrapper="ChildViewEditorWrapper"
                  pageMgr=":= PageManagerView.this.pageMgr" parentDef=":= pageMgr.currentPage" class=':= childView == pageMgr.currentChildView ? "selectedChildView" : "childView"'/>
          </div>
       </div>

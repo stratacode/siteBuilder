@@ -70,7 +70,7 @@
    margin-bottom: 10px;
 }
 
-#listView, #startAddView, #findProductsView, #findCategoriesView, #findMediaView, #currentSitesView, #currentUsersView {
+#listView, #startAddView, #findProductsView, #findCategoriesView, #findMediaView, #currentSitesView, #currentUsersView, #currentMediaView {
    margin-bottom: 10px;
    margin-top: 10px;
 }
@@ -483,11 +483,17 @@
 }
 
 .selectedChildViewsView > .childViewContainer {
-   border: solid 2px #dde1ee;
+   border-left: solid 4px #dde1ee;
+   border-right: solid 4px #dde1ee;
+   border-top: solid 4px #dde1ee;
+   border-bottom: solid 6px #dde1ee;
 }
 
 .childViewsView > .childViewContainer {
-   border: solid 2px #aaa;
+   border-left: solid 4px #ccc;
+   border-right: solid 4px #ccc;
+   border-top: solid 4px #ccc;
+   border-bottom: solid 6px #ccc;
 }
 
 .viewEditorTitleText {

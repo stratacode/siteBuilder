@@ -15,7 +15,7 @@
          <div id="categoryDesc" class="categoryDesc"><%= category.longDesc %></div>
          <div id="categoryViewImage" class="categoryViewImage" visible=":= currentMedia != null">
             <img class="viewImage" id="categoryImage" src=":= currentMedia.url" srcset=":= currentMedia.srcSet"
-                 style=':= "max-width: " + currentMedia.manager.displaySize + "px"'/>
+                 style=':= "width: " + currentMedia.manager.displaySize + "px"'/>
          </div>
       </div>
       <div id="subCategoriesView" class="subCategoriesView" visible=":= category.subCategories != null && category.subCategories.size() > 0">

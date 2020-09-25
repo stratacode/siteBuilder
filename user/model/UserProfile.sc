@@ -12,9 +12,11 @@ class UserProfile {
    /** Separate Userbase's will be separate collections of user objects, perhaps shared or separate for different sites */
    Userbase userbase;
 
+   @Sync(initDefault=true)
    @DBPropertySettings(indexed=true)
-   String emailAddress; 
+   String emailAddress;
 
+   @Sync(initDefault=true)
    @DBPropertySettings(indexed=true)
    String userName;
 
@@ -23,21 +25,26 @@ class UserProfile {
    @Sync(syncMode=SyncMode.Disabled)
    String salt;
 
+   @Sync(initDefault=true)
    String firstName, lastName, salutation;
-   @Sync(syncMode=SyncMode.ServerToClient)
+   @Sync(syncMode=SyncMode.ServerToClient, initDefault=true)
    boolean emailVerified;
 
+   @Sync(syncMode=SyncMode.ServerToClient, initDefault=true)
    Date lastModified;
 
-   @Sync(syncMode=SyncMode.ServerToClient)
+   @Sync(syncMode=SyncMode.ServerToClient, initDefault=true)
    boolean locked;
-   @Sync(syncMode=SyncMode.ServerToClient)
+   @Sync(syncMode=SyncMode.ServerToClient, initDefault=true)
    boolean limitExceeded;
-   @Sync(syncMode=SyncMode.ServerToClient)
+   @Sync(syncMode=SyncMode.ServerToClient, initDefault=true)
    Date limitRestoreDate;
 
+   @Sync(initDefault=true)
    Address homeAddress;
+
    @DBPropertySettings(columnType="jsonb")
+   @Sync(initDefault=true)
    List<Address> addresses;
 
    final static int PRIV_SUPER_ADMIN = 1;
@@ -46,7 +53,7 @@ class UserProfile {
 
    final static int MIN_USER_NAME_LEN = 6;
 
-   @Sync(syncMode=SyncMode.ServerToClient)
+   @Sync(syncMode=SyncMode.ServerToClient, initDefault=true)
    long userPrivMask = 0;
 
    // Uses a bidirectional binding to map from boolean to bit in the bit-mask in both directions
@@ -55,6 +62,7 @@ class UserProfile {
    boolean siteAdmin :=: (userPrivMask & PRIV_SITE_ADMIN) != 0;
    boolean registered :=: (userPrivMask & PRIV_REGISTERED) != 0;
 
+   // TODO: add a role constraint here so this is only visible by site-admins
    @Sync(syncMode=SyncMode.ServerToClient,initDefault=true)
    UserProfileStats userProfileStats;
 

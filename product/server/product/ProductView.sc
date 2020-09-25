@@ -1,4 +1,5 @@
 ProductView {
+   @Sync(syncMode=SyncMode.Disabled)
    boolean optionsValid = false;
 
    // Here so we only run it once and sync the results
@@ -6,6 +7,7 @@ ProductView {
 
    pageVisitCount =: validateInStock();
 
+   @Sync(syncMode=SyncMode.Disabled)
    ProductInventory inventory := currentSku.inventory;
    inventory =: validateInStock();
 

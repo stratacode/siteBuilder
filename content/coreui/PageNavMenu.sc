@@ -1,8 +1,12 @@
+scope<appSession>
 class PageNavMenu extends NavMenu {
+   @Sync(initDefault=true)
    SiteView siteView;
 
    SiteContext siteContext := siteView.siteContext;
    siteView =: validateSiteView();
+
+   siteContext =: Bind.sendChangedEvent(this, "menuItems");
 
    object homeItem extends NavMenuItem {
       url = "/";
@@ -15,6 +19,7 @@ class PageNavMenu extends NavMenu {
       //siteContext = siteView == null ? null : siteView.siteContext;
    }
 
+   @Bindable(manual=true)
    List<BaseMenuItem> getMenuItems() {
       List<BaseMenuItem> ores = super.getMenuItems();
       if (siteContext == null)

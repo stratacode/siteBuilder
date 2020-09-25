@@ -102,7 +102,7 @@ OrderView {
          order = Order.createDraft(store, user);
       }
       if (order.lineItems == null)
-         order.lineItems = new ArrayList<LineItem>();
+         order.lineItems = new BArrayList<LineItem>();
       LineItem newLineItem = LineItem.create(order, product, sku, quantity);
       refreshLineItems();
    }
@@ -289,7 +289,7 @@ OrderView {
                   List<PaymentInfo> pis = user.paymentInfos;
                   boolean setPis = false;
                   if (pis == null) {
-                     pis = new ArrayList<PaymentInfo>();
+                     pis = new BArrayList<PaymentInfo>();
                      setPis = true;
                   }
                   if (!pis.contains(order.paymentInfo))

@@ -1,4 +1,5 @@
 @DBTypeSettings
+@Sync(onDemand=true)
 class LineItem {
    @DBPropertySettings(reverseProperty="lineItems")
    Order order;

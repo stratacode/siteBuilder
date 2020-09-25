@@ -5,15 +5,15 @@ ParentDef {
    transient List<ViewDef> oldViewDefs;
 
    List<IView> createChildViews(PageView pageView) {
-      if (childViews == null)
+      if (childViewDefs == null)
          return null;
 
-      int sz = childViews.size();
+      int sz = childViewDefs.size();
       ArrayList<IView> res = new ArrayList<IView>(sz);
 
       boolean changed = false;
       for (int i = 0 ; i < sz; i++) {
-         ViewDef viewDef = childViews.get(i);
+         ViewDef viewDef = childViewDefs.get(i);
          if (oldViewDefs != null && oldViewDefs.get(i) == viewDef)
             res.add(oldChildViews.get(i));
          else {
@@ -22,7 +22,7 @@ ParentDef {
          }
       }
       if (changed) {
-         oldViewDefs = new ArrayList<ViewDef>(childViews);
+         oldViewDefs = new ArrayList<ViewDef>(childViewDefs);
          return res;
       }
       return oldChildViews;

@@ -11,7 +11,7 @@
    <div id="categoryNavView" extends="CategoryNavView" categoryPath=":= ProductView.this.categoryPath" store=":= storeView.store"/>
    <div id="productDetailView" class="productDetailView">
       <div id="productViewImage" class="productViewImage">
-         <img class="viewImage" id="productViewImage" src=":= currentMedia.url" srcset=":= currentMedia.srcSet" style=':= "max-width: " + currentMedia.manager.displaySize + "px"'/>
+         <img class="viewImage" id="productViewImage" src=":= currentMedia.url" srcset=":= currentMedia.srcSet" style=':= "width: " + currentMedia.manager.displaySize + "px"'/>
          <div id="thumbNailsView" class="thumbNailsView">
             <div id="altMediaView" repeat=":= altMedia" repeatVarName="altMediaElem"
                  class='= "thumbView" + (altMediaIndex == repeatIndex ? " thumbViewSelected" : "")' >
