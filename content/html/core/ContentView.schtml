@@ -2,14 +2,10 @@
    <%! 
       PageView pageView;
 
-      @sc.obj.HTMLSettings(returnsHTML=true)
-      String contentHtml;
-
-
       ContentView(PageView pageView, String contentHtml, Element parentNode, String id, ContentViewDef viewDef, int ix) {
          super(parentNode, id, viewDef, ix);
          this.pageView = pageView;
-         this.contentHtml = contentHtml;
+         //this.contentHtml = contentHtml;
          this.viewDef = viewDef;
       }
 

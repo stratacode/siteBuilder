@@ -1,6 +1,6 @@
 @Sync(onDemand=true)
 scope<appSession>
-class SlideshowView implements IView {
+class SlideshowView extends ParentView {
    @Sync(initDefault=true)
    PageView pageView;
 
@@ -11,8 +11,7 @@ class SlideshowView implements IView {
    int currentSlide;
    int numSlides := slideshowDef.childViewDefs.size();
 
-   @Sync(initDefault=true)
-   List<IView> childViews;
+   List<ViewDef> childViewDefs := slideshowDef.childViewDefs;
 
    ViewDef getViewDef() {
       return slideshowDef;

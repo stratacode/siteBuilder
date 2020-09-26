@@ -8,22 +8,36 @@ currentUserView {
    void init() {
       Context ctx = Context.getCurrentContext();
       HttpServletRequest req = ctx.request;
-      String remoteIp = req.getHeader("X-Forwarded-For");
-      if (remoteIp == null)
-         remoteIp = req.getRemoteAddr();
-      this.remoteIp = remoteIp;
-      this.acceptLanguage = req.getHeader("Accept-Language");
-      this.userAgent = req.getHeader("User-agent");
-      Cookie cookie = ctx.getCookie(userbase.cookieName);
-      if (cookie != null)
-         this.userAuthToken = cookie.getValue();
+      if (req == null) {
+         // Happens during session expiration
+         userViewError = "User view initialized without a request";
+         user = null;
+         remoteIp = null;
+         acceptLanguage = null;
+         userAgent = null;
+         userAuthToken = null;
+         userName = null;
+         password = null;
+         loginStatus = LoginStatus.NotLoggedIn;
+      }
+      else {
+         String remoteIp = req.getHeader("X-Forwarded-For");
+         if (remoteIp == null)
+            remoteIp = req.getRemoteAddr();
+         this.remoteIp = remoteIp;
+         this.acceptLanguage = req.getHeader("Accept-Language");
+         this.userAgent = req.getHeader("User-agent");
+         Cookie cookie = ctx.getCookie(userbase.cookieName);
+         if (cookie != null)
+            this.userAuthToken = cookie.getValue();
 
-      HttpSession session = req.getSession(false);
-      if (session != null) {
-         sessionMarker = (String) session.getAttribute("_sc_sessionMarker");
-         if (sessionMarker == null)
-            sessionMarker = DBUtil.createMarkerToken();
-         session.setAttribute("_sc_sessionMarker", sessionMarker);
+         HttpSession session = req.getSession(false);
+         if (session != null) {
+            sessionMarker = (String) session.getAttribute("_sc_sessionMarker");
+            if (sessionMarker == null)
+               sessionMarker = DBUtil.createMarkerToken();
+            session.setAttribute("_sc_sessionMarker", sessionMarker);
+         }
       }
 
       super.init();

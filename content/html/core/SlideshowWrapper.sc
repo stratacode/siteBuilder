@@ -9,6 +9,7 @@ class SlideshowWrapper extends ChildViewWrapper {
       }
       Element viewElement = super.createElement(viewDefObj, ix, null);
       Element wrapper = new SlideshowElement(slideshow, allocUniqueId("slideshowElement"), viewElement, ix);
+      viewElement.parentNode = wrapper;
       return wrapper;
    }
 }

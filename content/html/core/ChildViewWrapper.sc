@@ -2,7 +2,7 @@ class ChildViewWrapper extends sc.lang.html.Div implements sc.lang.html.IRepeatW
    Element createElement(Object viewDefObj, int ix, Element oldTag) {
       Element elem = (Element) viewDefObj;
       elem.parentNode = this;
-      elem.id = allocUniqueId("childView");
+      //elem.id = allocUniqueId("childView");
       return elem;
 
       /*

@@ -1,7 +1,7 @@
 @Sync(onDemand=true)
 @CompilerSettings(constructorProperties="siteView,pagePathName")
 scope<appSession>
-class PageView {
+class PageView extends ParentView {
    String pagePathName;
    PageDef pageDef;
    PageType pageType;
@@ -10,11 +10,17 @@ class PageView {
 
    String errorMessage = null;
 
-   List<IView> childViews;
+   List<ViewDef> childViewDefs := pageDef.childViewDefs;
 
    PageView(SiteView siteView, PageDef pd, String pathName) {
       this.siteView = siteView;
       pagePathName =  pathName;
    }
 
+   ViewDef getViewDef() {
+      return pageDef;
+   }
+   void setViewDef(ViewDef viewDef) {
+      pageDef = (PageDef) viewDef;
+   }
 }
