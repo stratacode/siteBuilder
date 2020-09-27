@@ -17,6 +17,7 @@
 
       <div id="detailFormView" class="formContainer" visible=':= product != null'>
          <div class="formTitle"> <%= addInProgress ? "Unsaved product" : "Update product" %></div>
+         <span class="titleDetailLink" visible=":= !addInProgress"><a target="productView" href=':= product.pageUrl'>(open product in new tab)</a></span>
          <div id="nameFieldView" class="formField">
             <label for="nameField">Product name</label>
             <input id="nameField" type="text" value=":=: product.name" changeEvent="=: updateProductName(value)"
@@ -125,10 +126,10 @@
                   <img src=":= media.thumbUrl"/>
                   <span class="mediaInfoText"><%= media.uniqueFileName %></span>
                   <span class="mediaInfoText">
-                     <input type="checkbox" checked=":= media == product.mainMedia" changeEvent="=: product.mainMedia = media"/> main
+                     <input id="mainMediaCheck" type="checkbox" checked=":= media == product.mainMedia" changeEvent="=: product.mainMedia = media"/> main
                      <input type="image" class="clearMediaButton" src="/icons/x-square-sm.svg" clickEvent="=: removeElementMedia(media.id)"/>
                   </span>
-                  <span class="mediaInfoText"><input type="checkbox" checked=":=: product.visible"/> visible</span>
+                  <span class="mediaInfoText"><input id="mediaVisibleCheckbox" type="checkbox" checked=":= media.visible" changeEvent="=: updateMediaVisible(media, checked)"/> visible</span>
                   <span class="mediaInfoText"><%= media.filterPattern %></span>
                </div>
             </div>
@@ -166,7 +167,7 @@
                   <select optionDataSource=":= productOption.optionFilterList" selectedIndex="0" class=':= mediaOptionRepeat.this.repeatIndex > 0 ? "rightButton" : ""'
                           changeEvent="=: updateMediaFilter(mediaOptionRepeat.this.repeatIndex, (String)selectedValue)"/>
                </span>
-               <div id="alt" class="formMessage">Add options to Sku to load media for a particular set of options</div>
+               <div id="alt" class="formMessage">Always visible - no options set for product's sku</div>
             </div>
          </div>
 

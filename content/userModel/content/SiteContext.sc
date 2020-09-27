@@ -1,4 +1,5 @@
 @DBTypeSettings(typeId=1)
+@Sync(onDemand=true)
 class SiteContext implements IPropValidator {
    @Sync(syncMode=SyncMode.ServerToClient)
    List<UserProfile> siteAdmins;
@@ -25,7 +26,7 @@ class SiteContext implements IPropValidator {
 
    String icon;
 
-   @Sync(syncMode=SyncMode.ServerToClient)
+   @Sync(syncMode=SyncMode.ServerToClient,initDefault=true)
    MediaManager mediaManager;
 
    // Configurable presentation elements - add to the page menu, add new pages and provide the default page

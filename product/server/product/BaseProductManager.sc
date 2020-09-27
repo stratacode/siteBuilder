@@ -117,6 +117,12 @@ BaseProductManager {
       }
    }
 
+   void updateMediaVisible(ManagedMedia media, boolean newVis) {
+      media.visible = newVis;
+      if (element.altMedia.contains(media))
+         Bind.sendChangedEvent(element.altMedia, null);
+   }
+
    void addMediaResult(Object res) {
       if (res instanceof Object[])
          res = Arrays.asList((Object[]) res);

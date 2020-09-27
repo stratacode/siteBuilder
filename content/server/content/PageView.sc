@@ -1,6 +1,5 @@
 PageView {
    pagePathName =: validatePageView();
-   pageDef =: validateChildViews();
    childViewDefs =: validateChildViews();
 
    @Sync(syncMode=SyncMode.Disabled)

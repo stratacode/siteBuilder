@@ -1,6 +1,6 @@
 @Component
 @CompilerSettings(constructorProperties="siteView,pathName")
-@Sync(onDemand=true)
+@Sync
 scope<appSession>
 abstract class CatalogElementView implements IView {
    SiteView siteView;
@@ -21,6 +21,15 @@ abstract class CatalogElementView implements IView {
    //@Sync
    @Sync(syncMode=SyncMode.Disabled)
    List<ManagedMedia> altMedia;
+
+   @Sync(syncMode=SyncMode.Disabled)
+   List<ManagedMedia> elementMedia;
+   elementMedia =: validateCurrentMedia();
+
+   @Sync(syncMode=SyncMode.Disabled)
+   ManagedMedia elementMainMedia;
+
+   elementMainMedia =: validateCurrentMedia();
 
    @Sync
    int altMediaIndex;
@@ -44,12 +53,12 @@ abstract class CatalogElementView implements IView {
       List<ManagedMedia> newAltMedia;
       if (elem.altMedia != null) {
          newAltMedia = new ArrayList<ManagedMedia>();
-         if (!elem.altMedia.contains(mainMedia) && mediaIsAvailable(mainMedia))
+         if (mediaIsAvailable(mainMedia))
             newAltMedia.add(mainMedia);
          int numMedia = elem.altMedia.size();
          for (int i = 0; i < numMedia; i++) {
             ManagedMedia next = elem.altMedia.get(i);
-            if (mediaIsAvailable(next))
+            if (next != mainMedia && mediaIsAvailable(next))
                newAltMedia.add(next);
          }
       }

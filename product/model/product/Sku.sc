@@ -45,9 +45,8 @@ class Sku implements IPropValidator {
    @DBPropertySettings(indexed=true)
    Storefront store;
 
-   boolean getInStock() {
-      return available;
-   }
+   @DBPropertySettings(persist=false)
+   boolean inStock := available;
 
    Sku createOptionSku() {
       Sku res = new Sku();
@@ -210,5 +209,10 @@ class Sku implements IPropValidator {
    @Bindable(manual=true)
    String getInventoryDisplayStr() {
       return "";
+   }
+
+   void updateInventory() {
+      Bind.sendChangedEvent(this, "inventoryDisplayStr");
+      Bind.sendChangedEvent(this, "inStock");
    }
 }

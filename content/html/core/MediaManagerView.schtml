@@ -43,7 +43,7 @@
            clickEvent="=: selectedMedia = media"
            class=':= media == selectedMedia ? "selectedMediaRow" : "mediaRow"' >
         <span class="wideMediaColumn">
-           <input type="checkbox" checked=":= media == selectedMedia"/>
+           <input id="selectMediaCheckbox" type="checkbox" checked=":= media == selectedMedia" changeEvent="=: selectedMedia = media"/>
            <%= media.uniqueFileName %>
         </span>
         <span class="smallMediaColumn"> <%= media.fileType %> </span>

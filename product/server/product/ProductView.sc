@@ -47,13 +47,13 @@ ProductView {
       }
 
       validateCatalogElement();
-      if (product != null) {
-         available = product.available;
-      }
       validateInStock();
    }
 
    void validateInStock() {
+      if (product != null) {
+         available = product.available;
+      }
       // Note: numInCart here only should be set to > 0 when we are tracking inventory
       if (available) {
          if (!(currentSku instanceof PhysicalSku)) {

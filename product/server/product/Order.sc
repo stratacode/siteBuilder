@@ -95,7 +95,7 @@ Order {
                ProductInventory inv = invSku.inventory;
                if (inv.quantity >= quant) {
                   inv.quantity = inv.quantity - quant;
-                  Bind.sendChangedEvent(invSku, "inventoryDisplayStr");
+                  invSku.updateInventory();
                }
                else {
                   itx.rollback();

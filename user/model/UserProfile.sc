@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 @DBTypeSettings
 @FindBy(name="userNamePassword", with="userbase,userName,password",findOne=true)
 @FindBy(name="userName", with="userbase,userName",findOne=true)
+@Sync(onDemand=true)
 class UserProfile {
    @Sync(syncMode=SyncMode.Disabled)
    @DBPropertySettings(required=true)

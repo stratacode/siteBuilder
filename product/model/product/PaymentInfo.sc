@@ -1,5 +1,6 @@
 // TODO: perhaps break out subclass: CreditCardPayment - 
 @DBTypeSettings
+@Sync(onDemand=true)
 class PaymentInfo {
    CreditCardType cardType;
    String cardHolder;

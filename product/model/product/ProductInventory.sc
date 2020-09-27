@@ -5,6 +5,9 @@ class ProductInventory implements IPropValidator, IChangeable {
    int quantity;
    Date nextAvail;
 
+   quantity =: Bind.sendChangedEvent(this, null);
+
+   @Sync(syncMode=SyncMode.Disabled)
    long version;
 
    @Bindable

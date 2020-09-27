@@ -4,18 +4,22 @@ class ProductView extends CatalogElementView {
 
    product =: validateProduct();
 
+   // There is a catalogElement property here but it's not bindable so need to put this in each subclass
+   elementMedia := product.altMedia;
+   elementMainMedia := product.mainMedia;
+
    @Sync
    String currencySymbol;
 
    @Sync(initDefault=true)
    Sku currentSku;
 
-   @Sync
+   @Sync(initDefault=true)
    boolean available;
-   @Sync
+   @Sync(initDefault=true)
    boolean inStock;
 
-   @Sync
+   @Sync(initDefault=true)
    int numInCart; // Set to non-zero value when tracking inventory to display detailed inventory info
 
    @Sync

@@ -3,8 +3,7 @@ class PhysicalSku extends Sku {
    ProductInventory inventory;
    BigDecimal weight, height, width, length;
 
-   inventory =: Bind.sendChangedEvent(this, "displaySummary");
-   inventory =: Bind.sendChangedEvent(this, "inventoryDisplayStr");
+   inventory =: updateInventory();
 
    PhysicalSku createOptionSku() {
       PhysicalSku res = new PhysicalSku();
@@ -24,9 +23,7 @@ class PhysicalSku extends Sku {
       }
    }
 
-   boolean getInStock() {
-      return available && (inventory == null || inventory.quantity > 0);
-   }
+   inStock := available && (inventory == null || inventory.quantity > 0);
 
    String getInventoryDisplayStr() {
       String quantStr = "";
