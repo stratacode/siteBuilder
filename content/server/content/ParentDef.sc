@@ -1,5 +1,5 @@
 ParentDef {
-   void updateChildViews(sc.lang.html.Element parentNode, List<IView> childViews, PageView pageView, List<ViewDef> oldViewDefs) {
+   void updateChildViews(Object parentNode, List<IView> childViews, PageView pageView, List<ViewDef> oldViewDefs) {
       if (childViewDefs == null)
          return;
 
