@@ -1,25 +1,60 @@
 <%@ import java.util.Arrays; %>
-<html>
-   <body>All sites<div><%
+<html exec="server">
+   <%!
+      @sc.obj.HTMLSettings(returnsHTML=true)
+      StringBuilder outputSiteInfo(SiteContext ctx) { return new StringBuilder(); }
+   %>
+   <style class="text/css">
+      .subForm, .formBody, .subFormBody {
+         margin-left: 10px;
+      }
+      .formTitle {
+         margin-top: 10px;
+         font-size: 120%;
+      }
+      .siteLink, .subFormTitle {
+         font-size: 110%;
+      }
+      .subFormTitle {
+         margin-top: 5px;
+      }
+
+   </style>
+   <body>
+      <div class="formTitle">All sites index</div>
+      <div id="siteIndexBody" class="formBody"><%
       List<SiteContext> allSites = (List<SiteContext>) SiteContext.getDBTypeDescriptor().findAll(Arrays.asList("-lastModified"), 0, 20);
       for (int i = 0 ; i < allSites.size(); i++) {
          SiteContext site = allSites.get(i);
          %>
-            <a href=':= "/" + site.sitePathTypeName + "/" + site.sitePathName'>Site home: <%= site.siteName %></a>
-            <div>
-         <%
-         List<PageDef> allPages = (List<PageDef>) PageDef.getDBTypeDescriptor().findBy(Arrays.asList("site"), Arrays.asList(site), null, Arrays.asList("-lastModified"), 0, 20);
+            <div class="subForm">
+               <div class="siteLink">
+                  <%= site.siteTypeName %> <a href=':= "/" + site.sitePathTypeName + "/" + site.sitePathName'> <%= site.siteName %></a>
+               </div>
+               <div class="subFormBody">
+                  <%
+                  List<PageDef> allPages = (List<PageDef>) PageDef.getDBTypeDescriptor().findBy(Arrays.asList("site"), Arrays.asList(site), null, Arrays.asList("-lastModified"), 0, 20);
+                  %>
+                  <div class="subFormTitle"><%= allPages.size() == 0 ? "No pages" : "Pages (" + allPages.size() + ")" %></div>
+                  <%
+                  for (int j = 0; j < allPages.size(); j++) {
+                     PageDef page = allPages.get(j);
+                     String pageTypePath = page.pageTypePathName;
+                     %>
+                        <div class="siteLink">
+                           <a href=':= "/" + pageTypePath + "/" + site.sitePathName + "/" + page.pagePathName'><%= page.pageName + (page.homePage ? " (home)" : "") %> </a>
+                        </div>
+                     <%
+                  }
+                  %>
 
-         %> <%
-         for (int j = 0; j < allPages.size(); j++) {
-            PageDef page = allPages.get(j); 
-            String pageTypePath = page.pageTypePathName;
-            %>
-               <div><a href=':= "/" + pageTypePath + "/" + site.sitePathName + "/" + page.pagePathName'>Page: <%= page.pageName %> </a></div>
-            <%
-         }
-         %> </div> <%
+                  <%= outputSiteInfo(site) %>
+               </div>
+            </div>
+         <%
       }
-   %></div></body>
+      %>
+      </div>
+   </body>
 </html>
 

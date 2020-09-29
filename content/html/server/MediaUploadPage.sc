@@ -5,7 +5,7 @@ import sc.util.FileUtil;
 
 import java.io.File;
 
-@URL(pattern="/mediaUpload", mimeType="text/plain")
+@URL(pattern="/mediaUpload", mimeType="text/plain", testScripts={"none"})
 scope<request>
 class MediaUploadPage extends UploadPage {
    uploadPath = "/tmp/imageUpload";

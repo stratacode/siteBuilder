@@ -41,6 +41,10 @@ class SiteContext implements IPropValidator {
       return siteName;
    }
 
+   String getSiteTypeName() {
+      return "Site";
+   }
+
    String getSitePathTypeName() {
       return "sites";
    }

@@ -121,6 +121,7 @@
       <div class="headerRow" visible=":= siteMgr.currentSites != null && siteMgr.currentSites.size() > 0">
          <span class="wideHeaderColumn">Site name</span>
          <span class="wideHeaderColumn">Site path name</span>
+         <span class="headerColumn">Site type</span>
          <span class="smallHeaderColumn">Visible</span>
          <span class="smallHeaderColumn">Remove</span>
       </div>
@@ -131,6 +132,7 @@
            <%= currentSite.siteName %>
         </span>
         <span class="wideSiteColumn"> <%= currentSite.sitePathName %> </span>
+         <span class="siteColumn"> <%= currentSite.siteTypeName %> </span>
         <input type="checkbox" checked=":=: currentSite.visible" class="smallSiteColumn"/>
         <input type="image" class="removeSiteButton" src="/icons/x-square.svg" class="smallSiteColumn"
                clickEvent="=: siteMgr.removeSite(currentSite.id)"/>

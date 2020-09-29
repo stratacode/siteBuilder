@@ -1,0 +1,47 @@
+cmd.pauseTime = 500;
+  
+cmd.sleep(3000);
+
+// Run commands only in the server process
+cmd.targetRuntime = "java_Server";
+
+ProductManagerPage {
+   body {
+      mgrFrame {
+         mgrFrame__alt {
+            loginView {
+               userFormField {
+                  loginUserField.value = "jeff@jvroom.com2";
+               }
+               passwordFormField {
+                  loginPasswordField.value = "foobar111";
+               }
+
+               {
+                  if (siteMgr.userView.loginStatus == LoginStatus.NotLoggedIn)
+                     loginButton.click();
+               }
+            }
+         }
+
+         mgrView {
+            findProductsView {
+               findProductsForm {
+                  {
+                     findMediaButton.click();
+                  }
+               }
+            }
+            {
+               System.out.println("Found: " + productList.size() + " products");
+               for (int i = 0; i < productList.size(); i++) {
+                  System.out.println("Selecting: " + i);
+                  doSelectProduct(productList.get(i));
+                  System.out.println("Selected: " + i);
+                  cmd.sleep(5000);
+               }
+            }
+         }
+      }
+   }
+}

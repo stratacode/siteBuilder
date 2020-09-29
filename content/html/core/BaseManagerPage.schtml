@@ -62,16 +62,16 @@
          <div id="alt">
             <div id="loginView" visible=":= siteMgr.userView.loginStatus == LoginStatus.NotLoggedIn">
                <div class="formTitle">Login to manage sites</div>
-               <div class="formField">
+               <div id="userFormField" class="formField">
                   <label for="userNameField">User name</label>
-                  <input type="text" placeholder="user name" value=":=: siteMgr.userView.userName"/>
+                  <input id="loginUserField" type="text" placeholder="user name" value=":=: siteMgr.userView.userName"/>
                </div>
-               <div class="formField">
+               <div id="passwordFormField" class="formField">
                   <label for="passwordField">Password</label>
-                  <input type="password" placeholder="password" value=":=: siteMgr.userView.password"/>
+                  <input id="loginPasswordField" type="password" placeholder="password" value=":=: siteMgr.userView.password"/>
                </div>
-               <input type="submit" value="Log in" clickEvent="=: siteMgr.login()" class="confirmButtons"/>
-               <input type="submit" value="Register" clickEvent='=: Window.window.location.href = "/Register.html"' class="rightButtons"/>
+               <input id="loginButton" type="submit" value="Log in" clickEvent="=: siteMgr.login()" class="confirmButtons"/>
+               <input id="registerButton" type="submit" value="Register" clickEvent='=: Window.window.location.href = "/Register.html"' class="rightButtons"/>
             </div>
             <div class="formError"><%= siteMgr.userView.userViewError %></div>
          </div>

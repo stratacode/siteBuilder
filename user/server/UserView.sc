@@ -225,6 +225,8 @@ UserView {
          session.remoteIp = remoteIp;
          user.getOrCreateStats().numUserSessions++;
          userSessions.put(site.id, session);
+
+         DBUtil.addTestToken(sessionMarker, "session-marker");
       }
       return session;
    }
