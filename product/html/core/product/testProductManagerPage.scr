@@ -1,6 +1,6 @@
-cmd.pauseTime = 500;
+cmd.pauseTime = 250;
   
-cmd.sleep(3000);
+cmd.sleep(1000);
 
 // Run commands only in the server process
 cmd.targetRuntime = "java_Server";
@@ -10,16 +10,12 @@ ProductManagerPage {
       mgrFrame {
          mgrFrame__alt {
             loginView {
-               userFormField {
-                  loginUserField.value = "jeff@jvroom.com2";
-               }
-               passwordFormField {
-                  loginPasswordField.value = "foobar111";
-               }
-
                {
-                  if (siteMgr.userView.loginStatus == LoginStatus.NotLoggedIn)
+                  if (siteMgr.userView.loginStatus == LoginStatus.NotLoggedIn) {
+                     userFormField.loginUserField.value = "jeff@jvroom.com2";
+                     passwordFormField.loginPasswordField.value = "foobar111";
                      loginButton.click();
+                  }
                }
             }
          }
@@ -38,7 +34,7 @@ ProductManagerPage {
                   System.out.println("Selecting: " + i);
                   doSelectProduct(productList.get(i));
                   System.out.println("Selected: " + i);
-                  cmd.sleep(5000);
+                  cmd.sleep(1000);
                }
             }
          }
