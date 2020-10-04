@@ -21,6 +21,9 @@ class ProductManager extends BaseProductManager {
    PhysicalSku psku;
 
    @Sync(resetState=true, initDefault=true)
+   String skuCode;
+
+   @Sync(resetState=true, initDefault=true)
    boolean addInProgress;
    @Sync(resetState=true, initDefault=true)
    boolean addSkuInProgress;

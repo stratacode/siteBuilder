@@ -1,10 +1,16 @@
 <html abstract="true" pageVisitCount="=: pageVisited()">
-   <%! object siteMgr extends SiteManager {}
-       void pageVisited() {
-          siteMgr.pageVisited();
-          loginMenuVisible = false;
-       }
-       boolean loginMenuVisible = false; %>
+   <%!
+      object siteMgr extends SiteManager {}
+
+      void pageVisited() {
+         siteMgr.pageVisited();
+         loginMenuVisible = false;
+      }
+      boolean loginMenuVisible = false;
+
+      String sitePathName :=: siteMgr.pathName;
+
+   %>
 
    <head exec="server">
       <div id="libScripts" bodyOnly="true">

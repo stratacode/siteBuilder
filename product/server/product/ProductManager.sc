@@ -6,6 +6,8 @@ import sc.lang.html.HTMLElement;
 import sc.util.BTreeMap;
 
 ProductManager {
+   skuCode =: validateSkuCode();
+
    List<Product> searchForText(String text) {
       return (List<Product>) Product.getDBTypeDescriptor().searchQuery(text, searchStore, getSearchStoreValues(), null, searchOrderBy, -1, -1);
    }
@@ -724,6 +726,14 @@ ProductManager {
       parentCategoryPathName = cat.pathName;
    }
 
+   void doSelectSkuFromCode(String skuCode) {
+      if (skuCode != null && skuCode.length() > 0 && store != null) {
+         if (sku != null && sku.skuCode.equals(skuCode))
+            return;
+         List<Sku> newCurSku = Sku.findBySkuCode(skuCode, store);
+      }
+   }
+
    void doSelectSku(Sku toSel) {
       clearFormErrors();
       // We might have just removed this product so don't make it current again
@@ -735,6 +745,7 @@ ProductManager {
             optionScheme = null;
             editableOptionScheme = false;
             showOptionsView = false;
+            skuCode = "";
          }
          else {
             sku = toSel;
@@ -748,8 +759,30 @@ ProductManager {
 
             showSkuView = true;
             showOptionsView = optionScheme != null;
+
+            if (sku.skuCode != null)
+               skuCode = sku.skuCode;
          }
       }
+   }
+
+   void validateSkuCode() {
+      if (skuCode == null || sku == null)
+         return;
+      if (skuCode != null && sku != null && skuCode.equals(sku.skuCode))
+         return;
+      // Want to be sure the store path name has been set and the store updated if we are updating the skuCode and store name from the URL
+      DynUtil.invokeLater(new Runnable() {
+         void run() {
+            if (skuCode == null && sku != null)
+               doSelectSku(null);
+            else if (skuCode != null && (sku == null || !sku.skuCode.equals(skuCode)) && siteMgr.store != null) {
+               List<Sku> foundSkus = (List<Sku>) Sku.findBySkuCode(skuCode, siteMgr.store);
+               if (foundSkus != null && foundSkus.size() > 0)
+                  doSelectSku(foundSkus.get(0));
+            }
+         }
+      }, 0);
    }
 
    void removeSku(long skuId) {

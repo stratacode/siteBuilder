@@ -53,6 +53,7 @@ SiteManager {
          else {
             validSite = true;
             site = newSite;
+            pathName = newSite.sitePathName;
 
             validateSite();
          }
@@ -61,6 +62,7 @@ SiteManager {
          site = null;
          errorMessage = null;
          validSite = false;
+         pathName = null;
       }
       UserView uv = currentUserView;
       if (uv != null)

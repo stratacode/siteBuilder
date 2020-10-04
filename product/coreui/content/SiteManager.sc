@@ -1,5 +1,8 @@
 SiteManager {
+   @Sync(initDefault=true)
    Storefront store;
+
+   @Sync(initDefault=true)
    boolean validStore;
 
    static final String storeSiteName = "Online store";
