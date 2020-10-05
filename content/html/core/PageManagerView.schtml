@@ -7,7 +7,15 @@
          siteMgr := PageManagerView.this.siteMgr;
       }
    %>
+   <div class="formTitle">
+      Manage pages
+   </div>
    <div id="findPageView" class="findPageView" visible=":= !pageMgr.addInProgress">
+      <div id="showPageForm" class="formField">
+         <label for="showAllButton">Show pages</label>
+         <input type="button" value="All" id="showAllButton" class="showAllButton" clickEvent="=: pageMgr.doSearch()"/>
+         <input type="button" value="Recent" id="showRecentButton" class="showRecentButton rightButton" clickEvent="=: pageMgr.doSearch()"/>
+      </div>
       <div id="findPageForm" class="formField">
          <label for="searchSiteField">Find page:</label><input type="text" value=":=: pageMgr.searchText" changeEvent="=: pageMgr.doSearch()"/>
          <input type="image" class="findSiteButton" src="/icons/search.svg" clickEvent="=: pageMgr.doSearch()"/>

@@ -31,13 +31,37 @@ OrderManager {
       }
    }
 
-   void doSearch() {
-      String txt = searchText == null ? "" : searchText;
+   List<Order> orderSearch(String text) {
+      String txt = text == null ? "" : text;
       ArrayList<String> propNames = new ArrayList<String>();
       ArrayList<Object> propValues = new ArrayList<Object>();
       addSearchProps(orderSearchType, propNames, propValues);
 
-      orderList = (List<Order>) Order.getDBTypeDescriptor().searchQuery(txt, propNames, propValues, null, orderSearchOrderBy, -1, -1);
+      return (List<Order>) Order.getDBTypeDescriptor().searchQuery(txt, propNames, propValues, null, orderSearchOrderBy, -1, -1);
+   }
+
+   void doSearch() {
+      orderList = orderSearch(searchText);
+   }
+
+   void doSearchAll() {
+      searchText = "";
+      doSearch();
+   }
+
+   void doSearchRecent() {
+      searchText = "";
+      List<Order> allRes = orderSearch(searchText);
+      List<Order> res = new ArrayList<Order>();
+      long recentTime = System.currentTimeMillis() - recentDays * 24 * 60 * 60 * 1000L;
+      if (allRes != null) {
+         for (int i = 0; i < allRes.size(); i++) {
+            Order order = allRes.get(i);
+            if (order.lastModified != null && order.lastModified.getTime() > recentTime)
+               res.add(order);
+         }
+      }
+      orderList = res;
    }
 
    void doSelectOrder(Order toSel) {

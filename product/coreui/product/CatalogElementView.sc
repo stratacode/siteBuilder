@@ -29,7 +29,11 @@ abstract class CatalogElementView implements IView {
    @Sync(syncMode=SyncMode.Disabled)
    ManagedMedia elementMainMedia;
 
+   @Sync(syncMode=SyncMode.Disabled)
+   int elementMediaChangedCt;
+
    elementMainMedia =: validateCurrentMedia();
+   elementMediaChangedCt =: validateCurrentMedia();
 
    @Sync
    int altMediaIndex;

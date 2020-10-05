@@ -1,5 +1,6 @@
-<%@ @URL(pattern="/manage/product") %>
+<%@ @URL(pattern="/manage/product[/{sitePathName=urlString}/{productPathName=urlString}]") %>
 <html extends="BaseManagerPage">
+   <%! String productPathName; %>
    <head>
       <div id="libScripts">
          <script extends="TextEditorScripts"/>
@@ -7,7 +8,9 @@
    </head>
    <body>
       <div id="mgrFrame">
-         <div id="mgrView" extends="ProductManagerView" siteMgr=":= ProductManagerPage.this.siteMgr" store=":= siteMgr.store" visible=":= siteMgr.validStore">
+         <div id="mgrView" extends="ProductManagerView" siteMgr=":= ProductManagerPage.this.siteMgr"
+              store=":= siteMgr.store" visible=":= siteMgr.validStore"
+              productPathName=":=: ProductManagerPage.this.productPathName">
             <div id="alt" class="mgrViewStatus" visible=":= siteMgr.validSite"> Site <%= siteMgr.site.siteName %> is not an online store.</div>
          </div>
       </div>

@@ -9,8 +9,16 @@ class ProductManager extends BaseProductManager {
    @Sync(resetState=true, initDefault=true)
    Product product;
 
+   @Sync(resetState=true, initDefault=true)
+   String productPathName;
+
    void updateElementInstance(CatalogElement el) {
       product = (Product) el;
+      if (el == null)
+         productPathName = null;
+      // Don't set this for unsaved products since it reflects in the location bar
+      else if (product.id != 0 && product.pathName != null && product.pathName.length() > 0)
+         productPathName = product.pathName;
    }
 
    @Sync(resetState=true, initDefault=true)
@@ -75,6 +83,12 @@ class ProductManager extends BaseProductManager {
       clearFormErrors();
       parentCategoryPathName = "";
       searchStatusMessage = "";
+      sku = null;
+      skuCode = null;
+      productPathName = null;
+      showSkuView = false;
+      matchingSkus = null;
+      matchingOptionSchemes = null;
    }
 
    void clearFormErrors() {
@@ -120,6 +134,7 @@ class ProductManager extends BaseProductManager {
          return;
       autoUpdatePath = false;
       product.pathName = pathName;
+      productPathName = pathName;
    }
 
    String getElementType() {

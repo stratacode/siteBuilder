@@ -7,6 +7,7 @@ class ProductView extends CatalogElementView {
    // There is a catalogElement property here but it's not bindable so need to put this in each subclass
    elementMedia := product.altMedia;
    elementMainMedia := product.mainMedia;
+   elementMediaChangedCt := product.mediaChangedCt;
 
    @Sync
    String currencySymbol;

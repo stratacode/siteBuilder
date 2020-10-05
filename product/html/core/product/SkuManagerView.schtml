@@ -1,8 +1,16 @@
 <div extends="BaseProductManagerView">
-   <div id="findSkusView">
-      <div id="findSkusForm" visible=":= !addSkuInProgress" class="formField">
-         <label for="searchTextField">Find skus</label><input type="text" value=":= skuSearchText" changeEvent="=: updateMatchingSkus(value)"/>
-         <input type="image" class="findMediaButton" src="/icons/search.svg" clickEvent="=: updateMatchingSkus(skuSearchText)"/>
+   <div class="formTitle">
+      Manage skus
+   </div>
+   <div id="findSkusView" visible=":= !addSkuInProgress">
+      <div id="showProductsForm" class="formField">
+         <label for="showAllButton">Show skus</label>
+         <input type="button" value="All" id="showAllButton" class="showAllButton" clickEvent="=: doSearchSkus("")"/>
+         <input type="button" value="Recent" id="showRecentButton" class="showRecentButton rightButton" clickEvent="=: doSearchRecentSkus()"/>
+      </div>
+      <div id="findSkusForm"  class="formField">
+         <label for="searchTextField">Find skus</label><input type="text" value=":= skuSearchText" changeEvent="=: doSearchSkus(value)"/>
+         <input type="image" class="findMediaButton" src="/icons/search.svg" clickEvent="=: doSearchSkus(skuSearchText)"/>
          <input type="image" class="clearMediaButton" src="/icons/x-square.svg" clickEvent="=: resetForm()"/>
       </div>
    </div>
@@ -19,6 +27,7 @@
          <span class="headerColumn">Price</span>
          <span class="headerColumn">inventory</span>
          <span class="wideHeaderColumn">next available</span>
+         <span class="wideHeaderColumn">Last modified</span>
          <span class="headerColumn">Remove</span>
       </div>
       <div id="skuElemView" repeat=":= matchingSkus" repeatVarName="skuElem"
@@ -50,6 +59,7 @@
                          changeEvent="=: skuElem.inventory.updateNextAvailStr(value)"/>
                </span>
             </span>
+            <span class="wideSkuColumn"> <%= TextUtil.formatUserDate(skuElem.lastModified, true) %> </span>
             <input type="image" class="removeSkuButton" src="/icons/x-square.svg" clickEvent="=: removeSku(skuElem.id)"/>
          </div>
       </div>

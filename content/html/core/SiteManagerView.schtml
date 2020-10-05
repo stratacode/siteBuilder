@@ -1,7 +1,14 @@
 <div>
    <%! SiteManager siteMgr; %>
 
+   <div class="formTitle">
+      Manage sites
+   </div>
    <div id="findSiteView" class="findSiteView">
+      <div id="showSitesForm" class="formField">
+         <label for="showAllButton">Show sites</label>
+         <input type="button" value="All" id="showAllButton" class="showAllButton" clickEvent="=: siteMgr.doSearch()"/>
+      </div>
       <div id="findSiteForm" class="formField">
          <label for="searchSiteField">Find site:</label><input type="text" value=":=: siteMgr.searchText" changeEvent="=: siteMgr.doSearch()"/>
          <input type="image" class="findSiteButton" src="/icons/search.svg" clickEvent="=: siteMgr.doSearch()"/>

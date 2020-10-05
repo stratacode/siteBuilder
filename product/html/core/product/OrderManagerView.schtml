@@ -1,5 +1,13 @@
 <div extends="OrderManager">
+   <div class="formTitle">
+      Manage orders
+   </div>
    <div id="findOrdersView">
+      <div id="showOrdersForm" class="formField">
+         <label for="showAllButton">Show orders</label>
+         <input type="button" value="All" id="showAllButton" class="showAllButton" clickEvent="=: doSearchAll()"/>
+         <input type="button" value="Recent" id="showRecentButton" class="showRecentButton rightButton" clickEvent="=: doSearchRecent()"/>
+      </div>
       <div id="findOrderForm" class="formField">
          <label for="searchTextField">Find orders</label><input type="text" value=":=: searchText" changeEvent="=: doSearch()"/>
          <input type="image" class="findMediaButton" src="/icons/search.svg" clickEvent="=: doSearch()"/>

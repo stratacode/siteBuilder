@@ -1,6 +1,5 @@
 <div>
    <div id="siteDetailForm">
-
       <div id="extraFields">
          <div id="storeFields" visible=":= siteMgr.validStore">
             <div id="editCurrency" class="subFormView">

@@ -6,6 +6,7 @@ import sc.lang.html.HTMLElement;
 import sc.util.BTreeMap;
 
 ProductManager {
+   productPathName =: validateProductPathName();
    skuCode =: validateSkuCode();
 
    List<Product> searchForText(String text) {
@@ -21,6 +22,24 @@ ProductManager {
             searchStatusMessage = "No products in store";
          else
             searchStatusMessage = "No products found out of: " + numProducts + " in store";
+      }
+   }
+
+   void doSearchAll() {
+      searchText = "";
+      doSearch();
+   }
+
+   void doSearchRecent() {
+      searchText = "";
+      List<Product> recentProducts = (List<Product>) Product.getDBTypeDescriptor().query(Query.and(Query.eq("store", store), Query.gt("lastModified", new Date(System.currentTimeMillis() - recentMillis))), null, searchOrderBy, -1, -1);
+      productList = recentProducts;
+      if (productList.size() == 0) {
+         int numProducts = Product.getDBTypeDescriptor().searchCountQuery("", searchStore, getSearchStoreValues());
+         if (numProducts == 0)
+            searchStatusMessage = "No products in store";
+         else
+            searchStatusMessage = "No products changed in last " + recentDays + " days out of: " + numProducts + " in store";
       }
    }
 
@@ -74,6 +93,25 @@ ProductManager {
             showOptionsView = sku.optionScheme != null;
          }
       }
+   }
+
+   void validateProductPathName() {
+      if (productPathName == null && product == null)
+         return;
+      if (productPathName != null && product != null && productPathName.equals(product.pathName))
+         return;
+      // Want to be sure the store path name has been set and the store updated if we are updating the skuCode and store name from the URL
+         DynUtil.invokeLater(new Runnable() {
+            void run() {
+               if (productPathName == null && product != null)
+                  doSelectProduct(null);
+               else if (productPathName != null && (product == null || !product.pathName.equals(productPathName)) && siteMgr.store != null) {
+                  List<Product> foundProducts = (List<Product>) Product.findByPathName(productPathName, siteMgr.store, 0, 1);
+                  if (foundProducts != null && foundProducts.size() > 0)
+                     doSelectProduct(foundProducts.get(0));
+               }
+            }
+         }, 0);
    }
 
    void refreshOptionScheme() {
@@ -401,11 +439,15 @@ ProductManager {
       return res;
    }
 
-   void updateMatchingSkus(String pattern) {
+   void doSearchSkus(String pattern) {
       skuSearchText = pattern;
       if (pattern == null)
          pattern = "";
       List<Sku> allMatches = (List<Sku>) Sku.getDBTypeDescriptor().searchQuery(pattern, searchSkus, searchSkusValues, null, searchOrderBy, 0, 20);
+      matchingSkus = filterMatchingSkus(allMatches);
+   }
+
+   List<Sku> filterMatchingSkus(List<Sku> allMatches) {
       TreeSet<String> found = new TreeSet<String>();
       ArrayList<Sku> res = new ArrayList<Sku>();
       for (Sku match:allMatches) {
@@ -416,7 +458,17 @@ ProductManager {
                break;
          }
       }
-      matchingSkus = res;
+      return res;
+   }
+
+   void doSearchAllSkus() {
+      doSearchSkus("");
+   }
+
+   void doSearchRecentSkus() {
+      skuSearchText = "";
+      List<Sku> recentSkus = (List<Sku>) Sku.getDBTypeDescriptor().query(Query.and(Query.eq("store", store), Query.gt("lastModified", new Date(System.currentTimeMillis() - recentDays * 24 * 60 * 60 * 1000))), null, searchOrderBy, -1, -1);
+      matchingSkus = filterMatchingSkus(recentSkus);
    }
 
    void updateProductSku(String skuCode) {
@@ -767,7 +819,7 @@ ProductManager {
    }
 
    void validateSkuCode() {
-      if (skuCode == null || sku == null)
+      if (skuCode == null && sku == null)
          return;
       if (skuCode != null && sku != null && skuCode.equals(sku.skuCode))
          return;

@@ -1,6 +1,8 @@
 
-.findMediaButton, .clearMediaButton, .clearOptionButton {
+.findMediaButton, .clearMediaButton, .clearOptionButton, findProductButton, .clearProductButton, .findCategoryButton, .clearCategoryButton,
+ .findUserButton, .clearUserButton, .findSiteButton, .clearSiteButton, .findPageButton, .clearPageButton {
    vertical-align: bottom;
+   outline-style: none;
 }
 
 .mediaListThumb, .removeMediaButton {
@@ -155,11 +157,11 @@
    margin-left: 1%;
 }
 
-.findMediaButton {
+.findMediaButton, .findCategoryButton, .findProductButton, .findUserButton, .findSiteButton, .findPageButton {
    margin-left: 5px;
 }
 
-.clearMediaButton {
+.clearMediaButton, .clearCategoryButton, .clearProductButton, .clearUserButton, .clearSiteButton, .clearPageButton {
    margin-left: 1%;
 }
 

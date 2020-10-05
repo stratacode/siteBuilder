@@ -24,7 +24,7 @@ ProductManagerPage {
             findProductsView {
                findProductsForm {
                   {
-                     findMediaButton.click();
+                     findProductButton.click();
                   }
                }
             }

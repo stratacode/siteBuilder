@@ -1,9 +1,17 @@
 <div extends="BaseProductManagerView">
-   <div id="findProductsView">
-      <div id="findProductsForm" visible=":= !addInProgress" class="formField">
+   <div class="formTitle">
+      Manage products
+   </div>
+   <div id="findProductsView" visible=":= !addInProgress">
+      <div id="showProductsForm" class="formField">
+         <label for="showAllButton">Show products</label>
+         <input type="button" value="All" id="showAllButton" class="showAllButton" clickEvent="=: doSearchAll()"/>
+         <input type="button" value="Recent" id="showRecentButton" class="showRecentButton rightButton" clickEvent="=: doSearchRecent()"/>
+      </div>
+      <div id="findProductsForm" class="formField">
          <label for="searchTextField">Find products</label><input type="text" value=":=: searchText" changeEvent="=: doSearch()"/>
-         <input type="image" id="findMediaButton" class="findMediaButton" src="/icons/search.svg" clickEvent="=: doSearch()"/>
-         <input type="image" id="clearMediaButton" class="clearMediaButton" src="/icons/x-square.svg" clickEvent="=: resetForm()"/>
+         <input type="image" id="findProductButton" class="findProductButton" src="/icons/search.svg" clickEvent="=: doSearch()"/>
+         <input type="image" id="clearProductButton" class="clearProductButton" src="/icons/x-square.svg" clickEvent="=: resetForm()"/>
       </div>
    </div>
 
@@ -22,7 +30,7 @@
          </div>
          <div id="nameFieldView" class="formField">
             <label for="nameField">Product name</label>
-            <input id="nameField" type="text" value=":=: product.name" changeEvent="=: updateProductName(value)"
+            <input id="nameField" type="text" value=":= product.name" changeEvent="=: updateProductName(value)"
                    class=':= product.propErrors.get("name") == null ? "fieldInput" : "fieldInputError"' placeholder="display name"/>
          </div>
          <div id="nameErrorView" class="formError"><%= product.propErrors.get("name") %></div>
@@ -84,7 +92,9 @@
 
          <div id="shortDescView" class="formField">
             <label for="shortDescField">Short description</label>
-            <input id="shortDescField" type="text" value=":=: product.shortDesc" class="wideTextField" placeholder="product summary"/>
+            <input id="shortDescField" type="text" value=":= product.shortDesc"
+                   changeEvent="=: product.shortDesc = value"
+                   class="wideTextField" placeholder="product summary"/>
          </div>
 
          <div id="longDescView" class="subFormView">
@@ -98,7 +108,7 @@
             <input id="skuField" type="text" list="= skuSuggestions.getId()" disabled=":= showSkuView"
                    class=':= skuFindErrorMessage == null ? "fieldInput" : "fieldInputError"'
                    value=":= product.sku == null ? skuSearchText : product.sku.skuCode"
-                   keyUpEvent="=: updateMatchingSkus(value)" changeEvent="=: updateProductSku(value)"
+                   keyUpEvent="=: doSearchSkus(value)" changeEvent="=: updateProductSku(value)"
                    placeholder="search for skus"/>
             <datalist id="skuSuggestions">
                <option repeat=":= matchingSkus" repeatVarName="matchingSku" value=":= matchingSku.skuCode"/>
@@ -180,7 +190,8 @@
 
          <div id="keywordsView" class="formField">
             <label for="shortDescField">Keywords</label>
-            <input id="shortDescField" type="text" value=":=: product.keywords" class="wideTextField" placeholder="keywords describing product for search or categorization"/>
+            <input id="shortDescField" type="text" value=":= product.keywords" changeEvent="=: product.keywords = value"
+                   class="wideTextField" placeholder="keywords describing product for search or categorization"/>
          </div>
 
          <div id="addCancel" visible=":= addInProgress" class="formField confirmButtons">
@@ -208,8 +219,8 @@
          <span class="headerColumn">Sku code</span>
          <span class="smallHeaderColumn">Price</span>
          <span class="headerColumn">Inventory</span>
-         <span class="headerColumn">Options</span>
          <span class="smallHeaderColumn">Visible</span>
+         <span class="headerColumn">Last modified</span>
          <span class="smallHeaderColumn">Remove</span>
          <div id="alt" class="formStatus">
             <%= searchStatusMessage %>
@@ -226,13 +237,15 @@
         </span>
         <span class="productColumn"> <a target="productView" href=':= "/stores/" + store.sitePathName + "/product/" + productElem.pathName'><%= productElem.pathName %></a></span>
         <span class="productColumn"> <%= productElem.parentCategory == null ? "none" : productElem.parentCategory.pathName %> </span>
-        <span class="productColumn"> <%= productElem.sku == null ? "no sku" : productElem.sku.skuCode%> </span>
+        <span class="productColumn">
+           <a href=':= "/manage/sku/" + store.sitePathName + "/" + productElem.sku.skuCode'>
+              <%= productElem.sku == null ? "no sku" : productElem.sku.skuCode%>
+           </a>
+        </span>
         <span class="smallProductColumn"> <%= productElem.sku == null ? "n/a" : productElem.sku.priceDisplayStr %> </span>
         <span class="productColumn"> <%= productElem.sku == null ? "n/a" : productElem.sku.inventoryDisplayStr %> </span>
-        <span class="productColumn">
-           <%= productElem.sku == null || productElem.sku.optionScheme == null ? "n/a" : productElem.sku.optionScheme.schemeName %>
-         </span>
         <span class="smallProductColumn"> <input type="checkbox" checked=":=: productElem.visible"/> </span>
+        <span class="productColumn"> <%= TextUtil.formatUserDate(productElem.lastModified, true) %> </span>
         <input type="image" class="removeProductButton" src="/icons/x-square.svg" clickEvent="=: removeProduct(productElem.id)"/>
       </div>
    </div>

@@ -1,9 +1,17 @@
 <div extends="CategoryManager">
+   <div class="formTitle">
+      Manage categories
+   </div>
    <div id="findCategoriesView">
+      <div id="showProductsForm" class="formField">
+         <label for="showAllButton">Show categories</label>
+         <input type="button" value="All" id="showAllButton" class="showAllButton" clickEvent="=: doSearch()"/>
+         <input type="button" value="Recent" id="showRecentButton" class="showRecentButton rightButton" clickEvent="=: doSearch()"/>
+      </div>
       <div id="findCategoriesForm" visible=":= !addCategoryInProgress" class="formField">
          <label for="searchTextField">Find categories</label><input type="text" value=":=: searchText" changeEvent="=: doSearch()"/>
-         <input type="image" class="findMediaButton" src="/icons/search.svg" clickEvent="=: doSearch()"/>
-         <input type="image" class="clearMediaButton" src="/icons/x-square.svg" clickEvent="=: resetForm()"/>
+         <input type="image" class="findCategoryButton" src="/icons/search.svg" clickEvent="=: doSearch()"/>
+         <input type="image" class="clearCategoryButton" src="/icons/x-square.svg" clickEvent="=: resetForm()"/>
       </div>
    </div>
 
@@ -19,7 +27,7 @@
          <div class="formTitle"> <%= addCategoryInProgress ? "Unsaved category" : "Update category" %></div>
          <div id="nameFieldView" class="formField">
             <label for="nameField">Category name</label>
-            <input id="nameField" type="text" value=":=: category.name" changeEvent="=: updateCategoryName(value)"
+            <input id="nameField" type="text" value=":= category.name" changeEvent="=: updateCategoryName(value)"
                    class=':= category.propErrors.get("name") == null ? "fieldInput" : "fieldInputError"' placeholder="display name"/>
          </div>
          <div id="nameErrorView" class="formError"><%= category.propErrors.get("name") %></div>
@@ -49,7 +57,8 @@
 
          <div id="shortDescView" class="formField">
             <label for="shortDescField">Short description</label>
-            <input id="shortDescField" type="text" value=":=: category.shortDesc" class="wideTextField" placeholder="category summary"/>
+            <input id="shortDescField" type="text" value=":= category.shortDesc"
+                   changeEvent="=: category.shortDesc = value" class="wideTextField" placeholder="category summary"/>
          </div>
 
          <div id="longDescView" class="subFormView">
@@ -171,20 +180,22 @@
          <span class="headerColumn">Pathname</span>
          <span class="headerColumn">Category</span>
          <span class="headerColumn">Visible</span>
+         <span class="headerColumn">Last modified</span>
          <span class="headerColumn">Remove</span>
       </div>
       <div id="categoryElemView" repeat=":= categoryList" repeatVarName="categoryElem"
            class=':= categoryElem == category ? "selectedCategoryRow" : "categoryRow"'>
-        <span class="wideHeaderColumn" clickEvent="=: doSelectCategory(categoryElem)">
+        <span class="wideCategoryColumn" clickEvent="=: doSelectCategory(categoryElem)">
            <input type="checkbox" checked=":= category == categoryElem"/>
            <%= categoryElem.name %>
         </span>
-        <span class="headerColumn" clickEvent="=: doSelectCategory(categoryElem)">
+        <span class="categoryColumn" clickEvent="=: doSelectCategory(categoryElem)">
            <img src=":= categoryElem.mainMedia.thumbUrl"/>
         </span>
-        <span class="headerColumn"> <a target="productView" href=':= "/stores/" + store.sitePathName + "/category/" + categoryElem.pathName'><%= categoryElem.pathName %></a> </span>
-        <span class="headerColumn"> <%= categoryElem.parentCategory == null ? "none" : categoryElem.parentCategory.pathName %> </span>
-        <span class="headerColumn"> <input type="checkbox" checked=":=: categoryElem.visible"/> </span>
+        <span class="categoryColumn"> <a target="productView" href=':= "/stores/" + store.sitePathName + "/category/" + categoryElem.pathName'><%= categoryElem.pathName %></a> </span>
+        <span class="categoryColumn"> <%= categoryElem.parentCategory == null ? "none" : categoryElem.parentCategory.pathName %> </span>
+        <span class="categoryColumn"> <input type="checkbox" checked=":=: categoryElem.visible"/> </span>
+        <span class="wideCategoryColumn"> <%= TextUtil.formatUserDate(categoryElem.lastModified, true) %> </span>
         <input type="image" class="removeCategoryButton" src="/icons/x-square.svg" clickEvent="=: removeCategory(categoryElem.id)"/>
       </div>
    </div>

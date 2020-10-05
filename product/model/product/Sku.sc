@@ -208,6 +208,9 @@ class Sku implements IPropValidator {
 
    @Bindable(manual=true)
    String getInventoryDisplayStr() {
+      if (skuOptions != null && skuOptions.size() > 0) {
+         return skuOptions.size() + " options";
+      }
       return "";
    }
 

@@ -39,6 +39,9 @@ abstract class CatalogElement extends ManagedResource {
    @Sync(resetState=true,initDefault=true)
    List<ManagedMedia> altMedia;
 
+   @DBPropertySettings(persist=false)
+   int mediaChangedCt;
+
    boolean featured;
 
    static String validateName(String name) {

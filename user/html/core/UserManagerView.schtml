@@ -9,7 +9,15 @@
       }
       UserProfile currentUser := userMgr.currentUser;
    %>
+   <div class="formTitle">
+      Manage users
+   </div>
    <div id="findUserView" class="findUserView">
+      <div id="showProductsForm" class="formField">
+         <label for="showAllButton">Show users</label>
+         <input type="button" value="All" id="showAllButton" class="showAllButton" clickEvent="=: userMgr.doSearch()"/>
+         <input type="button" value="Recent" id="showRecentButton" class="showRecentButton rightButton" clickEvent="=: userMgr.doSearch()"/>
+      </div>
       <div id="findUserForm" class="formField">
          <label for="searchUserField">Find user:</label><input id="searchUserField" type="text" value=":=: userMgr.searchText" changeEvent="=: userMgr.doSearch()"/>
          <input type="image" class="findUserButton" src="/icons/search.svg" clickEvent="=: userMgr.doSearch()"/>
