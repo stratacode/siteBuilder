@@ -1,4 +1,5 @@
 @Sync(onDemand=true)
+@CompilerSettings(compiledOnly=true)
 abstract class SessionEvent {
    Date eventTime;
    public SessionEvent() {

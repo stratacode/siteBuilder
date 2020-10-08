@@ -1,4 +1,5 @@
 @DBTypeSettings(typeId=2)
+@Sync(onDemand=true)
 class PhysicalSku extends Sku {
    ProductInventory inventory;
    BigDecimal weight, height, width, length;

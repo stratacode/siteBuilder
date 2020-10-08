@@ -1,4 +1,6 @@
 public user.modelImpl extends model, jdbc.pgsql, jdbc.schemaManager {
+   compiledOnly = true;
+
    void init() {
       // Exclude the runtimes which do not support the DB features 
       excludeRuntimes("js", "android", "gwt");

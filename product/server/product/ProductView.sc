@@ -33,7 +33,7 @@ ProductView {
 
             initOptions();
             altMediaIndex = 0;
-            validateCurrentMedia();
+            mediaChanged();
 
             productViewError = null;
 
@@ -224,7 +224,7 @@ ProductView {
             System.err.println("*** No sku found for selected options in product: " + product);
       }
       optionsValid = true;
-      validateCurrentMedia();
+      mediaChanged();
    }
 
    void addToCart() {

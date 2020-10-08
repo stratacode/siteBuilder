@@ -6,4 +6,5 @@ import sc.content.PageManager;
 import sc.content.PageView;
 
 public content.userCoreui extends content.coreui, user.coreui {
+   compiledOnly = true;
 }

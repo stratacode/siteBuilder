@@ -1,5 +1,5 @@
-<div visible=":= currentUserView.loginStatus==LoginStatus.LoggedIn">
-   <div id="formFields">
+<div class="profileView" visible=":= currentUserView.loginStatus==LoginStatus.LoggedIn">
+   <div id="updateAccountForm" class="editFormView">
       <div class="formTitle">Update account information</div>
       <div class="formField">
          <label for="emailField">Email address</label>
@@ -13,23 +13,27 @@
          <label for="lastNameField">Last name</label>
          <input id="lastNameField" type="text" value=":=: currentUserView.user.lastName" liveEdit="off"/>
       </div>
-      <input type="submit" value="Update" clickEvent="=: currentUserView.updateProfile()" class="confirmButtons"/>
+      <div class="formField">
+         <input type="submit" value="Update" clickEvent="=: currentUserView.updateProfile()" class="confirmButtons"/>
+      </div>
    </div>
    <div class="formError"><%= currentUserView.userViewError %></div>
    <div class="formStatus"><%= currentUserView.userViewStatus %></div>
-   <div id="formFields">
+   <div id="changePasswordForm" class="editFormView">
       <div class="formTitle">Change password</div>
       <div class="formField">
          <label for="emailField">New password</label>
          <input id="emailField" type="password" value=":=: currentUserView.password" liveEdit="off"/>
-         <div class="formError"><%= currentUserView.propErrors.get("password") %></div>
       </div>
-      <input type="submit" value="Update" clickEvent="=: currentUserView.updatePassword()" class="confirmButtons"/>
+      <div class="formError"><%= currentUserView.propErrors.get("password") %></div>
+      <div class="formField">
+         <input type="submit" value="Update" clickEvent="=: currentUserView.updatePassword()" class="confirmButtons"/>
+      </div>
       <div class="formStatus"><%= currentUserView.updatePasswordStatus %></div>
    </div>
    <div class="formError"><%= currentUserView.propErrors.get("password") %></div>
-   <div id="alt">
-      <div class="formStatus">Not logged</div>
+   <div id="alt" class="profileView">
+      <div class="formStatus">Login to edit your profile</div>
       <a href="/login" class="confirmButtons">Login</a>
    </div>
 </div>

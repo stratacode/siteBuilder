@@ -1,7 +1,7 @@
 import java.util.HashMap;
 
 @Component
-@CompilerSettings(constructorProperties="pathName")
+@CompilerSettings(constructorProperties="pathName", compiledOnly=true)
 class SiteView {
    @Sync(initDefault=true)
    SiteContext siteContext;

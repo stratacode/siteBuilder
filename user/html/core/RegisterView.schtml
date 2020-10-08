@@ -1,27 +1,29 @@
-<div visible=":= currentUserView.loginStatus==LoginStatus.NotLoggedIn">
-   <div id="formFields">
-      <div class="formTitle">Create an account</div>
-      <div class="formField">
-         <label for="emailField">Email address</label>
-         <input id="emailField" type="text" value=":=: currentUserView.emailAddress"/>
-      </div>
-      <div class="formField">
-         <label for="passwordField">Password</label>
-         <input id="passwordField" type="password" value=":=: currentUserView.password"/>
-      </div>
-      <div class="formField">
-         <label for="firstNameField">First name</label>
-         <input id="firstNameField" type="text" value=":=: currentUserView.user.firstName"/>
-      </div>
-      <div class="formField">
-         <label for="lastNameField">Last name</label>
-         <input id="lastNameField" type="text" value=":=: currentUserView.user.lastName"/>
-      </div>
+<div visible=":= currentUserView.loginStatus==LoginStatus.NotLoggedIn" class="profileView">
+   <div class="formTitle">Create an account</div>
+   <div class="formField">
+      <label for="emailField">Email address</label>
+      <input id="emailField" type="text" value=":=: currentUserView.emailAddress"/>
+   </div>
+   <div class="formField">
+      <label for="passwordField">Password</label>
+      <input id="passwordField" type="password" value=":=: currentUserView.password"/>
+   </div>
+   <div class="formField">
+      <label for="firstNameField">First name</label>
+      <input id="firstNameField" type="text" value=":=: currentUserView.user.firstName"/>
+   </div>
+   <div class="formField">
+      <label for="lastNameField">Last name</label>
+      <input id="lastNameField" type="text" value=":=: currentUserView.user.lastName"/>
+   </div>
+   <div class="formField">
       <input type="submit" value="Register" clickEvent="=: currentUserView.register()" class="confirmButtons"/>
    </div>
    <div class="formError"><%= currentUserView.userViewError %></div>
-   <div id="alt">
-      <div class="formStatus">Logged in as <%= currentUserView.user.emailAddress %></div>
-      <input type="submit" value="Sign out" clickEvent="=: currentUserView.logout()" class="confirmButtons">
+   <div id="alt" class="profileView">
+      <div class="formField">
+         <div class="formStatus">Logged in as <%= currentUserView.user.emailAddress %></div>
+         <input type="submit" value="Sign out" clickEvent="=: currentUserView.logout()" class="confirmButtons">
+      </div>
    </div>
 </div>

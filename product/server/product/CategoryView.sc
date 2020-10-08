@@ -26,7 +26,7 @@ CategoryView {
                   altMedia.add(mainMedia);
                altMedia.addAll(category.altMedia);
             }
-            validateCurrentMedia();
+            mediaChanged();
 
             categoryViewError = null;
             startCategorySync();

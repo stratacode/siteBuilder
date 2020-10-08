@@ -16,6 +16,9 @@ SiteView {
 
    void pageVisited() {
       pageVisitCount++;
+      // Each time the page is loaded, need to check and see if the auth token still matches in the request, update
+      // the state of the UserView's loggedIn property
+      currentUserView.refresh();
       currentUserView.addPageEvent(siteContext, pathName);
    }
 

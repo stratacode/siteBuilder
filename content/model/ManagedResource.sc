@@ -1,3 +1,4 @@
+@CompilerSettings(compiledOnly=true)
 abstract class ManagedResource implements sc.dyn.IPropValidator {
    MediaManager manager;
 

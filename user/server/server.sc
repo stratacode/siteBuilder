@@ -4,6 +4,8 @@ public user.server extends user.coreui, user.modelImpl, user.postalCodeDB.server
    exportRuntime = false;
    exportProcess = false;
 
+   compiledOnly = true;
+
    void init() {
    // Exclude the runtimes which do not support the DB features
       excludeRuntimes("js", "android", "gwt");
@@ -11,4 +13,5 @@ public user.server extends user.coreui, user.modelImpl, user.postalCodeDB.server
       // The LayeredSystem is only available in the default Java runtime.
       addRuntime(null);
    }
+
 }

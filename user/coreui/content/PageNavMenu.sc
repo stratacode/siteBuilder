@@ -4,7 +4,7 @@ PageNavMenu {
    boolean loggedIn := currentUserView.loginStatus == LoginStatus.LoggedIn;
    object profileMenu extends NavMenu {
       name := loggedIn ? currentUserView.user.userName : "login";
-      icon := loggedIn ? "/icons/user-minus.svg" : "/icons/user-plus.svg";
+      icon := loggedIn ? "/icons/user-minus20-grey.svg" : "/icons/user-plus20-grey.svg";
 
       object loginMenuItem extends NavMenuItem {
          name = "Login";

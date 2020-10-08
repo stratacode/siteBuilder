@@ -1,26 +1,119 @@
+html {
+  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  color: #333;
+}
+
+body {
+  padding: 0px;
+  justify-content: center;
+  display: flex;
+  text-size-adjust: none;
+  margin: 0px;
+}
+
+.appFrame {
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+
 .subMenuBox {
    position: absolute;
    z-index: 5;
    padding: 3px;
-   background-color: #fff;
+   background-color: #04333F
 }
 
 .subMenuItem {
    padding: 3px;
 }
 
-.subMenuLink, .menuItemLink {
+.subMenuLink, .menuItemLink, .subMenuItemLink {
    padding-left: 10px;
    padding-right: 25px;
    display: flex;
-   flex-direction: column;
+   flex-direction: row;
    text-decoration: none;
-   color: #000;
+   color: #333;
+}
+
+.menuItemLink, .subMenuLink {
+   border-bottom: 3px solid #04333F;
+}
+
+.menuItemLink:hover, .subMenuLink:hover {
+   border-bottom: 3px solid #e8b575fa;
+}
+
+.subMenuItemLink {
+   border-left: 3px solid #04333F;
+}
+
+.subMenuItemLink:hover {
+   border-left: 3px solid #e8b575fa;
+}
+
+#navbar a.active {
+   font-weight: bold;
+   border-bottom: 3px solid #d47a46;
+}
+
+.subMenuLink img, .menuItemLink img {
+   padding-right: 4px;
 }
 
 #navbar {
-   display: inline-flex;
-   padding-bottom: 20px;
+   display: flex;
+   justify-content: center;
+   padding-bottom: 5px;
+   padding-top: 5px;
+   background-color: #04333F;
+   width: 100%;
+}
+
+#footer {
+   min-height: 32px;
+   background-color: #04333F;
+   margin-top: 10px;
+   width: 100%;
+}
+
+#navbar a {
+   color: #dcdcdc;
+   font-size: 110%;
+}
+
+#pageBody {
+   background: #fff;
+   width: 100%;
+   display: flex;
+   align-items: center;
+   justify-content: space-around;
+   padding-bottom: 5px;
+   padding-top: 5px;
+}
+
+.categoryView, .productView {
+   max-width: 1000px;
+   display: flex;
+}
+
+.profileView {
+   max-width: 1000px;
+   min-width: 700px;
+   display: flex;
+   flex-direction: column;
+   margin: auto;
+}
+
+.editFormView {
+   display: flex;
+   flex-direction: column;
+   max-width: 1000px;
 }
 
 .formField {
@@ -53,6 +146,11 @@
 
 .confirmButtons, .formTitle, .formError, .formStatus, .subFormTitle, .formMessage {
    margin-left: 21%;
+}
+
+.formStatus {
+   font-size: 85%;
+   font-style: italic;
 }
 
 .slideNavRow {
@@ -89,13 +187,13 @@
 .leftSlideArrow {
    position: absolute;
    top: 50%;
-   left: 20px;
+   left: 10%;
 }
 
 .rightSlideArrow {
    position: absolute;
    top: 50%;
-   right: 20px;
+   right: 20%;
 }
 
 .centerSlideButtons {

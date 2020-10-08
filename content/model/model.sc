@@ -17,4 +17,5 @@ import sc.type.PTypeUtil;
 
 @Sync(syncMode=SyncMode.Automatic)
 public content.model extends user.model {
+   compiledOnly = true;
 }

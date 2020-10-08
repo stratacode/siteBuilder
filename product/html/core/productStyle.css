@@ -205,11 +205,6 @@
    margin-bottom: 5px;
 }
 
-#pageBody {
-   max-width: 1000px;
-   margin: auto;
-}
-
 .zipFieldBox {
    flex-basis: content;
 }

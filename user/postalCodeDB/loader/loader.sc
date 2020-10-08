@@ -26,4 +26,6 @@ public user.postalCodeDB.loader extends user.postalCodeDB.server, jdbc.pgsql, jd
 
    String postalCodePath = getRelativeFile("data/allCountries.csv");
    String countryDBPath = getRelativeFile("data/countries.csv");
+
+   compiledOnly = true;
 }

@@ -13,14 +13,35 @@ UserView {
          login();
       }
 
+      initNewUser();
+
+      if (user != null && user.registered) {
+         loginStatus = LoginStatus.LoggedIn;
+      }
+   }
+
+   void refresh() {
+      if (userAuthToken != null) {
+         user = UserProfile.findByAuthToken(userAuthToken);
+         if (user == null || user.userbase != userbase)
+            userAuthToken = null; // Invalid token
+      }
+      else {
+         user = null;
+         initNewUser();
+      }
+
+      if (user != null && user.registered)
+         loginStatus = LoginStatus.LoggedIn;
+      else
+         loginStatus = LoginStatus.NotLoggedIn;
+   }
+
+   void initNewUser() {
       if (user == null && userbase.createAnonymousUser) {
          resetUser();
          userAuthToken = user.createAuthToken();
          persistAuthToken(userAuthToken);
-      }
-
-      if (user != null && user.registered) {
-         loginStatus = LoginStatus.LoggedIn;
       }
    }
 

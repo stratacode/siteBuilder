@@ -1,4 +1,5 @@
 @sc.obj.EditorSettings(displayNameProperty="name")
+@CompilerSettings(compiledOnly=true)
 abstract class CatalogElement extends ManagedResource {
    /* The external name */
    @Sync(resetState=true,initDefault=true)

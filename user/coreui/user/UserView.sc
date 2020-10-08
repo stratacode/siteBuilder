@@ -4,7 +4,7 @@ import java.util.TreeMap;
 import sc.util.StringUtil;
 
 @Component
-@CompilerSettings(constructorProperties="userbase")
+@CompilerSettings(constructorProperties="userbase",compiledOnly=true)
 class UserView {
    @Sync(syncMode=SyncMode.Disabled)
    Userbase userbase;

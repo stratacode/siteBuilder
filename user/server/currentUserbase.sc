@@ -1,3 +1,4 @@
+@CompilerSettings(compiledOnly=true)
 currentUserbase {
    void init() {
       userbase = Userbase.findByAppName(defaultAppName);

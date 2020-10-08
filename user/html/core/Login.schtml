@@ -1,8 +1,10 @@
 <%@ @URL(pattern="/login") %>
 <html extends="PageLayout">
 <body>
-   <div id="pageBody">
-      <div id="loginView" extends="LoginView"/>
+   <div id="appFrame">
+      <div id="pageBody">
+         <div id="loginView" extends="LoginView"/>
+      </div>
    </div>
 </body>
 </html>

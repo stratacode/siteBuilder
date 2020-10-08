@@ -11,14 +11,7 @@ currentUserView {
       if (req == null) {
          // Happens during session expiration
          userViewError = "User view initialized without a request";
-         user = null;
-         remoteIp = null;
-         acceptLanguage = null;
-         userAgent = null;
-         userAuthToken = null;
-         userName = null;
-         password = null;
-         loginStatus = LoginStatus.NotLoggedIn;
+         clearSession();
       }
       else {
          String remoteIp = req.getHeader("X-Forwarded-For");
@@ -49,6 +42,44 @@ currentUserView {
             user.localeTag = locale.toLanguageTag();
          }
       }
+   }
+
+   void refresh() {
+      Context ctx = Context.getCurrentContext();
+      HttpServletRequest req = ctx.request;
+      if (req == null) {
+         userViewError = "User view refreshed without a request";
+         clearSession();
+      }
+      else {
+         String remoteIp = req.getHeader("X-Forwarded-For");
+         if (remoteIp == null)
+            remoteIp = req.getRemoteAddr();
+         if (this.remoteIp == null || !this.remoteIp.equals(remoteIp)) {
+            System.err.println("*** Ip address changed for UserView");
+            clearSession();
+            return;
+         }
+         Cookie cookie = ctx.getCookie(userbase.cookieName);
+         if (cookie != null) {
+            String newToken = cookie.getValue();
+            if (this.userAuthToken == null || !newToken.equals(this.userAuthToken)) {
+               this.userAuthToken = newToken;
+               super.refresh();
+            }
+         }
+      }
+   }
+
+   void clearSession() {
+      user = null;
+      remoteIp = null;
+      acceptLanguage = null;
+      userAgent = null;
+      userAuthToken = null;
+      userName = null;
+      password = null;
+      loginStatus = LoginStatus.NotLoggedIn;
    }
 
    void persistAuthToken(String token) {

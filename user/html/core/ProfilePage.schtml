@@ -1,8 +1,10 @@
 <%@ @URL(pattern="/profile") %>
 <html extends="PageLayout">
 <body>
-   <div id="pageBody">
-      <div id="profileView" extends="ProfileView"/>
+   <div id="appFrame">
+      <div id="pageBody">
+         <div id="profileView" extends="ProfileView"/>
+      </div>
    </div>
 </body>
 </html>

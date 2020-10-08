@@ -19,6 +19,16 @@ class NavMenu extends BaseMenuItem {
       return res;
    }
 
+   void hideSubMenus() {
+      List<BaseMenuItem> menuItems = getMenuItems();
+      subMenuVisible = false;
+      if (menuItems != null) {
+         for (BaseMenuItem subMenu:menuItems) {
+            subMenu.hideSubMenus();
+         }
+      }
+   }
+
    String getDetailString() {
       return "nav menu " + (name == null || name.length() == 0 ? "..." : name) +
                        (url != null && url.length() > 0 ? " to: " + url : "");

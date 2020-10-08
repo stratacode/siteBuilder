@@ -36,7 +36,7 @@ class ProductView extends CatalogElementView {
       optionScheme = product.sku == null ? null : product.sku.optionScheme;
       currentQuantity = product.defaultQuantity;
 
-      validateCurrentMedia();
+      mediaChanged();
    }
 
    object quantityConverter extends IntConverter {

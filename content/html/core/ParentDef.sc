@@ -1,2 +1,3 @@
+@CompilerSettings(compiledOnly=true)
 ParentDef {
 }

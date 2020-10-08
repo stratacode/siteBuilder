@@ -121,6 +121,7 @@ BaseProductManager {
       media.visible = newVis;
       if (element.altMedia.contains(media))
          Bind.sendChangedEvent(element.altMedia, null);
+      element.mediaChangedCt++;
       media.mediaChangedCt++;
    }
 

@@ -1,5 +1,6 @@
 // Base class for NavMenuItem and NavMenu
 @Sync(onDemand=true)
+@CompilerSettings(compiledOnly=true)
 abstract class BaseMenuItem {
    @Sync(initDefault=true)
    String name;
@@ -24,6 +25,9 @@ abstract class BaseMenuItem {
 
    List<BaseMenuItem> getMenuItems() {
       return null;
+   }
+
+   void hideSubMenus() {
    }
 
    name =: Bind.sendChangedEvent(this, "detailString");

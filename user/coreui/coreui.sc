@@ -8,4 +8,5 @@ import sc.user.AddressEditView;
 
 @Sync(syncMode=SyncMode.Automatic)
 public user.coreui extends user.model, content.coreui {
+   compiledOnly = true;
 }

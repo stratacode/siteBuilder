@@ -5,6 +5,8 @@ public product.server extends content.server, product.coreui, user.server, user.
    exportRuntime = false;
    exportProcess = false;
 
+   compiledOnly = true;
+
    // Don't show in the management UI 
    hidden = true;
 

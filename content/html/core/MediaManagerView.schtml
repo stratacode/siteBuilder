@@ -3,6 +3,11 @@
       Manage media
    </div>
    <div id="findMediaView" class="findMediaView">
+      <div id="showProductsForm" class="formField">
+         <label for="showAllButton">Show media</label>
+         <input type="button" value="All" id="showAllButton" class="showAllButton" clickEvent="=: doSearch()"/>
+         <input type="button" value="Recent" id="showRecentButton" class="showRecentButton rightButton" clickEvent="=: doSearch()"/>
+      </div>
       <div id="findMediaForm" class="formField">
          <label for="searchMediaField">Find media:</label><input type="text" value=":=: searchText" changeEvent="=: doSearch()"/>
          <input type="image" class="findMediaButton" src="/icons/search.svg" clickEvent="=: doSearch()"/>
@@ -38,19 +43,21 @@
          <span class="smallHeaderColumn">Type</span>
          <span class="headerColumn">Dimensions</span>
          <span class="headerColumn">File size</span>
+         <span class="headerColumn">Last modified</span>
       </div>
       <div id="mediaRepeat" repeat=":= currentMedia" repeatVarName="media"
            clickEvent="=: selectedMedia = media"
            class=':= media == selectedMedia ? "selectedMediaRow" : "mediaRow"' >
-        <span class="wideMediaColumn">
+         <span class="wideMediaColumn">
            <input id="selectMediaCheckbox" type="checkbox" checked=":= media == selectedMedia" changeEvent="=: selectedMedia = media"/>
            <%= media.uniqueFileName %>
-        </span>
-        <span class="smallMediaColumn"> <%= media.fileType %> </span>
-        <span class="mediaColumn"> <%= media.width %>x<%= media.height%> </span>
-        <span class="mediaColumn"> <%= media.fileSize %> bytes </span>
-        <img src=":= media.thumbUrl" class="mediaListThumb"/>
-        <input type="image" class="removeMediaButton" src="/icons/x-square.svg" clickEvent="=: removeMedia(media.id)"/>
+         </span>
+         <span class="smallMediaColumn"> <%= media.fileType %> </span>
+         <span class="mediaColumn"> <%= media.width %>x<%= media.height%> </span>
+         <span class="mediaColumn"> <%= media.fileSize %> bytes </span>
+         <span class="mediaColumn"> <%= media.lastModified %></span>
+         <img src=":= media.thumbUrl" class="mediaListThumb"/>
+         <input type="image" class="removeMediaButton" src="/icons/x-square.svg" clickEvent="=: removeMedia(media.id)"/>
       </div>
    </div>
 </div>

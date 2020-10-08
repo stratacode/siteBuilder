@@ -24,25 +24,29 @@ abstract class CatalogElementView implements IView {
 
    @Sync(syncMode=SyncMode.Disabled)
    List<ManagedMedia> elementMedia;
-   elementMedia =: validateCurrentMedia();
+   elementMedia =: mediaChanged();
 
    @Sync(syncMode=SyncMode.Disabled)
    ManagedMedia elementMainMedia;
 
-   @Sync(syncMode=SyncMode.Disabled)
+   @Sync
    int elementMediaChangedCt;
 
-   elementMainMedia =: validateCurrentMedia();
+   elementMainMedia =: mediaChanged();
    elementMediaChangedCt =: validateCurrentMedia();
 
    @Sync
    int altMediaIndex;
 
-   altMediaIndex =: validateCurrentMedia();
+   altMediaIndex =: mediaChanged();
 
    int pageVisitCount := siteView.pageVisitCount;
 
    abstract CatalogElement getCatalogElement();
+
+   void mediaChanged() {
+      elementMediaChangedCt++;
+   }
 
    void validateCurrentMedia() {
       CatalogElement elem = getCatalogElement();
@@ -71,8 +75,9 @@ abstract class CatalogElementView implements IView {
          if (mainMedia != null)
             newAltMedia.add(mainMedia);
       }
-      if (!DynUtil.equalObjects(altMedia, newAltMedia))
+      if (!DynUtil.equalObjects(altMedia, newAltMedia)) {
          altMedia = newAltMedia;
+      }
       ManagedMedia newCurrentMedia = altMediaIndex < altMedia.size() ? altMedia.get(altMediaIndex) : catalogElement.mainMedia;
       if (newCurrentMedia != currentMedia)
          currentMedia = newCurrentMedia;

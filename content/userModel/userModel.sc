@@ -8,4 +8,5 @@ import sc.content.ParentDef;
 import sc.user.UserSession;
 
 public content.userModel extends content.model, user.model {
+   compiledOnly = true;
 }
