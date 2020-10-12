@@ -12,7 +12,7 @@
       <a    id="menuItemlink" class=':= (menuItem.menuItems != null ? "subMenuLink" : "menuItemLink") + (!menuItem.enabled ? " menuItemDisabled" : "")'
             clickEvent="=: menuItem.itemSelected()" >
          <img visible=":= menuItem.icon != null" src=":= menuItem.icon"/>
-         <span><%= menuItem.name %></span>
+         <span id="menuItemName"><%= menuItem.name %></span>
       </a>
       <div id="subMenuBox" class="subMenuBox" visible=":= menuItem.subMenuVisible">
          <div id="subMenuRepeat" class="subMenuItem" repeat=":= menuItem.menuItems" repeatVarName="subMenuItem" visible=":= subMenuItem.visible">
