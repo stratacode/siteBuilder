@@ -1,5 +1,6 @@
 <%@ @URL(pattern="/manage/user") %>
 <html extends="BaseManagerPage">
+   <%! managerPage = "user"; %>
    <head>
       <div id="libScripts">
          <script extends="TextEditorScripts"/>

@@ -1,6 +1,7 @@
 <%@ @URL(pattern="/manage/media") %>
 
 <html extends="BaseManagerPage">
+   <%! managerPage = "media"; %>
    <body>
       <div id="mgrFrame">
          <div id="mgrView">

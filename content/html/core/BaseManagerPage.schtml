@@ -10,6 +10,8 @@
 
       String sitePathName :=: siteMgr.pathName;
 
+      String managerPage = "";
+
    %>
 
    <head exec="server">
@@ -29,10 +31,10 @@
                    clickEvent="=: siteMgr.startAddSite()" class="rightButton"/>
          </span>
          <span id="mgrNav" visible=":= siteMgr.validSite">
-            <a id="userLink" href="/manage/site">Site</a>
-            <a id="pageLink" href="/manage/page">Page</a>
-            <a id="mediaLink" href="/manage/media">Media</a>
-            <a id="userLink" href="/manage/user">User</a>
+            <a id="userLink" class=':= managerPage.equals("site") ? "selectedLink" : ""' href="/manage/site">Site</a>
+            <a id="pageLink" class=':= managerPage.equals("page") ? "selectedLink" : ""' href="/manage/page">Page</a>
+            <a id="mediaLink" class=':= managerPage.equals("media") ? "selectedLink" : ""' href="/manage/media">Media</a>
+            <a id="userLink" class=':= managerPage.equals("user") ? "selectedLink" : ""' href="/manage/user">User</a>
          </span>
          <span id="userNav">
             <span id="loginMenu" visible=":= loginMenuVisible">

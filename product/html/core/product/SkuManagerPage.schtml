@@ -1,6 +1,9 @@
 <%@ @URL(pattern="/manage/sku[/{sitePathName=urlString}/{skuCode=urlString}]") %>
 <html extends="BaseManagerPage">
-   <%! String skuCode; %>
+   <%!
+      String skuCode;
+      managerPage = "sku";
+   %>
    <head>
       <div id="libScripts">
          <script extends="TextEditorScripts"/>

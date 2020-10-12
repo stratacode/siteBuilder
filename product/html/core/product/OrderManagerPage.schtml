@@ -1,5 +1,6 @@
 <%@ @URL(pattern="/manage/order") %>
 <html extends="BaseManagerPage">
+   <%! managerPage="order"; %>
    <head>
       <div id="libScripts">
          <script extends="TextEditorScripts"/>

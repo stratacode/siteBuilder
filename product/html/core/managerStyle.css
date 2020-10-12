@@ -1,3 +1,10 @@
+html, input, select {
+  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  color: #333;
+}
 
 .findMediaButton, .clearMediaButton, .clearOptionButton, findProductButton, .clearProductButton, .findCategoryButton, .clearCategoryButton,
  .findUserButton, .clearUserButton, .findSiteButton, .clearSiteButton, .findPageButton, .clearPageButton {
@@ -72,6 +79,26 @@
    margin-bottom: 10px;
 }
 
+#mgrNav a {
+   text-decoration: none;
+   border-bottom: 3px solid #fff;
+   color: #333;
+   padding-left: 3px;
+   padding-right: 3px;
+}
+
+#mgrNav .selectedLink {
+   border-bottom: 3px solid #d47a46;
+}
+
+#mgrNav a:visited {
+   color: #333;
+}
+
+#mgrNav a:hover {
+   border-bottom: 3px solid #e8b575fa;
+}
+
 #listView, #startAddView, #findProductsView, #findCategoriesView, #findMediaView, #currentSitesView, #currentUsersView, #currentMediaView {
    margin-bottom: 10px;
    margin-top: 10px;
@@ -105,7 +132,7 @@
 
 .formTitle {
    font-size: 110%;
-   margin-top: 5px;
+   margin-top: 10px;
    margin-bottom: 5px;
 }
 

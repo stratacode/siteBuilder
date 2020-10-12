@@ -1,6 +1,9 @@
 <%@ @URL(pattern="/manage/product[/{sitePathName=urlString}/{productPathName=urlString}]") %>
 <html extends="BaseManagerPage">
-   <%! String productPathName; %>
+   <%!
+      String productPathName;
+      managerPage = "product";
+   %>
    <head>
       <div id="libScripts">
          <script extends="TextEditorScripts"/>

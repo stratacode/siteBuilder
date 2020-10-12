@@ -1,5 +1,6 @@
 <%@ @URL(pattern="/manage/category") %>
 <html extends="BaseManagerPage">
+   <%! managerPage = "category"; %>
    <head>
       <div id="libScripts">
          <script extends="TextEditorScripts"/>
