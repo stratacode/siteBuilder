@@ -22,26 +22,29 @@
 
    <body>
       <div id="mgrFrame" visible=":= siteMgr.userView.loginStatus == LoginStatus.LoggedIn">
-         <select id="siteSelect" optionDataSource=":= siteMgr.siteSelectList"
-                 changeEvent="=: siteMgr.changeSiteWithIndex(selectedIndex)"
-                 disabled=":= siteMgr.showCreateView"
-                 selectedIndex=":= siteMgr.siteIndex"/>
-         <span id="createButtons">
-            <input id="siteCreate" type="button" value="Create site" visible=":= !siteMgr.showCreateView"
-                   clickEvent="=: siteMgr.startAddSite()" class="rightButton"/>
-         </span>
-         <span id="mgrNav" visible=":= siteMgr.validSite">
-            <a id="userLink" class=':= managerPage.equals("site") ? "selectedLink" : ""' href="/manage/site">Site</a>
-            <a id="pageLink" class=':= managerPage.equals("page") ? "selectedLink" : ""' href="/manage/page">Page</a>
-            <a id="mediaLink" class=':= managerPage.equals("media") ? "selectedLink" : ""' href="/manage/media">Media</a>
-            <a id="userLink" class=':= managerPage.equals("user") ? "selectedLink" : ""' href="/manage/user">User</a>
-         </span>
-         <span id="userNav">
-            <span id="loginMenu" visible=":= loginMenuVisible">
-               <a href="/logout">Sign out</a>
+         <div id="mgrNavBar">
+            <img src="/icons/layeredLogo28.png" class="mgrNavIcon"/>
+            <select id="siteSelect" optionDataSource=":= siteMgr.siteSelectList"
+                    changeEvent="=: siteMgr.changeSiteWithIndex(selectedIndex)"
+                    disabled=":= siteMgr.showCreateView"
+                    selectedIndex=":= siteMgr.siteIndex"/>
+            <span id="createButtons">
+               <input id="siteCreate" type="button" value="Create site" visible=":= !siteMgr.showCreateView"
+                      clickEvent="=: siteMgr.startAddSite()" class="rightButton"/>
             </span>
-            <a clickEvent="=: loginMenuVisible = !loginMenuVisible"><img class="logoutIcon" src="/icons/user-minus20.svg"/><%= siteMgr.userView.user.userName %></a>
-         </span>
+            <span id="mgrNav" visible=":= siteMgr.validSite">
+               <a id="userLink" class=':= managerPage.equals("site") ? "selectedLink" : ""' href="/manage/site">Site</a>
+               <a id="pageLink" class=':= managerPage.equals("page") ? "selectedLink" : ""' href="/manage/page">Page</a>
+               <a id="mediaLink" class=':= managerPage.equals("media") ? "selectedLink" : ""' href="/manage/media">Media</a>
+               <a id="userLink" class=':= managerPage.equals("user") ? "selectedLink" : ""' href="/manage/user">User</a>
+            </span>
+            <span id="userNav">
+               <span id="loginMenu" visible=":= loginMenuVisible">
+                  <a href="/logout">Sign out</a>
+               </span>
+               <a clickEvent="=: loginMenuVisible = !loginMenuVisible"><img class="logoutIcon" src="/icons/user-minus20.svg"/><%= siteMgr.userView.user.userName %></a>
+            </span>
+         </div>
          <div class="formError"><%= siteMgr.errorMessage %></div>
 
          <div id="createSiteView" class="formContainer" visible=":= siteMgr.showCreateView">

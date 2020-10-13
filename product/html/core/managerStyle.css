@@ -4,6 +4,21 @@ html, input, select {
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   color: #333;
+  font-size: 95%;
+}
+
+input[type=button] {
+   border: solid 0px #0e75ff;
+   padding-left: 8px;
+   padding-right: 8px;
+   padding-top: 3px;
+   padding-bottom: 3px;
+   background: #0e75ff;
+   color: #f3f3f3;
+}
+
+input[type=button]:hover {
+   color: #fff;
 }
 
 .findMediaButton, .clearMediaButton, .clearOptionButton, findProductButton, .clearProductButton, .findCategoryButton, .clearCategoryButton,
@@ -72,6 +87,15 @@ html, input, select {
 #mgrFrame {
    max-width: 1000px;
    margin: auto;
+   background: #f3f3f3;
+}
+
+#mgrNavBar {
+   padding-left: 5px;
+   padding-right: 5px;
+   padding-bottom: 3px;
+   background: #fff;
+   /* border-bottom: solid 1px #ccc; */
 }
 
 #storeSelect, #mgrNav {
@@ -99,6 +123,10 @@ html, input, select {
    border-bottom: 3px solid #e8b575fa;
 }
 
+.mgrNavIcon {
+   vertical-align: middle;
+}
+
 #listView, #startAddView, #findProductsView, #findCategoriesView, #findMediaView, #currentSitesView, #currentUsersView, #currentMediaView {
    margin-bottom: 10px;
    margin-top: 10px;
@@ -116,6 +144,13 @@ html, input, select {
    align-items: center;
 }
 
+.multiFormField {
+/*
+   padding-left: 10px;
+   padding-right: 10px;
+*/
+}
+
 .formField > label {
    text-align: right;
    width: 20%;
@@ -127,7 +162,7 @@ html, input, select {
 }
 
 .formField .wideTextField[type=text] {
-   width: 78%;
+   width: 75%;
 }
 
 .formTitle {
@@ -146,14 +181,15 @@ html, input, select {
 }
 
 .subFormView {
-   margin-left: 5px;
-   margin-right: 5px;
    margin-top: 10px;
    margin-bottom: 10px;
-   border: solid 1px #aaa;
+   border-top: solid 1px #aaa;
+   border-bottom: solid 1px #aaa;
    display: flex;
-   padding: 5px;
+   padding-top: 5px;
+   padding-bottom: 5px;
    flex-direction: column;
+   background: #fff;
 }
 
 .subFormTitle {
@@ -168,7 +204,7 @@ html, input, select {
    /* padding: 5px; */
    display: flex;
    flex-direction: column;
-   border: solid 1px #aaa;
+   /* background: #fff; */
 }
 
 .subFormContainer {
@@ -176,7 +212,7 @@ html, input, select {
    margin-bottom: 5px;
    display: flex;
    flex-direction: column;
-   border: solid 1px #aaa;
+   border-top: solid 1px #aaa;
    background: #eef1ff;
 }
 
@@ -393,6 +429,11 @@ html, input, select {
 .mgrViewStatus {
    margin-top: 10px;
    margin-bottom: 10px;
+}
+
+#mgrView {
+   padding-bottom: 5px;
+   border: solid 1px #ccc;
 }
 
 .detailView {

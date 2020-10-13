@@ -1,14 +1,16 @@
 <html>
    <body>
       <div id="mgrFrame">
-         <span id="mgrNav">
-            <span id="storePages" visible=":= siteMgr.validStore">
-               <a id="prodLink" class=':= managerPage.equals("product") ? "selectedLink" : ""' href="/manage/product">Product</a>
-               <a id="catLink" class=':= managerPage.equals("category") ? "selectedLink" : ""' href="/manage/category">Category</a>
-               <a id="skuLink" class=':= managerPage.equals("sku") ? "selectedLink" : ""' href="/manage/sku">Sku</a>
-               <a id="skuLink" class=':= managerPage.equals("order") ? "selectedLink" : ""' href="/manage/order">Order</a>
+         <div id="mgrNavBar">
+            <span id="mgrNav">
+               <span id="storePages" visible=":= siteMgr.validStore">
+                  <a id="prodLink" class=':= managerPage.equals("product") ? "selectedLink" : ""' href="/manage/product">Product</a>
+                  <a id="catLink" class=':= managerPage.equals("category") ? "selectedLink" : ""' href="/manage/category">Category</a>
+                  <a id="skuLink" class=':= managerPage.equals("sku") ? "selectedLink" : ""' href="/manage/sku">Sku</a>
+                  <a id="skuLink" class=':= managerPage.equals("order") ? "selectedLink" : ""' href="/manage/order">Order</a>
+               </span>
             </span>
-         </span>
+         </div>
       </div>
    </body>
 </html>
