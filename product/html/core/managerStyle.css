@@ -42,7 +42,7 @@ input[type=button]:hover {
 }
 
 .findMediaButton, .clearMediaButton, .clearOptionButton, .findProductButton, .clearProductButton, .findCategoryButton, .clearCategoryButton,
- .findUserButton, .clearUserButton, .findSiteButton, .clearSiteButton, .findPageButton, .clearPageButton {
+ .findUserButton, .clearUserButton, .findSiteButton, .clearSiteButton, .findPageButton, .clearPageButton, .removeSkuOptionButton {
    vertical-align: bottom;
    outline-style: none;
 }

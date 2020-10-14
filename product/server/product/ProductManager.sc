@@ -740,6 +740,16 @@ ProductManager {
       }
    }
 
+   void removeSkuOption(Sku skuOption) {
+      if (sku != null && sku.skuOptions != null) {
+         if (!sku.skuOptions.remove(skuOption)) {
+            System.err.println("*** Did not find sku option to remove");
+            return;
+         }
+         refreshSkuOptions();
+      }
+   }
+
    void clearSkuMessages() {
       skuAddErrorMessage = skuFindErrorMessage = skuStatusMessage = null;
    }

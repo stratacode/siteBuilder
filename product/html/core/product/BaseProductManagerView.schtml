@@ -251,6 +251,8 @@
                                   min="= ProductInventory.minNextAvailDateStr"
                                   changeEvent="=: validSku.inventory.updateNextAvailStr(value)"/>
                         </span>
+                        <input type="image" class="removeSkuOptionButton" src="/icons/x-square.svg"
+                               clickEvent="=: removeSkuOption(validSku)" tabindex="-1"/>
                      </div>
                   </div>
                </div>
