@@ -221,14 +221,14 @@
       <div id="resultsHeader" class="headerRow" visible=":= productList != null && productList.size() > 0">
          <span class="wideHeaderColumn">Name</span>
          <span class="headerColumn">Media</span>
-         <span class="headerColumn">Pathname</span>
+         <span class="headerColumn">Path name</span>
          <span class="headerColumn">Category</span>
          <span class="headerColumn">Sku code</span>
          <span class="smallHeaderColumn">Price</span>
          <span class="headerColumn">Inventory</span>
          <span class="smallHeaderColumn">Visible</span>
          <span class="headerColumn">Last modified</span>
-         <span class="smallHeaderColumn">Remove</span>
+         <span class="smallHeaderColumn"></span>
          <div id="alt" class="formStatus">
             <%= searchStatusMessage %>
          </div>

@@ -107,7 +107,7 @@
                       clickEvent="=: doEditOptionScheme()" visible=":= editableOptionScheme"/>
             </div>
             <div class="formStatus"><%= optionStatusMessage %></div>
-            <div id="optionSchemeView" class=':= showOptionSchemeView ? "subFormView detailView openDetail" : "subFormView detailView closedDetail"'>
+            <div id="optionSchemeView" class=':= showOptionSchemeView ? "subFormView detailView openDetail" : "detailView closedDetail"'>
             <%! int openSchemeHeight = 500;
                scrollHeight =: scrollHeight > 200 ? openSchemeHeight = scrollHeight : null; %>
                <style type="text/css">

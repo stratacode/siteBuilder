@@ -87,7 +87,7 @@
          <span class="wideHeaderColumn">Page name</span>
          <span class="wideHeaderColumn">Page path name</span>
          <span class="smallHeaderColumn">Visible</span>
-         <span class="smallHeaderColumn">Remove</span>
+         <span class="smallHeaderColumn"></span>
       </div>
       <div id="pageRepeat" repeat=":= pageMgr.currentPages" repeatVarName="curRowPage"
            class=':= curRowPage == pageMgr.currentPage ? "selectedPageRow" : "pageRow"' >

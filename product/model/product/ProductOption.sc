@@ -24,8 +24,13 @@ class ProductOption {
       int numOpts = optionValues.size();
       ArrayList<String> res = new ArrayList<String>(numOpts+1);
       res.add(anyString);
-      for (int i = 0; i < numOpts; i++)
-         res.add(optionValues.get(i).optionValue);
+      for (int i = 0; i < numOpts; i++) {
+         OptionValue optVal = optionValues.get(i);
+         if (optVal != null)
+            res.add(optVal.optionValue);
+         else
+            System.err.println("Null option value for productOption: " + optionName);
+      }
       if (optionFilterList == null || !optionFilterList.equals(res))
          optionFilterList = res;
    }

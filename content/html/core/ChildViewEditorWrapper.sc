@@ -1,3 +1,7 @@
+/**
+ * Used to create the proper view editor for the elements of the 'repeat' attribute for the
+ * repeat tag used to render view editors as part of the PageManagerView
+ */
 class ChildViewEditorWrapper extends sc.lang.html.Div implements sc.lang.html.IRepeatWrapper {
    PageManager pageMgr;
    ParentDef parentDef;

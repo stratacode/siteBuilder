@@ -28,7 +28,7 @@
          <span class="headerColumn">inventory</span>
          <span class="wideHeaderColumn">next available</span>
          <span class="wideHeaderColumn">Last modified</span>
-         <span class="headerColumn">Remove</span>
+         <span class="smallHeaderColumn"></span>
       </div>
       <div id="skuElemView" repeat=":= matchingSkus" repeatVarName="skuElem"
            class=':= skuElem == sku ? "selectedSkuRow" : "skuRow"'>

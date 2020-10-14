@@ -139,7 +139,8 @@ ProductManager {
          }
          if (optionScheme.options != null) {
             for (ProductOption opt: optionScheme.options) {
-               opt.refreshOptionFilterList();
+               if (opt != null)
+                  opt.refreshOptionFilterList();
             }
          }
       }
@@ -538,7 +539,7 @@ ProductManager {
 
    void startNewOptionScheme() {
       optionScheme = (OptionScheme) OptionScheme.getDBTypeDescriptor().createInstance();
-      optionScheme.schemeName = product.pathName;
+      optionScheme.schemeName = product == null ? "" : product.pathName;
       optionScheme.store = store;
 
       optionScheme.options = new ArrayList<ProductOption>();

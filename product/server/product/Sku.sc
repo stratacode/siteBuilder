@@ -15,7 +15,11 @@ Sku {
       int numOptions = optionList.size();
       for (int i = 0; i < numOptions; i++) {
          newSkuCode.append("-");
-         newSkuCode.append(optionList.get(i).skuSymbol);
+         OptionValue optVal = optionList.get(i);
+         if (optVal == null)
+            System.err.println("*** Null option value: " + i + " for skuCode: " + mainSkuCode);
+         else
+            newSkuCode.append(optVal.skuSymbol);
       }
       return newSkuCode.toString();
    }
@@ -77,7 +81,11 @@ Sku {
    private void verifySkusWithOptions(List<Sku> validSkuOptions, List<Sku> missingSkuOptions, List<Sku> invalidSkuOptions,
                                       List<OptionValue> parentOpts, int curOptIx, List<ProductOption> options) {
       int numOptions = options.size();
+      if (numOptions == 0)
+         return;
       ProductOption curOpt = options.get(curOptIx);
+      if (curOpt == null || curOpt.optionValues == null || curOpt.optionValues.size() == 0)
+         return;
       for (OptionValue optValue:curOpt.optionValues) {
          ArrayList<OptionValue> next = new ArrayList<OptionValue>(parentOpts);
          next.add(optValue);

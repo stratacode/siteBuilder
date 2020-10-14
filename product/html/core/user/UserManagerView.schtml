@@ -12,7 +12,7 @@
      <div id="headerRow">
         <span id="extraHeaders">
            <span class="headerColumn"># of orders</span>
-           <span class="headerColumn">lifetime value</span>
+           <span class="headerColumn">Lifetime value</span>
         </span>
      </div>
 
@@ -26,7 +26,7 @@
    <div id="userDetailView">
       <%! List<Order> userOrders := userMgr.getOrdersForUser(currentUser); %>
 
-      <div class="headerRow">
+      <div id="userOrderHeader" class="headerRow">
          <span class="wideHeaderColumn">Order #</span>
          <span class="headerColumn">Total price</span>
          <span class="wideHeaderColumn">Submitted</span>

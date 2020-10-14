@@ -32,7 +32,9 @@ class OptionScheme implements IPropValidator {
       int num = options.size();
       ArrayList<String> res = new ArrayList<String>(num);
       for (int i = 0; i < num; i++) {
-         res.add(options.get(i).anyString);
+         ProductOption opt = options.get(i);;
+         if (opt != null)
+            res.add(opt.anyString);
       }
       return res;
    }
