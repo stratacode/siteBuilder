@@ -154,9 +154,9 @@
                      <div class="boxTitle">List of values</div>
                      <div class="optionValueList">
                         <%!
-                        // One way to avoid this would be to wrap the option values in a 'view' object
-                        // so that the model object itself has a 'takeFocus' property that is set so that
-                        // we can wire that do the 'focus()' call on change.
+                           // Some code to find and focus the option. One pattern that would avoid this code would be to
+                           //  wrap the option values in a 'view' object and then find to setFocusCt integer that changes
+                           // to trigger the right focus call.
                            OptionValue focusedOption := BaseProductManagerView.this.newOptionValue;
                            override @Bindable(doLater=true, priority=-6)
                            focusedOption =: updateFocusOnValue(focusedOption);
@@ -168,7 +168,6 @@
                                     ((newValueView_Repeat.newValueView) children[ix]).optionValueNameField.focus();
                                  }
                               }
-
                            }
                         %>
                         <div id="newValueView" class="newValueView" repeat=":= productOption.optionValues" repeatVarName="optionValue">

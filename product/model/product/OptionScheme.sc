@@ -52,13 +52,27 @@ class OptionScheme implements IPropValidator {
       if (options == null || options.size() == 0)
          addPropError("options", "Must have at least one option");
       else {
-         for (ProductOption opt:options) {
+         for (int i = 0; i < options.size(); i++) {
+            ProductOption opt = options.get(i);
+            if (opt == null) {
+               System.err.println("*** Removed null option");
+               options.remove(i);
+               i--;
+               continue;
+            }
             if (opt.optionValues == null || opt.optionValues.size() == 0)
                addPropError("options", "Option missing values");
             else if (opt.defaultValue == null)
                addPropError("options", "Option missing default value");
             else {
-               for (OptionValue optVal:opt.optionValues) {
+               for (int j = 0; j < opt.optionValues.size(); j++) {
+                  OptionValue optVal = opt.optionValues.get(j);
+                  if (optVal == null) {
+                     System.err.println("*** Removed null option value");
+                     opt.optionValues.remove(j);
+                     j--;
+                     continue;
+                  }
                   String err = IPropValidator.validateRequired("option value", optVal.optionValue);
                   if (err != null)
                      addPropError("options", err);

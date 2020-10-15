@@ -631,6 +631,7 @@ ProductManager {
       opt.defaultValue = addNewOptionValue(opt, false);
       optionScheme.options.add(opt);
       newProductOption = opt;
+      opt.dbInsert(false);
    }
 
    void removeOption(ProductOption option) {
@@ -645,6 +646,7 @@ ProductManager {
       option.optionValues.add(optVal);
       if (setFocus)
          newOptionValue = optVal;
+      optVal.dbInsert(false);
       return optVal;
    }
 
