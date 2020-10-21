@@ -3,14 +3,14 @@
       Manage media
    </div>
    <div id="findMediaView" class="findMediaView">
-      <div id="showProductsForm" class="formField">
+      <div id="showMediaForm" class="formField">
          <label for="showAllButton">Show media</label>
          <input type="button" value="All" id="showAllButton" class="showAllButton" clickEvent="=: doSearch()"/>
          <input type="button" value="Recent" id="showRecentButton" class="showRecentButton rightButton" clickEvent="=: doSearch()"/>
       </div>
       <div id="findMediaForm" class="formField">
          <label for="searchMediaField">Find media:</label><input type="text" value=":=: searchText" changeEvent="=: doSearch()"/>
-         <input type="image" class="findMediaButton" src="/icons/search.svg" clickEvent="=: doSearch()"/>
+         <input type="image" id="findMediaButton" class="findMediaButton" src="/icons/search.svg" clickEvent="=: doSearch()"/>
          <input type="image" class="clearMediaButton" src="/icons/x-square.svg" clickEvent="=: clearSearch()"/>
       </div>
    </div>
@@ -22,7 +22,7 @@
       %>
       <label for="uploadFile">Upload media file(s)</label>
       <input type="file" multiple id="uploadFile" name="fileToUpload" changeEvent="=: resetUploadForm()"/>
-      <input exec="server" type="hidden" name="mediaManagerId" value=":= String.valueOf(mediaManager.id)"/>
+      <input type="hidden" name="mediaManagerId" value=":= String.valueOf(mediaManager.id)"/>
       <!-- <input type="submit" value="Submit"/> -->
       <input type="button" value="Add media"
              clickEvent="=: uploadForm.submitFormData("/mediaUpload")"
@@ -46,10 +46,10 @@
          <span class="headerColumn">Last modified</span>
       </div>
       <div id="mediaRepeat" repeat=":= currentMedia" repeatVarName="media"
-           clickEvent="=: selectedMedia = media"
+           clickEvent="=: doSelectMedia(media)"
            class=':= media == selectedMedia ? "selectedMediaRow" : "mediaRow"' >
          <span class="wideMediaColumn">
-           <input id="selectMediaCheckbox" type="checkbox" checked=":= media == selectedMedia" changeEvent="=: selectedMedia = media"/>
+           <input id="selectMediaCheckbox" type="checkbox" checked=":= media == selectedMedia"/>
            <%= media.uniqueFileName %>
          </span>
          <span class="smallMediaColumn"> <%= media.fileType %> </span>

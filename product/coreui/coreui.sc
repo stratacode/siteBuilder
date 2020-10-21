@@ -8,6 +8,6 @@ import sc.product.ProductView;
 import sc.product.CategoryView;
 import sc.product.OrderView;
 
-public product.coreui extends product.model, user.coreui, content.userCoreui {
+public product.coreui extends product.model, content.coreui {
    compiledOnly = true;
 }

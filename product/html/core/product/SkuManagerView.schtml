@@ -8,10 +8,10 @@
          <input type="button" value="All" id="showAllButton" class="showAllButton" clickEvent="=: doSearchSkus("")"/>
          <input type="button" value="Recent" id="showRecentButton" class="showRecentButton rightButton" clickEvent="=: doSearchRecentSkus()"/>
       </div>
-      <div id="findSkusForm"  class="formField">
+      <div id="findSkusForm" class="formField">
          <label for="searchTextField">Find skus</label><input type="text" value=":= skuSearchText" changeEvent="=: doSearchSkus(value)"/>
-         <input type="image" class="findMediaButton" src="/icons/search.svg" clickEvent="=: doSearchSkus(skuSearchText)"/>
-         <input type="image" class="clearMediaButton" src="/icons/x-square.svg" clickEvent="=: resetForm()"/>
+         <input id="findSkusButton" type="image" class="findSkusButton" src="/icons/search.svg" clickEvent="=: doSearchSkus(skuSearchText)"/>
+         <input id="clearSkusButton" type="image" class="clearSkusButton" src="/icons/x-square.svg" clickEvent="=: resetForm()"/>
       </div>
    </div>
 

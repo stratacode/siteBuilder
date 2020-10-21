@@ -24,7 +24,10 @@
       </div>
 
       <div id="detailFormView" class="formContainer" visible=':= category != null'>
-         <div class="formTitle"> <%= addCategoryInProgress ? "Unsaved category" : "Update category" %></div>
+         <div class="formTitle">
+            <%= addCategoryInProgress ? "Unsaved category" : "Update category" %>
+            <span class="titleDetailLink" visible=":= !addCategoryInProgress"><a target="productView" href=':= category.pageUrl'>(view category in new tab)</a></span>
+         </div>
          <div id="nameFieldView" class="formField">
             <label for="nameField">Category name</label>
             <input id="nameField" type="text" value=":= category.name" changeEvent="=: updateCategoryName(value)"

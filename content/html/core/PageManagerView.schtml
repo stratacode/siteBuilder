@@ -18,8 +18,8 @@
       </div>
       <div id="findPageForm" class="formField">
          <label for="searchSiteField">Find page:</label><input type="text" value=":=: pageMgr.searchText" changeEvent="=: pageMgr.doSearch()"/>
-         <input type="image" class="findSiteButton" src="/icons/search.svg" clickEvent="=: pageMgr.doSearch()"/>
-         <input type="image" class="clearSiteButton" src="/icons/x-square.svg" clickEvent="=: pageMgr.clearSearch()"/>
+         <input type="image" id="findPageButton" class="findPageButton" src="/icons/search.svg" clickEvent="=: pageMgr.doSearch()"/>
+         <input type="image" id="clearPageButton" class="clearPageButton" src="/icons/x-square.svg" clickEvent="=: pageMgr.clearSearch()"/>
       </div>
    </div>
 

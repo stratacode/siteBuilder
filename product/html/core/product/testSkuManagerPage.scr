@@ -1,0 +1,43 @@
+cmd.pauseTime = 250;
+  
+cmd.sleep(1000);
+
+// Run commands only in the server process
+cmd.targetRuntime = "java_Server";
+
+SkuManagerPage {
+   body {
+      mgrFrame {
+         mgrFrame__alt {
+            loginView {
+               {
+                  if (siteMgr.userView.loginStatus == LoginStatus.NotLoggedIn) {
+                     userFormField.loginUserField.value = "jeff@jvroom.com2";
+                     passwordFormField.loginPasswordField.value = "foobar111";
+                     loginButton.click();
+                  }
+               }
+            }
+         }
+
+         mgrView {
+            findSkusView {
+               findSkusForm {
+                  {
+                     findSkusButton.click();
+                  }
+               }
+            }
+            {
+               System.out.println("Found: " + matchingSkus.size() + " products");
+               for (int i = 0; i < matchingSkus.size(); i++) {
+                  System.out.println("Selecting: " + i);
+                  doSelectSku(matchingSkus.get(i));
+                  System.out.println("Selected: " + i);
+                  cmd.sleep(1000);
+               }
+            }
+         }
+      }
+   }
+}

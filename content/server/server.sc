@@ -1,6 +1,6 @@
 package sc;
 
-public content.server extends model, userCoreui {
+public content.server extends model, coreui {
    exportRuntime = false;
    compiledOnly = true;
 

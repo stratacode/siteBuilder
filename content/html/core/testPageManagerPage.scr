@@ -1,0 +1,45 @@
+cmd.pauseTime = 250;
+  
+cmd.sleep(1000);
+
+// Run commands only in the server process
+cmd.targetRuntime = "java_Server";
+
+cmd.path = "content";
+
+PageManagerPage {
+   body {
+      mgrFrame {
+         mgrFrame__alt {
+            loginView {
+               {
+                  if (siteMgr.userView.loginStatus == LoginStatus.NotLoggedIn) {
+                     userFormField.loginUserField.value = "jeff@jvroom.com2";
+                     passwordFormField.loginPasswordField.value = "foobar111";
+                     loginButton.click();
+                  }
+               }
+            }
+         }
+
+         mgrView {
+            findPageView {
+               findPageForm {
+                  {
+                     findPageButton.click();
+                  }
+               }
+            }
+            {
+               System.out.println("Found: " + pageMgr.currentPages.size() + " pages");
+               for (int i = 0; i < pageMgr.currentPages.size(); i++) {
+                  System.out.println("Selecting: " + i);
+                  pageMgr.updateCurrentPage(pageMgr.currentPages.get(i));
+                  System.out.println("Selected: " + i);
+                  cmd.sleep(1000);
+               }
+            }
+         }
+      }
+   }
+}

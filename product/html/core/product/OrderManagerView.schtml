@@ -8,10 +8,10 @@
          <input type="button" value="All" id="showAllButton" class="showAllButton" clickEvent="=: doSearchAll()"/>
          <input type="button" value="Recent" id="showRecentButton" class="showRecentButton rightButton" clickEvent="=: doSearchRecent()"/>
       </div>
-      <div id="findOrderForm" class="formField">
+      <div id="findOrdersForm" class="formField">
          <label for="searchTextField">Find orders</label><input type="text" value=":=: searchText" changeEvent="=: doSearch()"/>
-         <input type="image" class="findMediaButton" src="/icons/search.svg" clickEvent="=: doSearch()"/>
-         <input type="image" class="clearMediaButton" src="/icons/x-square.svg" clickEvent="=: resetForm()"/>
+         <input type="image" id="findOrdersButton" class="findOrdersButton" src="/icons/search.svg" clickEvent="=: doSearch()"/>
+         <input type="image" id="clearOrdersButton" class="clearOrdersButton" src="/icons/x-square.svg" clickEvent="=: resetForm()"/>
       </div>
       <div id="orderTypeForm">
          <input type="radio" id="allOrderType" name="orderSearchType" checked=":= orderSearchType == OrderSearchType.All"

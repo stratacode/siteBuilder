@@ -42,7 +42,8 @@ input[type=button]:hover {
 }
 
 .findMediaButton, .clearMediaButton, .clearOptionButton, .findProductButton, .clearProductButton, .findCategoryButton, .clearCategoryButton,
- .findUserButton, .clearUserButton, .findSiteButton, .clearSiteButton, .findPageButton, .clearPageButton, .removeSkuOptionButton {
+ .findUserButton, .clearUserButton, .findSiteButton, .clearSiteButton, .findPageButton, .clearPageButton, .removeSkuOptionButton,
+  .findOrdersButton, .clearOrdersButton, .findSkusButton .clearSkusButton {
    vertical-align: bottom;
    outline-style: none;
 }
@@ -245,11 +246,11 @@ input[type=button]:hover {
    margin-left: 1%;
 }
 
-.findMediaButton, .findCategoryButton, .findProductButton, .findUserButton, .findSiteButton, .findPageButton {
+.findMediaButton, .findCategoryButton, .findProductButton, .findUserButton, .findSiteButton, .findPageButton, .findOrdersButton, .findSkusButton {
    margin-left: 5px;
 }
 
-.clearMediaButton, .clearCategoryButton, .clearProductButton, .clearUserButton, .clearSiteButton, .clearPageButton {
+.clearMediaButton, .clearCategoryButton, .clearProductButton, .clearUserButton, .clearSiteButton, .clearPageButton, .clearOrdersButton, .clearSkusButton {
    margin-left: 1%;
 }
 

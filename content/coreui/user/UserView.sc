@@ -5,6 +5,7 @@ import sc.util.StringUtil;
 
 @Component
 @CompilerSettings(constructorProperties="userbase",compiledOnly=true)
+@Sync
 class UserView {
    @Sync(syncMode=SyncMode.Disabled)
    Userbase userbase;

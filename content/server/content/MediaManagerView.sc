@@ -110,4 +110,15 @@ MediaManagerView {
       }
    }
 
+   void doSelectMedia(ManagedMedia toSel) {
+      if (((DBObject)toSel.getDBObject()).isActive()) {
+         if (toSel == selectedMedia) {
+            selectedMedia = null;
+         }
+         else {
+            selectedMedia = toSel;
+         }
+      }
+   }
+
 }
