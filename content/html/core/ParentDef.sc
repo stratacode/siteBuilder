@@ -1,3 +1,0 @@
-@CompilerSettings(compiledOnly=true)
-ParentDef {
-}

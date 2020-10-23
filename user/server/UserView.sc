@@ -1,6 +1,7 @@
 import java.util.HashMap;
 
 UserView {
+   @Sync(syncMode=SyncMode.Disabled)
    Map<Long,UserSession> userSessions;
 
    void init() {
@@ -49,6 +50,11 @@ UserView {
       user = new UserProfile();
       user.userbase = userbase;
       user.initDefaultFields();
+
+      // Want this to be assigned an id before it gets serialized to the remote side
+      // TODO: maybe we should have user = null at this point and only create it on the
+      // next request?
+      user.dbInsert(false);
 
       DBUtil.addTestIdInstance(user, "new-anon-profile");
    }

@@ -1,6 +1,8 @@
 import java.util.Collections;
 
 @Component
+@sc.obj.SyncTypeFilter(typeNames={"sc.content.NavMenuDef"})
+@sc.js.JSSettings(dependentTypes="sc.content.NavMenuDef")
 class NavMenu extends BaseMenuItem {
    void itemSelected() {
       subMenuVisible = !subMenuVisible;

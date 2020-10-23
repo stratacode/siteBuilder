@@ -63,7 +63,8 @@ class UserProfile {
    boolean siteAdmin :=: (userPrivMask & PRIV_SITE_ADMIN) != 0;
    boolean registered :=: (userPrivMask & PRIV_REGISTERED) != 0;
 
-   // TODO: add a role constraint here so this is only visible by site-admins
+   // TODO: add a role constraint here so this is only visible by site-admins in the manager UI - it's not needed when
+   // the UserProfile is used in the main storefront
    @Sync(syncMode=SyncMode.ServerToClient,initDefault=true)
    UserProfileStats userProfileStats;
 

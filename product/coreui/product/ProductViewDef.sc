@@ -1,4 +1,5 @@
 @Sync(onDemand=true)
+@CompilerSettings(compiledOnly=true)
 class ProductViewDef extends ViewDef {
    @Sync(initDefault=true)
    String productPathName;
