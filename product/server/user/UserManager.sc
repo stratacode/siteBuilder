@@ -1,7 +1,7 @@
 UserManager {
    /** Merges together both the current cart along with the submitted orders for the UI */
    List<Order> getOrdersForUser(UserProfile user) {
-      if (user == null)
+      if (user == null || !showOrders)
          return null;
       Order pending = OrderView.getPendingOrderForUser(user, store);
       List<Order> res;

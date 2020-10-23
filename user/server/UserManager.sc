@@ -26,31 +26,30 @@ UserManager {
       else {
          newUsers = new ArrayList<UserProfile>();
       }
-      if (showSessions) {
-         //List<UserSession> sessions = (List<UserSession>) UserSession.findBySite(site, startIndex, numUsersPerPage);
-         List<UserSession> sessions = (List<UserSession>) UserSession.getDBTypeDescriptor().query(
-             Query.and(Query.eq("site", site),
-                       Query.or(Query.match("user.emailAddress", searchText),
-                                Query.match("user.firstName", searchText))), null, Arrays.asList("-lastModified"), startIndex, numUsersPerPage);
 
-         if (sessions != null) {
-            for (int i = 0; i < sessions.size(); i++) {
-               UserSession session = sessions.get(i);
-               UserProfile user = session.user;
-               if (!showGuests && !user.registered)
-                  continue;
-               List<UserSession> userSessions = newSessionsById.get(String.valueOf(user.id));
-               if (userSessions == null) {
-                  userSessions = new ArrayList<UserSession>();
-                  newSessionsById.put(String.valueOf(user.id), userSessions);
-                  newUsers.add(user);
-               }
-               userSessions.add(session);
+      //List<UserSession> sessions = (List<UserSession>) UserSession.findBySite(site, startIndex, numUsersPerPage);
+      List<UserSession> sessions = (List<UserSession>) UserSession.getDBTypeDescriptor().query(
+          Query.and(Query.eq("site", site),
+                    Query.or(Query.match("user.emailAddress", searchText),
+                             Query.match("user.firstName", searchText))), null, Arrays.asList("-lastModified"), startIndex, numUsersPerPage);
+
+      if (sessions != null) {
+         for (int i = 0; i < sessions.size(); i++) {
+            UserSession session = sessions.get(i);
+            UserProfile user = session.user;
+            if (!showGuests && !user.registered)
+               continue;
+            List<UserSession> userSessions = newSessionsById.get(String.valueOf(user.id));
+            if (userSessions == null) {
+               userSessions = new ArrayList<UserSession>();
+               newSessionsById.put(String.valueOf(user.id), userSessions);
+               newUsers.add(user);
             }
+            userSessions.add(session);
          }
-         sessionsByUserId = newSessionsById;
       }
-      //searchForExtraUsers(newUsers);
+      sessionsByUserId = newSessionsById;
+
       currentUsers = newUsers;
    }
 

@@ -20,12 +20,13 @@
       </div>
       <div id="findUserForm" class="formField">
          <label for="searchUserField">Find user:</label><input id="searchUserField" type="text" value=":=: userMgr.searchText" changeEvent="=: userMgr.doSearch()"/>
-         <input type="image" class="findUserButton" src="/icons/search.svg" clickEvent="=: userMgr.doSearch()"/>
-         <input type="image" class="clearUserButton" src="/icons/x-square.svg" clickEvent="=: userMgr.clearSearch()"/>
+         <input id="findUserButton" type="image" class="findUserButton" src="/icons/search.svg" clickEvent="=: userMgr.doSearch()"/>
+         <input id="clearUserButton" type="image" class="clearUserButton" src="/icons/x-square.svg" clickEvent="=: userMgr.clearSearch()"/>
       </div>
       <div id="userTypeForm">
          <span visible=":= isAdmin"><label for="allSitesCheckbox">Search all sites</label><input type="checkbox" id="allSitesCheckbox" checked=":=: userMgr.searchAcrossSites"/></span>
          <label for="showGuestCheckbox">Show guests</label><input type="checkbox" id="showGuestCheckbox" checked=":=: userMgr.showGuests"/>
+         <label for="showGuestCheckbox">Show sessions</label><input type="checkbox" id="showSessionsCheckbox" checked=":=: userMgr.showSessions"/>
          <span id="extraSearchOptions"/>
       </div>
    </div>
@@ -66,35 +67,38 @@
          <span>Super admin: <input type="checkbox" checked=":=: currentUser.superAdmin" disabled=":= !isAdmin"/></span>
          <span>Site admin: <input type="checkbox" checked=":= siteMgr.isSiteAdmin(currentUser)" changeEvent="=: siteMgr.updateSiteAdmin(currentUser, checked)"/></span>
       </div>
-      <div id="userSessionHeader" class="headerRow">
-         <span class="headerColumn">User sessions</span>
-         <span class="wideHeaderColumn">Created</span>
-         <span class="headerColumn">Duration</span>
-         <span class="headerColumn">Num events</span>
-         <span class="wideHeaderColumn">Remote ip</span>
-      </div>
-      <div id="userSessionRepeat" repeat=":= userSessions" repeatVarName="userSession" >
-         <%! boolean openPageViews = false; %>
 
-         <div class="sessionRow">
-            <span class="sessionColumn"><input type="checkbox" id="openCheck" checked=":=: openPageViews"/> <%= userSessionRepeat.this.repeatIndex %></span>
-            <span class="wideSessionColumn"><%= TextUtil.formatUserDate(userSession.createTime, true) %></span>
-            <span class="sessionColumn"><%= PTypeUtil.getTimeDelta(userSession.createTime.getTime(), userSession.lastModified.getTime()) %></span>
-            <span class="sessionColumn"><%= userSession.sessionEvents.size() %></span>
-            <span class="wideSessionColumn"><%= userSession.remoteIp %></span>
+      <div id="userSessionView" visible=":= userMgr.showSessions">
+         <div id="userSessionHeader" class="headerRow">
+            <span class="headerColumn">User sessions</span>
+            <span class="wideHeaderColumn">Created</span>
+            <span class="headerColumn">Duration</span>
+            <span class="headerColumn">Num events</span>
+            <span class="wideHeaderColumn">Remote ip</span>
          </div>
-         <div id="sessionEventBox" class="sessionEventBox" visible=":= openPageViews">
-            <div id="sessionEventsHeader" class="headerRow sessionEventsHeader">
-               <span class="headerColumn">Event</span>
-               <span class="wideHeaderColumn">For</span>
-               <span class="wideHeaderColumn">When</span>
+         <div id="userSessionRepeat" repeat=":= userSessions" repeatVarName="userSession" >
+            <%! boolean openPageViews = false; %>
+
+            <div class="sessionRow">
+               <span class="sessionColumn"><input type="checkbox" id="openCheck" checked=":=: openPageViews"/> <%= userSessionRepeat.this.repeatIndex %></span>
+               <span class="wideSessionColumn"><%= TextUtil.formatUserDate(userSession.createTime, true) %></span>
+               <span class="sessionColumn"><%= PTypeUtil.getTimeDelta(userSession.createTime.getTime(), userSession.lastModified.getTime()) %></span>
+               <span class="sessionColumn"><%= userSession.sessionEvents.size() %></span>
+               <span class="wideSessionColumn"><%= userSession.remoteIp %></span>
             </div>
-            <div id="sessionEventsRepeat" repeat=":= userSession.sessionEvents" repeatVarName="sessionEvent" class="eventRow">
-               <span class="eventColumn"><%= sessionEvent.eventName %></span>
-               <span class="wideEventColumn"><a target="productView" href='= sessionEvent.getEventTarget(site)' bodyOnly=":= !sessionEvent.hasLink"><%= sessionEvent.eventDetail %></a></span>
-               <span class="wideEventColumn">
-                  <%= userSession.getEventTimeDisplay(sessionEventsRepeat.this.repeatIndex) %>
-               </span>
+            <div id="sessionEventBox" class="sessionEventBox" visible=":= openPageViews">
+               <div id="sessionEventsHeader" class="headerRow sessionEventsHeader">
+                  <span class="headerColumn">Event</span>
+                  <span class="wideHeaderColumn">For</span>
+                  <span class="wideHeaderColumn">When</span>
+               </div>
+               <div id="sessionEventsRepeat" repeat=":= userSession.sessionEvents" repeatVarName="sessionEvent" class="eventRow">
+                  <span class="eventColumn"><%= sessionEvent.eventName %></span>
+                  <span class="wideEventColumn"><a target="productView" href='= sessionEvent.getEventTarget(site)' bodyOnly=":= !sessionEvent.hasLink"><%= sessionEvent.eventDetail %></a></span>
+                  <span class="wideEventColumn">
+                     <%= userSession.getEventTimeDisplay(sessionEventsRepeat.this.repeatIndex) %>
+                  </span>
+               </div>
             </div>
          </div>
       </div>

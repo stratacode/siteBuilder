@@ -1,0 +1,45 @@
+cmd.pauseTime = 250;
+  
+cmd.sleep(1000);
+
+// Run commands only in the server process
+cmd.targetRuntime = "java_Server";
+
+cmd.path = "user";
+
+UserManagerPage {
+   body {
+      mgrFrame {
+         mgrFrame__alt {
+            loginView {
+               {
+                  if (siteMgr.userView.loginStatus == LoginStatus.NotLoggedIn) {
+                     userFormField.loginUserField.value = "jeff@jvroom.com2";
+                     passwordFormField.loginPasswordField.value = "foobar111";
+                     loginButton.click();
+                  }
+               }
+            }
+         }
+
+         mgrView {
+            findUserView {
+               findUserForm {
+                  {
+                     findUserButton.click();
+                  }
+               }
+            }
+            {
+               System.out.println("Found: " + userMgr.currentUsers.size() + " user");
+               for (int i = 0; i < userMgr.currentUsers.size(); i++) {
+                  System.out.println("Selecting: " + i);
+                  userMgr.updateCurrentUser(userMgr.currentUsers.get(i));
+                  System.out.println("Selected: " + i);
+                  cmd.sleep(1000);
+               }
+            }
+         }
+      }
+   }
+}
