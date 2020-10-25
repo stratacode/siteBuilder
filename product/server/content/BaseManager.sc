@@ -9,6 +9,8 @@ BaseManager {
    final static int recentDays = 2;
    final static int recentMillis = recentDays * 24 * 60 * 60 * 1000;
 
+   store =: storeChanged();
+
    void storeChanged() {
       resetForm();
    }

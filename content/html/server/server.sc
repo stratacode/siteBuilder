@@ -6,4 +6,6 @@ public content.html.server extends content.coreui, content.server, user.server, 
    exportProcess = false;
 
    hidden = true;
+
+   compiledOnly = true;
 }
