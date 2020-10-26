@@ -1,4 +1,4 @@
 package sc;
 
-public product.html.coreMgr extends product.html.core, user.html.coreMgr  {
+public product.html.coreMgr extends product.coreuiMgr, product.serverMgr, product.html.core, user.html.coreMgr  {
 }

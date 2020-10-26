@@ -1,2 +1,2 @@
-public product.demo.core extends product.html.coreMgr {
+public product.demo.core extends product.html.core {
 }
