@@ -23,7 +23,7 @@
    <body>
       <div id="mgrFrame" visible=":= siteMgr.userView.loginStatus == LoginStatus.LoggedIn">
          <div id="mgrNavBar">
-            <img src="/icons/layeredLogo28.png" class="mgrNavIcon"/>
+            <a href="/"><img src="/icons/layeredLogo28.png" class="mgrNavIcon"/></a>
             <select id="siteSelect" optionDataSource=":= siteMgr.siteSelectList"
                     changeEvent="=: siteMgr.changeSiteWithIndex(selectedIndex)"
                     disabled=":= siteMgr.showCreateView"

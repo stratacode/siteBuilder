@@ -16,6 +16,8 @@ class NavMenu extends BaseMenuItem {
       ArrayList<BaseMenuItem> res = new ArrayList<BaseMenuItem>(arr.length);
       for (Object elem:arr) {
          if (elem instanceof BaseMenuItem) {
+            BaseMenuItem menuItem = (BaseMenuItem) elem;
+            menuItem.parentMenu = this;
             res.add((BaseMenuItem) elem);
          }
       }

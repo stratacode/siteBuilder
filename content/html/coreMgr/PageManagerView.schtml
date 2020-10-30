@@ -2,9 +2,11 @@
    <%!
       SiteContext site;
       SiteManager siteMgr;
+      String pagePathName;
       object pageMgr extends PageManager {
          site := PageManagerView.this.site;
          siteMgr := PageManagerView.this.siteMgr;
+         pagePathName :=: PageManagerView.this.pagePathName;
       }
    %>
    <div class="formTitle">

@@ -1,42 +1,59 @@
 <%@ import java.util.HashSet; %>
 <html>
    <%!
+      static String getProductManagerURL(Product product) {
+        return "/manage/product/" + product.store.sitePathName + "/" + product.pathName;
+      }
+      static String getCategoryManagerURL(Category category) {
+         return "/manage/category/" + category.store.sitePathName + "/" + category.pathName;
+      }
+
+
       @sc.obj.HTMLSettings(returnsHTML=true)
       StringBuilder outputSiteInfo(SiteContext site) {
          StringBuilder out = new StringBuilder();
          if (site instanceof Storefront) {
             List<Category> categories = (List<Category>) Category.getDBTypeDescriptor().findBy(Arrays.asList("store"), Arrays.asList(site), null, Arrays.asList("-lastModified"), 0, 20);
-            %>
-               <div id="broken" class="subFormTitle"><%= categories.size() == 0 ? "No categories" : "Categories (" + categories.size() + ")" %></div>
-            <%
             HashSet<String> seenPaths = new HashSet<String>();
             for (int i = 0; i < categories.size(); i++) {
                Category category = categories.get(i);
                if (seenPaths.contains(category.pathName))
                   continue;
                seenPaths.add(category.pathName);
-               out.append( %>
-                  <div class="siteLink">
-                     <a href=':= "/" + site.sitePathTypeName + "/" + site.sitePathName + "/category/" + category.pathName'><%= category.name %> </a>
+               %>
+                  <div class="siteLinkBox">
+                     <div class="siteLinkType">Category <a visible="= isManageable(category.store)" href="= getCategoryManagerURL(category)"><img src="/icons/settings.svg"/></a></div>
+                     <div class="siteLinkView">
+                        <a href=':= category.pageUrl'>
+                           <% if (category.mainMedia != null) { %>
+                              <img src="= category.mainMedia.thumbUrl"/>
+                           <% } %>
+                           <div class="siteLinkTitle"><%= category.name %> </div>
+                        </a>
+                     </div>
                   </div>
-               <% );
+               <%
             }
             List<Product> products = (List<Product>) Product.getDBTypeDescriptor().findBy(Arrays.asList("store"), Arrays.asList(site), null, Arrays.asList("-lastModified"), 0, 20);
-            %>
-               <div class="subFormTitle"><%= categories.size() == 0 ? "No products" : "Products (" + products.size() + ")" %></div>
-            <%
-
             seenPaths.clear();
             for (int i = 0; i < products.size(); i++) {
                Product product = products.get(i);
                if (seenPaths.contains(product.pathName))
                   continue;
                seenPaths.add(product.pathName);
-               out.append( %>
-                  <div class="siteLink">
-                     <a href=':= "/" + site.sitePathTypeName + "/" + site.sitePathName + "/product/" + product.pathName'><%= product.name %> </a>
+               %>
+                  <div class="siteLinkBox">
+                        <div class="siteLinkType">Product <a visible="= isManageable(product.store)" href="= getProductManagerURL(product)"><img src="/icons/settings.svg"/></a></div>
+                        <div class="siteLinkView">
+                           <a href=':= product.pageUrl'>
+                              <% if (product.mainMedia != null) { %>
+                                 <img src="= product.mainMedia.thumbUrl"/>
+                              <% } %>
+                              <div class="siteLinkTitle"><%= product.name %> </div>
+                           </a>
+                        </div>
                   </div>
-               <% );
+               <%
             }
          }
          return out;

@@ -1,4 +1,6 @@
 SiteManager {
+   pathName =: validatePathName();
+
    void start() {
       if (userView.loginStatus == LoginStatus.NotLoggedIn) {
          siteList = new ArrayList<SiteContext>();
@@ -253,5 +255,15 @@ SiteManager {
       super.pageVisited();
       if (site != null)
          validateSite();
+   }
+
+   void validatePathName() {
+      if (pathName == null && site == null)
+         return;
+
+      if (pathName != null)
+         refreshSiteForUser();
+      //else TODO - do we need this?
+      //   changeSite(null);
    }
 }

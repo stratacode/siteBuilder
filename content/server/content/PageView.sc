@@ -8,6 +8,10 @@ PageView {
    @Sync(syncMode=SyncMode.Disabled)
    transient PageDef oldPageDef;
 
+   void init() {
+      validatePageView();
+   }
+
    void validatePageView() {
       // Need to avoid resetting the same pageDef to avoid recreating the tree while we are building it
       if (oldPageDef != null && pageDef == oldPageDef && DynUtil.equalObjects(oldPagePathName, pagePathName))

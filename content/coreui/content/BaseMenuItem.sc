@@ -18,9 +18,14 @@ abstract class BaseMenuItem {
    transient int selectedCount = 0;
    transient int listPos;
 
+   transient NavMenu parentMenu;
+
    void itemSelected() {
-      if (enabled)
+      if (enabled) {
          selectedCount++;
+         if (parentMenu != null)
+            parentMenu.hideSubMenus();
+      }
    }
 
    List<BaseMenuItem> getMenuItems() {

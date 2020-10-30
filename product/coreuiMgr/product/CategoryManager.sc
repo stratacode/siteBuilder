@@ -12,6 +12,9 @@ class CategoryManager extends BaseProductManager {
    @Sync(initDefault=true)
    List<Product> matchingProducts;
 
+   @Sync(resetState=true, initDefault=true)
+   String categoryPathName;
+
    @Sync(initDefault=true)
    Product selectedProduct;
    boolean productAddValid = false;
@@ -27,6 +30,11 @@ class CategoryManager extends BaseProductManager {
 
    void updateElementInstance(CatalogElement el) {
       category = (Category) el;
+      if (el == null)
+         categoryPathName = null;
+      // Don't set this for unsaved products since it reflects in the location bar
+      else if (category.id != 0 && category.pathName != null && category.pathName.length() > 0)
+         categoryPathName = category.pathName;
    }
 
    void resetForm() {
@@ -34,6 +42,7 @@ class CategoryManager extends BaseProductManager {
       categoryList = null;
       element = null;
       clearFormErrors();
+      categoryPathName = null;
    }
 
    void clearFormErrors() {
@@ -42,5 +51,18 @@ class CategoryManager extends BaseProductManager {
 
    String getElementType() {
       return "category";
+   }
+
+   void updateCategoryPathName(String pathName) {
+      super.updateCategoryPathName(pathName);
+      categoryPathName = pathName;
+   }
+
+   void updateCategoryName(String val) {
+      super.updateCategoryName(val);
+      if (category == null)
+         categoryPathName = null;
+      else
+         categoryPathName = category.pathName;
    }
 }

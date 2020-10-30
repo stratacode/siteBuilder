@@ -5,11 +5,14 @@ PageManager {
 
    boolean autoUpdatePath = true;
 
+   pagePathName =: validatePagePathName();
+
    void doSearch() {
       List<PageDef> pageDefs = (List<PageDef>) PageDef.getDBTypeDescriptor().searchQuery(searchText, searchPropNames, Arrays.asList(site), null, null, 0, 20);
       currentPages = pageDefs;
       currentPage = null;
       currentParentDef = null;
+      pagePathName = null;
    }
 
    void updateNewPageType(PageType newPageType) {
@@ -24,6 +27,7 @@ PageManager {
       currentPage.pageTypePathName = pageType.pageTypePathName;
       currentPage.site = site;
       currentParentDef = currentPage;
+      pagePathName = "";
    }
 
    void startCreatePage() {
@@ -34,14 +38,17 @@ PageManager {
 
    void updatePageName(String name) {
       currentPage.pageName = name;
-      if (currentPage.validateProp("pageName") && autoUpdatePath)
+      if (currentPage.validateProp("pageName") && autoUpdatePath) {
          currentPage.pagePathName = ManagedResource.convertToPathName(name);
+         pagePathName = currentPage.pagePathName;
+      }
    }
 
    void updatePathName(String name) {
       currentPage.pagePathName = name;
       autoUpdatePath = false;
       currentPage.validateProp("pagePathName");
+      pagePathName = name;
    }
 
    ViewDef createViewDef(ViewType type) {
@@ -103,6 +110,7 @@ PageManager {
          currentPage = null;
          currentParentDef = null;
          currentChildView = null;
+         pagePathName = null;
       }
 
       toRem.dbDelete(false);
@@ -137,6 +145,7 @@ PageManager {
       currentParentDef = null;
       currentChildView = null;
       addInProgress = false;
+      pagePathName = null;
    }
 
    void removeViewDef(ViewDef viewDef, ParentDef parentDef) {
@@ -189,16 +198,37 @@ PageManager {
             pageType = newPageType;
             viewType = pageType.viewTypes.get(0);
          }
+         pagePathName = newPageDef.pagePathName;
       }
       else {
          pageType = null;
          viewType = null;
+         pagePathName = null;
       }
    }
 
    void selectParent(ParentDef newParent) {
       if (newParent != currentParentDef)
          currentParentDef = newParent;
+   }
+
+   void validatePagePathName() {
+      if (pagePathName == null && currentPage == null)
+         return;
+      if (pagePathName != null && currentPage != null && pagePathName.equals(currentPage.pagePathName))
+         return;
+      // Want to be sure the store path name has been set and the store updated if we are updating the skuCode and store name from the URL
+         DynUtil.invokeLater(new Runnable() {
+            void run() {
+               if (pagePathName == null && currentPage != null)
+                  updateCurrentPage(null);
+               else if (pagePathName != null && (currentPage == null || !DynUtil.equalObjects(currentPage.pagePathName, pagePathName)) && siteMgr != null && siteMgr.store != null) {
+                  List<PageDef> foundProducts = (List<PageDef>) PageDef.findByPagePathName(pagePathName, siteMgr.store);
+                  if (foundProducts != null && foundProducts.size() > 0)
+                     updateCurrentPage(foundProducts.get(0));
+               }
+            }
+         }, 0);
    }
 }
 

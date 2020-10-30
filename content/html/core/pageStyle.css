@@ -88,7 +88,6 @@ body {
 }
 
 #pageBody {
-   background: #fff;
    width: 100%;
    display: flex;
    align-items: center;
@@ -97,17 +96,27 @@ body {
    padding-top: 5px;
 }
 
-.categoryView, .productView {
-   max-width: 1000px;
-   display: flex;
-}
-
 .profileView {
    max-width: 1000px;
    min-width: 700px;
    display: flex;
    flex-direction: column;
    margin: auto;
+}
+
+.loginView {
+   padding-top: 5px;
+   padding-bottom: 5px;
+   width: 400px;
+   display: flex;
+   flex-direction: column;
+}
+
+.loginPanel {
+   display: flex;
+   width: 100%;
+   border-bottom: solid 1px #ccc;
+   justify-content: center;
 }
 
 .editFormView {
@@ -138,14 +147,22 @@ body {
    width: 78%;
 }
 
-.formTitle {
+.formField .wideTextField[type=password] {
+   width: 78%;
+}
+
+.formTitle, .centeredFormTitle {
    font-size: 110%;
    margin-top: 5px;
    margin-bottom: 5px;
 }
 
-.confirmButtons, .formTitle, .formError, .formStatus, .subFormTitle, .formMessage {
+.confirmButtons, .formTitle, .formError, .formStatus,  .formMessage {
    margin-left: 21%;
+}
+
+.centeredFormTitle {
+   margin: auto;
 }
 
 .formStatus {
@@ -203,3 +220,186 @@ body {
    left: 45%;
    background: transparent;
 }
+
+.closeButton {
+   vertical-align: bottom;
+   outline-style: none;
+   padding-left: 5px;
+}
+
+.siteIndexView {
+   max-width: 1000px;
+   min-width: 500px;
+   display: flex;
+   flex-direction: column;
+}
+
+.subFormTitle {
+   padding-top: 5px;
+}
+
+.subFormBody .siteLink {
+   padding-left: 5px;
+}
+
+.subFormBody {
+   padding-left: 10px;
+}
+
+.subForm {
+   margin-top: 10px;
+}
+
+.siteIndexBody {
+   max-width: 975px;
+   min-width: 600px;
+   background: #f3f3f3;
+   border-top: solid 1px #aaa;
+   border-bottom: solid 1px #ccc;
+   border-left: solid 1px #ccc;
+   border-right: solid 1px #ccc;
+}
+
+.siteIndexView {
+   width: 100%;
+   padding-top: 5px;
+   padding-bottom: 5px;
+   padding-left: 5px;
+   padding-right: 5px;
+}
+
+.siteContents {
+   border-left: solid 3px #ccc;
+   border-right: solid 3px #ccc;
+   border-top: solid 3px #ccc;
+   border-bottom: solid 3px #ccc;
+   padding: 2px;
+   background: #fff;
+}
+
+.siteLinkView {
+   border-left: solid 3px #ccc;
+   border-right: solid 3px #ccc;
+   border-top: solid 3px #ccc;
+   border-bottom: solid 3px #ccc;
+   padding: 4px;
+   background: #fff;
+}
+
+.siteLinkView {
+   width: 200px;
+   height: 120px;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+}
+
+.siteLinkView img {
+   margin: auto;
+}
+
+.siteBox {
+   margin-top: 5px;
+   margin-bottom: 5px;
+}
+
+.siteNavBox {
+   padding-top: 5px;
+   padding-bottom: 5px;
+   padding-left: 5px;
+}
+
+.siteNavBox a {
+   text-decoration: none;
+   display: flex;
+   align-items: center;
+}
+
+.siteNavBox a:visited {
+   color: #333;
+}
+
+.siteTypeName, .siteLinkType {
+   font-size: 75%;
+   background: #ccc;
+   width: 72px;
+   padding-left: 5px;
+   padding-top: 3px;
+   padding-bottom: 0px;
+   padding-right: 5px;
+   display: flex;
+   justify-content: space-between;
+}
+
+.siteLinkBox {
+   margin-top: 5px;
+   margin-bottom: 5px;
+   margin-left: 5px;
+   margin-right: 5px;
+}
+.siteLinkView a {
+   text-decoration: none;
+   color: #333;
+}
+
+.siteLinkView a:visited {
+   text-decoration: none;
+   color: #333;
+}
+
+.siteLinksBox {
+   display: flex;
+   flex-wrap: wrap;
+}
+
+#welcomeBar {
+   margin-top: 10px;
+   margin-bottom: 10px;
+}
+
+#welcomeTitle {
+   font-size: 120%;
+}
+
+.welcomeDetail {
+   margin-top: 5px;
+}
+
+input[type=button], input[type=submit] {
+   border: solid 0px #0e75ff;
+   padding-left: 8px;
+   padding-right: 8px;
+   padding-top: 3px;
+   padding-bottom: 3px;
+   background: #0f6dec;
+   color: #f3f3f3;
+   border-radius: 2px;
+}
+
+input[type=file]::file-selector-button {
+   border: solid 0px #0e75ff;
+   padding-left: 8px;
+   padding-right: 8px;
+   padding-top: 3px;
+   padding-bottom: 3px;
+   background: #0f6dec;
+   color: #f3f3f3;
+   border-radius: 2px;
+}
+
+input[type=file]::-webkit-file-upload-button {
+   border: solid 0px #0e75ff;
+   padding-left: 8px;
+   padding-right: 8px;
+   padding-top: 3px;
+   padding-bottom: 3px;
+   background: #0f6dec;
+   color: #f3f3f3;
+   border-radius: 2px;
+}
+
+input[type=button]:hover {
+   color: #fff;
+}
+

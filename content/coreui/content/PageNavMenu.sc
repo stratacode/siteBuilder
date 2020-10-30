@@ -8,11 +8,12 @@ class PageNavMenu extends NavMenu {
 
    siteContext =: Bind.sendChangedEvent(this, "menuItems");
 
+   boolean loginVisible = false;
+
    object homeItem extends NavMenuItem {
-      url = "/";
-      name := siteContext.siteName;
-      icon := siteContext.icon;
-      url := "/" + siteContext.sitePathTypeName + "/" + siteContext.sitePathName;
+      name := siteContext == null ? "StrataCode site builder" : siteContext.siteName;
+      icon := siteContext == null ? "/icons/layeredLogo28.png" : siteContext.icon;
+      url := siteContext == null ? "/" :  "/" + siteContext.sitePathTypeName + "/" + siteContext.sitePathName;
    }
 
    void validateSiteView() {
@@ -31,8 +32,11 @@ class PageNavMenu extends NavMenu {
       if (dres != null) {
          res.addAll(dres);
       }
-      for (int i = 0; i < res.size(); i++)
-         res.get(i).listPos = i;
+      for (int i = 0; i < res.size(); i++) {
+         BaseMenuItem elem = res.get(i);
+         elem.listPos = i;
+         elem.parentMenu = this;
+      }
       res.sort(new java.util.Comparator<BaseMenuItem>() {
          public int compare(BaseMenuItem lhs, BaseMenuItem rhs) {
             // First use the configured order value, or if they are equal
@@ -55,13 +59,14 @@ class PageNavMenu extends NavMenu {
 
       object loginMenuItem extends NavMenuItem {
          name = "Login";
-         url = "/login";
          visible := !loggedIn;
+         selectedCount =: loginVisible = !loginVisible;
+         //url = "/login";
       }
 
       object registerMenuItem extends NavMenuItem {
          name = "Register";
-         url = "/Register.html";
+         url = "/register";
          visible := !loggedIn;
       }
 
@@ -73,7 +78,8 @@ class PageNavMenu extends NavMenu {
 
       object signoutMenuItem extends NavMenuItem {
          name := loggedIn ? "Sign out" : "Clear session";
-         url = "/logout";
+         selectedCount =: currentUserView.logout();
+         //url = "/logout";
       }
 
    }

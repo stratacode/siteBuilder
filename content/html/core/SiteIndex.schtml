@@ -1,59 +1,99 @@
 <%@ import java.util.Arrays; %>
-<html exec="server">
+<html extends="PageLayout">
    <%!
       @sc.obj.HTMLSettings(returnsHTML=true)
+      @Exec(serverOnly=true)
       StringBuilder outputSiteInfo(SiteContext ctx) { return new StringBuilder(); }
+
+      boolean isManageable(SiteContext site) {
+         if (currentUserView == null)
+            return false;
+         UserProfile user = currentUserView.user;
+         return user != null && user.siteList != null && user.siteList.contains(site);
+      }
+
+      String getManageSiteURL(SiteContext site) {
+         if (site == null)
+            return "/manage/site";
+         return "/manage/site/" + site.sitePathName;
+      }
    %>
-   <style class="text/css">
-      .subForm, .formBody, .subFormBody {
-         margin-left: 10px;
-      }
-      .formTitle {
-         margin-top: 10px;
-         font-size: 120%;
-      }
-      .siteLink, .subFormTitle {
-         font-size: 110%;
-      }
-      .subFormTitle {
-         margin-top: 5px;
-      }
-
-   </style>
+   <head exec="server">
+      <link id="contentStyle" rel="stylesheet" href="/pageStyle.css" type="text/css"/>
+   </head>
    <body>
-      <div class="formTitle">All sites index</div>
-      <div id="siteIndexBody" class="formBody"><%
-      List<SiteContext> allSites = (List<SiteContext>) SiteContext.getDBTypeDescriptor().findAll(Arrays.asList("-lastModified"), 0, 20);
-      for (int i = 0 ; i < allSites.size(); i++) {
-         SiteContext site = allSites.get(i);
-         %>
-            <div class="subForm">
-               <div class="siteLink">
-                  <%= site.siteTypeName %> <a href=':= "/" + site.sitePathTypeName + "/" + site.sitePathName'> <%= site.siteName %></a>
-               </div>
-               <div class="subFormBody">
-                  <%
-                  List<PageDef> allPages = (List<PageDef>) PageDef.getDBTypeDescriptor().findBy(Arrays.asList("site"), Arrays.asList(site), null, Arrays.asList("-lastModified"), 0, 20);
-                  %>
-                  <div class="subFormTitle"><%= allPages.size() == 0 ? "No pages" : "Pages (" + allPages.size() + ")" %></div>
-                  <%
-                  for (int j = 0; j < allPages.size(); j++) {
-                     PageDef page = allPages.get(j);
-                     String pageTypePath = page.pageTypePathName;
-                     %>
-                        <div class="siteLink">
-                           <a href=':= "/" + pageTypePath + "/" + site.sitePathName + "/" + page.pagePathName'><%= page.pageName + (page.homePage ? " (home)" : "") %> </a>
-                        </div>
-                     <%
-                  }
-                  %>
+      <div id="appFrame" class="appFrame" clickEvent="=: navbar.navMenu.hideSubMenus()">
+         <div id="navbar" extends="NavView"/>
+         <div id="welcomeBar">
+            <div id="welcomeRegistered" visible=":= currentUserView.loginStatus == LoginStatus.LoggedIn" class="welcomeDetail">
+               <select id="manageSiteSelect" optionDataSource=":= currentUserView.user.siteList" selectedIndex="0"/>
+               <input id="manageSiteButton" type="button" value="Manage site" clickEvent="=: Window.window.location.href = getManageSiteURL(currentUserView.user.siteList.get(manageSiteSelect.selectedIndex))"/>
 
-                  <%= outputSiteInfo(site) %>
-               </div>
+               <input id="createSiteButton" type="button" value="Create new site" clickEvent='=: Window.window.location.href = "/manage/site"'/>
+
             </div>
-         <%
-      }
-      %>
+            <div id="welcomeNotRegistered" class="welcomeDetail" visible=":= currentUserView.loginStatus != LoginStatus.LoggedIn && !navbar.navMenu.loginVisible">
+               <input id="startLoginButton" type="button" value="Login" clickEvent="=: navbar.navMenu.loginVisible = true"/>
+               or
+               <input id="registerButton" type="button" value="Register" clickEvent='=: Window.window.location.href = "/register"'/>
+               to build or manage a web site
+            </div>
+         </div>
+         <div id="pageBody" class="siteIndexBody" exec="server">
+            <div id="siteIndexView" class="siteIndexView">
+               <%!
+                   LoginStatus status := currentUserView.loginStatus;
+                   status =: invalidateBody();
+               %>
+
+               <div class="centeredFormTitle">All sites index</div>
+               <%
+               List<SiteContext> allSites = (List<SiteContext>) SiteContext.getDBTypeDescriptor().findAll(Arrays.asList("-lastModified"), 0, 20);
+               for (int i = 0 ; i < allSites.size(); i++) {
+                  SiteContext site = allSites.get(i);
+                  %>
+                     <div class="siteBox">
+                        <div class="siteTypeName"> <%= site.siteTypeName %> <a visible="= isManageable(site)" href='= "/manage/site/" + site.sitePathName'><img src="/icons/settings.svg"/></a></div>
+                        <div class="siteContents">
+                           <div class="siteNavBox">
+                              <a href='= "/" + site.sitePathTypeName + "/" + site.sitePathName'>
+                                 <img visible="= site.icon != null" src="= site.icon"/>
+                                 <div class="siteTitle"><%= site.siteName %></div>
+                              </a>
+                           </div>
+                           <div class="siteLinksBox">
+                              <%
+                              List<PageDef> allPages = (List<PageDef>) PageDef.getDBTypeDescriptor().findBy(Arrays.asList("site"), Arrays.asList(site), null, Arrays.asList("-lastModified"), 0, 20);
+                              for (int j = 0; j < allPages.size(); j++) {
+                                 PageDef page = allPages.get(j);
+                                 String pageTypePath = page.pageTypePathName;
+                                 %>
+                                 <div class="siteLinkBox">
+                                    <div class="siteLinkType">Page
+                                       <a visible="= isManageable(site)" href='= "/manage/page/" + site.sitePathName + "/" + page.pagePathName'>
+                                          <img src="/icons/settings.svg"/>
+                                       </a>
+                                    </div>
+                                    <div class="siteLinkView">
+                                       <a href=':= page.pageUrl'>
+                                          <img src="/icons/file-text40.svg"/>
+                                          <div class="siteLinkTitle"><%= page.pageName + (page.homePage ? " (home)" : "") %> </div>
+                                       </a>
+                                    </div>
+                                 </div>
+                                 <%
+                              }
+                              %>
+
+                              <%= outputSiteInfo(site) %>
+                           </div>
+                        </div>
+                     </div>
+                  <%
+               }
+               %>
+            </div>
+         </div>
       </div>
    </body>
 </html>

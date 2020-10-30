@@ -1,6 +1,9 @@
-<%@ @URL(pattern="/manage/category") %>
+<%@ @URL(pattern="/manage/category[/{sitePathName=urlString}[/{categoryPathName=urlString}]]") %>
 <html extends="BaseManagerPage">
-   <%! managerPage = "category"; %>
+   <%!
+      String categoryPathName;
+      managerPage = "category";
+   %>
    <head>
       <div id="libScripts">
          <script extends="TextEditorScripts"/>
@@ -8,7 +11,9 @@
    </head>
    <body>
       <div id="mgrFrame">
-         <div id="mgrView" extends="CategoryManagerView" siteMgr=":= CategoryManagerPage.this.siteMgr" store=":= siteMgr.store" visible=":= siteMgr.validStore">
+         <div id="mgrView" extends="CategoryManagerView" siteMgr=":= CategoryManagerPage.this.siteMgr"
+              store=":= siteMgr.store" visible=":= siteMgr.validStore"
+              categoryPathName=":=: CategoryManagerPage.this.categoryPathName">
             <div id="alt" class="mgrViewStatus"> Site <%= siteMgr.site.siteName %> is not an online store.</div>
          </div>
       </div>

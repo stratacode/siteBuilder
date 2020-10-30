@@ -90,7 +90,7 @@ ProductManager {
                categoryEditable = false;
 
             parentCategoryPathName = category == null ? "" : category.pathName;
-            showOptionsView = sku.optionScheme != null;
+            showOptionsView = sku != null && sku.optionScheme != null;
          }
       }
    }

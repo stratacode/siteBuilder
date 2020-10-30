@@ -15,6 +15,7 @@ input[type=button], input[type=submit] {
    padding-bottom: 3px;
    background: #0f6dec;
    color: #f3f3f3;
+   border-radius: 2px;
 }
 
 input[type=file]::file-selector-button {
@@ -25,6 +26,7 @@ input[type=file]::file-selector-button {
    padding-bottom: 3px;
    background: #0f6dec;
    color: #f3f3f3;
+   border-radius: 2px;
 }
 
 input[type=file]::-webkit-file-upload-button {
@@ -35,6 +37,7 @@ input[type=file]::-webkit-file-upload-button {
    padding-bottom: 3px;
    background: #0f6dec;
    color: #f3f3f3;
+   border-radius: 2px;
 }
 
 input[type=button]:hover {
@@ -135,6 +138,7 @@ input[type=button]:hover {
    color: #333;
    padding-left: 3px;
    padding-right: 3px;
+   padding-bottom: 3px;
 }
 
 #mgrNav .selectedLink {

@@ -10,7 +10,8 @@ UserView {
          if (user == null || user.userbase != userbase)
             userAuthToken = null; // Invalid token
       }
-      if (user == null && userName.length() > 0 && password.length() > 0) {
+      if (user == null && userName != null && userName.length() > 0 &&
+          password != null && password.length() > 0) {
          login();
       }
 
@@ -39,7 +40,7 @@ UserView {
    }
 
    void initNewUser() {
-      if (user == null && userbase.createAnonymousUser) {
+      if (user == null && userbase != null && userbase.createAnonymousUser) {
          resetUser();
          userAuthToken = user.createAuthToken();
          persistAuthToken(userAuthToken);

@@ -27,6 +27,9 @@ PageManager extends BaseManager {
    @Sync(syncMode=SyncMode.Disabled)
    List<PageType> pageTypes = contentPageTypes;
 
+   @Sync(resetState=true, initDefault=true)
+   String pagePathName;
+
    PageType getPageTypeFromName(String pageTypePathName) {
       for (PageType pt:pageTypes) {
          if (pt.pageTypePathName.equals(pageTypePathName)) {
@@ -40,5 +43,6 @@ PageManager extends BaseManager {
       searchText = "";
       currentPages = null;
       currentPage = null;
+      pagePathName = null;
    }
 }

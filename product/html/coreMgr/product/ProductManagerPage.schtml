@@ -1,4 +1,4 @@
-<%@ @URL(pattern="/manage/product[/{sitePathName=urlString}/{productPathName=urlString}]") %>
+<%@ @URL(pattern="/manage/product[/{sitePathName=urlString}[/{productPathName=urlString}]]") %>
 <html extends="BaseManagerPage">
    <%!
       String productPathName;

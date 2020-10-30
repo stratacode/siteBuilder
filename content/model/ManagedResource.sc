@@ -1,5 +1,5 @@
 @CompilerSettings(compiledOnly=true)
-abstract class ManagedResource implements sc.dyn.IPropValidator {
+abstract class ManagedResource implements IPropValidator {
    MediaManager manager;
 
    Date lastModified;

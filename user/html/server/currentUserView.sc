@@ -35,7 +35,7 @@ currentUserView {
 
       super.init();
 
-      if (user != null) {
+      if (user != null && req != null) {
          Locale locale = user.locale;
          if (locale == null) {
             locale = req.getLocale();
@@ -85,6 +85,8 @@ currentUserView {
    void persistAuthToken(String token) {
       Context ctx = Context.getCurrentContext();
       HttpServletResponse resp = ctx.response;
+      if (resp == null)
+         return;
       Cookie cookie = new Cookie(userbase.cookieName, token);
       if (userbase.secureCookie)
          cookie.setSecure(true);

@@ -1,4 +1,4 @@
-<%@ @URL(pattern="/manage/site") %>
+<%@ @URL(pattern="/manage/site[/{sitePathName=urlString}]") %>
 <html extends="BaseManagerPage">
    <%! managerPage = "site"; %>
    <head>

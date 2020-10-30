@@ -1,19 +1,19 @@
-<div visible=":= currentUserView.loginStatus==LoginStatus.NotLoggedIn" class="profileView">
+<div visible=":= currentUserView.loginStatus==LoginStatus.NotLoggedIn" class="loginView">
    <div class="formTitle">Login</div>
    <div class="formField">
       <label for="userNameField">User name</label>
-      <input id="userNameField" type="text" placeholder="user name" value=":=: currentUserView.userName">
+      <input id="userNameField" class="wideTextField" type="text" placeholder="user name" value=":=: currentUserView.userName">
    </div>
    <div class="formField">
       <label for="passwordField">Password</label>
-      <input id="passwordField" type="password" placeholder="password" value=":=: currentUserView.password">
+      <input id="passwordField" class="wideTextField" type="password" placeholder="password" value=":=: currentUserView.password">
    </div>
    <div class="formField confirmButtons">
       <input type="submit" value="Log in" clickEvent="=: currentUserView.login()">
    </div>
    <div class="formError"><%= currentUserView.userViewError %></div>
-   <div id="alt" class="profileView">
-      <div class="formField">
+   <div id="alt" class="loginView">
+      <div>
          <label for="logoutButton">Logged in as <%= currentUserView.userName %></label>
          <input id="logoutButton" type="submit" value="Log out" clickEvent="=: currentUserView.logout()">
       </div>

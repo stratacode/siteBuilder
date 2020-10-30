@@ -1,6 +1,9 @@
-<%@ @URL(pattern="/manage/page") %>
+<%@ @URL(pattern="/manage/page[/{sitePathName=urlString}[/{pagePathName=urlString}]]") %>
 <html extends="BaseManagerPage">
-   <%! managerPage = "page"; %>
+   <%!
+      String pagePathName;
+      managerPage = "page";
+   %>
    <head>
       <div id="libScripts">
          <script extends="TextEditorScripts"/>
@@ -8,7 +11,9 @@
    </head>
    <body>
       <div id="mgrFrame">
-         <div id="mgrView" extends="PageManagerView" siteMgr=":= PageManagerPage.this.siteMgr" site=":= siteMgr.site" visible=":= siteMgr.validSite"/>
+         <div id="mgrView" extends="PageManagerView" siteMgr=":= PageManagerPage.this.siteMgr"
+              pagePathName=":=: PageManagerPage.this.pagePathName"
+              site=":= siteMgr.site" visible=":= siteMgr.validSite"/>
       </div>
    </body>
 </html>

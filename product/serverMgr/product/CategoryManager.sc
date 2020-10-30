@@ -23,6 +23,8 @@ import sc.db.QCompare;
 import sc.db.QCombine;
 
 CategoryManager {
+   categoryPathName =: validateCategoryPathName();
+
    List<Category> searchForText(String text) {
       return (List<Category>) Category.getDBTypeDescriptor().searchQuery(text, searchStore, getSearchStoreValues(), null, searchOrderBy, -1, -1);
    }
@@ -622,5 +624,24 @@ CategoryManager {
          else
             productQueryText = "";
       }
+   }
+
+   void validateCategoryPathName() {
+      if (categoryPathName == null && category == null)
+         return;
+      if (categoryPathName != null && category != null && categoryPathName.equals(category.pathName))
+         return;
+      // Want to be sure the store path name has been set and the store updated if we are updating the skuCode and store name from the URL
+         DynUtil.invokeLater(new Runnable() {
+            void run() {
+               if (categoryPathName == null && category != null)
+                  doSelectCategory(null);
+               else if (categoryPathName != null && (category == null || !category.pathName.equals(categoryPathName)) && siteMgr.store != null) {
+                  List<Category> foundCategories = (List<Category>) Category.findByPathName(categoryPathName, siteMgr.store, 0, 1);
+                  if (foundCategories != null && foundCategories.size() > 0)
+                     doSelectCategory(foundCategories.get(0));
+               }
+            }
+         }, 0);
    }
 }

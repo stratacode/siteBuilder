@@ -1,6 +1,7 @@
 @Sync(onDemand=true)
 @CompilerSettings(constructorProperties="siteView,pagePathName")
 scope<appSession>
+@Component
 class PageView extends ParentView {
    String pagePathName;
    PageDef pageDef;

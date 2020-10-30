@@ -1,0 +1,10 @@
+<html>
+   <body>
+      <div id="appFrame">
+         <div id="loginPanel" visible=":= navbar.navMenu.loginVisible">
+            <div id="loginView" extends="LoginView"/>
+            <input id="closeLoginView" type="image" class="closeButton" src="/icons/x-square.svg" clickEvent="=: navbar.navMenu.loginVisible = false"/>
+         </div>
+      </div>
+   </body>
+</html>

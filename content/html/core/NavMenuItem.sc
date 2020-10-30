@@ -3,6 +3,7 @@ import sc.lang.html.Window;
 NavMenuItem {
    void itemSelected() {
       super.itemSelected();
-      Window.window.location.href = url == null ? "/" : url;
+      if (url != null)
+         Window.window.location.href = url;
    }
 }

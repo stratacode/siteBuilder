@@ -73,9 +73,10 @@
    font-size: 120%;
 }
 
-.productView {
-  display: flex;
-  flex-direction: column;
+.categoryView, .productView {
+   max-width: 1000px;
+   display: flex;
+   flex-direction: column;
 }
 
 .productDetailView {

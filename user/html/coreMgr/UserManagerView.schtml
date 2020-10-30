@@ -33,7 +33,7 @@
 
    <div id="currentUsersView">
       <div id="headerRow" class="headerRow" visible=":= userMgr.currentUsers != null && userMgr.currentUsers.size() > 0">
-         <span class="smallHeaderColumn">User id</span>
+         <span class="headerColumn">User id</span>
          <span class="wideHeaderColumn">Email address</span>
          <span class="smallHeaderColumn">Visits</span>
          <span class="smallHeaderColumn">Clicks</span>
@@ -45,7 +45,7 @@
       </div>
       <div id="userRepeat" repeat=":= userMgr.currentUsers" repeatVarName="curRowUser"
            class=':= curRowUser == currentUser ? "selectedUserRow" : "userRow"' >
-         <span class="smallUserColumn" clickEvent="=: userMgr.updateCurrentUser(curRowUser)">
+         <span class="userColumn" clickEvent="=: userMgr.updateCurrentUser(curRowUser)">
             <input type="checkbox" checked=":= currentUser == curRowUser"/>
             <%= curRowUser.id %>
          </span>
