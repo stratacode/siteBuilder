@@ -12,7 +12,9 @@ PageNavMenu {
    object cartMenu extends NavMenuItem {
       visible := storeView != null;
       name := "cart(" + storeView.orderView.numLineItems + ")";
-      icon = "/icons/shopping-cart20-grey.svg";
+      icon = "/icons/shopping-cart20.svg";
       url := "/stores/" + storeView.store.sitePathName + "/cart";
+
+      orderValue = 10;
    }
 }

@@ -11,7 +11,9 @@
    <div id="categoryNavView" extends="CategoryNavView" categoryPath=":= ProductView.this.categoryPath" store=":= storeView.store"/>
    <div id="productDetailView" class="productDetailView">
       <div id="productViewImage" class="productViewImage">
-         <img class="viewImage" id="productViewImage" src=":= currentMedia.url" srcset=":= currentMedia.srcSet" style=':= "width: " + currentMedia.manager.displaySize + "px"'/>
+         <div id="productViewImageBox" class="productViewImageBox">
+            <img class="viewImage" id="productViewImage" src=":= currentMedia.url" srcset=":= currentMedia.srcSet"/>
+         </div>
          <div id="thumbNailsView" class="thumbNailsView">
             <div id="altMediaView" repeat=":= altMedia" repeatVarName="altMediaElem"
                  class='= "thumbView" + (altMediaIndex == repeatIndex ? " thumbViewSelected" : "")' >
@@ -24,29 +26,35 @@
          <span id="priceView" class="priceView" visible=":= currentSku.discountPrice != null">
             <span id="discountPrice" class="price"><%= currencySymbol %><%= currentSku.discountPrice %></span>
             <span id="beforePrice" class="beforePrice"><%= currencySymbol %><%= currentSku.price %></span>
-            <span id="alt" class="price"><%= currencySymbol %><%= currentSku.price %></span>
+            <span id="alt" class="priceView price"><%= currencySymbol %><%= currentSku.price %></span>
          </span>
          <div id="optionsTagView" class="optionsTagView">
             <div id="optionViewList" class="optionView" repeat=":= optionViews" repeatVarName="optionView">
                <span class="optionName"><%= optionView.option.optionName %></span>
                <select id="optionSelect" optionDataSource=":= optionView.option.optionValues" selectedIndex=":=: optionView.selectedIndex">
-                  <option class=':= optionView.isEnabled((OptionValue) optionData) ? "" : "optionDisabled"'><%= ((OptionValue)optionData).optionValue %></option>
+                  <option disabled=':= !optionView.isEnabled((OptionValue) optionData)'><%= ((OptionValue)optionData).optionValue %></option>
                </select>
             </div>
          </div>
          <div id="longDesc" class="longDesc"><%= product.longDesc %></div>
          <div id="skuCode" class="skuCode">SKU: <%= currentSku.skuCode %> <%= currentSku.inventoryDisplayStr %></div>
-         <div id="addToCartForm">
-            <input type="button" value="Add to cart" id="addToCartButton" disabled=":= !inStock" clickEvent="=: addToCart()"/>
+         <div id="addToCartForm" class="addToCartForm">
+            <input type="button" value="Add to cart" id="addToCartButton"
+                   disabled=":= currentSku == null || !inStock" clickEvent="=: addToCart()"/>
             <input type="number" id="quantityField" min="1" max=":= Storefront.MaxQuantity" class="quantityField" value=":=: currentQuantityStr"/>
             <span visible=":= numInCart > 0">(<%= numInCart %> in cart)</span>
             <div id="notAvailView" visible=":= !inStock">
-               <div id="outOfStockView" visible=":= !currentSku.inStock">
-                  Out of stock
-                  <%= currentSku.inventory.nextAvailDisplayStr %>
+               <div id="notAvailableContents" visible=":= currentSku != null">
+                  <div id="outOfStockView" visible=":= !currentSku.inStock">
+                     Out of stock
+                     <%= currentSku.inventory.nextAvailDisplayStr %>
+                     <div id="alt">
+                        Only <%= currentSku.inventory.quantity %> available with
+                        <%= numInCart %> in cart
+                     </div>
+                  </div>
                   <div id="alt">
-                     Only <%= currentSku.inventory.quantity %> available with
-                     <%= numInCart %> in cart
+                     Not available
                   </div>
                </div>
             </div>

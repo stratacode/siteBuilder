@@ -40,7 +40,7 @@ PageView {
       pageDef = pageDefs.get(0);
       pageType = PageManager.findPageType(pageDef.pageTypePathName);
       if (pageType == null)
-         errorMessage = "No page type found: " + pageDef.pageType;
+         errorMessage = "No page type found: " + pageDef.pageTypePathName;
 
       oldPageDef = pageDef;
       oldPagePathName = pagePathName;

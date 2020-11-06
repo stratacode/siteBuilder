@@ -1,11 +1,10 @@
-<div>
+<div class="slideshowView">
 <%!
    SlideshowView(PageView pageView, Element parentNode, String id, SlideshowDef viewDef, int ix) {
       super(parentNode, id, viewDef, ix);
       this.pageView = pageView;
       this.slideshowDef = viewDef;
    }
-
 %>
 
    <div id="slideViewContainer">

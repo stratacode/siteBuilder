@@ -1,4 +1,4 @@
-<div class="categoryNavView">
+<div class="categoryNavView" visible=":= categoryPath != null && categoryPath.size() > 0">
    <%!
       Storefront store;
       int lastPath := categoryPath.size() - 1; 

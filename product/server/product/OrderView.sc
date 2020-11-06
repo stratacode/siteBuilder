@@ -371,6 +371,13 @@ OrderView {
       }
    }
 
+   void cancelNewPaymentInfo() {
+      if (userView.user.paymentInfo != null) {
+         order.paymentInfo = userView.user.paymentInfo;
+         editPayment = false;
+      }
+   }
+
    void changePaymentInfo(PaymentInfo pi) {
       order.paymentInfo = pi;
    }

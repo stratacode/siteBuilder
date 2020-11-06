@@ -1,7 +1,7 @@
 <div>
    <%! SiteManager siteMgr; %>
 
-   <div class="formTitle">
+   <div class="pageTitle">
       Manage sites
    </div>
    <div id="findSiteView" class="findSiteView">
@@ -38,8 +38,14 @@
       </div>
       <div class="formFieldError"><%= siteMgr.site.propErrors.get("sitePathName") %></div>
       <div class="formField">
+         <label for="siteIconField">Site icon</label>
+         <input type="text" id="siteIconField" placeholder="Image URL for icon used for site's menu bar"
+                value=":= siteMgr.site.icon" changeEvent="=: siteMgr.updateIcon(value)"/>
+      </div>
+      <div class="formFieldError"><%= siteMgr.site.propErrors.get("icon") %></div>
+      <div class="formField">
          <label for="visibleCheckbox">Visible</label>
-         <input type="checkbox" id="visibleCheckbox" checked=":= siteMgr.site.visible"/>
+         <input type="checkbox" id="visibleCheckbox" checked=":= siteMgr.site.visible" changeEvent="=: siteMgr.updateVisible(checked)"/>
       </div>
 
       <div id="menuItemsView" class="subFormView">

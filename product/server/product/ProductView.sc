@@ -5,7 +5,7 @@ ProductView {
    // Here so we only run it once and sync the results
    pathName =: validateProductPath();
 
-   pageVisitCount =: validateInStock();
+   pageVisitCount =: validateView();
 
    @Sync(syncMode=SyncMode.Disabled)
    ProductInventory inventory := currentSku.inventory;
@@ -16,6 +16,12 @@ ProductView {
          return;
       validateProductPath();
       currencySymbol = storeView.store.defaultCurrency.symbol;
+   }
+
+   void validateView() {
+      optionsValid = false;
+      validateOptions();
+      validateInStock();
    }
 
    void validateProductPath() {
@@ -57,7 +63,10 @@ ProductView {
       // Note: numInCart here only should be set to > 0 when we are tracking inventory
       if (available) {
          if (!(currentSku instanceof PhysicalSku)) {
-            inStock = true;
+            if (currentSku == null)
+               inStock = false;
+            else
+               inStock = true;
             numInCart = 0;
          }
          else {
@@ -185,7 +194,7 @@ ProductView {
    }
 
    void validateOptions() {
-      if (optionsValid)
+      if (optionsValid || optionScheme == null)
          return;
       if (optionScheme != product.sku.optionScheme) {
          initOptions();
@@ -218,8 +227,10 @@ ProductView {
          }
 
          List<OptionValue> selectedOptions = getSelectedOptions();
-         if (product.sku.skuOptions != null)
+         if (product.sku.skuOptions != null) {
             currentSku = product.sku.getSkuForOptionsWith(selectedOptions, -1, null);
+            validateInStock();
+         }
          else
             System.err.println("*** No sku found for selected options in product: " + product);
       }

@@ -7,13 +7,17 @@ html, input, select {
   font-size: 95%;
 }
 
+input[type=button]:disabled, input[type=submit]:disabled {
+   background: #aaa;
+}
+
 input[type=button], input[type=submit] {
    border: solid 0px #0e75ff;
    padding-left: 8px;
    padding-right: 8px;
    padding-top: 3px;
    padding-bottom: 3px;
-   background: #0f6dec;
+   background: #296ecc;
    color: #f3f3f3;
    border-radius: 2px;
 }
@@ -24,7 +28,7 @@ input[type=file]::file-selector-button {
    padding-right: 8px;
    padding-top: 3px;
    padding-bottom: 3px;
-   background: #0f6dec;
+   background: #296ecc;
    color: #f3f3f3;
    border-radius: 2px;
 }
@@ -35,7 +39,7 @@ input[type=file]::-webkit-file-upload-button {
    padding-right: 8px;
    padding-top: 3px;
    padding-bottom: 3px;
-   background: #0f6dec;
+   background: #296ecc;
    color: #f3f3f3;
    border-radius: 2px;
 }
@@ -195,13 +199,19 @@ input[type=button]:hover {
    width: 75%;
 }
 
+.pageTitle {
+   font-size: 120%;
+   margin-top: 10px;
+   margin-bottom: 10px;
+}
+
 .formTitle {
    font-size: 110%;
    margin-top: 10px;
    margin-bottom: 5px;
 }
 
-.confirmButtons, .formTitle, .checkFormView, .skuOptionsSummary, .formError, .formStatus,
+.confirmButtons, .formTitle, .pageTitle, .checkFormView, .skuOptionsSummary, .formError, .formStatus,
 #addSkuButtons, .subFormTitle, .skuListTitle, .formMessage, #orderTypeForm, .formButtonRow, #userTypeForm {
    margin-left: 21%;
 }
@@ -232,6 +242,7 @@ input[type=button]:hover {
    margin-top: 10px;
    margin-bottom: 10px;
    /* padding: 5px; */
+   padding-bottom: 10px;
    display: flex;
    flex-direction: column;
    /* background: #fff; */
@@ -451,7 +462,7 @@ input[type=button]:hover {
    font-size: 85%;
 }
 
-.formStatus, .formMessage, .mediaEmptyTitle, .mgrViewStatus, .noViewsTitle, .menuItemsEmptyTitle, .addHomePageTitle {
+.leftFormStatus, .formStatus, .formMessage, .mediaEmptyTitle, .mgrViewStatus, .noViewsTitle, .menuItemsEmptyTitle, .addHomePageTitle {
    font-style: italic;
    font-size: 85%;
 }
@@ -644,4 +655,12 @@ input[type=button]:hover {
 
 .titleDetailLink {
    font-size: 85%;
+}
+
+.bannerBlock {
+   width: 700px;
+   height: 400px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
 }

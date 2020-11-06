@@ -20,6 +20,10 @@ abstract class BaseMenuItem {
 
    transient NavMenu parentMenu;
 
+   void setParentMenu(NavMenu parent) {
+      parentMenu = parent;
+   }
+
    void itemSelected() {
       if (enabled) {
          selectedCount++;
@@ -28,6 +32,7 @@ abstract class BaseMenuItem {
       }
    }
 
+   @Bindable(manual=true)
    List<BaseMenuItem> getMenuItems() {
       return null;
    }
@@ -40,5 +45,7 @@ abstract class BaseMenuItem {
 
    @Bindable(manual=true)
    abstract String getDetailString();
+
+   void markChanged() {}
 
 }

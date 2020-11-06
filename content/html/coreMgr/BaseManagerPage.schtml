@@ -12,6 +12,8 @@
 
       String managerPage = "";
 
+      @QueryParam(name="createSite")
+      boolean showCreateView :=: siteMgr.showCreateView;
    %>
 
    <head exec="server">

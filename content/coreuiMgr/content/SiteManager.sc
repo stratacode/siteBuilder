@@ -158,9 +158,15 @@ class SiteManager {
    boolean isSiteAdmin(UserProfile profile) {
       if (profile == null)
          return false;
-      return site.siteAdmins != null && site.siteAdmins.contains(profile);
+      return site.isSiteAdmin(profile);
    }
 
    void pageVisited() {
    }
+
+   void updateIcon(String val) {
+      site.icon = val;
+      site.validateProp("icon");
+   }
+
 }

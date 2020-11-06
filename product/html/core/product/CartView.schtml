@@ -109,6 +109,9 @@
                     defaultCountry=":= store.defaultCountry"
                     countryNames=":= store.countryNames"
                     addressName="Billing address"/>
+               <input type="button" id="cancelNewPayment" value="Cancel new payment info"
+                       visible=":= userView.user.paymentInfo != null"
+                      class="submitSubForm" clickEvent="=: orderView.cancelNewPaymentInfo()"/>
                <div id="alt">
                   <div class="viewTitle">Use payment info: </div>
                   <div id="paymentInfoView" class="paymentInfoView" repeat=":= userView.user.paymentInfos" repeatVarName="paymentInfo" class="rowStatusBox">

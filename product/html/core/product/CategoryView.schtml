@@ -14,14 +14,13 @@
          <div id="categoryNameView" class="categoryNameView"><%= category.name %></div>
          <div id="categoryDesc" class="categoryDesc"><%= category.longDesc %></div>
          <div id="categoryViewImage" class="categoryViewImage" visible=":= currentMedia != null">
-            <img class="viewImage" id="categoryImage" src=":= currentMedia.url" srcset=":= currentMedia.srcSet"
-                 style=':= "width: " + currentMedia.manager.displaySize + "px"'/>
+            <img class="viewImage" id="categoryImage" src=":= currentMedia.url" srcset=":= currentMedia.srcSet"/>
          </div>
       </div>
       <div id="subCategoriesView" class="subCategoriesView" visible=":= category.subCategories != null && category.subCategories.size() > 0">
          <div id="subCategoryView" repeat=":= category.subCategories" repeatVarName="subCategory" class="thumbView">
             <a href=':= subCategory.pageUrl' class="thumbNavLink">
-               <img class="thumbImage" src=":= subCategory.mainMedia.thumbUrl"/>
+               <div class="thumImageBox"><img class="thumbImage" src=":= subCategory.mainMedia.thumbUrl"/></div>
                <span><%= subCategory.name %></span>
                <span><%= subCategory.shortDesc %></span>
             </a>
@@ -30,7 +29,7 @@
       <div id="productsView" class="productsView" visible=":= category.allProducts != null && category.allProducts.size() > 0">
          <div id="productView" repeat=":= category.allProducts" repeatVarName="product" class="thumbView">
             <a href=':= product.pageUrl' class="thumbNavLink">
-               <img class="thumbImage" src=":= product.mainMedia.thumbUrl"/>
+               <div class="thumbImageBox"><img class="thumbImage" src=":= product.mainMedia.thumbUrl"/></div>
                <span><%= product.name %></span>
                <span><%= product.shortDesc %></span>
             </a>

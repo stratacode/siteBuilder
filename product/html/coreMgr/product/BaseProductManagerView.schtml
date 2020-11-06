@@ -72,9 +72,10 @@
             <input type="checkbox" id="inventoryCheckbox" checked=":= psku.inventory != null" changeEvent="=: updateManageInventory(checked)"/>
             <label for="inventoryCheckbox">Manage inventory?</label>
          </div>
-         <div id="inventoryView" visible=":= psku.inventory != null" class="formField">
+         <div id="inventoryView" visible=":= psku.inventory != null" class="formField" visible=":= psku.skuOptions == null">
             <label for="quantityField">Quantity</label>
             <input type="number" min="0" id="quantityField" value=":= String.valueOf(psku.inventory.quantity)" changeEvent="=: psku.inventory.updateQuantityStr(value)"/>
+            <div id="alt" class="formStatus">See sku options for inventory</div>
          </div>
          <div id="nextAvailView" class="formField" visible=":= psku.inventory != null">
             <label for="nextAvailField">Next available</label>

@@ -12,8 +12,9 @@ class PageNavMenu extends NavMenu {
 
    object homeItem extends NavMenuItem {
       name := siteContext == null ? "StrataCode site builder" : siteContext.siteName;
-      icon := siteContext == null ? "/icons/layeredLogo28.png" : siteContext.icon;
+      icon := siteContext == null ? "/icons/layeredLogo48.png" : siteContext.icon;
       url := siteContext == null ? "/" :  "/" + siteContext.sitePathTypeName + "/" + siteContext.sitePathName;
+      orderValue = 0;
    }
 
    void validateSiteView() {
@@ -35,7 +36,7 @@ class PageNavMenu extends NavMenu {
       for (int i = 0; i < res.size(); i++) {
          BaseMenuItem elem = res.get(i);
          elem.listPos = i;
-         elem.parentMenu = this;
+         elem.setParentMenu(this);
       }
       res.sort(new java.util.Comparator<BaseMenuItem>() {
          public int compare(BaseMenuItem lhs, BaseMenuItem rhs) {
@@ -55,7 +56,7 @@ class PageNavMenu extends NavMenu {
    boolean loggedIn := currentUserView.loginStatus == LoginStatus.LoggedIn;
    object profileMenu extends NavMenu {
       name := loggedIn ? currentUserView.user.userName : "login";
-      icon := loggedIn ? "/icons/user-minus20-grey.svg" : "/icons/user-plus20-grey.svg";
+      icon := loggedIn ? "/icons/user-minus20.svg" : "/icons/user-plus20.svg";
 
       object loginMenuItem extends NavMenuItem {
          name = "Login";
@@ -82,5 +83,15 @@ class PageNavMenu extends NavMenu {
          //url = "/logout";
       }
 
+      orderValue = 8;
    }
+
+   object manageItem extends NavMenuItem {
+      //visible := currentUserView.user.siteAdmin;
+      visible := siteContext != null && siteContext.isSiteAdmin(currentUserView.user);
+      icon := "/icons/settings.svg";
+      url := "/manage/site" + (siteContext == null ? "" : "/" + siteContext.sitePathName);
+      orderValue = 11;
+   }
+
 }

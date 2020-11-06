@@ -9,6 +9,7 @@ class NavMenu extends BaseMenuItem {
       subMenuVisible = !subMenuVisible;
    }
 
+   @Bindable(manual=true)
    List<BaseMenuItem> getMenuItems() {
       Object[] arr = DynUtil.getObjChildren(this, null, true);
       if (arr == null)
@@ -37,5 +38,9 @@ class NavMenu extends BaseMenuItem {
    String getDetailString() {
       return "nav menu " + (name == null || name.length() == 0 ? "..." : name) +
                        (url != null && url.length() > 0 ? " to: " + url : "");
+   }
+
+   void markChanged() {
+      Bind.sendChangedEvent(this, "menuItems");
    }
 }

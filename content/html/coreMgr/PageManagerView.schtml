@@ -9,7 +9,7 @@
          pagePathName :=: PageManagerView.this.pagePathName;
       }
    %>
-   <div class="formTitle">
+   <div class="pageTitle">
       Manage pages
    </div>
    <div id="findPageView" class="findPageView" visible=":= !pageMgr.addInProgress">

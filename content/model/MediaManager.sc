@@ -14,7 +14,7 @@ class MediaManager {
    int maxDisplaySize = 640;
    int thumbSize = 100;
    int zoomSize = 2048;
-   int[] stdImageWidths = {100, 320, 640, 1024, 2048};
+   int[] stdImageWidths = {100, 320, 512, 640, 768, 1024, 2048};
 
    String getOrigFileName(String fileName, String revision, String ext) {
       return fileName + (revision == null ? "" : RevisionSep + revision) + "." + ext;

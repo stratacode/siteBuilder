@@ -1,5 +1,16 @@
 SiteManager {
+   showCreateView =: updateCreateView();
+
    pathName =: validatePathName();
+
+   void updateCreateView() {
+      if (showCreateView) {
+         validSite = false;
+         lastSite = site;
+      }
+      else if (site != null)
+         validSite = true;
+   }
 
    void start() {
       if (userView.loginStatus == LoginStatus.NotLoggedIn) {
@@ -40,7 +51,7 @@ SiteManager {
 
    void changeSiteWithIndex(int ix) {
       ix = ix - 1; // Skip the select title
-      if (siteList == null || siteList.size() <= ix)
+      if (siteList == null || siteList.size() <= ix || ix < 0)
          errorMessage = "Invalid site selection";
       else
          changeSite(siteList.get(ix));
@@ -53,7 +64,10 @@ SiteManager {
             validSite = false;
          }
          else {
-            validSite = true;
+            if (showCreateView)
+               validSite = false;
+            else
+               validSite = true;
             site = newSite;
             pathName = newSite.sitePathName;
 
@@ -214,7 +228,15 @@ SiteManager {
    void saveMenuItems() {
       // Need to call the setX method here to trigger the DB to save the value because we changed properties inside
       // the object.
-      site.menuItems = site.menuItems;
+      List<BaseMenuItem> menuItems = site.menuItems;
+      site.menuItems = menuItems;
+      // Need to mark the menuItems list changed so that menus will refer
+      Bind.sendEvent(sc.bind.IListener.VALUE_CHANGED, menuItems, null);
+      if (menuItems != null) {
+         for (BaseMenuItem menuItem:menuItems) {
+            menuItem.markChanged();
+         }
+      }
    }
 
    void navMenuItemChanged() {
@@ -265,5 +287,14 @@ SiteManager {
          refreshSiteForUser();
       //else TODO - do we need this?
       //   changeSite(null);
+   }
+
+   void updateVisible(boolean visible) {
+      site.visible = visible;
+   }
+
+   void updateIcon(String icon) {
+      site.icon = icon;
+      site.validateProp("icon");
    }
 }

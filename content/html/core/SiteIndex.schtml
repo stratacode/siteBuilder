@@ -24,13 +24,12 @@
    <body>
       <div id="appFrame" class="appFrame" clickEvent="=: navbar.navMenu.hideSubMenus()">
          <div id="navbar" extends="NavView"/>
-         <div id="welcomeBar">
+         <div id="welcomeBar" class="welcomeSiteIndex">
             <div id="welcomeRegistered" visible=":= currentUserView.loginStatus == LoginStatus.LoggedIn" class="welcomeDetail">
                <select id="manageSiteSelect" optionDataSource=":= currentUserView.user.siteList" selectedIndex="0"/>
                <input id="manageSiteButton" type="button" value="Manage site" clickEvent="=: Window.window.location.href = getManageSiteURL(currentUserView.user.siteList.get(manageSiteSelect.selectedIndex))"/>
 
-               <input id="createSiteButton" type="button" value="Create new site" clickEvent='=: Window.window.location.href = "/manage/site"'/>
-
+               <input id="createSiteButton" type="button" value="Create new site" clickEvent='=: Window.window.location.href = "/manage/site?createSite=true"'/>
             </div>
             <div id="welcomeNotRegistered" class="welcomeDetail" visible=":= currentUserView.loginStatus != LoginStatus.LoggedIn && !navbar.navMenu.loginVisible">
                <input id="startLoginButton" type="button" value="Login" clickEvent="=: navbar.navMenu.loginVisible = true"/>
@@ -44,13 +43,29 @@
                <%!
                    LoginStatus status := currentUserView.loginStatus;
                    status =: invalidateBody();
+
+                   boolean mySitesOnly = false;
+                   mySitesOnly =: siteIndexView.invalidateBody();
                %>
 
-               <div class="centeredFormTitle">All sites index</div>
+               <div class="centeredForm">
+                  <span class="pageTitle">Site index</span>
+                  <span id="siteOption" visible=":= currentUserView.loginStatus == LoginStatus.LoggedIn">
+                     <input id="mySitesOption" name="mySitesRadio" type="radio" checked=":= mySitesOnly"
+                            changeEvent="=: mySitesOnly = true">My sites
+                     <input id="allSitesOption" name="mySitesRadio" type="radio" checked=":= !mySitesOnly"
+                            changeEvent="=: mySitesOnly = false">All sites
+                  </span>
+               </div>
                <%
                List<SiteContext> allSites = (List<SiteContext>) SiteContext.getDBTypeDescriptor().findAll(Arrays.asList("-lastModified"), 0, 20);
                for (int i = 0 ; i < allSites.size(); i++) {
                   SiteContext site = allSites.get(i);
+                  if (!site.visible)
+                     continue;
+                  if (mySitesOnly &&
+                      (currentUserView.user.siteList == null || !currentUserView.user.siteList.contains(site)))
+                     continue;
                   %>
                      <div class="siteBox">
                         <div class="siteTypeName"> <%= site.siteTypeName %> <a visible="= isManageable(site)" href='= "/manage/site/" + site.sitePathName'><img src="/icons/settings.svg"/></a></div>

@@ -9,7 +9,7 @@
       }
       UserProfile currentUser := userMgr.currentUser;
    %>
-   <div class="formTitle">
+   <div class="pageTitle">
       Manage users
    </div>
    <div id="findUserView" class="findUserView">

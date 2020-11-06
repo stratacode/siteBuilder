@@ -1,7 +1,7 @@
 .categoryNavView {
-   margin-top: 25px;
-   margin-left: 15px;
-   margin-bottom: 25px;
+   margin-top: 10px;
+   margin-left: 5px;
+   margin-bottom: 5px;
 }
 
 .cartTitle {
@@ -80,8 +80,8 @@
 }
 
 .productDetailView {
-   margin-top: 25px;
-   margin-left: 25px;
+   margin-top: 5px;
+   margin-left: 5px;
    display: flex;
    flex-direction: row;
 }
@@ -98,8 +98,42 @@
 }
 */
 
-.thumbImage {
+.thumbImage, .productViewImage {
   width: fit-content;
+  height: fit-content;
+}
+
+.thumbImageBox {
+   height: 100px;
+   display: flex;
+   align-items: center;
+}
+
+@media (min-width: 900px) {
+   .productViewImageBox {
+      width: 640px;
+      height: 640px;
+   }
+
+   .viewImage {
+      width: 640px;
+   }
+}
+
+@media (max-width: 900px) {
+   .productViewImageBox {
+      width: 320px;
+      height: 320px;
+   }
+
+   .viewImage {
+      width: 320px;
+   }
+}
+
+.productViewImageBox {
+   display: flex;
+   align-items: center;
 }
 
 .thumbNailsView {
@@ -109,6 +143,8 @@
 
 .thumbView {
    cursor: pointer;
+   display: flex;
+   align-items: center;
 }
 
 .thumbViewSelected {
@@ -144,7 +180,7 @@
    display: flex;
 }
 
-.optionView, .longDesc, .skuCode, .priceView, .productNameView, .categoryNameView {
+.optionView, .longDesc, .skuCode, .priceView, .productNameView, .categoryNameView, .addToCartForm {
    padding: 10px;
 }
 

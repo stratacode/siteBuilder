@@ -25,7 +25,7 @@ body {
    position: absolute;
    z-index: 5;
    padding: 3px;
-   background-color: #04333F
+   background-color: #a0bad4;
 }
 
 .subMenuItem {
@@ -42,19 +42,22 @@ body {
 }
 
 .menuItemLink, .subMenuLink {
-   border-bottom: 3px solid #04333F;
+   /* border-bottom: 3px solid #a0bad4; */
 }
 
 .menuItemLink:hover, .subMenuLink:hover {
-   border-bottom: 3px solid #e8b575fa;
+   color: #000;
+   /* border-bottom: 3px solid #333; */
 }
 
 .subMenuItemLink {
-   border-left: 3px solid #04333F;
+   /* border-left: 3px solid #a0bad4;  */
+   color: #000;
 }
 
 .subMenuItemLink:hover {
-   border-left: 3px solid #e8b575fa;
+   color: #000;
+   /* border-left: 3px solid #333; */
 }
 
 #navbar a.active {
@@ -63,37 +66,42 @@ body {
 }
 
 .subMenuLink img, .menuItemLink img {
-   padding-right: 4px;
+   padding-right: 6px;
 }
 
 #navbar {
    display: flex;
    justify-content: center;
-   padding-bottom: 5px;
-   padding-top: 5px;
-   background-color: #04333F;
+   padding-bottom: 7px;
+   padding-top: 7px;
+   /* background-color: #04333F;*/
+    background-color: #a0bad4;
    width: 100%;
 }
 
 #footer {
    min-height: 32px;
-   background-color: #04333F;
+   background-color: #a0bad4;
    margin-top: 10px;
    width: 100%;
 }
 
 #navbar a {
-   color: #dcdcdc;
+   /* color: #dcdcdc; */
+    color: #333;
    font-size: 110%;
+   height: 28px;
+   display: flex;
+   align-items: center;
 }
+
 
 #pageBody {
    width: 100%;
    display: flex;
    align-items: center;
-   justify-content: space-around;
-   padding-bottom: 5px;
-   padding-top: 5px;
+   justify-content: center;
+   flex-direction: column;
 }
 
 .profileView {
@@ -151,7 +159,7 @@ body {
    width: 78%;
 }
 
-.formTitle, .centeredFormTitle {
+.formTitle {
    font-size: 110%;
    margin-top: 5px;
    margin-bottom: 5px;
@@ -161,11 +169,11 @@ body {
    margin-left: 21%;
 }
 
-.centeredFormTitle {
+.centeredForm {
    margin: auto;
 }
 
-.formStatus {
+.formStatus, .leftFormStatus {
    font-size: 85%;
    font-style: italic;
 }
@@ -202,15 +210,15 @@ body {
 }
 
 .leftSlideArrow {
-   position: absolute;
-   top: 50%;
-   left: 10%;
+   position: relative;
+   top: -340px;
+   left: -100px;
 }
 
 .rightSlideArrow {
-   position: absolute;
-   top: 50%;
-   right: 20%;
+   position: relative;
+   top: -340px;
+   left: 800px;
 }
 
 .centerSlideButtons {
@@ -320,6 +328,10 @@ body {
    color: #333;
 }
 
+.siteNavBox img {
+   padding-right: 4px;
+}
+
 .siteTypeName, .siteLinkType {
    font-size: 75%;
    background: #ccc;
@@ -353,7 +365,7 @@ body {
    flex-wrap: wrap;
 }
 
-#welcomeBar {
+.welcomeSiteIndex {
    margin-top: 10px;
    margin-bottom: 10px;
 }
@@ -366,13 +378,17 @@ body {
    margin-top: 5px;
 }
 
+input[type=button]:disabled, input[type=submit]:disabled {
+   background: #aaa;
+}
+
 input[type=button], input[type=submit] {
    border: solid 0px #0e75ff;
    padding-left: 8px;
    padding-right: 8px;
    padding-top: 3px;
    padding-bottom: 3px;
-   background: #0f6dec;
+   background: #296ecc;
    color: #f3f3f3;
    border-radius: 2px;
 }
@@ -383,7 +399,7 @@ input[type=file]::file-selector-button {
    padding-right: 8px;
    padding-top: 3px;
    padding-bottom: 3px;
-   background: #0f6dec;
+   background: #296ecc;
    color: #f3f3f3;
    border-radius: 2px;
 }
@@ -394,7 +410,7 @@ input[type=file]::-webkit-file-upload-button {
    padding-right: 8px;
    padding-top: 3px;
    padding-bottom: 3px;
-   background: #0f6dec;
+   background: #296ecc;
    color: #f3f3f3;
    border-radius: 2px;
 }
@@ -403,3 +419,27 @@ input[type=button]:hover {
    color: #fff;
 }
 
+.bannerBlock {
+   width: 700px;
+   height: 600px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   margin: auto;
+}
+
+.headlineBlock {
+   width: 100%;
+   height: 40px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   background: #69b97F;
+}
+
+.contentView {
+   align-self: stretch;
+}
+
+.slideshowView {
+}

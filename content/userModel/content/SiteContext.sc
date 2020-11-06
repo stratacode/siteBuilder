@@ -61,5 +61,13 @@ class SiteContext implements IPropValidator {
       return ManagedResource.validatePathName("site path name", sitePathName);
    }
 
+   static String validateIcon(String url) {
+      return ManagedResource.validateURL(url, "site icon URL", false);
+   }
+
    String homeUrl := "/" + sitePathTypeName + "/" + sitePathName;
+
+   boolean isSiteAdmin(UserProfile profile) {
+      return siteAdmins != null && siteAdmins.contains(profile);
+   }
 }

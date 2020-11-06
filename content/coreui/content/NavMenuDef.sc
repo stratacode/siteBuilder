@@ -4,8 +4,16 @@ class NavMenuDef extends NavMenu {
 
    subMenuItems =: Bind.sendChangedEvent(this, "detailString");
 
+   @Bindable(manual=true)
    public List<BaseMenuItem> getMenuItems() {
       return subMenuItems;
+   }
+
+   void setParentMenu(NavMenu parent) {
+      if (subMenuItems != null) {
+         for (BaseMenuItem baseMenu:subMenuItems)
+            baseMenu.setParentMenu(this);
+      }
    }
 
    @Bindable(manual=true)
@@ -26,6 +34,4 @@ class NavMenuDef extends NavMenu {
       }
       return sb.toString();
    }
-
-
 }

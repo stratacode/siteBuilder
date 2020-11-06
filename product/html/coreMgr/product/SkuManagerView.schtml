@@ -1,5 +1,5 @@
 <div extends="BaseProductManagerView">
-   <div class="formTitle">
+   <div class="pageTitle">
       Manage skus
    </div>
    <div id="findSkusView" visible=":= !addSkuInProgress">

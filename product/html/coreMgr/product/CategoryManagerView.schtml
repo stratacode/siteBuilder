@@ -1,5 +1,5 @@
 <div extends="CategoryManager">
-   <div class="formTitle">
+   <div class="pageTitle">
       Manage categories
    </div>
    <div id="findCategoriesView">

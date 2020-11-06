@@ -1,5 +1,5 @@
 <div extends="OrderManager">
-   <div class="formTitle">
+   <div class="pageTitle">
       Manage orders
    </div>
    <div id="findOrdersView">
