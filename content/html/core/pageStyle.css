@@ -141,6 +141,26 @@ body {
    align-items: center;
 }
 
+.searchField {
+   width: 500px;
+   margin: auto;
+   padding-top: 10px;
+   padding-bottom: 5px;
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: center;
+}
+
+.searchField > label {
+   font-size: 85%;
+   padding-right: 5px;
+}
+
+.searchField > input {
+   margin-right: 5px;
+}
+
 .formField > label {
    text-align: right;
    width: 20%;
@@ -277,30 +297,37 @@ body {
 }
 
 .siteContents {
-   border-left: solid 3px #ccc;
-   border-right: solid 3px #ccc;
-   border-top: solid 3px #ccc;
-   border-bottom: solid 3px #ccc;
+   border-left: solid 1px #ccc;
+   border-right: solid 1px #ccc;
+   border-top: solid 1px #ccc;
+   border-bottom: solid 1px #ccc;
    padding: 2px;
    background: #fff;
 }
 
 .siteLinkView {
-   border-left: solid 3px #ccc;
-   border-right: solid 3px #ccc;
-   border-top: solid 3px #ccc;
-   border-bottom: solid 3px #ccc;
-   padding: 4px;
+   padding: 15px;
    background: #fff;
-}
-
-.siteLinkView {
-   width: 200px;
-   height: 120px;
    display: flex;
    flex-direction: column;
-   align-items: center;
+   align-items: left;
    justify-content: center;
+   width: 120px;
+   height: 130px;
+}
+
+.searchResultView {
+   padding: 4px;
+   background: #fff;
+   display: flex;
+   flex-direction: column;
+   align-items: baseline;
+   justify-content: center;
+   width: 220px;
+}
+
+.smallViewImage {
+   width: 200px;
 }
 
 .siteLinkView img {
@@ -310,6 +337,8 @@ body {
 .siteBox {
    margin-top: 5px;
    margin-bottom: 5px;
+   margin-left: 10px;
+   margin-right: 10px;
 }
 
 .siteNavBox {
@@ -332,7 +361,7 @@ body {
    padding-right: 4px;
 }
 
-.siteTypeName, .siteLinkType {
+.siteTypeName {
    font-size: 75%;
    background: #ccc;
    width: 72px;
@@ -342,6 +371,29 @@ body {
    padding-right: 5px;
    display: flex;
    justify-content: space-between;
+}
+
+.siteLinkType {
+   font-size: 75%;
+   font-style: italic;
+   padding-top: 3px;
+   padding-bottom: 0px;
+   padding-right: 5px;
+   display: flex;
+   margin-left: 10px;
+}
+
+.siteLinkTitle {
+   margin-left: 10px;
+}
+
+.siteLinkType img {
+   padding-left: 5px;
+}
+
+.searchResultType {
+   font-size: 75%;
+   font-style: italic;
 }
 
 .siteLinkBox {
@@ -365,6 +417,13 @@ body {
    flex-wrap: wrap;
 }
 
+#searchResultsPanel {
+   max-width: 700px;
+   margin: auto;
+   display: flex;
+   flex-wrap: wrap;
+}
+
 .welcomeSiteIndex {
    margin-top: 10px;
    margin-bottom: 10px;
@@ -375,7 +434,6 @@ body {
 }
 
 .welcomeDetail {
-   margin-top: 5px;
 }
 
 input[type=button]:disabled, input[type=submit]:disabled {
@@ -443,3 +501,46 @@ input[type=button]:hover {
 
 .slideshowView {
 }
+
+#searchPanel {
+   width: 100%;
+   border-bottom: solid 1px #ccc;
+   padding-bottom: 5px;
+}
+
+#searchTextField {
+   width: 350px;
+}
+
+.searchResultThumbView {
+   height: 200px;
+   display: flex;
+   align-items: flex-end;
+   padding-bottom: 2px;
+}
+
+.searchResultView a {
+   text-decoration: none;
+   color: #333;
+}
+
+.searchResultDesc {
+   font-size: 85%;
+}
+
+.pageTitle {
+   font-size: 120%;
+   margin-top: 10px;
+   margin-bottom: 10px;
+}
+
+.siteLinkThumb {
+   height: 100px;
+   display: flex;
+}
+
+.siteLinkThumb img {
+   width: fit-content;
+   height: fit-content;
+}
+

@@ -1,4 +1,9 @@
+import java.util.Arrays;
+import java.util.Collections;
+
 SiteView {
+   static List<ISearchProvider> searchProviders = new ArrayList<ISearchProvider>(Arrays.asList(new PageSearchProvider()));
+
    pathName =: validateSite();
 
    void start() {
@@ -34,4 +39,28 @@ SiteView {
       return new PageView(this, pageDefs.get(0), pathName);
    }
       */
+
+   static List<SearchResult> doSearch(SiteView siteView, String searchText, int startIx, int maxNum) {
+      List<SearchResult> newRes = null;
+
+      SiteContext siteContext = siteView == null ? null : siteView.siteContext;
+
+      for (ISearchProvider sp:searchProviders) {
+         List<SearchResult> next = sp.doSearch(searchText, siteContext, startIx, maxNum);
+         if (next != null && next.size() > 0) {
+            if (newRes == null)
+               newRes = next;
+            else {
+               ArrayList<SearchResult> merged = new ArrayList<SearchResult>(newRes.size() + next.size());
+               merged.addAll(newRes);
+               merged.addAll(next);
+               newRes = merged;
+            }
+         }
+      }
+      if (newRes != null) {
+         Collections.sort(newRes);
+      }
+      return newRes;
+   }
 }

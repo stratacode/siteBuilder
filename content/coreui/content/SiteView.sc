@@ -15,4 +15,7 @@ class SiteView {
    String pathName;
 
    int pageVisitCount = 0;
+
+   @Sync
+   List<SearchResult> searchResults;
 }

@@ -3,10 +3,12 @@
    @sc.js.JSSettings(dependentTypes="sc.content.SiteView,sc.user.currentUserView,sc.content.SlideshowView,sc.content.ContentView")
    @sc.obj.SyncTypeFilter(typeNames={"sc.content.SiteView", "sc.user.currentUserView", "sc.content.SlideshowView", "sc.content.ContentView"})
 %>
-<html abstract="true" extends="EditablePage" pageVisitCount="=: siteView.pageVisited()">
+<html abstract="true" extends="EditablePage" pageVisitCount="=: siteView == null ? null : siteView.pageVisited()">
    <%!
       String sitePathName;
+      // This is optional - when it's null the page is a general site-wide page like the SiteIndex
       SiteView siteView;
+
    %>
    <head exec="server">
       <link id="contentStyle" rel="stylesheet" href="/pageStyle.css" type="text/css"/>
@@ -14,6 +16,50 @@
    <body>
       <div id="appFrame" class="appFrame" clickEvent="=: navbar.navMenu.hideSubMenus()">
          <div id="navbar" extends="NavView" siteView=":= PageLayout.this.siteView"/>
+         <div id="searchPanel" visible=":= navbar.navMenu.searchVisible">
+            <%!
+               boolean searchVisible :=: navbar.navMenu.searchVisible;
+
+               List<SearchResult> searchResults;
+               int searchStartIx = 0;
+               int searchMaxNum = 20;
+
+               String resultsMessage = "";
+
+               void doSearch(String value) {
+                  searchResults = siteView.doSearch(siteView, value, searchStartIx, searchMaxNum);
+                  if (searchResults == null || searchResults.size() == 0)
+                     resultsMessage = "No results found for search";
+                  else
+                     resultsMessage = null;
+               }
+
+               void clearSearch() {
+                  searchResults = null;
+                  resultsMessage = null;
+                  searchVisible = false;
+               }
+            %>
+            <div class="searchField">
+               <label for="searchTextField">Search</label>
+               <input type="text" id="searchTextField" changeEvent="=: doSearch(value)"/>
+               <img src="/icons/search.svg" clickEvent="=: doSearch(searchTextField.value)"/>
+               <img src="/icons/x-square.svg" clickEvent="=: navbar.navMenu.searchVisible = false"/>
+            </div>
+            <div id="searchResultsPanel">
+               <div class="searchResultsMessage"><%= resultsMessage %></div>
+               <div id="searchResultView" class="searchResultView" repeat=":= searchResults" repeatVarName="searchResult">
+                  <a href=":= searchResult.url" class="searchResultInfo">
+                     <div id="searchResultThumbView" class="searchResultThumbView">
+                        <img class="smallViewImage" src=":= searchResult.imageUrl" srcset=":= searchResult.imageSrcSet"/>
+                     </div>
+                     <div id="searchResultName" class="searchResultName"><%= searchResult.name %></div>
+                     <div id="searchResultDesc" class="searchResultDesc"><%= searchResult.shortDesc %></div>
+                     <div class="searchResultType"><%= searchResult.resultTypeName %></div>
+                  </a>
+               </div>
+            </div>
+         </div>
          <div id="welcomeBar"/>
          <div id="loginPanel" class="loginPanel"/>
          <div id="pageBody"/>

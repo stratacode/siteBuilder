@@ -14,7 +14,7 @@ class MediaManager {
    int maxDisplaySize = 640;
    int thumbSize = 100;
    int zoomSize = 2048;
-   int[] stdImageWidths = {100, 320, 512, 640, 768, 1024, 2048};
+   int[] stdImageWidths = {100, 200, 320, 512, 640, 768, 1024, 2048};
 
    String getOrigFileName(String fileName, String revision, String ext) {
       return fileName + (revision == null ? "" : RevisionSep + revision) + "." + ext;
@@ -44,6 +44,22 @@ class MediaManager {
          sb.append(" ");
          sb.append(width);
          sb.append("w");
+      }
+      return sb.toString();
+   }
+
+   String getSrcSetForSize(String fileName, String revision, String ext, int size) {
+      StringBuilder sb = new StringBuilder();
+      for (int i = 0; i < stdImageWidths.length; i++) {
+         int width = stdImageWidths[i];
+         if (sb.length() != 0)
+            sb.append(",");
+         sb.append(getUrl(fileName, revision, ext, width));
+         sb.append(" ");
+         sb.append(width);
+         sb.append("w");
+         if (width >= size)
+            break;
       }
       return sb.toString();
    }

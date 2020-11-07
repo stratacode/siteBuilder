@@ -84,16 +84,16 @@
                                  String pageTypePath = page.pageTypePathName;
                                  %>
                                  <div class="siteLinkBox">
-                                    <div class="siteLinkType">Page
-                                       <a visible="= isManageable(site)" href='= "/manage/page/" + site.sitePathName + "/" + page.pagePathName'>
-                                          <img src="/icons/settings.svg"/>
-                                       </a>
-                                    </div>
                                     <div class="siteLinkView">
                                        <a href=':= page.pageUrl'>
-                                          <img src="/icons/file-text40.svg"/>
+                                          <div class="siteLinkThumb"><img src="/icons/file-text40.svg"/></div>
                                           <div class="siteLinkTitle"><%= page.pageName + (page.homePage ? " (home)" : "") %> </div>
                                        </a>
+                                       <div class="siteLinkType">Page
+                                          <a visible="= isManageable(site)" href='= "/manage/page/" + site.sitePathName + "/" + page.pagePathName'>
+                                             <img src="/icons/settings.svg"/>
+                                          </a>
+                                       </div>
                                     </div>
                                  </div>
                                  <%

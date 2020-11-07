@@ -10,6 +10,8 @@ class PageNavMenu extends NavMenu {
 
    boolean loginVisible = false;
 
+   boolean searchVisible = false;
+
    object homeItem extends NavMenuItem {
       name := siteContext == null ? "StrataCode site builder" : siteContext.siteName;
       icon := siteContext == null ? "/icons/layeredLogo48.png" : siteContext.icon;
@@ -51,6 +53,12 @@ class PageNavMenu extends NavMenu {
          }
       });
       return res;
+   }
+
+   object searchMenuItem extends NavMenuItem {
+      name = "";
+      icon = "/icons/search.svg";
+      selectedCount =: searchVisible = true;
    }
 
    boolean loggedIn := currentUserView.loginStatus == LoginStatus.LoggedIn;

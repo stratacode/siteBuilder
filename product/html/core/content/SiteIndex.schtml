@@ -22,14 +22,14 @@
                seenPaths.add(category.pathName);
                %>
                   <div class="siteLinkBox">
-                     <div class="siteLinkType">Category <a visible="= isManageable(category.store)" href="= getCategoryManagerURL(category)"><img src="/icons/settings.svg"/></a></div>
                      <div class="siteLinkView">
                         <a href=':= category.pageUrl'>
                            <% if (category.mainMedia != null) { %>
-                              <img src="= category.mainMedia.thumbUrl"/>
+                              <div class="siteLinkThumb"><img src="= category.mainMedia.thumbUrl"/></div>
                            <% } %>
                            <div class="siteLinkTitle"><%= category.name %> </div>
                         </a>
+                        <div class="siteLinkType">Category <a visible="= isManageable(category.store)" href="= getCategoryManagerURL(category)"><img src="/icons/settings.svg"/></a></div>
                      </div>
                   </div>
                <%
@@ -43,14 +43,14 @@
                seenPaths.add(product.pathName);
                %>
                   <div class="siteLinkBox">
-                        <div class="siteLinkType">Product <a visible="= isManageable(product.store)" href="= getProductManagerURL(product)"><img src="/icons/settings.svg"/></a></div>
                         <div class="siteLinkView">
                            <a href=':= product.pageUrl'>
                               <% if (product.mainMedia != null) { %>
-                                 <img src="= product.mainMedia.thumbUrl"/>
+                                 <div class="siteLinkThumb"><img src="= product.mainMedia.thumbUrl"/></div>
                               <% } %>
                               <div class="siteLinkTitle"><%= product.name %> </div>
                            </a>
+                           <div class="siteLinkType">Product <a visible="= isManageable(product.store)" href="= getProductManagerURL(product)"><img src="/icons/settings.svg"/></a></div>
                         </div>
                   </div>
                <%

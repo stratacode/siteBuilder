@@ -25,6 +25,10 @@ class ManagedMedia extends ManagedResource {
       return manager.getDisplaySrcSet(fileName, revision, suffix, width);
    }
 
+   String getSrcSetForSize(int width) {
+      return manager.getSrcSetForSize(fileName, revision, suffix, width);
+   }
+
    String captionText;
    String altText;
 
@@ -33,7 +37,12 @@ class ManagedMedia extends ManagedResource {
    String getThumbUrl() {
       return manager.getThumbUrl(fileName, revision, suffix);
    }
+
    String zoomedUrl;
+
+   String getUrlForSize(int size) {
+      return manager.getUrl(fileName, revision, suffix, size);
+   }
 
    int width, height;
    long fileSize;
