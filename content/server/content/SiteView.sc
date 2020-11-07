@@ -40,27 +40,14 @@ SiteView {
    }
       */
 
-   static List<SearchResult> doSearch(SiteView siteView, String searchText, int startIx, int maxNum) {
-      List<SearchResult> newRes = null;
-
+   static SearchResult doSearch(SiteView siteView, String searchText, int startIx, int maxNum) {
       SiteContext siteContext = siteView == null ? null : siteView.siteContext;
 
+      SearchResult res = new SearchResult();
+
       for (ISearchProvider sp:searchProviders) {
-         List<SearchResult> next = sp.doSearch(searchText, siteContext, startIx, maxNum);
-         if (next != null && next.size() > 0) {
-            if (newRes == null)
-               newRes = next;
-            else {
-               ArrayList<SearchResult> merged = new ArrayList<SearchResult>(newRes.size() + next.size());
-               merged.addAll(newRes);
-               merged.addAll(next);
-               newRes = merged;
-            }
-         }
+         sp.addToSearch(res, searchText, siteContext, startIx, maxNum);
       }
-      if (newRes != null) {
-         Collections.sort(newRes);
-      }
-      return newRes;
+      return res;
    }
 }

@@ -1,3 +1,3 @@
 interface ISearchProvider {
-   List<SearchResult> doSearch(String searchText, SiteContext site, int startIx, int num);
+   void addToSearch(SearchResult result, String searchText, SiteContext site, int startIx, int num);
 }

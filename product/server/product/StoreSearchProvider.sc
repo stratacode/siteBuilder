@@ -4,9 +4,9 @@ class StoreSearchProvider implements ISearchProvider {
    int categoryPriority = 2;
    int productPriority = 3;
 
-   List<SearchResult> doSearch(String searchText, SiteContext site, int startIx, int num) {
+   void addToSearch(SearchResult result, String searchText, SiteContext site, int startIx, int num) {
       if (site != null && !(site instanceof Storefront))
-         return null;
+         return;
       Storefront store = (Storefront) site;
       List<String> storePropNames = store == null ? null : Arrays.asList("store");
       List<Object> storePropVals = Arrays.asList(store);
@@ -19,19 +19,29 @@ class StoreSearchProvider implements ISearchProvider {
       int total = numCats + numProds;
       ArrayList<SearchResult> res = total == 0 ? null : new ArrayList<SearchResult>(total);
 
-      for (int i = 0; i < numCats; i++) {
-         Category cat = catItems.get(i);
-         SearchResult sr = new SearchResult(this, "category", cat.name, cat.mainMedia, cat.pageUrl, cat.shortDesc, null,
-                                            categoryPriority);
-         res.add(sr);
+      if (numCats > 0) {
+         SearchResultGroup catGroup = new SearchResultGroup(this, "Categories", categoryPriority);
+
+         for (int i = 0; i < numCats; i++) {
+            Category cat = catItems.get(i);
+            SearchResultEntry sr = new SearchResultEntry(catGroup, cat.name, cat.mainMedia, cat.pageUrl, cat.shortDesc, null,
+                                               categoryPriority);
+            catGroup.results.add(sr);
+         }
+         result.addGroup(catGroup);
       }
-      for (int i = 0; i < numProds; i++) {
-         Product prod = prodItems.get(i);
-         String priceHtml = prod.priceDisplayHtml;
-         SearchResult sr = new SearchResult(this, "product", prod.name, prod.mainMedia, prod.pageUrl, prod.shortDesc,
-                                            priceHtml, productPriority);
-         res.add(sr);
+
+      if (numProds > 0) {
+         SearchResultGroup prodGroup = new SearchResultGroup(this, "Products", productPriority);
+
+         for (int i = 0; i < numProds; i++) {
+            Product prod = prodItems.get(i);
+            String priceHtml = prod.priceDisplayHtml;
+            SearchResultEntry sr = new SearchResultEntry(prodGroup, prod.name, prod.mainMedia, prod.pageUrl, prod.shortDesc,
+                                               priceHtml, productPriority);
+            prodGroup.results.add(sr);
+         }
+         result.addGroup(prodGroup);
       }
-      return res;
    }
 }

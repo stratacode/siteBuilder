@@ -4,23 +4,23 @@
    boolean searchVisible;
    SiteView siteView;
 
-   List<SearchResult> searchResults;
+   SearchResult searchResult;
    int searchStartIx = 0;
    int searchMaxNum = 20;
 
    String resultsMessage = null;
 
    void doSearch(String value) {
-      searchResults = siteView.doSearch(siteView, value, searchStartIx, searchMaxNum);
-      if (searchResults == null || searchResults.size() == 0)
+      searchResult = siteView.doSearch(siteView, value, searchStartIx, searchMaxNum);
+      if (searchResult == null || searchResult.totalResults == 0)
          resultsMessage = "No results found for search";
       else
-         resultsMessage = "Search results";
+         resultsMessage = "Search results - found: ";
       searchText = value;
    }
 
    void clearSearch() {
-      searchResults = null;
+      searchResult = null;
       resultsMessage = null;
       searchVisible = false;
       searchText = "";
@@ -32,18 +32,29 @@
       <img src="/icons/search.svg" clickEvent="=: doSearch(searchTextField.value)"/>
       <img src="/icons/x-square.svg" clickEvent="=: clearSearch()"/>
    </div>
-   <div class="searchResultsMessage"><%= resultsMessage %></div>
    <div id="searchResultsPanel">
-      <div id="searchResultView" class="searchResultView" repeat=":= searchResults" repeatVarName="searchResult">
-         <a href=":= searchResult.url" class="searchResultInfo">
-            <div id="searchResultThumbView" class="searchResultThumbView">
-               <img class="smallViewImage" src=":= searchResult.imageUrl" srcset=":= searchResult.imageSrcSet"/>
+      <div class="searchResultsOverview">
+         <span class="searchResultsMessage"><%= resultsMessage %></span>
+         <span id="searchGroupHdr" class="searchGroupHdr" repeat=":= searchResult.resultGroups" repeatVarName="group">
+            <span class="groupHdrEntry" clickEvent="=: searchResult.resultGroups.remove(group)">
+               <%= group.resultTypeName + " (" + group.results.size() + ")" %><img src="/icons/little-x.svg" />
+            </span>
+         </span>
+      </div>
+      <div id="searchGroupView" class="searchGroupView" repeat=":= searchResult.resultGroups" repeatVarName="group">
+         <div class="searchGroupTypeName"><%= group.resultTypeName %></div>
+         <div id="searchResultsListView" class="searchResultsListView">
+            <div id="searchResultView" class="searchResultView" repeat=":= group.results" repeatVarName="searchResult">
+               <a href=":= searchResult.url" class=':= searchResult.media != null ? "searchResultImage" : "searchResultLink"'>
+                  <div id="searchResultThumbView" class="searchResultThumbView" visible=":= searchResult.media != null">
+                     <img class="smallViewImage" src=":= searchResult.imageUrl" srcset=":= searchResult.imageSrcSet"/>
+                  </div>
+                  <div id="searchResultName" class="searchResultName"><%= searchResult.name %></div>
+                  <div id="searchResultDesc" class="searchResultDesc"><%= searchResult.shortDesc %></div>
+                  <div id="searchResultDetail" class="searchResultDetail"><%= searchResult.detailHtml %></div>
+               </a>
             </div>
-            <div id="searchResultName" class="searchResultName"><%= searchResult.name %></div>
-            <div id="searchResultDesc" class="searchResultDesc"><%= searchResult.shortDesc %></div>
-            <div id="searchResultDetail" class="searchResultDetail"><%= searchResult.detailHtml %></div>
-            <div class="searchResultType"><%= searchResult.resultTypeName %></div>
-         </a>
+         </div>
       </div>
    </div>
    <input class="closeSearchButton" type="button" visible=":= resultsMessage != null"
