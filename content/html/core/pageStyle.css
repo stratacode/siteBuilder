@@ -424,6 +424,14 @@ body {
    flex-wrap: wrap;
 }
 
+.searchResultsMessage {
+   padding-top: 10px;
+   max-width: 700px;
+   margin: auto;
+   font-size: 85%;
+   font-style: italic;
+}
+
 .welcomeSiteIndex {
    margin-top: 10px;
    margin-bottom: 10px;
@@ -516,7 +524,7 @@ input[type=button]:hover {
    height: 200px;
    display: flex;
    align-items: flex-end;
-   padding-bottom: 2px;
+   padding-bottom: 5px;
 }
 
 .searchResultView a {
@@ -526,6 +534,10 @@ input[type=button]:hover {
 
 .searchResultDesc {
    font-size: 85%;
+}
+
+.closeSearchButton {
+   margin-left: 45%;
 }
 
 .pageTitle {

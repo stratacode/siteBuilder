@@ -59,6 +59,7 @@ class PageNavMenu extends NavMenu {
       name = "";
       icon = "/icons/search.svg";
       selectedCount =: searchVisible = true;
+      orderValue = 6;
    }
 
    boolean loggedIn := currentUserView.loginStatus == LoginStatus.LoggedIn;

@@ -24,14 +24,14 @@
                int searchStartIx = 0;
                int searchMaxNum = 20;
 
-               String resultsMessage = "";
+               String resultsMessage = null;
 
                void doSearch(String value) {
                   searchResults = siteView.doSearch(siteView, value, searchStartIx, searchMaxNum);
                   if (searchResults == null || searchResults.size() == 0)
                      resultsMessage = "No results found for search";
                   else
-                     resultsMessage = null;
+                     resultsMessage = "Search results";
                }
 
                void clearSearch() {
@@ -44,10 +44,10 @@
                <label for="searchTextField">Search</label>
                <input type="text" id="searchTextField" changeEvent="=: doSearch(value)"/>
                <img src="/icons/search.svg" clickEvent="=: doSearch(searchTextField.value)"/>
-               <img src="/icons/x-square.svg" clickEvent="=: navbar.navMenu.searchVisible = false"/>
+               <img src="/icons/x-square.svg" clickEvent="=: clearSearch()"/>
             </div>
+            <div class="searchResultsMessage"><%= resultsMessage %></div>
             <div id="searchResultsPanel">
-               <div class="searchResultsMessage"><%= resultsMessage %></div>
                <div id="searchResultView" class="searchResultView" repeat=":= searchResults" repeatVarName="searchResult">
                   <a href=":= searchResult.url" class="searchResultInfo">
                      <div id="searchResultThumbView" class="searchResultThumbView">
@@ -59,6 +59,8 @@
                   </a>
                </div>
             </div>
+            <input class="closeSearchButton" type="button" visible=":= resultsMessage != null"
+                    value="Close search " clickEvent="=: clearSearch()"/>
          </div>
          <div id="welcomeBar"/>
          <div id="loginPanel" class="loginPanel"/>

@@ -29,7 +29,7 @@ class SearchResult implements Comparable {
    }
 
    String getImageUrl() {
-      return media == null ? "/icons/file-text40.svg" : media.getUrlForSize(200);
+      return media == null ? null : media.getUrlForSize(200);
    }
 
    String getImageSrcSet() {

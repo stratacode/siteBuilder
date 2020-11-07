@@ -8,9 +8,12 @@ class StoreSearchProvider implements ISearchProvider {
       if (site != null && !(site instanceof Storefront))
          return null;
       Storefront store = (Storefront) site;
+      List<String> storePropNames = store == null ? null : Arrays.asList("store");
+      List<Object> storePropVals = Arrays.asList(store);
       List<Category> catItems = (List<Category>) Category.getDBTypeDescriptor().searchQuery(searchText,
-            store == null ? null : Arrays.asList("store"), Arrays.asList(store), null, null, startIx, num);
-      List<Product> prodItems = (List<Product>) Product.getDBTypeDescriptor().searchQuery(searchText, null, null, null, null, startIx, num);
+                           storePropNames, storePropVals, null, null, startIx, num);
+      List<Product> prodItems = (List<Product>) Product.getDBTypeDescriptor().searchQuery(searchText,
+                           storePropNames, storePropVals, null, null, startIx, num);
       int numCats = catItems == null ? 0 : catItems.size(),
           numProds = prodItems == null ? 0 : prodItems.size();
       int total = numCats + numProds;
