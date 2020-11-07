@@ -163,18 +163,6 @@
    font-weight: bold;
 }
 
-.beforePrice, .price {
-   font-size: 110%;
-}
-
-.price {
-   font-weight: bold;
-}
-
-.beforePrice {
-   text-decoration: line-through;
-   color: #999;
-}
 
 .optionsTagView {
    display: flex;

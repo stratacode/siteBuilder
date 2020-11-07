@@ -121,6 +121,7 @@ class Sku implements IPropValidator {
       }
    }
 
+   // Used for editing in the management UI
    @Bindable(manual=true)
    String getPriceStr() {
       if (invalidPriceStr != null)
@@ -128,6 +129,7 @@ class Sku implements IPropValidator {
       return price == null ? "" : price.toString();
    }
 
+   // Used for editing in the management UI
    @Bindable(manual=true)
    String getDiscountPriceStr() {
       if (invalidDiscountPriceStr != null)
@@ -138,7 +140,22 @@ class Sku implements IPropValidator {
    @Bindable(manual=true)
    String getPriceDisplayStr() {
       BigDecimal price = priceToUse;
-      return price == null ? "(no price)" : " " + store.defaultCurrency.symbol + price;
+      return price == null ? null : " " + getCurrencySymbol() + price;
+   }
+
+   String getCurrencySymbol() {
+      return store == null ? "$" : store.defaultCurrency.symbol;
+   }
+
+   @sc.obj.HTMLSettings(returnsHTML=true)
+   String getPriceDisplayHtml() {
+      String sym = getCurrencySymbol();
+      String priceStr = price == null ? "" : price.toString();
+
+      return discountPrice == null ?
+         "<span class='price'>" + sym + priceStr + "</span>" :
+          "<span class='price'>" + sym + discountPrice.toString() + "</span>" +
+              "<span class='beforePrice'>" + sym + priceStr + "</span>";
    }
 
    private String invalidDiscountPriceStr = null, invalidPriceStr = null;

@@ -5,16 +5,19 @@ class SearchResult implements Comparable {
    ManagedMedia media;
    String url;
    String shortDesc;
+   @sc.obj.HTMLSettings(returnsHTML=true)
+   String detailHtml;
    int searchPriority;
 
    SearchResult(ISearchProvider provider, String resultTypeName, String name, ManagedMedia media,
-                String url, String shortDesc, int priority) {
+                String url, String shortDesc, String detailHtml, int priority) {
       this.provider = provider;
       this.resultTypeName = resultTypeName;
       this.name = name;
       this.media = media;
       this.url = url;
       this.shortDesc = shortDesc;
+      this.detailHtml = detailHtml == null ? "" : detailHtml;
       this.searchPriority = priority;
    }
 

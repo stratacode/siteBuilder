@@ -1,8 +1,8 @@
 import java.util.Arrays;
 
 class StoreSearchProvider implements ISearchProvider {
-   int catDefPriority = 2;
-   int productDefPriority = 3;
+   int categoryPriority = 2;
+   int productPriority = 3;
 
    List<SearchResult> doSearch(String searchText, SiteContext site, int startIx, int num) {
       if (site != null && !(site instanceof Storefront))
@@ -21,12 +21,15 @@ class StoreSearchProvider implements ISearchProvider {
 
       for (int i = 0; i < numCats; i++) {
          Category cat = catItems.get(i);
-         SearchResult sr = new SearchResult(this, "category", cat.name, cat.mainMedia, cat.pageUrl, cat.shortDesc, catDefPriority);
+         SearchResult sr = new SearchResult(this, "category", cat.name, cat.mainMedia, cat.pageUrl, cat.shortDesc, null,
+                                            categoryPriority);
          res.add(sr);
       }
       for (int i = 0; i < numProds; i++) {
          Product prod = prodItems.get(i);
-         SearchResult sr = new SearchResult(this, "product", prod.name, prod.mainMedia, prod.pageUrl, prod.shortDesc, catDefPriority);
+         String priceHtml = prod.priceDisplayHtml;
+         SearchResult sr = new SearchResult(this, "product", prod.name, prod.mainMedia, prod.pageUrl, prod.shortDesc,
+                                            priceHtml, productPriority);
          res.add(sr);
       }
       return res;

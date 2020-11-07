@@ -15,7 +15,7 @@ class PageSearchProvider implements ISearchProvider {
       ArrayList<SearchResult> res = new ArrayList<SearchResult>(numResults);
       for (int i = 0; i < numResults; i++) {
          PageDef pageDef = searchItems.get(i);
-         SearchResult sr = new SearchResult(this, "page", pageDef.pageName, null, pageDef.pageUrl, null, pageDefPriority);
+         SearchResult sr = new SearchResult(this, "page", pageDef.pageName, null, pageDef.pageUrl, null, null, pageDefPriority);
          res.add(sr);
       }
       return res;

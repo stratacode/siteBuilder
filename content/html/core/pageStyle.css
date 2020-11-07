@@ -562,3 +562,20 @@ input[type=button]:hover {
    height: fit-content;
 }
 
+.beforePrice, .price {
+   font-size: 110%;
+}
+
+.searchResultDetail .beforePrice, .searchResultDetail .price {
+   font-size: 85%;
+}
+
+.price {
+   font-weight: bold;
+}
+
+.beforePrice {
+   text-decoration: line-through;
+   color: #999;
+   padding-left: 3px;
+}

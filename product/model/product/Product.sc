@@ -119,4 +119,11 @@ class Product extends CatalogElement {
       }
       return mainMedia;
    }
+
+   @sc.obj.HTMLSettings(returnsHTML=true)
+   String getPriceDisplayHtml() {
+      if (sku == null)
+         return null;
+      return sku.getPriceDisplayHtml();
+   }
 }

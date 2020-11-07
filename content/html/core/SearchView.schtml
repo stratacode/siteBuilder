@@ -41,6 +41,7 @@
             </div>
             <div id="searchResultName" class="searchResultName"><%= searchResult.name %></div>
             <div id="searchResultDesc" class="searchResultDesc"><%= searchResult.shortDesc %></div>
+            <div id="searchResultDetail" class="searchResultDetail"><%= searchResult.detailHtml %></div>
             <div class="searchResultType"><%= searchResult.resultTypeName %></div>
          </a>
       </div>
