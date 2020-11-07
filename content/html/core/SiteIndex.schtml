@@ -29,7 +29,7 @@
                <select id="manageSiteSelect" optionDataSource=":= currentUserView.user.siteList" selectedIndex="0"/>
                <input id="manageSiteButton" type="button" value="Manage site" clickEvent="=: Window.window.location.href = getManageSiteURL(currentUserView.user.siteList.get(manageSiteSelect.selectedIndex))"/>
 
-               <input id="createSiteButton" type="button" value="Create new site" clickEvent='=: Window.window.location.href = "/manage/site?createSite=true"'/>
+               <input id="createSiteButton" type="button" value="Create site" clickEvent='=: Window.window.location.href = "/manage/site?createSite=true"'/>
             </div>
             <div id="welcomeNotRegistered" class="welcomeDetail" visible=":= currentUserView.loginStatus != LoginStatus.LoggedIn && !navbar.navMenu.loginVisible">
                <input id="startLoginButton" type="button" value="Login" clickEvent="=: navbar.navMenu.loginVisible = true"/>

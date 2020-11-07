@@ -34,11 +34,15 @@ body {
 
 .subMenuLink, .menuItemLink, .subMenuItemLink {
    padding-left: 10px;
-   padding-right: 25px;
+   padding-right: 10px;
    display: flex;
    flex-direction: row;
    text-decoration: none;
    color: #333;
+}
+
+.breakMenuItem {
+   margin-left: auto;
 }
 
 .menuItemLink, .subMenuLink {
@@ -76,7 +80,9 @@ body {
    padding-top: 7px;
    /* background-color: #04333F;*/
     background-color: #a0bad4;
-   width: 100%;
+   width: 84%;
+   padding-left: 8%;
+   padding-right: 8%;
 }
 
 #footer {

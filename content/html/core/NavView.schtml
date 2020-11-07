@@ -5,9 +5,11 @@
       @Sync scope<appSession>
       object navMenu extends PageNavMenu {
          siteView := NavView.this.siteView;
+         breakOrderValue = 5.0;
       }
    %>
-   <div id="mainMenuRepeat" class="menuItem" repeat=":= navMenu.menuItems" repeatVarName="menuItem"
+   <div id="mainMenuRepeat" class=':= "menuItem" + (menuItem.breakMenuItem ? " breakMenuItem" : "")'
+        repeat=":= navMenu.menuItems" repeatVarName="menuItem"
         visible=":= menuItem.visible">
       <a    id="menuItemlink" class=':= (menuItem.menuItems != null ? "subMenuLink" : "menuItemLink") + (!menuItem.enabled ? " menuItemDisabled" : "")'
             clickEvent="=: menuItem.itemSelected()" >

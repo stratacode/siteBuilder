@@ -16,52 +16,9 @@
    <body>
       <div id="appFrame" class="appFrame" clickEvent="=: navbar.navMenu.hideSubMenus()">
          <div id="navbar" extends="NavView" siteView=":= PageLayout.this.siteView"/>
-         <div id="searchPanel" visible=":= navbar.navMenu.searchVisible">
-            <%!
-               boolean searchVisible :=: navbar.navMenu.searchVisible;
-
-               List<SearchResult> searchResults;
-               int searchStartIx = 0;
-               int searchMaxNum = 20;
-
-               String resultsMessage = null;
-
-               void doSearch(String value) {
-                  searchResults = siteView.doSearch(siteView, value, searchStartIx, searchMaxNum);
-                  if (searchResults == null || searchResults.size() == 0)
-                     resultsMessage = "No results found for search";
-                  else
-                     resultsMessage = "Search results";
-               }
-
-               void clearSearch() {
-                  searchResults = null;
-                  resultsMessage = null;
-                  searchVisible = false;
-               }
-            %>
-            <div class="searchField">
-               <label for="searchTextField">Search</label>
-               <input type="text" id="searchTextField" changeEvent="=: doSearch(value)"/>
-               <img src="/icons/search.svg" clickEvent="=: doSearch(searchTextField.value)"/>
-               <img src="/icons/x-square.svg" clickEvent="=: clearSearch()"/>
-            </div>
-            <div class="searchResultsMessage"><%= resultsMessage %></div>
-            <div id="searchResultsPanel">
-               <div id="searchResultView" class="searchResultView" repeat=":= searchResults" repeatVarName="searchResult">
-                  <a href=":= searchResult.url" class="searchResultInfo">
-                     <div id="searchResultThumbView" class="searchResultThumbView">
-                        <img class="smallViewImage" src=":= searchResult.imageUrl" srcset=":= searchResult.imageSrcSet"/>
-                     </div>
-                     <div id="searchResultName" class="searchResultName"><%= searchResult.name %></div>
-                     <div id="searchResultDesc" class="searchResultDesc"><%= searchResult.shortDesc %></div>
-                     <div class="searchResultType"><%= searchResult.resultTypeName %></div>
-                  </a>
-               </div>
-            </div>
-            <input class="closeSearchButton" type="button" visible=":= resultsMessage != null"
-                    value="Close search " clickEvent="=: clearSearch()"/>
-         </div>
+         <div id="searchPanel" extends="SearchView"
+              siteView=":= PageLayout.this.siteView"
+              searchVisible=":=: navbar.navMenu.searchVisible"/>
          <div id="welcomeBar"/>
          <div id="loginPanel" class="loginPanel"/>
          <div id="pageBody"/>

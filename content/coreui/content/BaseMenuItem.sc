@@ -15,6 +15,9 @@ abstract class BaseMenuItem {
    transient boolean enabled = true;
    transient boolean visible = true;
    transient boolean subMenuVisible = false;
+   // Flag to indicate separation between this item and the previous one. For the top-level menu bar, this item
+   // begins the right-justified group of items
+   transient boolean breakMenuItem = false;
    transient int selectedCount = 0;
    transient int listPos;
 

@@ -52,6 +52,16 @@ class PageNavMenu extends NavMenu {
             return lhs.orderValue > rhs.orderValue ? 1 : -1;
          }
       });
+      boolean breakFound = false;
+      for (int i = 0; i < res.size(); i++) {
+         BaseMenuItem elem = res.get(i);
+         if (!breakFound && breakOrderValue != null && elem.orderValue > breakOrderValue) {
+            elem.breakMenuItem = true;
+            breakFound = true;
+         }
+         else
+            elem.breakMenuItem = false;
+      }
       return res;
    }
 
