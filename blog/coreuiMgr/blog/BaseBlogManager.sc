@@ -19,6 +19,7 @@ abstract class BaseBlogManager extends BlogElementManager {
 
    String categoryErrorMessage;
    String categoryStatusMessage;
+   String searchStatusMessage;
 
    List<BlogCategory> matchingCategories;
 
@@ -32,6 +33,7 @@ abstract class BaseBlogManager extends BlogElementManager {
       searchText = "";
       category = null;
       categorySaved = false;
+      searchStatusMessage = null;
       clearFormErrors();
    }
 
@@ -40,6 +42,7 @@ abstract class BaseBlogManager extends BlogElementManager {
       super.clearFormErrors();
 
       categoryErrorMessage = categoryStatusMessage = null;
+      searchStatusMessage = null;
    }
 
    void updateCategoryName(String val) {

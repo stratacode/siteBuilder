@@ -28,6 +28,8 @@ class CategoryManager extends BaseProductManager {
    String productQueryStatus;
    String productQueryError;
 
+   String searchStatusMessage = null;
+
    void updateElementInstance(ManagedElement el) {
       category = (Category) el;
       if (el == null)
@@ -43,9 +45,11 @@ class CategoryManager extends BaseProductManager {
       element = null;
       clearFormErrors();
       categoryPathName = null;
+      searchStatusMessage = null;
    }
 
    void clearFormErrors() {
+      searchStatusMessage = null;
       super.clearFormErrors();
    }
 

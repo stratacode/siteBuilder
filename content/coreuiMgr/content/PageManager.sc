@@ -30,6 +30,8 @@ PageManager extends BaseManager {
    @Sync(resetState=true, initDefault=true)
    String pagePathName;
 
+   String searchStatusMessage = "";
+
    PageType getPageTypeFromName(String pageTypePathName) {
       for (PageType pt:pageTypes) {
          if (pt.pageTypePathName.equals(pageTypePathName)) {
@@ -44,5 +46,6 @@ PageManager extends BaseManager {
       currentPages = null;
       currentPage = null;
       pagePathName = null;
+      searchStatusMessage = "";
    }
 }

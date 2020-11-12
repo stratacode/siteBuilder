@@ -90,6 +90,9 @@
          <span class="wideHeaderColumn">Page path name</span>
          <span class="smallHeaderColumn">Visible</span>
          <span class="smallHeaderColumn"></span>
+         <div id="alt" class="formStatus">
+            <%= pageMgr.searchStatusMessage %>
+         </div>
       </div>
       <div id="pageRepeat" repeat=":= pageMgr.currentPages" repeatVarName="curRowPage"
            class=':= curRowPage == pageMgr.currentPage ? "selectedPageRow" : "pageRow"' >

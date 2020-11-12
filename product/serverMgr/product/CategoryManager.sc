@@ -20,6 +20,13 @@ CategoryManager {
    void doSearch() {
       String txt = searchText == null ? "" : searchText;
       categoryList = searchForText(txt);
+      if (categoryList.size() == 0) {
+         int numCategories = Category.getDBTypeDescriptor().searchCountQuery("", searchStore, getSearchStoreValues());
+         if (numCategories == 0)
+            searchStatusMessage = "No categories in this store";
+         else
+            searchStatusMessage = "No categories found out of: " + numCategories + " in the store";
+      }
    }
 
    void doSelectCategory(Category toSel) {

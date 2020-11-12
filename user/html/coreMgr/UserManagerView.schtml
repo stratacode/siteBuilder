@@ -42,6 +42,9 @@
          <span class="smallHeaderColumn">Limited</span>
          <span class="headerColumn">Registered</span>
          <span class="headerColumn">Last activity</span>
+         <div id="alt" class="formStatus">
+            <%= userMgr.searchStatusMessage %>
+         </div>
       </div>
       <div id="userRepeat" repeat=":= userMgr.currentUsers" repeatVarName="curRowUser"
            class=':= curRowUser == currentUser ? "selectedUserRow" : "userRow"' >

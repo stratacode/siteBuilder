@@ -238,7 +238,7 @@ UserView {
    }
 
    synchronized UserSession getUserSession(SiteContext site) {
-      if (sessionMarker == null)
+      if (sessionMarker == null || site == null)
          return null;
       if (userSessions == null) {
          userSessions = new HashMap<Long,UserSession>();

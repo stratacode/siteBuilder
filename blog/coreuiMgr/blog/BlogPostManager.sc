@@ -29,8 +29,6 @@ class BlogPostManager extends BaseBlogManager {
          postPathName = post.pathName;
    }
 
-   String searchStatusMessage = "";
-
    void resetForm() {
       super.resetForm();
       postList = null;

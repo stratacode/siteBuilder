@@ -19,6 +19,8 @@ class UserManager extends BaseManager {
    int numUsersPerPage = 20;
    int startIndex = 0;
 
+   String searchStatusMessage = null;
+
    @Sync(initDefault=true)
    HashMap<String, List<UserSession>> sessionsByUserId;
 
@@ -30,6 +32,7 @@ class UserManager extends BaseManager {
       searchText = "";
       currentUsers = null;
       currentUser = null;
+      searchStatusMessage = null;
    }
 
    void updateCurrentUser(UserProfile newUser) {

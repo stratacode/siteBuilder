@@ -13,12 +13,20 @@ MediaManagerView {
    void doSearch() {
       String txt = searchText == null ? "" : searchText;
       currentMedia = searchForText(txt, mediaManager);
+      if (currentMedia.size() == 0) {
+         int numMedia = ManagedMedia.getDBTypeDescriptor().searchCountQuery("", searchProps, Arrays.asList(mediaManager));
+         if (numMedia == 0)
+            searchStatusMessage = "No media files uploaded for this site";
+         else
+            searchStatusMessage = "No media files  found out of: " + numMedia + " in site";
+      }
    }
 
    void clearSearch() {
       resetUploadForm();
       searchText = "";
       currentMedia = null;
+      searchStatusMessage = null;
    }
 
    void handleUploadResult(Object res) {

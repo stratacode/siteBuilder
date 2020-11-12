@@ -51,6 +51,13 @@ UserManager {
       sessionsByUserId = newSessionsById;
 
       currentUsers = newUsers;
+      if (currentUsers.size() == 0) {
+         int numUsers = UserSession.getDBTypeDescriptor().searchCountQuery("", searchSite, searchSiteValues);
+         if (numUsers == 0)
+            searchStatusMessage = "No users have have visited this site";
+         else
+            searchStatusMessage = "No sessions found out of: " + numUsers + " sessions for this site";
+      }
    }
 
    void updateLocked(UserProfile profile, boolean newValue) {

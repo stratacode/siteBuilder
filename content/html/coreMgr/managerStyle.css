@@ -263,11 +263,11 @@ input[type=button]:hover {
    margin-left: 1%;
 }
 
-.findMediaButton, .findCategoryButton, .findProductButton, .findUserButton, .findSiteButton, .findPageButton, .findOrdersButton, .findSkusButton {
+.findMediaButton, .findCategoryButton, .findProductButton, .findUserButton, .findSiteButton, .findPageButton, .findOrdersButton, .findSkusButton, .findPostButton {
    margin-left: 5px;
 }
 
-.clearMediaButton, .clearCategoryButton, .clearProductButton, .clearUserButton, .clearSiteButton, .clearPageButton, .clearOrdersButton, .clearSkusButton {
+.clearMediaButton, .clearCategoryButton, .clearProductButton, .clearUserButton, .clearSiteButton, .clearPageButton, .clearOrdersButton, .clearSkusButton, .clearPostButton {
    margin-left: 1%;
 }
 

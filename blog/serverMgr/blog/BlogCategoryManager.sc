@@ -20,6 +20,13 @@ BlogCategoryManager {
    void doSearch() {
       String txt = searchText == null ? "" : searchText;
       categoryList = searchForText(txt);
+      if (categoryList.size() == 0) {
+         int numCategories = BlogCategory.getDBTypeDescriptor().searchCountQuery("", searchSite, getSearchSiteValues());
+         if (numCategories == 0)
+            searchStatusMessage = "No blog categories created yet for this site";
+         else
+            searchStatusMessage = "No blog categories found out of: " + numCategories + " in site";
+      }
    }
 
    void doSelectCategory(BlogCategory toSel) {

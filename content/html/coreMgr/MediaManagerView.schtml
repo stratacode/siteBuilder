@@ -57,6 +57,9 @@
          <span class="headerColumn">Dimensions</span>
          <span class="headerColumn">File size</span>
          <span class="headerColumn">Last modified</span>
+         <div id="alt" class="formStatus">
+            <%= searchStatusMessage %>
+         </div>
       </div>
       <div id="mediaRepeat" repeat=":= currentMedia" repeatVarName="media"
            clickEvent="=: doSelectMedia(media)"

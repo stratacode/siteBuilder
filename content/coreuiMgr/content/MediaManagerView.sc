@@ -16,9 +16,11 @@ class MediaManagerView {
 
    boolean uploadError = false;
    String uploadStatusMessage = null;
+   String searchStatusMessage = null;
 
    String currentMediaStatus;
    String currentMediaError;
+
 
    void resetUploadForm() {
       showUploadStatus = true;
@@ -26,6 +28,7 @@ class MediaManagerView {
       uploadStatusMessage = null;
       currentMediaStatus = null;
       currentMediaError = null;
+      searchStatusMessage = null;
    }
 
    override @Exec(serverOnly=true)

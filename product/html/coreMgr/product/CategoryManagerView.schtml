@@ -185,6 +185,9 @@
          <span class="headerColumn">Visible</span>
          <span class="headerColumn">Last modified</span>
          <span class="headerColumn">Remove</span>
+         <div id="alt" class="formStatus">
+            <%= searchStatusMessage %>
+         </div>
       </div>
       <div id="categoryElemView" repeat=":= categoryList" repeatVarName="categoryElem"
            class=':= categoryElem == category ? "selectedCategoryRow" : "categoryRow"'>
