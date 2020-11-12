@@ -1,0 +1,7 @@
+<div>
+   <%!
+      BlogElementView(SiteView siteView, String pathName, Element parentNode, String id, Object repeatVar, int ix) {
+         super(siteView, pathName, parentNode, id, repeatVar, ix);
+      }
+   %>
+</div>

@@ -26,7 +26,7 @@
       <div id="detailFormView" class="formContainer" visible=':= category != null'>
          <div class="formTitle">
             <%= addCategoryInProgress ? "Unsaved category" : "Update category" %>
-            <span class="titleDetailLink" visible=":= !addCategoryInProgress"><a target="productView" href=':= category.pageUrl'>(view category in new tab)</a></span>
+            <span class="titleDetailLink" visible=":= !addCategoryInProgress"><a target="previewView" href=':= category.pageUrl'>(view category in new tab)</a></span>
          </div>
          <div id="nameFieldView" class="formField">
             <label for="nameField">Category name</label>
@@ -195,7 +195,7 @@
         <span class="categoryColumn" clickEvent="=: doSelectCategory(categoryElem)">
            <img src=":= categoryElem.mainMedia.thumbUrl"/>
         </span>
-        <span class="categoryColumn"> <a target="productView" href=':= "/stores/" + store.sitePathName + "/category/" + categoryElem.pathName'><%= categoryElem.pathName %></a> </span>
+        <span class="categoryColumn"> <a target="previewView" href=':= "/stores/" + store.sitePathName + "/category/" + categoryElem.pathName'><%= categoryElem.pathName %></a> </span>
         <span class="categoryColumn"> <%= categoryElem.parentCategory == null ? "none" : categoryElem.parentCategory.pathName %> </span>
         <span class="categoryColumn"> <input type="checkbox" checked=":=: categoryElem.visible"/> </span>
         <span class="wideCategoryColumn"> <%= TextUtil.formatUserDate(categoryElem.lastModified, true) %> </span>

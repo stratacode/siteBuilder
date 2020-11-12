@@ -26,7 +26,7 @@
       <div id="detailFormView" class="formContainer" visible=':= product != null'>
          <div class="formTitle">
             <%= addInProgress ? "Unsaved product" : "Update product" %>
-            <span class="titleDetailLink" visible=":= !addInProgress"><a target="productView" href=':= product.pageUrl'>(view product in new tab)</a></span>
+            <span class="titleDetailLink" visible=":= !addInProgress"><a target="previewView" href=':= product.pageUrl'>(view product in new tab)</a></span>
          </div>
 
          <div id="productInfoView" class="subFormView">
@@ -245,7 +245,7 @@
         <span class="productColumn" clickEvent="=: doSelectProduct(productElem)">
            <img src=":= productElem.mainMedia.thumbUrl"/>
         </span>
-        <span class="productColumn"> <a target="productView" href=':= "/stores/" + store.sitePathName + "/product/" + productElem.pathName'><%= productElem.pathName %></a></span>
+        <span class="productColumn"> <a target="previewView" href=':= "/stores/" + store.sitePathName + "/product/" + productElem.pathName'><%= productElem.pathName %></a></span>
         <span class="productColumn"> <%= productElem.parentCategory == null ? "none" : productElem.parentCategory.pathName %> </span>
         <span class="productColumn">
            <a href=':= "/manage/sku/" + store.sitePathName + "/" + productElem.sku.skuCode'>

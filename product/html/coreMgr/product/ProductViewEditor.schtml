@@ -11,7 +11,7 @@
    <div id="viewEditor" class="formField">
       <label for="productPathField">Product path name</label>
       <input type="text" id="productPathField"
-             list="= suggestions.getId()" keyUpEvent="=: matchingProds = BaseManager.getMatchingProducts(pageMgr.store, value)"
+             list="= suggestions.getId()" keyUpEvent="=: matchingProds = BaseProductManager.getMatchingProducts(pageMgr.store, value)"
              class=':= productDef.propErrors.get("productPathName") == null ? "fieldInput" : "fieldInputError"'
              value=":=: productDef.productPathName" liveEdit="change" changeEvent="=: pageMgr.updateViewDef(productDef)"/>
       <div class="formFieldError"><%= productDef.propErrors.get("productPathName") %></div>

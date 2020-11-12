@@ -153,11 +153,11 @@ SiteManager {
             user.siteList.add(newSite);
          }
          siteList = user.siteList;
+         showCreateView = false;
+
          changeSite(newSite);
          if (!validSite)
             return;
-
-         showCreateView = false;
 
          updateSiteSelectList();
 
@@ -182,8 +182,8 @@ SiteManager {
 
    void updateSiteSelectList() {
       ArrayList<String> res = new ArrayList<String>();
-      if (siteList == null) {
-         res.add("User: " + userView.user.userName + " admin for no sites");
+      if (siteList == null || siteList.size() == 0) {
+         res.add("No sites");
       }
       else {
          res.add("Select a site");
@@ -194,7 +194,7 @@ SiteManager {
       if (site == null)
          siteIndex = 0;
       else {
-         int siteIx = siteList.indexOf(site);
+         int siteIx = siteList == null ? -1 : siteList.indexOf(site);
          if (siteIndex == -1)
             System.err.println("*** Failed to find current site in siteList!");
          else

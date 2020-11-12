@@ -42,13 +42,14 @@ MediaManager {
       if (!mediaChanged) {
          for (int i = 0; i < stdImageWidths.length; i++) {
             int width = stdImageWidths[i];
-            if (width > media.width)
-               continue;
             String nextFile = getGenFileName(fileName, media.revision, width, fileType);
             if (!mediaChanged) {
                if (!(new File(nextFile)).canRead()) {
-                  System.out.println("*** Missing generated file for: " + width + ":" + nextFile);;
-                  mediaChanged = true;
+                  nextFile = getGenFileName(fileName, media.revision, width, origSuffix);
+                  if (!(new File(nextFile)).canRead()) {
+                     System.out.println("*** Missing generated file for: " + width + ":" + nextFile);;
+                     mediaChanged = true;
+                  }
                }
             }
          }
@@ -156,5 +157,58 @@ MediaManager {
             System.out.println("*** Did not remove gen file: " + genFile);
       }
       return ct;
+   }
+
+   void refreshAllMedia() {
+      List<ManagedMedia> allMedia = (List<ManagedMedia>) ManagedMedia.getDBTypeDescriptor().findBy(Arrays.asList("manager"), Arrays.asList(this), null, null, 0, 1000);
+      if (allMedia != null) {
+         for (ManagedMedia media:allMedia)
+            media.updateGeneratedFiles();
+      }
+   }
+
+   void removeResolution(int toRemRes) {
+      int[] newWidths = new int[stdImageWidths.length-1];
+      boolean found = false;
+      int d = 0;
+      for (int i = 0; i < stdImageWidths.length; i++) {
+         int curRes = stdImageWidths[i];
+         if (curRes == toRemRes) {
+            found = true;
+         }
+         else {
+            newWidths[d++] = curRes;
+         }
+      }
+      if (found) {
+         stdImageWidths = newWidths;
+      }
+   }
+
+   void addResolution(String newResStr) {
+      if (newResStr == null)
+         return;
+      try {
+         int newRes = Integer.parseInt(newResStr);
+
+         int[] newWidths = new int[stdImageWidths.length+1];
+         int d = 0;
+         boolean added = false;
+         for (int i = 0; i < stdImageWidths.length; i++) {
+            int curRes = stdImageWidths[i];
+            if (curRes == newRes)
+               return;
+            else if (!added && curRes > newRes) {
+               newWidths[d++] = newRes;
+               added = true;
+            }
+            newWidths[d++] = curRes;
+         }
+         if (!added)
+            newWidths[d++] = newRes;
+         stdImageWidths = newWidths;
+      }
+      catch (NumberFormatException exc) {
+      }
    }
 }

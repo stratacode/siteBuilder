@@ -3,24 +3,12 @@ import java.util.TreeSet;
 import java.util.HashSet;
 
 import sc.lang.html.HTMLElement;
+import sc.lang.sql.DBProvider;
 
-import sc.lang.SCLanguage;
 import sc.parser.ParseError;
 import sc.parser.ParseUtil;
 import sc.lang.java.JavaSemanticNode;
 import sc.lang.java.Expression;
-import sc.lang.java.IdentifierExpression;
-import sc.lang.java.BinaryExpression;
-import sc.lang.java.ParenExpression;
-import sc.lang.java.UnaryExpression;
-import sc.lang.java.StringLiteral;
-import sc.lang.java.AbstractLiteral;
-import sc.lang.java.BaseOperand;
-
-import sc.db.OpQuery;
-import sc.db.PQuery;
-import sc.db.QCompare;
-import sc.db.QCombine;
 
 CategoryManager {
    categoryPathName =: validateCategoryPathName();
@@ -158,14 +146,9 @@ CategoryManager {
    }
 
    void cancelAddCategory() {
-      addCategoryInProgress = false;
-      category = null;
-      categoryErrorMessage = null;
-      categoryStatusMessage = "Add category cancelled";
-      showCategoryView = false;
+      super.cancelAddCategory();
       parentCategoryPathName = "";
    }
-
 
    void doneEditingCategory() {
       clearFormErrors();
@@ -349,15 +332,6 @@ CategoryManager {
 
    @Sync(syncMode=SyncMode.Disabled)
    static IBeanMapper[] productProperties = null;
-   @Sync(syncMode=SyncMode.Disabled)
-   static final SCLanguage language = SCLanguage.getSCLanguage();
-
-   static java.util.Set<String> excludePropNames = new TreeSet<String>();
-   static {
-      excludePropNames.add("class");
-      excludePropNames.add("manager");
-      excludePropNames.add("propErrors");
-   }
 
    static void initProductProperties() {
       if (productProperties == null) {
@@ -427,7 +401,7 @@ CategoryManager {
             if (semValue instanceof Expression) {
                Expression expr = (Expression) semValue;
 
-               Object res = convertExpressionToQuery(expr, null, null);
+               Object res = DBProvider.convertExpressionToQuery(Product.class, expr, null, null);
                if (res instanceof Query) {
                   category.productQuery = (Query) res;
                   category.validateAllProducts();
@@ -455,165 +429,6 @@ CategoryManager {
             res.add(name);
       }
       return res;
-   }
-
-   Object convertExpressionToQuery(Expression expr, QCompare compare, Object value) {
-      if (expr instanceof IdentifierExpression) {
-         IdentifierExpression ie = (IdentifierExpression) expr;
-         int sz;
-         if (ie.identifiers == null || (sz = ie.identifiers.size()) == 0)
-            return "Invalid identifier";
-         ArrayList<Object> propTypes = new ArrayList<Object>(sz);
-
-         Object currentType = Product.class;
-         String parentPath = null;
-         Object lastPropertyType = null;
-
-         int numProps = ie.arguments == null ? sz : sz - 1;
-         for (int i = 0; i < numProps; i++) {
-            String nextIdent = ie.identifiers.get(i).toString();
-
-            IBeanMapper mapper = DynUtil.getPropertyMapping(currentType, nextIdent);
-            if (mapper == null) {
-               return "No property: " + nextIdent + " in type: " + DynUtil.getTypeName(currentType, false) + (parentPath == null ? "" : " with path: " + parentPath);
-            }
-            lastPropertyType = mapper.getPropertyType();
-            propTypes.add(lastPropertyType);
-         }
-         String path = ie.getIdentifierPathName(sz);
-         if (ie.arguments == null) {
-            Query res = null;
-            if (lastPropertyType == Boolean.class || lastPropertyType == Boolean.TYPE) {
-               if (compare == null)
-                  res = new OpQuery(path, QCompare.Equals, true);
-               else {
-                  if (value instanceof Boolean)
-                     res = new OpQuery(path, compare, value);
-                  else
-                     return "Type mismatch in expression: " + value + " should be true/false";
-               }
-            }
-            else if (compare == null)
-               return "Expression of type: " + DynUtil.getTypeName(lastPropertyType, false) + " missing an operator like == or .contains(..)";
-            else {
-               if (lastPropertyType == String.class && value instanceof String) {
-                  res = new OpQuery(path, compare, value);
-               }
-               else
-                  return "Unsupported property type: " + DynUtil.getTypeName(lastPropertyType, false) + " for: " + path + " in query";
-            }
-            return res;
-         }
-         else {
-            String lastIdent = ie.identifiers.get(ie.identifiers.size()-1).toString();
-            if (lastIdent.equals("contains") && lastPropertyType == String.class && ie.arguments.size() == 1 && ie.arguments.get(0) instanceof StringLiteral) {
-               OpQuery match = new OpQuery(ie.getIdentifierPathName(numProps), QCompare.Match, ((StringLiteral) ie.arguments.get(0)).getLiteralValue());
-               if (compare == null) {
-                  return match;
-               }
-            }
-            return "Unsupported method call in query: " + lastIdent;
-         }
-      }
-      else if (expr instanceof BinaryExpression) {
-         BinaryExpression bexpr = (BinaryExpression) expr;
-         //String childOpStr = bexpr.operator;
-         //QCombine childCombine = QCombine.fromOperator(childOpStr);
-         //QCompare childCompare = QCompare.fromOperator(childOpStr);
-         //if (childCombine == null && childCompare == null)
-         //   return "Operator: " + childOpStr + " not allowed in query";
-         Expression nextExpr = bexpr.firstExpr;
-         Query resultQuery = null;
-
-         for (int i = 0; i < bexpr.operands.size(); i++) {
-            BaseOperand op = bexpr.operands.get(i);
-            String operator = op.operator;
-            QCombine nextCombine = QCombine.fromOperator(operator);
-            QCompare nextCompare = QCompare.fromOperator(operator);
-            Object rhsObj = op.getRhs();
-            Query nextQuery = null;
-            if (nextCombine == null && nextCompare == null)
-               return "Invalid operator in query";
-            else if (nextCompare != null) {
-               if (rhsObj instanceof AbstractLiteral) {
-                  AbstractLiteral literal = (AbstractLiteral) rhsObj;
-
-                  Object nextQueryObj = convertExpressionToQuery(nextExpr, nextCompare, literal.getLiteralValue());
-                  if (nextQueryObj instanceof Query)
-                     nextQuery = (Query) nextQueryObj;
-                  else
-                     return nextQueryObj;
-               }
-               else {
-                  // Boolean expression?
-                  Object nextQueryObj = convertExpressionToQuery(nextExpr, null, null);
-                  if (nextQueryObj instanceof Query)
-                     nextQuery = (Query) nextQueryObj;
-                  else
-                     return nextQueryObj;
-               }
-            }
-            else {
-               // Boolean expression && boolean expression
-               Object nextQueryObj = convertExpressionToQuery(nextExpr, null, null);
-               if (nextQueryObj instanceof Query)
-                  nextQuery = (Query) nextQueryObj;
-               else
-                  return nextQueryObj;
-
-               if (rhsObj instanceof Expression) {
-                  Object rhsQuery = convertExpressionToQuery((Expression) rhsObj, null, null);
-                  if (rhsQuery instanceof Query) {
-                     nextQuery = new PQuery(nextCombine, nextQuery, (Query) rhsQuery);
-                  }
-                  else
-                     return rhsQuery;
-               }
-            }
-
-            if (resultQuery == null)
-               resultQuery = nextQuery;
-            else {
-               if (nextCombine != null)
-                  resultQuery = new PQuery(nextCombine, resultQuery, nextQuery);
-               else
-                  return "Invalid operator";
-            }
-         }
-         return resultQuery;
-      }
-      else if (expr instanceof ParenExpression) {
-         Expression wrapped = ((ParenExpression) expr).expression;
-         Object pres = convertExpressionToQuery(wrapped, null, null);
-         if (pres instanceof Query) {
-            Query subq = (Query) pres;
-            if (compare == null)
-               return subq;
-            return "Invalid comparison operator";
-         }
-         else
-            return pres;
-      }
-      else if (expr instanceof UnaryExpression) {
-         UnaryExpression uexpr = (UnaryExpression) expr;
-         if (uexpr.operator.equals("!") && uexpr.expression instanceof IdentifierExpression) {
-            Object qres = convertExpressionToQuery(uexpr.expression, null, null);
-            if (!(qres instanceof OpQuery))
-               return qres;
-            OpQuery oq = (OpQuery) qres;
-            if (oq.comparator == QCompare.Equals)
-               oq.comparator = QCompare.NotEquals;
-            else if (oq.comparator == QCompare.NotEquals)
-               oq.comparator = QCompare.Equals;
-            else
-               return "Unsupported unary expression in query";
-            return oq;
-         }
-         else
-            return "Unsupported operation in query";
-      }
-      else
-         return "Unsupported expression in query";
    }
 
    void validateElement() {

@@ -1,0 +1,210 @@
+<div extends="BlogPostManager">
+   <div class="pageTitle">
+      Manage blog posts
+   </div>
+   <div id="findPostsView" visible=":= !addInProgress">
+      <div id="showPostsForm" class="formField">
+         <label for="showAllButton">Show posts</label>
+         <input type="button" value="All" id="showAllButton" class="showAllButton" clickEvent="=: doSearchAll()"/>
+         <input type="button" value="Recent" id="showRecentButton" class="showRecentButton rightButton" clickEvent="=: doSearchRecent()"/>
+      </div>
+      <div id="findPostsForm" class="formField">
+         <label for="searchTextField">Find posts</label><input type="text" value=":=: searchText" changeEvent="=: doSearch()"/>
+         <input type="image" id="findPostButton" class="findPostButton" src="/icons/search.svg" clickEvent="=: doSearch()"/>
+         <input type="image" id="clearPostButton" class="clearPostButton" src="/icons/x-square.svg" clickEvent="=: resetForm()"/>
+      </div>
+   </div>
+
+   <div id="extraFormView">
+      <div id="startAddView">
+         <div visible=":= !addInProgress" class="formField confirmButtons">
+            <input type="button" value="Add post" clickEvent="=: startAddPost(false)" />
+            <input type="button" class="rightButton" visible=":= post != null" value="Copy post" clickEvent="=: startAddPost(true)"/>
+            <input class="rightButton" type="button" value="Manage categories" clickEvent='=: Window.window.location.href = "/manage/blogCategory"'/>
+         </div>
+      </div>
+
+      <div id="detailFormView" class="formContainer" visible=':= post != null'>
+         <div class="formTitle">
+            <%= addInProgress ? "Unsaved post" : "Update post" %>
+            <span class="titleDetailLink" visible=":= !addInProgress"><a target="postView" href=':= post.pageUrl'>(view post in new tab)</a></span>
+         </div>
+
+         <div id="postInfoView" class="subFormView">
+            <span class="subFormTitle">Post info</span>
+            <div id="nameFieldView" class="formField">
+               <label for="nameField">Post name</label>
+               <input id="nameField" type="text" value=":= post.name" changeEvent="=: updatePostName(value)"
+                      class=':= post.propErrors.get("name") == null ? "fieldInput" : "fieldInputError"' placeholder="display name"/>
+            </div>
+            <div id="nameErrorView" class="formError"><%= post.propErrors.get("name") %></div>
+            <div id="pathNameView" class="formField">
+               <label for="pathNameField">Path name</label>
+               <input id="pathNameField" type="text" value=":= post.pathName" changeEvent="=: updatePathName(value)"
+                      class=':= post.propErrors.get("pathName") == null ? "fieldInput" : "fieldInputError"'
+                      placeholder="browser location name (no spaces)"/>
+            </div>
+            <div id="visibleView" class="formField">
+               <label for="visibleField">Post is available</label>
+               <input id="visibleField" type="checkbox" checked=":=: post.visible"/>
+            </div>
+            <div id="pathNameErrorView" class="formError"><%= post.propErrors.get("pathName") %></div>
+            <div id="parentCategoryView" class="formField">
+               <label for="parentCategoryField">Post category path</label>
+               <input id="parentCategoryField" type="text" list="= parentCategorySuggestions.getId()"
+                      class=':= post.propErrors.get("parentCategory") == null ? "fieldInput" : "fieldInputError"'
+                      value=':= parentCategoryPathName'
+                      keyUpEvent="=: updateMatchingCategories(value)" changeEvent="=: updateParentCategory(value)"
+                      placeholder="search for category"/>
+               <datalist id="parentCategorySuggestions">
+                  <option repeat=":= matchingCategories" repeatVarName="matchingCat" value=":= matchingCat.pathName"/>
+               </datalist>
+               <input class="rightButton" type="button" value="Add category" clickEvent="=: startAddCategory()" disabled=":= showCategoryView"/>
+               <input visible=":= categoryEditable" class="rightButton" type="button" value="Edit Category" clickEvent="=: showCategoryView = true"/>
+            </div>
+            <div id="parentCategoryErrorView" class="formError"><%= post.propErrors.get("parentCategory") %></div>
+            <div id="addCategoryView" class=':= showCategoryView ? "detailView openDetail" : "detailView closedDetail"'>
+               <%! int openCatViewHeight = 100;
+               scrollHeight =: scrollHeight > 50 ? openCatViewHeight = scrollHeight : null; %>
+               <style type="text/css">
+                  #addCategoryView.openDetail {
+                     max-height: <%= openCatViewHeight + 100 %>px;
+                  }
+               </style>
+               <%! boolean enableAddCategory := category == null || addCategoryInProgress; %>
+               <span class="subFormTitle"><%= enableAddCategory ? "Add Category" : "Update category" %></span>
+               <div id="catNameView" class="formField">
+                  <label for="catNameField">Category name</label>
+                  <input type="text" id="catNameField" value=":= category.name" changeEvent="=: updateCategoryName(value)"
+                         class=':= category.propErrors.get("name") == null ? "fieldInput" : "fieldInputError"'
+                         placeholder="display name" disabled=":= !showCategoryView"/>
+               </div>
+               <div id="catPathNameView" class="formField">
+                  <label for="catPathNameField">Category path name</label>
+                  <input type="text" id="catNameField" value=":= category.pathName" changeEvent="=: updateCategoryPathName(value)"
+                         class=':= category.propErrors.get("pathName") == null ? "fieldInput" : "fieldInputError"'
+                         placeholder="browser location name (no spaces)" disabled=":= !showCategoryView"/>
+               </div>
+               <div id="addCategoryButtons" class="formField confirmButtons" visible=":= addCategoryInProgress">
+                  <input type="button" clickEvent="=: completeAddCategory()" value="Add Category"/>
+                  <input type="button" class="rightButton" clickEvent="=: cancelAddCategory()" value="Cancel"/>
+                  <div id="alt" class="formField confirmButtons">
+                     <input type="button" clickEvent="=: doneEditingCategory()" value="Done editing category" disabled=":= !showCategoryView"/>
+                  </div>
+               </div>
+            </div>
+
+            <div id="postContentView" class="multiFormField formField">
+               <label for="postContentText">Post content</label>
+               <div id="postContentText" class="postContentText" extends="HtmlTextEditor" placeholder="enter blog post content" content=":= post.postContent"
+                    content="=: postContentHtml = content"/>
+            </div>
+
+            <div id="visibleView" class="formField">
+               <label for="visibleField">Post is visible</label>
+               <input id="visibleField" type="checkbox" checked=":=: post.visible"/>
+            </div>
+
+            <div id="keywordsView" class="formField">
+               <label for="keywordsField">Keywords</label>
+               <input id="keywordsField" type="text" value=":= post.keywords" changeEvent="=: post.keywords = value"
+                      class="wideTextField" placeholder="keywords describing post for search or categorization"/>
+            </div>
+         </div>
+
+         <div id="addMediaView" class="subFormView">
+            <span class="subFormTitle">Post media</span>
+            <span id="mediaTitle" visible=":= post.altMedia != null && post.altMedia.size() > 0">
+               <span id="alt" class="mediaEmptyTitle">No media - add files from the library or upload new ones</span>
+            </span>
+            <div class="mediaImageList">
+               <div id="postMediaView" class="postMediaView" repeat=":= post.altMedia" repeatVarName="media">
+                  <img src=":= media.thumbUrl"/>
+                  <span class="mediaInfoText"><%= media.uniqueFileName %></span>
+                  <span class="mediaInfoText">
+                     <input id="mainMediaCheck" type="checkbox" checked=":= media == post.mainMedia" changeEvent="=: post.mainMedia = media"/> main
+                     <input type="image" class="clearMediaButton" src="/icons/x-square-sm.svg" clickEvent="=: removeElementMedia(media.id)"/>
+                  </span>
+                  <span class="mediaInfoText"><input id="mediaVisibleCheckbox" type="checkbox" checked=":= media.visible" changeEvent="=: updateMediaVisible(media, checked)"/> visible</span>
+                  <span class="mediaInfoText"><%= media.filterPattern %></span>
+               </div>
+            </div>
+            <div id="findMedia" class="formField">
+               <label for="findMediaField">Add existing media</label>
+               <input id="findMediaField" type="text" list="= findMediaSuggestions.getId()" value=":=: findMediaText"
+                      keyUpEvent="=: updateMatchingMedia(value)" changeEvent="=: updateElementMedia(value)"
+                      placeholder="search for media files"/>
+               <datalist id="findMediaSuggestions">
+                  <option repeat=":= matchingMedia" repeatVarName="matchedMedia" value=":= matchedMedia.uniqueFileName"/>
+               </datalist>
+            </div>
+            <form id="addMediaForm" class="formField" method="post" enctype="multipart/form-data">
+            <%!
+               submitResult =: addMediaResult(submitResult);
+               submitError =: addMediaError(submitError);
+            %>
+               <label for="uploadFile">Add new media</label>
+               <input type="file" id="uploadFile" name="fileToUpload" accept=".jpg, .jpeg, .png"
+                      changeEvent="=: addMediaForm.submitFormData("/mediaUpload")"/>
+               <input id="mediaManagerIdField" type="hidden" name="mediaManagerId" value=":= String.valueOf(site.mediaManager.id)"/>
+            </form>
+            <div>
+               <div visible=":= !addMediaForm.submitInProgress">
+                  <div class="formError"><%= mediaErrorMessage %></div>
+                  <div class="formStatus"><%= mediaStatusMessage%></div>
+                  <div id="alt">
+                     Uploading...
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <div id="addCancel" visible=":= addInProgress" class="formField confirmButtons">
+            <input type="button" value="Save post" disabled=":= post == null || post.propErrors != null" clickEvent="=: completeAddPost()"/>
+            <input type="button" class="rightButton" value="Cancel" clickEvent="=: cancelAddPost()"/>
+
+            <div id="alt" class="formField confirmButtons">
+               <input type="button" value="Done editing post" clickEvent="=: doneEditingPost()"/>
+            </div>
+         </div>
+      </div>
+
+      <span id="postStatusView" class="errorMessage" visible=":= errorMessage != null">
+         <%= errorMessage %>
+         <div id="alt" class="statusMessage"><%= statusMessage %></div>
+      </span>
+   </div>
+
+   <div id="listView">
+      <div id="resultsHeaderView" visible=":= postList != null && postList.size() > 0">
+         <div class="leftFormStatus">Search results</div>
+         <div id="resultsHeader" class="headerRow">
+            <span class="wideHeaderColumn">Name</span>
+            <span class="headerColumn">Media</span>
+            <span class="headerColumn">Path name</span>
+            <span class="headerColumn">Category</span>
+            <span class="smallHeaderColumn">Visible</span>
+            <span class="headerColumn">Last modified</span>
+            <span class="smallHeaderColumn"></span>
+            <div id="alt" class="formStatus">
+               <%= searchStatusMessage %>
+            </div>
+         </div>
+      </div>
+      <div id="postElemView" repeat=":= postList" repeatVarName="postElem"
+           class=':= postElem == post ? "selectedPostRow" : "postRow"'>
+        <span class="widePostColumn" clickEvent="=: doSelectPost(postElem)">
+           <input type="checkbox" checked=":= post == postElem"/>
+           <%= postElem.name %>
+        </span>
+        <span class="postColumn" clickEvent="=: doSelectPost(postElem)">
+           <img src=":= postElem.mainMedia.thumbUrl"/>
+        </span>
+        <span class="postColumn"> <a target="postView" href=':= "/sites/" + site.sitePathName + "/post/" + postElem.pathName'><%= postElem.pathName %></a></span>
+        <span class="postColumn"> <%= postElem.parentCategory == null ? "none" : postElem.parentCategory.pathName %> </span>
+        <span class="smallPostColumn"> <input type="checkbox" checked=":=: postElem.visible"/> </span>
+        <span class="postColumn"> <%= TextUtil.formatUserDate(postElem.lastModified, true) %> </span>
+        <input type="image" class="removePostButton" src="/icons/x-square.svg" clickEvent="=: removePost(postElem.id)"/>
+      </div>
+   </div>
+</div>

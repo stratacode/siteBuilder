@@ -1,3 +1,4 @@
+@Sync(onDemand=true)
 class SearchResultEntry implements Comparable {
    SearchResultGroup group;
    String name;

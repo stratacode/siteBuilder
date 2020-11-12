@@ -1,0 +1,11 @@
+<html>
+   <body>
+      <div id="mgrFrame">
+         <div id="mgrNavBar">
+            <span id="mgrNav">
+               <a id="postLink" class=':= managerPage.equals("post") || managerPage.equals("blog category") ? "selectedLink" : ""' href="/manage/post">Blog</a>
+            </span>
+         </div>
+      </div>
+   </body>
+</html>

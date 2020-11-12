@@ -34,7 +34,7 @@
    <div id="pageDetailForm" visible=":= pageMgr.currentPage != null">
       <div class="formTitle">
          <%= pageMgr.addInProgress ? "Unsaved" : "Edit" %> <%= pageMgr.pageType.pageDisplayName %>
-         <span class="titleDetailLink" visible=":= !pageMgr.addInProgress"><a target="productView" href=':= pageMgr.currentPage.pageUrl'>(open page in new tab)</a></span>
+         <span class="titleDetailLink" visible=":= !pageMgr.addInProgress"><a target="previewView" href=':= pageMgr.currentPage.pageUrl'>(open page in new tab)</a></span>
       </div>
 
       <div class="formField">
@@ -97,7 +97,7 @@
             <input type="checkbox" checked=":= pageMgr.currentPage == curRowPage"/>
             <%= curRowPage.pageName %>
          </span>
-         <span class="widePageColumn"> <a target="productView" href=":= curRowPage.pageUrl"><%= curRowPage.pagePathName %></a> </span>
+         <span class="widePageColumn"> <a target="previewView" href=":= curRowPage.pageUrl"><%= curRowPage.pagePathName %></a> </span>
          <input type="checkbox" checked=":=: curRowPage.visible" class="smallPageColumn"/>
          <input type="image" class="removeSiteButton" src="/icons/x-square.svg" class="smallPageColumn"
                 clickEvent="=: pageMgr.removePage(curRowPage.id)"/>

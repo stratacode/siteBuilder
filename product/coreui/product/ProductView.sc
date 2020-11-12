@@ -46,7 +46,7 @@ class ProductView extends CatalogElementView {
    @Sync(initDefault=true)
    int currentQuantity;
 
-   CatalogElement getCatalogElement() {
+   ManagedElement getManagedElement() {
       return product;
    }
 

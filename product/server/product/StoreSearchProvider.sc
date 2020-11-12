@@ -20,7 +20,7 @@ class StoreSearchProvider implements ISearchProvider {
       ArrayList<SearchResult> res = total == 0 ? null : new ArrayList<SearchResult>(total);
 
       if (numCats > 0) {
-         SearchResultGroup catGroup = new SearchResultGroup(this, "Categories", categoryPriority);
+         SearchResultGroup catGroup = new SearchResultGroup("Categories", categoryPriority);
 
          for (int i = 0; i < numCats; i++) {
             Category cat = catItems.get(i);
@@ -32,7 +32,7 @@ class StoreSearchProvider implements ISearchProvider {
       }
 
       if (numProds > 0) {
-         SearchResultGroup prodGroup = new SearchResultGroup(this, "Products", productPriority);
+         SearchResultGroup prodGroup = new SearchResultGroup("Products", productPriority);
 
          for (int i = 0; i < numProds; i++) {
             Product prod = prodItems.get(i);

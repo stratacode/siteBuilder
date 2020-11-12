@@ -1,3 +1,4 @@
+@Sync
 class SearchResult {
    int totalResults; 
    List<SearchResultGroup> resultGroups;

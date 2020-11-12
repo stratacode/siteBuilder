@@ -39,7 +39,7 @@ CategoryView {
          }
       }
 
-      validateCatalogElement();
+      validateManagedElement();
    }
 
    void startCategorySync() {
@@ -48,7 +48,7 @@ CategoryView {
          if (syncCtx == null) {
             SyncManager.addSyncInst(category, false, false, false, "appSession", null);
          }
-         SyncManager.startSync(category, "products");
+         SyncManager.startSync(category, "allProducts");
          SyncManager.startSync(category, "subCategories");
       }
    }

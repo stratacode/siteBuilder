@@ -1,31 +1,4 @@
 <div visible=":= searchVisible">
-<%!
-   String searchText;
-   boolean searchVisible;
-   SiteView siteView;
-
-   SearchResult searchResult;
-   int searchStartIx = 0;
-   int searchMaxNum = 20;
-
-   String resultsMessage = null;
-
-   void doSearch(String value) {
-      searchResult = siteView.doSearch(siteView, value, searchStartIx, searchMaxNum);
-      if (searchResult == null || searchResult.totalResults == 0)
-         resultsMessage = "No results found for search";
-      else
-         resultsMessage = "Search results - found: ";
-      searchText = value;
-   }
-
-   void clearSearch() {
-      searchResult = null;
-      resultsMessage = null;
-      searchVisible = false;
-      searchText = "";
-   }
-%>
    <div class="searchField">
       <label for="searchTextField">Search</label>
       <input type="text" id="searchTextField" value=":= searchText" changeEvent="=: doSearch(value)"/>

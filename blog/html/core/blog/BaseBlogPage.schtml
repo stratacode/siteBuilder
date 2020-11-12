@@ -1,0 +1,9 @@
+<%@ @CompilerSettings(constructorProperties="sitePathName") %>
+<html extends="PageLayout" abstract="true" pageVisitCount="=: siteView.pageVisited()">
+   <%!
+      scope<appSession>
+      object siteView extends SiteView {
+         pathName := BaseBlogPage.this.sitePathName;
+      }
+   %>
+</html>

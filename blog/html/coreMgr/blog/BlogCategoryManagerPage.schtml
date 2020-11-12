@@ -1,0 +1,20 @@
+<%@ @URL(pattern="/manage/blogCategory[/{sitePathName=urlString}[/{categoryPathName=urlString}]]") %>
+<html extends="BaseManagerPage">
+   <%!
+      String categoryPathName;
+      managerPage = "blog category";
+   %>
+   <head>
+      <div id="libScripts">
+         <script extends="TextEditorScripts"/>
+      </div>
+   </head>
+   <body>
+      <div id="mgrFrame">
+         <div id="mgrView" extends="BlogCategoryManagerView" siteMgr=":= BlogCategoryManagerPage.this.siteMgr"
+              site=":= siteMgr.site" visible=":= siteMgr.validSite"
+              categoryPathName=":=: BlogCategoryManagerPage.this.categoryPathName">
+         </div>
+      </div>
+   </body>
+</html>

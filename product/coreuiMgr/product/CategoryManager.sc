@@ -28,7 +28,7 @@ class CategoryManager extends BaseProductManager {
    String productQueryStatus;
    String productQueryError;
 
-   void updateElementInstance(CatalogElement el) {
+   void updateElementInstance(ManagedElement el) {
       category = (Category) el;
       if (el == null)
          categoryPathName = null;

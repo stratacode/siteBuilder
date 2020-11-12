@@ -1,0 +1,5 @@
+ManagedElementView {
+   void validateManagedElement() {
+      validateCurrentMedia();
+   }
+}

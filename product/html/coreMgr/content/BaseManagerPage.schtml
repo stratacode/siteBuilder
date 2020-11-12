@@ -7,7 +7,7 @@
                   <a id="prodLink" class=':= managerPage.equals("product") ? "selectedLink" : ""' href="/manage/product">Product</a>
                   <a id="catLink" class=':= managerPage.equals("category") ? "selectedLink" : ""' href="/manage/category">Category</a>
                   <a id="skuLink" class=':= managerPage.equals("sku") ? "selectedLink" : ""' href="/manage/sku">Sku</a>
-                  <a id="skuLink" class=':= managerPage.equals("order") ? "selectedLink" : ""' href="/manage/order">Order</a>
+                  <a id="orderLink" class=':= managerPage.equals("order") ? "selectedLink" : ""' href="/manage/order">Order</a>
                </span>
             </span>
          </div>

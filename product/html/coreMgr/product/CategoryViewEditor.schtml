@@ -11,7 +11,7 @@
             <div id="categoryPathField" class="formField">
                <label for="categoryPathField">Category path name</label>
                <input type="text" id="categoryPathField" value=":=: categoryDef.categoryPathName" liveEdit="change"
-                      list="= suggestions.getId()" keyUpEvent="=: matchingCats = BaseManager.getMatchingCategories(pageMgr.store, value)"
+                      list="= suggestions.getId()" keyUpEvent="=: matchingCats = BaseProductManager.getMatchingCategories(pageMgr.store, value)"
                       class=':= categoryDef.propErrors.get("categoryPathName") == null ? "fieldInput" : "fieldInputError"'
                       changeEvent="=: pageMgr.updateViewDef(categoryDef)"/>
                <div class="formFieldError"><%= categoryDef.propErrors.get("categoryPathName") %></div>

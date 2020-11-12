@@ -222,10 +222,10 @@ PageManager {
             void run() {
                if (pagePathName == null && currentPage != null)
                   updateCurrentPage(null);
-               else if (pagePathName != null && (currentPage == null || !DynUtil.equalObjects(currentPage.pagePathName, pagePathName)) && siteMgr != null && siteMgr.store != null) {
-                  List<PageDef> foundProducts = (List<PageDef>) PageDef.findByPagePathName(pagePathName, siteMgr.store);
-                  if (foundProducts != null && foundProducts.size() > 0)
-                     updateCurrentPage(foundProducts.get(0));
+               else if (pagePathName != null && (currentPage == null || !DynUtil.equalObjects(currentPage.pagePathName, pagePathName)) && siteMgr != null && siteMgr.site != null) {
+                  List<PageDef> foundPages = (List<PageDef>) PageDef.findByPagePathName(pagePathName, siteMgr.site);
+                  if (foundPages != null && foundPages.size() > 0)
+                     updateCurrentPage(foundPages.get(0));
                }
             }
          }, 0);

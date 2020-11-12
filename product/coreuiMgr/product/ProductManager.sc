@@ -12,7 +12,7 @@ class ProductManager extends BaseProductManager {
    @Sync(resetState=true, initDefault=true)
    String productPathName;
 
-   void updateElementInstance(CatalogElement el) {
+   void updateElementInstance(ManagedElement el) {
       product = (Product) el;
       if (el == null)
          productPathName = null;

@@ -1,15 +1,6 @@
 @sc.obj.EditorSettings(displayNameProperty="name")
 @CompilerSettings(compiledOnly=true)
-abstract class CatalogElement extends ManagedResource {
-   /* The external name */
-   @Sync(resetState=true,initDefault=true)
-   String name;
-
-   @FindBy(paged=true,orderBy="-lastModified",with="store")
-   @DBPropertySettings(indexed=true)
-   @Sync(resetState=true,initDefault=true)
-   String pathName;
-
+abstract class CatalogElement extends ManagedElement {
    @Sync(resetState=true,initDefault=true)
    String shortDesc;
 
@@ -26,31 +17,7 @@ abstract class CatalogElement extends ManagedResource {
    @DBPropertySettings(indexed=true)
    Storefront store;
 
-   String keywords;
-
-   /** For the primary display for this element (images, video, etc) */
-   @Sync(resetState=true,initDefault=true)
-   ManagedMedia mainMedia;
-
-   /** Primary display when navigating to this element */
-   ManagedMedia navMedia;
-
-   /** Alternative displays */
-   @DBPropertySettings(columnType="jsonb")
-   @Sync(resetState=true,initDefault=true)
-   List<ManagedMedia> altMedia;
-
-   @DBPropertySettings(persist=false)
-   int mediaChangedCt;
-
    boolean featured;
 
-   static String validateName(String name) {
-      return IPropValidator.validateRequired("name", name);
-   }
-
-   static String validatePathName(String pathName) {
-      return ManagedResource.validatePathName("path name", pathName);
-   }
-
+   override @FindBy(paged=true,orderBy="-lastModified",with="store") pathName;
 }

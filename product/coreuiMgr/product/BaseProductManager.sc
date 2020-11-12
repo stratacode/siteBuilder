@@ -1,28 +1,5 @@
 @Sync
-abstract class BaseProductManager extends BaseManager {
-   private CatalogElement element;
-
-   /**
-    * The subclass has a product or category variable we use with bindings. Overriding the default get/set so that both that property and this
-    * update to the new value before the events for either are sent.
-    */
-   @Sync(resetState=true, initDefault=true)
-   @Bindable(manual=true)
-   void setElement(CatalogElement el) {
-      element = el;
-      updateElementInstance(el);
-      Bind.sendChange(this, "element", el);
-      validateElement();
-   }
-   CatalogElement getElement() {
-      return element;
-   }
-
-   void validateElement() {
-   }
-
-   abstract void updateElementInstance(CatalogElement el);
-
+abstract class BaseProductManager extends BaseElementManager {
    @Sync(resetState=true, initDefault=true)
    String searchText;
 
@@ -43,29 +20,18 @@ abstract class BaseProductManager extends BaseManager {
    String categoryErrorMessage;
    String categoryStatusMessage;
 
-   String findMediaText;
-   String mediaStatusMessage;
-   String mediaErrorMessage;
-   boolean uploadInProgress = false;
-
    List<Category> matchingCategories;
 
-   List<ManagedMedia> matchingMedia;
-
    /**
-    * Save the un-validated html in a temporary property so that it gets sync'd properly for session reset
-    * When this changes, a binding triggers updateLongDesc to do the validation and update product.longDesc
+    * Warning: stores the unvalidated html - needs to be sync'd for session reset to keep from losing the
+    * local html changes.
+    * When this property changes, a binding triggers updateLongDesc to do the validation and then update product.longDesc
     */
    @Sync(resetState=true, initDefault=true)
    String longDescHtml;
 
    @Sync(resetState=true, initDefault=true)
    String parentCategoryPathName;
-
-   void clearMediaErrors() {
-      mediaStatusMessage = null;
-      mediaErrorMessage = null;
-   }
 
    void resetForm() {
       searchText = "";
@@ -76,7 +42,7 @@ abstract class BaseProductManager extends BaseManager {
 
    void clearFormErrors() {
       uploadInProgress = false;
-      clearMediaErrors();
+      super.clearFormErrors();
 
       categoryErrorMessage = categoryStatusMessage = null;
    }
@@ -100,5 +66,7 @@ abstract class BaseProductManager extends BaseManager {
       category.pathName = pathName;
    }
 
-   abstract String getElementType();
+   CatalogElement getCatalogElement() {
+      return (CatalogElement) element; // Product or Category
+   }
 }

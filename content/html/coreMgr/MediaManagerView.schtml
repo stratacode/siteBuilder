@@ -37,6 +37,19 @@
    <div class="formStatus"><%= currentMediaStatus %></div>
    <div class="formError"><%= currentMediaError %></div>
 
+   <div id="findMediaActions" class="formField">
+      Display image widths (pixels)
+      <div id="mediaResList" class="mediaResList">
+         <span id="mediaRes" class="mediaResEntry" repeat=":= mediaManager.stdImageWidths"
+               clickEvent="=: mediaManager.removeResolution(res)" repeatVarName="res"><%= res %> <img src="/icons/little-x.svg"/></span>
+      </div>
+   </div>
+   <div id="mediaResActions" class="formField">
+      <input id="newRes" type="number" min="0" max="4096"/>
+      <input type="button" value="Add resolution" class="rightButton" clickEvent="=: mediaManager.addResolution(newRes.value)"/>
+      <input type="button" value="Refresh media" id="refreshMediaButton" class="rightButton" clickEvent="=: mediaManager.refreshAllMedia()"/>
+   </div>
+
    <div id="currentMediaView">
       <div class="headerRow" visible=":= currentMedia != null && currentMedia.size() > 0">
          <span class="wideHeaderColumn">File name</span>

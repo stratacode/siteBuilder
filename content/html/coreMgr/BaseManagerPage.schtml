@@ -72,7 +72,7 @@
             </div>
          </div>
 
-         <div id="alt">
+         <div id="alt" class="mgrFrame">
             <div id="loginView" visible=":= siteMgr.userView.loginStatus == LoginStatus.NotLoggedIn">
                <div class="formTitle">Login to manage sites</div>
                <div id="userFormField" class="formField">

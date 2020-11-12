@@ -1,0 +1,17 @@
+<%@
+   @CompilerSettings(constructorProperties="sitePathName,postPathName")
+   @URL(pattern="/sites/{sitePathName=urlString}/post/{postPathName=urlString}", testURLs={"/sites/bobo-blog/post/bobata"})
+%>
+<html extends="BaseBlogPage">
+   <%! 
+      String postPathName;
+   %>
+   <body>
+      <div id="appFrame">
+         <div id="pageBody">
+            <div id="postView" extends="BlogPostView" siteView=":= BlogPostPage.this.siteView" pathName=":= BlogPostPage.this.postPathName">
+            </div>
+         </div>
+      </div>
+   </body>
+</html>

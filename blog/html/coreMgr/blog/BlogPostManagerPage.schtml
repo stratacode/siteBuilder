@@ -1,0 +1,20 @@
+<%@ @URL(pattern="/manage/post[/{sitePathName=urlString}[/{postPathName=urlString}]]") %>
+<html extends="BaseManagerPage">
+   <%!
+      String postPathName;
+      managerPage = "post";
+   %>
+   <head>
+      <div id="libScripts">
+         <script extends="TextEditorScripts"/>
+      </div>
+   </head>
+   <body>
+      <div id="mgrFrame">
+         <div id="mgrView" extends="BlogPostManagerView" siteMgr=":= BlogPostManagerPage.this.siteMgr"
+              site=":= siteMgr.site" visible=":= siteMgr.validSite"
+              postPathName=":=: BlogPostManagerPage.this.postPathName">
+         </div>
+      </div>
+   </body>
+</html>

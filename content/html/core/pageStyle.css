@@ -191,8 +191,12 @@ body {
    margin-bottom: 5px;
 }
 
-.confirmButtons, .formTitle, .formError, .formStatus,  .formMessage {
+.confirmButtons, .formTitle, .formError, .formStatus,  .formMessage, .pageFormError {
    margin-left: 21%;
+}
+
+.pageFormError {
+   margin-top: 10px;
 }
 
 .centeredForm {
@@ -434,8 +438,8 @@ body {
 }
 
 .searchGroupView {
-   margin-top: 10px;
-   border-bottom: solid 1px #aaa;
+   margin-top: 15px;
+   border-top: solid 1px #aaa;
    padding-bottom: 15px;
 }
 
@@ -444,7 +448,8 @@ body {
    display: flex;
    align-items: center;
 }
-.searchResultsListView {
+
+.searchResultsListView, .mediaResList {
    display: flex;
    flex-direction: row;
    flex-wrap: wrap;
@@ -624,3 +629,117 @@ input[type=button]:hover {
    padding-left: 3px;
 }
 
+
+
+.categoryView, .productView, .postView {
+   max-width: 1000px;
+   display: flex;
+   flex-direction: column;
+}
+
+.productInfoView, .thumbView, .productImageView, .categoryDesc, .categoryViewImage, .postInfoView, .postImage View {
+   margin-top: 10px;
+   margin-left: 10px;
+   margin-right: 10px;
+   padding: 0px;
+}
+
+.postInfoView {
+   max-width: 45em;
+}
+
+.productNameView, .categoryNameView, .postNameView {
+   font-size: 150%;
+   font-weight: bold;
+}
+
+.postNameView {
+   margin-bottom: 5px;
+}
+
+.thumbNavLink {
+   text-decoration: none;
+   display: flex;
+   flex-direction: column;
+}
+
+.productsView, .subCategoriesView, .postsView {
+   display: flex;
+}
+
+.thumbImage, .productViewImage {
+  width: fit-content;
+  height: fit-content;
+}
+
+.thumbImageBox {
+   height: 100px;
+   display: flex;
+   align-items: center;
+}
+
+.postViewImageBox {
+   width: 100%;
+}
+
+.postViewImage {
+   width: 100%;
+}
+
+@media (min-width: 900px) {
+   .productViewImageBox {
+      width: 640px;
+      height: 640px;
+   }
+
+   .viewImage {
+      width: 640px;
+   }
+}
+
+@media (max-width: 900px) {
+   .productViewImageBox {
+      width: 320px;
+      height: 320px;
+   }
+
+   .viewImage {
+      width: 320px;
+   }
+}
+
+.productViewImageBox, .postViewImageBox {
+   display: flex;
+   align-items: center;
+}
+
+.thumbNailsView {
+   display: flex;
+   flex-direction: row;
+}
+
+.thumbView {
+   cursor: pointer;
+   display: flex;
+   align-items: center;
+}
+
+.thumbViewSelected {
+   border: solid 3px #dc4f44;
+}
+
+.categoryNavView {
+   margin-top: 10px;
+   margin-left: 5px;
+   margin-bottom: 5px;
+}
+
+.categoryLink {
+  text-decoration: none;
+  font-size: 120%;
+  color: #000;
+}
+
+#categoryInfoView {
+   margin-top: 10px;
+}

@@ -13,7 +13,7 @@ class PageSearchProvider implements ISearchProvider {
       if (searchItems == null || (numResults = searchItems.size()) == 0)
          return;
 
-      SearchResultGroup group = new SearchResultGroup(this, "Pages", pageDefPriority);
+      SearchResultGroup group = new SearchResultGroup("Pages", pageDefPriority);
 
       group.results = new ArrayList<SearchResultEntry>(numResults);
       for (int i = 0; i < numResults; i++) {

@@ -2,7 +2,7 @@ import java.util.Map;
 
 import sc.servlet.UploadResult;
 
-@URL(pattern="/upload", mimeType="text/plain")
+@URL(pattern="/upload", mimeType="text/plain", testScripts={"none"})
 class UploadTestPage extends UploadPage {
    uploadPath = "/tmp/imageUpload"; 
 

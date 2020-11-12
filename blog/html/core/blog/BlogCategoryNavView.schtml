@@ -1,0 +1,11 @@
+<div class="categoryNavView" visible=":= categoryPath != null && categoryPath.size() > 0">
+   <%!
+      SiteContext site;
+      int lastPath := categoryPath.size() - 1; 
+      List<BlogCategory> categoryPath;
+   %>
+   <span id="categoryPathView" class="categoryPath" repeat=":= categoryPath" repeatVarName="category">
+      <a href='= "/sites/" + site.sitePathName + "/blogCategory/" + category.pathName' class="categoryLink"><%= category.name %></a>
+      <span visible=":= lastPath != categoryPathView.this.repeatIndex">›</span>
+   </span>
+</div>

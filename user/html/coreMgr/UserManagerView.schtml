@@ -94,7 +94,7 @@
                </div>
                <div id="sessionEventsRepeat" repeat=":= userSession.sessionEvents" repeatVarName="sessionEvent" class="eventRow">
                   <span class="eventColumn"><%= sessionEvent.eventName %></span>
-                  <span class="wideEventColumn"><a target="productView" href='= sessionEvent.getEventTarget(site)' bodyOnly=":= !sessionEvent.hasLink"><%= sessionEvent.eventDetail %></a></span>
+                  <span class="wideEventColumn"><a target="previewView" href='= sessionEvent.getEventTarget(site)' bodyOnly=":= !sessionEvent.hasLink"><%= sessionEvent.eventDetail %></a></span>
                   <span class="wideEventColumn">
                      <%= userSession.getEventTimeDisplay(sessionEventsRepeat.this.repeatIndex) %>
                   </span>

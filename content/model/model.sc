@@ -3,6 +3,7 @@ package sc.content;
 import sc.content.ManagedResource;
 import sc.content.ManagedImage;
 import sc.content.ManagedMedia;
+import sc.content.ManagedElement;
 import sc.content.MediaManager;
 
 import java.util.Date;

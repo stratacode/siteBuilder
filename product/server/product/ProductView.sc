@@ -52,7 +52,7 @@ ProductView {
          }
       }
 
-      validateCatalogElement();
+      validateManagedElement();
       validateInStock();
    }
 
@@ -252,7 +252,6 @@ ProductView {
          if (syncCtx == null) {
             SyncManager.addSyncInst(product, false, false, false, "appSession", null);
          }
-         SyncManager.startSync(product, "products");
          SyncManager.startSync(product, "subCategories");
          SyncManager.startSync(product, "sku");
          SyncManager.startSync(product, "skuParts");

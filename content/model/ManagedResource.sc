@@ -83,7 +83,9 @@ abstract class ManagedResource implements IPropValidator {
          if (res != null)
             return res;
       }
-      if (url.length() != 0 && !url.startsWith("http://") && !url.startsWith("https://") && !url.startsWith("/"))
+      if (url == null || url.length() == 0) // not required so empty is ok
+         return null;
+      if (!url.startsWith("http://") && !url.startsWith("https://") && !url.startsWith("/"))
          return "Invalid URL - must start with / or http:// or https://";
       for (int i = 0; i < url.length(); i++) {
          char c = url.charAt(i);
@@ -93,5 +95,4 @@ abstract class ManagedResource implements IPropValidator {
       return null;
    }
 }
-
 

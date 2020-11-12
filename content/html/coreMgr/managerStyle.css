@@ -50,7 +50,7 @@ input[type=button]:hover {
 
 .findMediaButton, .clearMediaButton, .clearOptionButton, .findProductButton, .clearProductButton, .findCategoryButton, .clearCategoryButton,
  .findUserButton, .clearUserButton, .findSiteButton, .clearSiteButton, .findPageButton, .clearPageButton, .removeSkuOptionButton,
-  .findOrdersButton, .clearOrdersButton, .findSkusButton .clearSkusButton {
+  .findOrdersButton, .clearOrdersButton, .findSkusButton .clearSkusButton, .findPostButton {
    vertical-align: bottom;
    outline-style: none;
 }
@@ -67,25 +67,25 @@ input[type=button]:hover {
 
 .mediaRow, .selectedMediaRow, .headerRow, .productRow, .selectedProductRow, .categoryRow, .selectedCategoryRow, .mainSkuRow,
 .siteRow, .selectedSiteRow, .pageRow, .selectedPageRow, .orderRow, .selectedOrderRow, .currencyRow, .countryRow, .userRow, .selectedUserRow,
- .sessionRow, .eventRow {
+ .sessionRow, .eventRow, .postRow, .selectedPostRow {
    display: flex;
    align-items: center;
    padding-left: 2px;
 }
 
 .mediaRow, .selectedMediaRow, .productRow, .selectedProductRow, .categoryRow, .selectedCategoryRow, .mainSkuRow, .selectedSkuRow,
-.pageRow, .selectedPageRow, .orderRow, .selectedOrderRow, .userRow, .selectedUserRow, .sessionRow, .eventRow {
+.pageRow, .selectedPageRow, .orderRow, .selectedOrderRow, .userRow, .selectedUserRow, .sessionRow, .eventRow, .postRow, .selectedPostRow {
    cursor: pointer;
    margin-top: 2px;
    margin-bottom: 2px;
 }
 
-.selectedMediaRow, .selectedProductRow, .selectedCategoryRow, .selectedSkuRow, .selectedPageRow, .selectedOrderRow, .selectedUserRow {
+.selectedMediaRow, .selectedProductRow, .selectedCategoryRow, .selectedSkuRow, .selectedPageRow, .selectedOrderRow, .selectedUserRow, .selectedPostRow {
    background-color: #eef1ff;
 }
 
 .smallMediaColumn, .smallHeaderColumn, .smallProductColumn, .smallSkuColumn, .smallSiteColumn, .smallPageColumn,
-.smallOrderColumn, .smallUserColumn, .smallSessionRow, .smallEventRow {
+.smallOrderColumn, .smallUserColumn, .smallSessionRow, .smallEventRow, .smallPostRow {
    padding: 2px;
    width: 60px;
    flex-grow: 0;
@@ -93,7 +93,8 @@ input[type=button]:hover {
    overflow: auto;
 }
 
-.mediaColumn, .headerColumn, .productColumn, .skuColumn, .categoryColumn, .pageColumn, .orderColumn, .currencyColumn, .countryColumn, .userColumn, .eventColumn, .sessionColumn {
+.mediaColumn, .headerColumn, .productColumn, .skuColumn, .categoryColumn, .pageColumn, .orderColumn, .currencyColumn,
+.countryColumn, .userColumn, .eventColumn, .sessionColumn, .postColumn {
    padding: 2px;
    width: 100px;
    flex-grow: 0;
@@ -102,7 +103,7 @@ input[type=button]:hover {
 }
 
 .wideMediaColumn, .wideHeaderColumn, .wideProductColumn, .wideSkuColumn, .wideCategoryColumn, .wideSiteColumn, .widePageColumn, .wideOrderColumn, .wideCountryColumn, .wideUserColumn,
- .wideSessionColumn, .wideEventColumn {
+ .wideSessionColumn, .wideEventColumn, .widePostColumn {
    padding: 2px;
    width: 180px;
    flex-grow: 0;
@@ -116,7 +117,7 @@ input[type=button]:hover {
    padding-bottom: 2px;
 }
 
-#mgrFrame {
+#mgrFrame, .mgrFrame {
    /* max-width: 1000px;*/
     max-width: 975px;
    margin: auto;
@@ -212,7 +213,8 @@ input[type=button]:hover {
 }
 
 .confirmButtons, .formTitle, .pageTitle, .checkFormView, .skuOptionsSummary, .formError, .formStatus,
-#addSkuButtons, .subFormTitle, .skuListTitle, .formMessage, #orderTypeForm, .formButtonRow, #userTypeForm {
+#addSkuButtons, .subFormTitle, .skuListTitle, .formMessage, #orderTypeForm, .formButtonRow, #userTypeForm,
+#findMediaActions, #mediaResActions {
    margin-left: 21%;
 }
 
@@ -286,7 +288,7 @@ input[type=button]:hover {
    background: #eef1ff;
 }
 
-.prodMediaView, .catMediaView {
+.prodMediaView, .catMediaView, .postMediaView {
    margin: 5px;
    display: flex;
    flex-direction: column;
@@ -665,3 +667,26 @@ input[type=button]:hover {
    align-items: center;
 }
 
+
+.prodMediaView img, .postMediaView img {
+   width: fit-content;
+}
+
+.mediaResEntry {
+   font-style: italic;
+   font-size: 85%;
+   border-radius: 4px;
+   margin-left: 2px;
+   margin-right: 5px;
+   padding-left: 4px;
+   padding-right: 2px;
+   padding-top: 2px;
+   padding-bottom: 2px;
+   background: #ccc;
+   cursor: pointer;
+}
+
+.mediaResEntry img {
+   padding-left: 4px;
+   vertical-align: middle;
+}

@@ -1,0 +1,14 @@
+<%@ @URL(pattern="/sites/{sitePathName=urlString}/blogCategory/{categoryPathName=urlString}",
+         testURLs={"/sites/testBlog/blogCategory/hello"}) %>
+<html extends="BaseBlogPage">
+   <%!
+      String categoryPathName;
+   %>
+   <body>
+      <div id="appFrame">
+         <div id="pageBody">
+            <div id="categoryView" extends="BlogCategoryView" pathName=":= categoryPathName" siteView=":= BlogCategoryPage.this.siteView"/>
+         </div>
+      </div>
+   </body>
+</html>

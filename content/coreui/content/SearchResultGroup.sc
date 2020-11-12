@@ -1,13 +1,12 @@
+@Sync
 class SearchResultGroup {
-   ISearchProvider provider;
    String resultTypeName;
 
    List<SearchResultEntry> results = new ArrayList<SearchResultEntry>();
 
    int priority;
 
-   SearchResultGroup(ISearchProvider provider, String resultTypeName, int priority) {
-      this.provider = provider;
+   SearchResultGroup(String resultTypeName, int priority) {
       this.resultTypeName = resultTypeName;
       this.priority = priority;
    }

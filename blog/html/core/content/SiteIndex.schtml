@@ -1,0 +1,60 @@
+<%@ import java.util.HashSet; %>
+<html>
+   <%!
+      static String getPostManagerURL(BlogPost post) {
+        return "/manage/post/" + post.site.sitePathName + "/" + post.pathName;
+      }
+      static String getCategoryManagerURL(BlogCategory category) {
+         return "/manage/blogCategory/" + category.site.sitePathName + "/" + category.pathName;
+      }
+
+
+      @sc.obj.HTMLSettings(returnsHTML=true)
+      StringBuilder outputSiteInfo(SiteContext site) {
+         StringBuilder out = new StringBuilder();
+         List<BlogCategory> categories = (List<BlogCategory>) BlogCategory.getDBTypeDescriptor().findBy(Arrays.asList("site"), Arrays.asList(site), null, Arrays.asList("-lastModified"), 0, 20);
+         HashSet<String> seenPaths = new HashSet<String>();
+         for (int i = 0; i < categories.size(); i++) {
+            BlogCategory category = categories.get(i);
+            if (seenPaths.contains(category.pathName))
+               continue;
+            seenPaths.add(category.pathName);
+            %>
+               <div class="siteLinkBox">
+                  <div class="siteLinkView">
+                     <a href=':= category.pageUrl'>
+                        <% if (category.mainMedia != null) { %>
+                           <div class="siteLinkThumb"><img src="= category.mainMedia.thumbUrl"/></div>
+                        <% } %>
+                        <div class="siteLinkTitle"><%= category.name %> </div>
+                     </a>
+                     <div class="siteLinkType">Blog category <a visible="= isManageable(category.site)" href="= getCategoryManagerURL(category)"><img src="/icons/settings.svg"/></a></div>
+                  </div>
+               </div>
+            <%
+         }
+         List<BlogPost> posts = (List<BlogPost>) BlogPost.getDBTypeDescriptor().findBy(Arrays.asList("site"), Arrays.asList(site), null, Arrays.asList("-lastModified"), 0, 20);
+         seenPaths.clear();
+         for (int i = 0; i < posts.size(); i++) {
+            BlogPost post = posts.get(i);
+            if (seenPaths.contains(post.pathName))
+               continue;
+            seenPaths.add(post.pathName);
+            %>
+               <div class="siteLinkBox">
+                     <div class="siteLinkView">
+                        <a href=':= post.pageUrl'>
+                           <% if (post.mainMedia != null) { %>
+                              <div class="siteLinkThumb"><img src="= post.mainMedia.thumbUrl"/></div>
+                           <% } %>
+                           <div class="siteLinkTitle"><%= post.name %> </div>
+                        </a>
+                        <div class="siteLinkType">Post <a visible="= isManageable(post.site)" href="= getPostManagerURL(post)"><img src="/icons/settings.svg"/></a></div>
+                     </div>
+               </div>
+            <%
+         }
+         return out;
+      }
+   %>
+</html>

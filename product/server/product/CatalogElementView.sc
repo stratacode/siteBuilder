@@ -1,6 +1,5 @@
 CatalogElementView {
-
-   void validateCatalogElement() {
+   void validateManagedElement() {
       ArrayList<Category> newCategoryPath = new ArrayList<Category>();
       CatalogElement elem = getCatalogElement();
       if (elem != null) {

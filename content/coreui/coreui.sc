@@ -13,6 +13,8 @@ import sc.user.currentUserbase;
 import sc.user.UserView;
 import sc.user.AddressEditView;
 
+import sc.content.ManagedElementView;
+
 import sc.content.SearchResult;
 import sc.content.SearchResultEntry;
 import sc.content.SearchResultGroup;

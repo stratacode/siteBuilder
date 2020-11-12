@@ -1,0 +1,9 @@
+<div>
+   <%!
+      ManagedElementView(SiteView siteView, String pathName, Element parentNode, String id, Object repeatVar, int ix) {
+         super(parentNode, id, repeatVar, ix);
+         this.siteView = siteView;
+         this.pathName = pathName;
+      }
+   %>
+</div>

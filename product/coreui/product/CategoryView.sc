@@ -5,7 +5,7 @@ class CategoryView extends CatalogElementView {
    @Sync(initDefault=true)
    String categoryViewError;
 
-   CatalogElement getCatalogElement() {
+   ManagedElement getManagedElement() {
       return category;
    }
 

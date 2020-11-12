@@ -31,7 +31,7 @@
    <body>
       <div id="appFrame">
          <div id="pageBody">
-             <div id="formError"><%= pageView.errorMessage %></div>
+             <div id="pageFormError" class="pageFormError" visible=":= pageView.errorMessage != null"><%= pageView.errorMessage %></div>
              <div id="pageChildView" repeat=":= SitePage.this.pageView.childViews" repeatWrapper="ChildViewWrapper"/>
          </div>
       </div>
