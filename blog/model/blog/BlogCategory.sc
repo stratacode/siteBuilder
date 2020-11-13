@@ -20,7 +20,7 @@ class BlogCategory extends BlogElement {
    @Sync(initDefault=true)
    List<BlogPost> allPosts;
 
-   String pageUrl := "/" + site.sitePathTypeName + "/" + site.sitePathName + "/blogCategory/" + pathName;
+   String pageUrl := "/sites/" + site.sitePathName + "/blogCategory/" + pathName;
 
    override @FindBy(paged=true,orderBy="-lastModified",with="site") pathName;
 }

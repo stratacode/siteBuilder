@@ -245,11 +245,75 @@ SiteManager {
          Bind.sendChangedEvent(currentMenuItem, "detailString");
    }
 
+   void updateMenuItemOrder(BaseMenuItem menuItem, String numberStr) {
+      try {
+         double orderValue = Double.parseDouble(numberStr);
+         menuItem.orderValue = orderValue;
+         saveMenuItems();
+      }
+      catch (NumberFormatException exc) {
+         System.err.println("*** Error updating menuItemOrder: " + exc);
+      }
+   }
+
    void removeNavMenuItem(NavMenuDef navMenu, BaseMenuItem toRem) {
       navMenu.subMenuItems.remove(toRem);
       saveMenuItems();
    }
 
+   void addSubMenuItem(NavMenuDef menu) {
+      List<BaseMenuItem> menuItems = menu.menuItems;
+      boolean set = false;
+      if (menuItems == null) {
+         menuItems = new BArrayList<BaseMenuItem>();
+         set = true;
+      }
+      NavMenuItem newItem = new NavMenuItem();
+      menuItems.add(newItem);
+      if (set) {
+         menu.subMenuItems = menuItems;
+      }
+      currentNavMenuItem = newItem;
+      saveMenuItems();
+   }
+
+   void addMenuItem() {
+      NavMenuItem newItem = new NavMenuItem();
+      List<BaseMenuItem> menuItems = site.menuItems;
+      boolean set = false;
+      if (menuItems == null) {
+         menuItems = new BArrayList<BaseMenuItem>();
+         set = true;
+      }
+      menuItems.add(newItem);
+      if (set)
+         site.menuItems = menuItems;
+      currentMenuItem = newItem;
+      saveMenuItems();
+   }
+
+   void addNavMenu() {
+      NavMenuDef newMenu = new NavMenuDef();
+      List<BaseMenuItem> menuItems = site.menuItems;
+      boolean set = false;
+      if (menuItems == null) {
+         menuItems = new BArrayList<BaseMenuItem>();
+         set = true;
+      }
+      menuItems.add(newMenu);
+      if (set)
+         site.menuItems = menuItems;
+      currentMenuItem = newMenu;
+      saveMenuItems();
+   }
+
+   void removeMenuItem(BaseMenuItem toRem) {
+      if (site.menuItems != null)
+         site.menuItems.remove(toRem);
+      if (toRem == currentNavMenuItem)
+         currentNavMenuItem = null;
+      saveMenuItems();
+   }
 
    void updateSiteAdmin(UserProfile profile, boolean newVal) {
       if (newVal) {
@@ -265,7 +329,6 @@ SiteManager {
          site.siteAdmins.remove(profile);
       }
    }
-
 
    void login() {
       if (userView.login()) {

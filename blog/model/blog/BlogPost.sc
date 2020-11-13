@@ -23,5 +23,5 @@ class BlogPost extends BlogElement {
 
    override @DBPropertySettings(reverseProperty="childPosts") parentCategory;
 
-   String pageUrl := "/" + site.sitePathTypeName + "/" + site.sitePathName + "/post/" + pathName;
+   String pageUrl := "/sites/" + site.sitePathName + "/post/" + pathName;
 }

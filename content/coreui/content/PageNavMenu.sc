@@ -6,11 +6,12 @@ class PageNavMenu extends NavMenu {
    SiteContext siteContext := siteView.siteContext;
    siteView =: validateSiteView();
 
-   siteContext =: Bind.sendChangedEvent(this, "menuItems");
-
    boolean loginVisible = false;
 
    boolean searchVisible = false;
+
+   List<BaseMenuItem> customMenuItems := siteContext.menuItems;
+   customMenuItems =: menuItemsChanged();
 
    object homeItem extends NavMenuItem {
       name := siteContext == null ? "StrataCode site builder" : siteContext.siteName;
@@ -23,12 +24,16 @@ class PageNavMenu extends NavMenu {
       //siteContext = siteView == null ? null : siteView.siteContext;
    }
 
+   void menuItemsChanged() {
+      Bind.sendChangedEvent(this, "menuItems");
+   }
+
    @Bindable(manual=true)
    List<BaseMenuItem> getMenuItems() {
       List<BaseMenuItem> ores = super.getMenuItems();
       if (siteContext == null)
          return ores;
-      List<BaseMenuItem> dres = siteContext.menuItems;
+      List<BaseMenuItem> dres = customMenuItems;
       ArrayList<BaseMenuItem> res = new ArrayList<BaseMenuItem>();
       if (ores != null)
          res.addAll(ores);

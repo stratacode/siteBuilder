@@ -51,8 +51,11 @@
       <div id="menuItemsView" class="subFormView">
          <div class="subFormTitle">Custom menu items</div>
          <div id="noItemsView" visible=":= siteMgr.site.menuItems == null || siteMgr.site.menuItems.size() == 0" class="menuItemsEmptyTitle">No custom menu items</div>
-         <div id="menuItemRepeat" repeat=":= siteMgr.site.menuItems" repeatVarName="menuItem" class=':= menuItem == siteMgr.currentMenuItem ? "selectedMenuItemEntry" : "menuItemEntry"'>
-            <div id="menuItemSel" clickEvent="=: siteMgr.currentMenuItem = menuItem"><%= menuItem.detailString %></div>
+         <div id="menuItemRepeat" repeat=":= siteMgr.site.menuItems" repeatVarName="menuItem"
+              clickEvent="=: siteMgr.currentMenuItem = menuItem"
+              class=':= menuItem == siteMgr.currentMenuItem ? "selectedMenuItemEntry" : "menuItemEntry"'>
+            <input id="curMenuItemCheckbox" type="checkbox" checked=":= siteMgr.currentMenuItem == menuItem"/>
+            <div id="menuItemName" class="menuItemName"><%= menuItem.detailString %></div>
             <input type="image" class="removeMenuButton" src="/icons/x-square.svg"
                    clickEvent="=: siteMgr.removeMenuItem(menuItem)"/>
          </div>
@@ -72,9 +75,9 @@
                <input id="menuItemIconField" type="text" value=":=: curMenuItem.icon" liveEdit="change" changeEvent="=: siteMgr.saveMenuItems()"/>
             </div>
             <div id="menuItemOrderView" class="formField">
-               <%! object orderConverter extends NumberConverter {} %>
                <label for="menuItemOrderField">Order</label>
-               <input id="menuItemOrderField" type="number" value=":=: orderConverter.numberToString(curMenuItem.orderValue)"/>
+               <input id="menuItemOrderField" type="text" value=":= String.valueOf(curMenuItem.orderValue)"
+                      changeEvent="=: siteMgr.updateMenuItemOrder(curMenuItem, value)"/>
             </div>
             <div id="childMenuItems" visible=":= navMenu != null" class="childMenuItems">
                <%!
@@ -88,7 +91,8 @@
                <div id="navMenuItems" repeat=":= navMenu.subMenuItems" repeatVarName="navMenuItem"
                     class=':= navMenuItem == curNavMenuItem ? "selectedNavMenuItem" : "navMenuItem"'
                     clickEvent="=: siteMgr.currentNavMenuItem = (NavMenuItem) navMenuItem">
-                  <%= navMenuItem.detailString %>
+                  <input id="curMenuItemCheckbox" type="checkbox" checked=":= curNavMenuItem == navMenuItem"/>
+                  <div class="menuItemName"><%= navMenuItem.detailString %></div>
                   <input type="image" class="removeMenuButton" src="/icons/x-square.svg"
                          clickEvent="=: siteMgr.removeNavMenuItem(navMenu, navMenuItem)"/>
                </div>
@@ -107,10 +111,9 @@
                      <input id="navMenuItemIconField" type="text" value=":=: curNavMenuItem.icon" liveEdit="change" changeEvent="=: siteMgr.navMenuItemChanged()"/>
                   </div>
                   <div id="navMenuItemOrderView" class="formField">
-                     <%! object orderConverter extends NumberConverter {} %>
                      <label for="navMenuItemOrderField">Order</label>
-                     <input id="navMenuItemOrderField" type="number" value=":=: orderConverter.numberToString(curNavMenuItem.orderValue)"
-                            liveEdit="change" changeEvent="=: siteMgr.navMenuItemChanged()"/>
+                     <input id="navMenuItemOrderField" type="text" value=":= String.valueOf(curNavMenuItem.orderValue)"
+                            liveEdit="change" changeEvent="=: siteMgr.updateMenuItemOrder(curNavMenuItem, value)"/>
                   </div>
                </div>
                <div id="addSubMenuButtons" class="confirmButtons">

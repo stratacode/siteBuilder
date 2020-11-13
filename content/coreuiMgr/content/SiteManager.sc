@@ -107,54 +107,6 @@ class SiteManager {
       return SiteManager.defaultSiteName;
    }
 
-   void addMenuItem() {
-      NavMenuItem newItem = new NavMenuItem();
-      List<BaseMenuItem> menuItems = site.menuItems;
-      boolean set = false;
-      if (menuItems == null) {
-         menuItems = new BArrayList<BaseMenuItem>();
-         set = true;
-      }
-      menuItems.add(newItem);
-      if (set)
-         site.menuItems = menuItems;
-      currentMenuItem = newItem;
-   }
-
-   void addNavMenu() {
-      NavMenuDef newMenu = new NavMenuDef();
-      List<BaseMenuItem> menuItems = site.menuItems;
-      boolean set = false;
-      if (menuItems == null) {
-         menuItems = new BArrayList<BaseMenuItem>();
-         set = true;
-      }
-      menuItems.add(newMenu);
-      if (set)
-         site.menuItems = menuItems;
-      currentMenuItem = newMenu;
-   }
-
-   void removeMenuItem(BaseMenuItem toRem) {
-      if (site.menuItems != null)
-         site.menuItems.remove(toRem);
-   }
-
-   void addSubMenuItem(NavMenuDef menu) {
-      List<BaseMenuItem> menuItems = menu.menuItems;
-      boolean set = false;
-      if (menuItems == null) {
-         menuItems = new BArrayList<BaseMenuItem>();
-         set = true;
-      }
-      NavMenuItem newItem = new NavMenuItem();
-      menuItems.add(newItem);
-      if (set) {
-         menu.subMenuItems = menuItems;
-      }
-      currentNavMenuItem = newItem;
-   }
-
    boolean isSiteAdmin(UserProfile profile) {
       if (profile == null)
          return false;

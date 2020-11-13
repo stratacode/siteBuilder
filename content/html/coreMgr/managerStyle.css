@@ -345,10 +345,12 @@ input[type=button]:hover {
 
 .menuItemEntry, .navMenuItem {
    background: #eef1ff;
+   cursor: pointer;
 }
 
 .selectedMenuItemEntry, .selectedNavMenuItem {
    background: #dde1ee;
+   cursor: pointer;
 }
 
 .menuItemEntry, .selectedMenuItemEntry {
@@ -368,10 +370,17 @@ input[type=button]:hover {
 .menuItemEntry, .selectedMenuItemEntry, .navMenuItem, .selectedNavMenuItem {
    display: flex;
    align-items: center;
-   justify-content: space-between;
 
    padding: 5px;
    margin-top: 2px;
+}
+
+.menuItemName {
+  padding-left: 3px;
+}
+
+.removeMenuButton {
+   margin-left: auto;
 }
 
 .menuItemSel {

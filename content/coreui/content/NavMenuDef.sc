@@ -34,4 +34,15 @@ class NavMenuDef extends NavMenu {
       }
       return sb.toString();
    }
+
+   boolean equals(Object other) {
+      if (!(other instanceof NavMenuDef))
+         return false;
+      if (!super.equals(other))
+         return false;
+
+      if (!DynUtil.equalObjects(subMenuItems, ((NavMenuDef)other).subMenuItems))
+         return false;
+      return true;
+   }
 }

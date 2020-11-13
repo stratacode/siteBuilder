@@ -51,4 +51,23 @@ abstract class BaseMenuItem {
 
    void markChanged() {}
 
+   boolean equals(Object other) {
+      if (!(other instanceof BaseMenuItem))
+         return false;
+      BaseMenuItem otherItem = (BaseMenuItem) other;
+      if (!DynUtil.equalObjects(otherItem.name, name))
+         return false;
+      if (!DynUtil.equalObjects(otherItem.url, url))
+         return false;
+      if (!DynUtil.equalObjects(otherItem.icon, icon))
+         return false;
+      if (otherItem.orderValue != orderValue)
+         return false;
+      return true;
+   }
+
+   int hashCode() {
+      return name == null ? 0 : name.hashCode();
+   }
+
 }

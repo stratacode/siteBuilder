@@ -53,4 +53,5 @@ class NavMenu extends BaseMenuItem {
    void markChanged() {
       Bind.sendChangedEvent(this, "menuItems");
    }
+
 }
