@@ -93,7 +93,7 @@ input[type=button]:hover {
    overflow: auto;
 }
 
-.mediaColumn, .headerColumn, .productColumn, .skuColumn, .categoryColumn, .pageColumn, .orderColumn, .currencyColumn,
+.mediaColumn, .headerColumn, .productColumn, .skuColumn, .categoryColumn, .siteColumn, .pageColumn, .orderColumn, .currencyColumn,
 .countryColumn, .userColumn, .eventColumn, .sessionColumn, .postColumn {
    padding: 2px;
    width: 100px;

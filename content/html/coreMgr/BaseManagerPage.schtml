@@ -59,7 +59,8 @@
             <div class="formTitle">Add site</div>
             <div class="formField">
                <label for="siteTypeSelect">Choose site type</label>
-               <select optionDataSource=":= siteMgr.newSiteTypes" changeEvent="=: siteMgr.updateNewSiteType((String) selectedValue)"/>
+               <select selectedIndex="0" optionDataSource=":= siteMgr.newSiteTypes"
+                       changeEvent="=: siteMgr.updateNewSiteType((String) selectedValue)"/>
             </div>
             <div class="formField">
                <label for="siteNameField">Site name</label>

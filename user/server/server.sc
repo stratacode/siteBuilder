@@ -1,6 +1,6 @@
 package sc.user;
 
-public user.server extends content.coreui, user.modelImpl, user.postalCodeDB.server, content.server {
+public user.server extends content.coreui, user.modelImpl, user.addressDB.server, content.server {
    exportRuntime = false;
    exportProcess = false;
 

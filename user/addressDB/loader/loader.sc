@@ -11,7 +11,7 @@
  * Then turn the countries table back into csv use the psql command: copy country_info(country_name,country_code,postal_code_len) to stdout delimiter E'\t';
  *
  */
-public user.postalCodeDB.loader extends user.postalCodeDB.server, jdbc.pgsql, jdbc.schemaManager,
+public user.addressDB.loader extends user.addressDB.server, jdbc.pgsql, jdbc.schemaManager,
                                  sys.basicMain, hikari.dataSource {
 /*
  * It's a big file so don't want to copy it to the build dir for each build.

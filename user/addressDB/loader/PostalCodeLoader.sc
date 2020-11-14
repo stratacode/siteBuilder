@@ -20,7 +20,7 @@ object PostalCodeLoader {
       if (numCodes == 0) {
          System.out.println("*** Found no postalCode records - importing postalCode DB file: " + postalCodeFileName);
          if (!new File(postalCodeFileName).canRead())
-            System.err.println("*** Unable to find postalCodeDB csv file: " + postalCodeFileName);
+            System.err.println("*** Unable to find addressDB csv file: " + postalCodeFileName);
          else {
             try {
                int res = DBUtil.importCSVFile(postalCodeFileName, PostalCodeInfo.class, "\t", PostalCodeInfo.csvProperties);

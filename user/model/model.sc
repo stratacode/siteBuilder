@@ -6,6 +6,6 @@ import sc.user.Address;
 import sc.user.LoginStatus;
 
 @Sync(syncMode=SyncMode.Automatic)
-public user.model extends util, db.model, user.postalCodeDB.model, user.dataSource {
+public user.model extends util, db.model, user.addressDB.model, user.dataSource {
    compiledOnly = true;
 }

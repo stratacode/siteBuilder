@@ -48,10 +48,12 @@ class BlogCategoryManager extends BaseBlogManager {
    }
 
    void updateCategoryPathName(String pathName) {
+      super.updateCategoryPathName(pathName);
       categoryPathName = pathName;
    }
 
    void updateCategoryName(String val) {
+      super.updateCategoryName(val);
       if (category == null)
          categoryPathName = null;
       else
