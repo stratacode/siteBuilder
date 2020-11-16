@@ -212,7 +212,7 @@ OrderView {
             }
          }
       }
-      UserSession us = storeView.getUserSession();
+      UserSession us = userView.getUserSession(store);
       if (us != null)
          us.addCheckoutStartEvent();
    }
@@ -307,7 +307,7 @@ OrderView {
                   order.paymentInfo.clearCardInfo();
                }
             }
-            UserSession us = storeView.getUserSession();
+            UserSession us = userView.getUserSession(store);
             if (us != null)
                us.addOrderSubmitEvent();
             user.orderSubmitted(order);
@@ -318,13 +318,13 @@ OrderView {
             orderError = "Software error submitting order - please try again or contact us";
             order.orderNumber = null;
             DBUtil.error("Error submitting order: " + exc);
-            UserSession us = storeView.getUserSession();
+            UserSession us = userView.getUserSession(store);
             if (us != null)
                us.addOrderSubmitErrorEvent("Runtime error submitting order: " + exc);
          }
       }
       else {
-         UserSession us = storeView.getUserSession();
+         UserSession us = userView.getUserSession(store);
          if (us != null)
             us.addOrderSubmitErrorEvent(orderError);
       }

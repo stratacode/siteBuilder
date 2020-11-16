@@ -50,7 +50,7 @@ input[type=button]:hover {
 
 .findMediaButton, .clearMediaButton, .clearOptionButton, .findProductButton, .clearProductButton, .findCategoryButton, .clearCategoryButton,
  .findUserButton, .clearUserButton, .findSiteButton, .clearSiteButton, .findPageButton, .clearPageButton, .removeSkuOptionButton,
-  .findOrdersButton, .clearOrdersButton, .findSkusButton .clearSkusButton, .findPostButton {
+  .findOrdersButton, .clearOrdersButton, .findSkusButton, .clearSkusButton, .findPostButton {
    vertical-align: bottom;
    outline-style: none;
 }
@@ -668,12 +668,13 @@ input[type=button]:hover {
    font-size: 85%;
 }
 
-.bannerBlock {
+.bannerBlock, .bannerImage {
    width: 700px;
    height: 400px;
    display: flex;
    justify-content: center;
    align-items: center;
+   margin: auto;
 }
 
 

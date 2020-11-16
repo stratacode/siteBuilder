@@ -4,7 +4,7 @@ StoreView {
       if (siteContext instanceof Storefront) {
          if (store != siteContext) {
             store = (Storefront) siteContext;
-            orderView = new OrderView(this, currentUserView);
+            orderView = new OrderView(store, currentUserView);
          }
          else
             orderView.refresh();

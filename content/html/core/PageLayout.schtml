@@ -1,7 +1,7 @@
 <%@
    @CompilerSettings(constructorProperties="sitePathName")
-   @sc.js.JSSettings(dependentTypes="sc.content.SiteView,sc.user.currentUserView,sc.content.SlideshowView,sc.content.ContentView")
-   @sc.obj.SyncTypeFilter(typeNames={"sc.content.SiteView", "sc.user.currentUserView", "sc.content.SlideshowView", "sc.content.ContentView"})
+   @sc.js.JSSettings(dependentTypes="sc.content.SiteView,sc.user.currentUserView")
+   @sc.obj.SyncTypeFilter(typeNames={"sc.content.SiteView", "sc.user.currentUserView"})
 %>
 <html abstract="true" extends="EditablePage" pageVisitCount="=: siteView == null ? null : siteView.pageVisited()">
    <%!

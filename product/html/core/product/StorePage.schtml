@@ -1,7 +1,9 @@
 <%@
    @CompilerSettings(constructorProperties="sitePathName,pagePathName")
-   @sc.js.JSSettings(dependentTypes="sc.product.StoreView,sc.product.ProductView,sc.product.CategoryView,sc.product.OrderView,sc.user.currentUserView")
-   @sc.obj.SyncTypeFilter(typeNames={"sc.product.StoreView", "sc.product.ProductView", "sc.product.CategoryView", "sc.product.OrderView", "sc.product.OptionView", "sc.user.currentUserView"})
+   @sc.js.JSSettings(dependentTypes="sc.product.StoreView,sc.product.ProductView,sc.product.CategoryView,sc.product.OrderView,sc.user.currentUserView,sc.content.SlideshowView,sc.content.ContentView")
+   @sc.obj.SyncTypeFilter(typeNames={"sc.product.StoreView", "sc.product.ProductView", "sc.product.CategoryView",
+                                     "sc.product.OrderView", "sc.product.OptionView", "sc.user.currentUserView",
+                                     "sc.content.SlideshowView", "sc.content.ContentView"})
    @URL(pattern="/stores/{sitePathName=urlString}[/page/{pagePathName=urlString}]", testURLs={"/stores/stratacycles", "/stores/stratacycles/page/about"})
    @Sync(onDemand=true)
 %>

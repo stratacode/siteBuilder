@@ -83,7 +83,7 @@ class SiteManager {
       newSiteError = SiteContext.validateSiteName(val);
    }
 
-   void updateNewPathName(String pathName) {
+   void validateNewPathName(String pathName) {
       autoUpdatePath = false;
       newSitePathName = pathName;
       newSiteError = SiteContext.validateSitePathName(pathName);

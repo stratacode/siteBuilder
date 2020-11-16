@@ -10,8 +10,10 @@
 
 
       @sc.obj.HTMLSettings(returnsHTML=true)
+      @Exec(serverOnly=true)
       StringBuilder outputSiteInfo(SiteContext site) {
          StringBuilder out = new StringBuilder();
+         out.append(super.outputSiteInfo(site));
          if (site instanceof Storefront) {
             List<Category> categories = (List<Category>) Category.getDBTypeDescriptor().findBy(Arrays.asList("store"), Arrays.asList(site), null, Arrays.asList("-lastModified"), 0, 20);
             HashSet<String> seenPaths = new HashSet<String>();

@@ -2,6 +2,7 @@ import java.util.HashMap;
 
 @Component
 @CompilerSettings(constructorProperties="pathName", compiledOnly=true)
+@Sync(onDemand=true)
 class SiteView {
    @Sync(initDefault=true)
    SiteContext siteContext;

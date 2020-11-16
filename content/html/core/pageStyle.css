@@ -88,7 +88,6 @@ body {
 #footer {
    min-height: 32px;
    background-color: #a0bad4;
-   margin-top: 10px;
    width: 100%;
 }
 
@@ -116,11 +115,13 @@ body {
    display: flex;
    flex-direction: column;
    margin: auto;
+   padding-top: 10px;
+   padding-bottom: 10px;
 }
 
 .loginView {
-   padding-top: 5px;
-   padding-bottom: 5px;
+   padding-top: 10px;
+   padding-bottom: 10px;
    width: 400px;
    display: flex;
    flex-direction: column;
@@ -191,12 +192,13 @@ body {
    margin-bottom: 5px;
 }
 
-.confirmButtons, .formTitle, .formError, .formStatus,  .formMessage, .pageFormError {
+.confirmButtons, .formTitle, .formError, .formStatus,  .formMessage {
    margin-left: 21%;
 }
 
 .pageFormError {
    margin-top: 10px;
+   margin-bottom: 10px;
 }
 
 .centeredForm {
@@ -516,7 +518,7 @@ input[type=button]:hover {
    color: #fff;
 }
 
-.bannerBlock {
+.bannerBlock, .bannerImage {
    width: 700px;
    height: 600px;
    display: flex;
@@ -716,6 +718,7 @@ input[type=button]:hover {
 .thumbNailsView {
    display: flex;
    flex-direction: row;
+   margin-bottom: 10px;
 }
 
 .thumbView {

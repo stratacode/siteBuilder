@@ -1,5 +1,5 @@
 @Sync
-@sc.js.JSSettings(dependentTypes="sc.product.CategoryViewEditor,sc.product.ProductViewEditor,sc.content.SlideshowViewEditor,sc.content.ContentViewEditor")
+@sc.js.JSSettings(dependentTypes="sc.content.SlideshowViewEditor,sc.content.ContentViewEditor")
 PageManager extends BaseManager {
    @Sync(resetState=true,initDefault=true)
    String searchText = "";

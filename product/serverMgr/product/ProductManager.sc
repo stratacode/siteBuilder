@@ -802,8 +802,8 @@ ProductManager {
    void doSelectSku(Sku toSel) {
       clearFormErrors();
       // We might have just removed this product so don't make it current again
-      if (((DBObject)toSel.getDBObject()).isActive()) {
-         if (toSel == sku) {
+      if (toSel == null || ((DBObject)toSel.getDBObject()).isActive()) {
+         if (toSel == null || toSel == sku) {
             sku = null;
             skuEditable = false;
             showSkuView = false;

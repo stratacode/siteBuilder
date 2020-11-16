@@ -49,6 +49,16 @@ SiteManager {
       updateSiteSelectList();
    }
 
+   void updateNewPathName(String pathName) {
+      validateNewPathName(pathName);
+      if (newSiteError == null) {
+         SiteContext existingSite = SiteContext.findBySitePathName(pathName);
+         if (existingSite != null) {
+            newSiteError = "Site path name in use by site: " + existingSite.siteName;
+         }
+      }
+   }
+
    void changeSiteWithIndex(int ix) {
       ix = ix - 1; // Skip the select title
       if (siteList == null || siteList.size() <= ix || ix < 0)

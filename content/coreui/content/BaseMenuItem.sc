@@ -21,8 +21,10 @@ abstract class BaseMenuItem {
    transient int selectedCount = 0;
    transient int listPos;
 
+   @Sync(syncMode=SyncMode.Disabled)
    transient NavMenu parentMenu;
 
+   @Sync(syncMode=SyncMode.Disabled)
    void setParentMenu(NavMenu parent) {
       parentMenu = parent;
    }

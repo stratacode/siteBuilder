@@ -9,6 +9,7 @@ class NavMenuDef extends NavMenu {
       return subMenuItems;
    }
 
+   @Sync(syncMode=SyncMode.Disabled)
    void setParentMenu(NavMenu parent) {
       if (subMenuItems != null) {
          for (BaseMenuItem baseMenu:subMenuItems)

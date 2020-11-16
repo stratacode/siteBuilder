@@ -1,6 +1,8 @@
 <%@
    @CompilerSettings(constructorProperties="sitePathName,pagePathName")
    @URL(pattern="/sites/{sitePathName=urlString}[/page/{pagePathName=urlString}]", testURLs={"/sites/stratacycles", "/sites/stratacycles/page/about"})
+   @sc.js.JSSettings(dependentTypes="sc.content.SlideshowView,sc.content.ContentView")
+   @sc.obj.SyncTypeFilter(typeNames={"sc.content.SlideshowView", "sc.content.ContentView"})
    @Sync(onDemand=true)
 %>
 <html extends="PageLayout">

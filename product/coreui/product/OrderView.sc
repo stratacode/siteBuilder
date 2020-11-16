@@ -2,7 +2,6 @@
 scope<appSession>
 class OrderView {
    Storefront store;
-   StoreView storeView;
    UserView userView;
 
    @Sync(initDefault=true)
@@ -40,9 +39,8 @@ class OrderView {
 
    boolean showLoginView = false;
 
-   OrderView(StoreView storeView, UserView userView) {
-      this.storeView = storeView;
-      this.store = storeView.store;
+   OrderView(Storefront store, UserView userView) {
+      this.store = store;
       this.userView = userView;
       userView.orderView = this;
    }

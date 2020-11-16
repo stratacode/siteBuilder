@@ -1,3 +1,4 @@
+@sc.js.JSSettings(dependentTypes="sc.product.CategoryViewEditor,sc.product.ProductViewEditor")
 PageManager {
    store := site instanceof Storefront ? (Storefront) site : null;
 

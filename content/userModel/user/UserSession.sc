@@ -21,6 +21,8 @@ class UserSession {
    String remoteIp;
 
    String getEventTimeDisplay(int ix) {
+      if (ix == -1 || sessionEvents == null || ix >= sessionEvents.size())
+         return "<invalid>";
       if (ix == 0)
          return TextUtil.formatUserDate(sessionEvents.get(0).eventTime, true);
       else
