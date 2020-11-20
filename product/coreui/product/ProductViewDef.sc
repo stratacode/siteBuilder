@@ -17,4 +17,15 @@ class ProductViewDef extends ViewDef {
          return err;
       return null;
    }
+
+   @sc.obj.ManualGetSet
+   boolean equals(Object other) {
+      return other instanceof ProductViewDef && DynUtil.equalObjects(productPathName, ((ProductViewDef) other).productPathName);
+   }
+
+   @sc.obj.ManualGetSet
+   int hashCode() {
+      return productPathName == null ? 0 : productPathName.hashCode();
+
+   }
 }

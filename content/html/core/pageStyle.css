@@ -196,19 +196,24 @@ body {
    margin-left: 21%;
 }
 
+.rightButton {
+   margin-left: 1%;
+}
+
 .pageFormError {
    margin-top: 10px;
    margin-bottom: 10px;
 }
 
-.centeredForm {
+.centeredForm, .centeredFormStatus {
    margin: auto;
 }
 
-.formStatus, .leftFormStatus {
+.formStatus, .leftFormStatus, .centeredFormStatus {
    font-size: 85%;
    font-style: italic;
 }
+
 
 .slideNavRow {
    background: transparent;
@@ -239,6 +244,7 @@ body {
 .leftSlideArrow, .rightSlideArrow {
    cursor:pointer;
    font-size: 180%;
+   user-select: none;
 }
 
 .leftSlideArrow {
@@ -298,6 +304,7 @@ body {
    border-bottom: solid 1px #ccc;
    border-left: solid 1px #ccc;
    border-right: solid 1px #ccc;
+   margin-bottom: 10px;
 }
 
 .siteIndexView {
@@ -639,7 +646,7 @@ input[type=button]:hover {
    flex-direction: column;
 }
 
-.productInfoView, .thumbView, .productImageView, .categoryDesc, .categoryViewImage, .postInfoView, .postImage View {
+.productInfoView, .thumbView, .productImageView, .categoryDesc, .postInfoView, .postImage View {
    margin-top: 10px;
    margin-left: 10px;
    margin-right: 10px;
@@ -648,6 +655,10 @@ input[type=button]:hover {
 
 .postInfoView {
    max-width: 45em;
+}
+
+.postView, .categoryView, .productView {
+   margin-bottom: 10px;
 }
 
 .productNameView, .categoryNameView, .postNameView {
@@ -667,6 +678,7 @@ input[type=button]:hover {
 
 .productsView, .subCategoriesView, .postsView {
    display: flex;
+   margin-bottom: 10px;
 }
 
 .thumbImage, .productViewImage {
@@ -684,12 +696,12 @@ input[type=button]:hover {
    width: 100%;
 }
 
-.postViewImage {
+.postViewImage, .categoryViewImage {
    width: 100%;
 }
 
 @media (min-width: 900px) {
-   .productViewImageBox {
+   .productViewImageBox, .categoryViewImageBox {
       width: 640px;
       height: 640px;
    }
@@ -700,7 +712,7 @@ input[type=button]:hover {
 }
 
 @media (max-width: 900px) {
-   .productViewImageBox {
+   .productViewImageBox, .categoryViewImageBox {
       width: 320px;
       height: 320px;
    }
@@ -710,7 +722,7 @@ input[type=button]:hover {
    }
 }
 
-.productViewImageBox, .postViewImageBox {
+.productViewImageBox, .postViewImageBox, .categoryViewImageBox {
    display: flex;
    align-items: center;
 }

@@ -45,8 +45,10 @@ BaseProductManager {
    }
 
    void updateLongDesc(String htmlText) {
-      if (element == null)
+      if (element == null || htmlText == null || catalogElement == null ||
+          DynUtil.equalObjects(htmlText, catalogElement.longDesc))
          return;
+
       String error = HTMLElement.validateClientHTML(htmlText, HTMLElement.formattingTags, HTMLElement.formattingAtts);
       if (error == null)
          catalogElement.longDesc = htmlText;

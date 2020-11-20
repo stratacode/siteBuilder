@@ -63,6 +63,7 @@ ProductManager {
             categoryEditable = false;
 
             parentCategoryPathName = "";
+            longDescHtml = null;
          }
          else {
             element = toSel;
@@ -91,6 +92,7 @@ ProductManager {
 
             parentCategoryPathName = category == null ? "" : category.pathName;
             showOptionsView = sku != null && sku.optionScheme != null;
+            longDescHtml = product.longDesc;
          }
       }
    }

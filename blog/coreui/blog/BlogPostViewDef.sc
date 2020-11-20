@@ -13,4 +13,14 @@ class BlogPostViewDef extends ViewDef {
          return err;
       return null;
    }
+
+   @sc.obj.ManualGetSet
+   boolean equals(Object other) {
+      return other instanceof BlogPostViewDef && DynUtil.equalObjects(postPathName, ((BlogPostViewDef) other).postPathName);
+   }
+
+   @sc.obj.ManualGetSet
+   int hashCode() {
+      return postPathName == null ? 0 : postPathName.hashCode();
+   }
 }

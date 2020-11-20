@@ -4,6 +4,7 @@
    CategoryView(PageView pageView, Element parentNode, String id, CategoryViewDef viewDef, int ix) {
       super(parentNode, id, viewDef, ix);
       this.siteView = pageView.siteView;
+      this.storeView = (StoreView) siteView;
       this.pathName = viewDef.categoryPathName;
       this.viewDef = viewDef;
    }
@@ -13,14 +14,14 @@
       <div id="categoryInfoView" visible=":= viewDef == null || !viewDef.showContentsOnly">
          <div id="categoryNameView" class="categoryNameView"><%= category.name %></div>
          <div id="categoryDesc" class="categoryDesc"><%= category.longDesc %></div>
-         <div id="categoryViewImage" class="categoryViewImage" visible=":= currentMedia != null">
+         <div id="categoryViewImageBox" class="categoryViewImageBox" visible=":= currentMedia != null">
             <img class="viewImage" id="categoryImage" src=":= currentMedia.url" srcset=":= currentMedia.srcSet"/>
          </div>
       </div>
       <div id="subCategoriesView" class="subCategoriesView" visible=":= category.subCategories != null && category.subCategories.size() > 0">
          <div id="subCategoryView" repeat=":= category.subCategories" repeatVarName="subCategory" class="thumbView">
             <a href=':= subCategory.pageUrl' class="thumbNavLink">
-               <div class="thumImageBox"><img class="thumbImage" src=":= subCategory.mainMedia.thumbUrl"/></div>
+               <div class="thumImageBox"><img id="subCatThumbImage" class="thumbImage" src=":= subCategory.mainMedia.thumbUrl"/></div>
                <span><%= subCategory.name %></span>
                <span><%= subCategory.shortDesc %></span>
             </a>
@@ -29,7 +30,7 @@
       <div id="productsView" class="productsView" visible=":= category.allProducts != null && category.allProducts.size() > 0">
          <div id="productView" repeat=":= category.allProducts" repeatVarName="product" class="thumbView">
             <a href=':= product.pageUrl' class="thumbNavLink">
-               <div class="thumbImageBox"><img class="thumbImage" src=":= product.mainMedia.thumbUrl"/></div>
+               <div class="thumbImageBox"><img id="prodThumbImage" class="thumbImage" src=":= product.mainMedia.thumbUrl"/></div>
                <span><%= product.name %></span>
                <span><%= product.shortDesc %></span>
             </a>

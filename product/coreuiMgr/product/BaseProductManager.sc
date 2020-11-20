@@ -27,7 +27,10 @@ abstract class BaseProductManager extends BaseElementManager {
     * local html changes.
     * When this property changes, a binding triggers updateLongDesc to do the validation and then update product.longDesc
     */
+   // Not syncing this because the content widget property is already sync'd with reset state and syncing both causes
+   // conflicts in the back and forth
    @Sync(resetState=true, initDefault=true)
+   //@Sync(syncMode=SyncMode.Disabled)
    String longDescHtml;
 
    @Sync(resetState=true, initDefault=true)

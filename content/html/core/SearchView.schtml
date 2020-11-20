@@ -30,6 +30,7 @@
          </div>
       </div>
    </div>
-   <input class="closeSearchButton" type="button" visible=":= resultsMessage != null"
-           value="Close search " clickEvent="=: clearSearch()"/>
+   <input id="clearSearchButton"
+          class="closeSearchButton" type="button" visible=":= resultsMessage != null"
+          value="Close search " clickEvent="=: clearSearch()"/>
 </div>

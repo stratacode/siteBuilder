@@ -1,11 +1,16 @@
 <%@ @CompilerSettings(constructorProperties="sitePathName") %>
 <html extends="PageLayout" abstract="true">
    <%!
-      scope<appSession>
-      object storeView extends StoreView {
-         pathName := BaseStorePage.this.sitePathName;
+      @Sync(initDefault=true)
+      object storeViewInst extends StoreView {
+         pathName := sitePathName;
       }
-      siteView = storeView;
+      BaseStorePage(String sitePathName) {
+         super(sitePathName);
+         storeView = storeViewInst;
+         siteView = storeView;
+      }
+      StoreView storeView;
    %>
    <head exec="server">
       <link id="docStyle" rel="stylesheet" href="/productStyle.css" type="text/css"/>

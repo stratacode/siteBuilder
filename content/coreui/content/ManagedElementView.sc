@@ -1,7 +1,6 @@
 @Component
 @CompilerSettings(constructorProperties="siteView,pathName")
-@Sync
-scope<appSession>
+@Sync(onDemand=true)
 abstract class ManagedElementView implements IView {
    SiteView siteView;
 
@@ -55,7 +54,7 @@ abstract class ManagedElementView implements IView {
       List<ManagedMedia> newAltMedia;
       if (elem.altMedia != null) {
          newAltMedia = new ArrayList<ManagedMedia>();
-         if (mediaIsAvailable(mainMedia))
+         if (mainMedia != null && mediaIsAvailable(mainMedia))
             newAltMedia.add(mainMedia);
          int numMedia = elem.altMedia.size();
          for (int i = 0; i < numMedia; i++) {

@@ -40,6 +40,7 @@ CategoryManager {
             showCategoryView = false;
             categoryEditable = false;
             parentCategoryPathName = "";
+            longDescHtml = null;
          }
          else {
             element = toSel;
@@ -52,6 +53,7 @@ CategoryManager {
                categoryEditable = false;
             parentCategoryPathName = category.parentCategory != null ? category.parentCategory.pathName : "";
             category.validateAllProducts();
+            longDescHtml = category.longDesc;
          }
       }
    }

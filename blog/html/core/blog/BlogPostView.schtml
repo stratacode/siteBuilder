@@ -1,11 +1,11 @@
 <div class="postView">
    <%!
       BlogPostViewDef viewDef;
-      pathName := viewDef.postPathName;
       BlogPostView(PageView pageView, Element parentNode, String id, BlogPostViewDef viewDef, int ix) {
          super(pageView.siteView, viewDef.postPathName, parentNode, id, viewDef, ix);
          this.siteView = pageView.siteView;
          this.viewDef = viewDef;
+         pathName = viewDef.postPathName;
       }
    %>
    <div id="categoryNavView" extends="BlogCategoryNavView" categoryPath=":= BlogPostView.this.categoryPath" site=":= siteView.siteContext"/>
@@ -17,7 +17,7 @@
          <div id="thumbNailsView" class="thumbNailsView" visible=":= altMedia != null && altMedia.size() > 1">
             <div id="altMediaView" repeat=":= altMedia" repeatVarName="altMediaElem"
                  class='= "thumbView" + (altMediaIndex == repeatIndex ? " thumbViewSelected" : "")' >
-               <img src=":= altMediaElem.thumbUrl" clickEvent="=: altMediaIndex = altMediaView.this.repeatIndex"/>
+               <img id="postThumbImage" src=":= altMediaElem.thumbUrl" clickEvent="=: altMediaIndex = altMediaView.this.repeatIndex"/>
             </div>
          </div>
       </div>

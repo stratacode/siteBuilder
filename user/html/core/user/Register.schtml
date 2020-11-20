@@ -3,7 +3,7 @@
 <body>
    <div id="appFrame">
       <div id="pageBody">
-         <div id="registerView" extends="RegisterView"/>
+         <div id="registerView" cancelURL="/" extends="RegisterView"/>
       </div>
    </div>
 </body>

@@ -102,7 +102,7 @@
 
             <div id="longDescView" class="multiFormField formField">
                <label for="longDescText">Long description</label>
-               <div id="longDescText" class="longDescText" extends="HtmlTextEditor" placeholder="detailed product description" content=":= product.longDesc"
+               <div id="longDescText" class="longDescText" extends="HtmlTextEditor" placeholder="detailed product description" content=":= longDescHtml"
                     content="=: longDescHtml = content"/>
             </div>
 

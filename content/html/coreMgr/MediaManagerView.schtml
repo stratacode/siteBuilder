@@ -41,13 +41,29 @@
       Display image widths (pixels)
       <div id="mediaResList" class="mediaResList">
          <span id="mediaRes" class="mediaResEntry" repeat=":= mediaManager.stdImageWidths"
-               clickEvent="=: mediaManager.removeResolution(res)" repeatVarName="res"><%= res %> <img src="/icons/little-x.svg"/></span>
+               clickEvent="=: removeResolution(res)" repeatVarName="res"><%= res %> <img src="/icons/little-x.svg"/></span>
       </div>
    </div>
+   <div class="formError"><%= resError %></div>
    <div id="mediaResActions" class="formField">
       <input id="newRes" type="number" min="0" max="4096"/>
-      <input type="button" value="Add resolution" class="rightButton" clickEvent="=: mediaManager.addResolution(newRes.value)"/>
+      <input type="button" value="Add resolution" class="rightButton" clickEvent="=: addResolution(newRes.value)"/>
       <input type="button" value="Refresh media" id="refreshMediaButton" class="rightButton" clickEvent="=: mediaManager.refreshAllMedia()"/>
+   </div>
+   <div id="displaySizeView" class="formField">
+      <label for="defaultDisplaySizeField">Default display size</label>
+      <input id="defaultDisplaySizeField" type="text" value=":= String.valueOf(mediaManager.defaultDisplaySize)"
+             changeEvent="=: updateDefaultDisplaySize(value)"/>
+   </div>
+   <div id="minSizeView" class="formField">
+      <label for="minDisplaySizeField">Min display size</label>
+      <input id="minDisplaySizeField" type="text" value=":= String.valueOf(mediaManager.minDisplaySize)"
+              changeEvent="=: updateMinDisplaySize(value)"/>
+   </div>
+   <div id="maxSizeView" class="formField">
+      <label for="maxDisplaySizeField">Max display size</label>
+      <input id="maxDisplaySizeField" type="text" value=":= String.valueOf(mediaManager.maxDisplaySize)"
+             changeEvent="=: updateMaxDisplaySize(value)"/>
    </div>
 
    <div id="currentMediaView">

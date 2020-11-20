@@ -1,4 +1,5 @@
 <div visible=":= currentUserView.loginStatus==LoginStatus.NotLoggedIn" class="profileView">
+   <%! String cancelURL = "/"; %>
    <div class="formTitle">Create an account</div>
    <div class="formField">
       <label for="emailField">Email address</label>
@@ -18,6 +19,7 @@
    </div>
    <div class="formField">
       <input type="submit" value="Register" clickEvent="=: currentUserView.register()" class="confirmButtons"/>
+      <input type="submit" value="Cancel" clickEvent='=: Window.window.location.href = cancelURL' class="rightButton"/>
    </div>
    <div class="formError"><%= currentUserView.userViewError %></div>
    <div id="alt" class="profileView">

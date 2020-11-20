@@ -1,4 +1,6 @@
 @CompilerSettings(compiledOnly=true)
+@sc.js.JSSettings(dependentTypes="sc.content.ManagedImage")
+@sc.obj.SyncTypeFilter(typeNames={"sc.content.ManagedImage"})
 abstract class BlogElement extends ManagedElement {
    @Sync(resetState=true,initDefault=true)
    BlogCategory parentCategory;
@@ -15,6 +17,8 @@ abstract class BlogElement extends ManagedElement {
    // to add the validate method before setting the property.
    @Sync(syncMode=SyncMode.ServerToClient,initDefault=true)
    String longDesc;
+
+   boolean featured;
 
    override @FindBy(paged=true,orderBy="-lastModified",with="site") pathName;
 }

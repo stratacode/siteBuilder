@@ -2,6 +2,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 SiteView {
+   @Sync(syncMode=SyncMode.Disabled)
    static List<ISearchProvider> searchProviders = new ArrayList<ISearchProvider>(Arrays.asList(new PageSearchProvider()));
 
    pathName =: validateSite();

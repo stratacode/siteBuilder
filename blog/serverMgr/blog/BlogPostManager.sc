@@ -49,6 +49,7 @@ BlogPostManager {
             element = null;
             postSaved = false;
             parentCategoryPathName = "";
+            longDescHtml = null;
          }
          else {
             element = toSel;
@@ -62,6 +63,7 @@ BlogPostManager {
                categoryEditable = false;
 
             parentCategoryPathName = category == null ? "" : category.pathName;
+            longDescHtml = post.postContent;
          }
       }
    }
@@ -258,7 +260,7 @@ BlogPostManager {
    }
 
    void updatePostContent(String htmlText) {
-      if (element == null)
+      if (element == null || htmlText == null || DynUtil.equalObjects(post.postContent, htmlText))
          return;
       String error = HTMLElement.validateClientHTML(htmlText, HTMLElement.formattingTags, HTMLElement.formattingAtts);
       if (error == null)

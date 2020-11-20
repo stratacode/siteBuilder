@@ -12,11 +12,12 @@
       String pagePathName;
 
       @Sync(initDefault=true)
-      scope<appSession>
       object pageView extends PageView {
          siteView := StorePage.this.siteView;
          pagePathName := StorePage.this.pagePathName;
       }
+
+      sitePathName =: siteView.pathName = sitePathName;
 
       StorePage(String sitePathName, String pagePathName) {
          super(sitePathName);

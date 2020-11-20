@@ -1,5 +1,5 @@
 @Component @Sync(onDemand=true)
-scope<appSession>
+scope<window>
 class OrderView {
    Storefront store;
    UserView userView;

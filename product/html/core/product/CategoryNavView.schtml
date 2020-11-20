@@ -1,3 +1,4 @@
+<%@ @CompilerSettings(constructorProperties="store") %>
 <div class="categoryNavView" visible=":= categoryPath != null && categoryPath.size() > 0">
    <%!
       Storefront store;
@@ -5,7 +6,7 @@
       List<Category> categoryPath;
    %>
    <span id="categoryPathView" class="categoryPath" repeat=":= categoryPath" repeatVarName="category">
-      <a href='= "/stores/" + store.sitePathName + "/category/" + category.pathName' class="categoryLink"><%= category.name %></a>
+      <a href=':= "/stores/" + store.sitePathName + "/category/" + category.pathName' class="categoryLink"><%= category.name %></a>
       <span visible=":= lastPath != categoryPathView.this.repeatIndex">›</span>
    </span>
 </div>

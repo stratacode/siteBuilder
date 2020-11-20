@@ -2,7 +2,7 @@
    <%! 
       SiteView siteView;
 
-      @Sync scope<appSession>
+      @Sync
       object navMenu extends PageNavMenu {
          siteView := NavView.this.siteView;
          breakOrderValue = 5.0;

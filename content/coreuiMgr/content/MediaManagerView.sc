@@ -21,6 +21,7 @@ class MediaManagerView {
    String currentMediaStatus;
    String currentMediaError;
 
+   String resError;
 
    void resetUploadForm() {
       showUploadStatus = true;

@@ -129,4 +129,95 @@ MediaManagerView {
       }
    }
 
+   void removeResolution(int toRemRes) {
+      int[] newWidths = new int[mediaManager.stdImageWidths.length-1];
+      boolean found = false;
+      int d = 0;
+      for (int i = 0; i < mediaManager.stdImageWidths.length; i++) {
+         int curRes = mediaManager.stdImageWidths[i];
+         if (curRes == toRemRes) {
+            found = true;
+         }
+         else {
+            newWidths[d++] = curRes;
+         }
+      }
+      if (found) {
+         mediaManager.stdImageWidths = newWidths;
+      }
+   }
+
+   void addResolution(String newResStr) {
+      if (newResStr == null)
+         return;
+      try {
+         resError = null;
+         int newRes = Integer.parseInt(newResStr);
+
+         int[] newWidths = new int[mediaManager.stdImageWidths.length+1];
+         int d = 0;
+         boolean added = false;
+         for (int i = 0; i < mediaManager.stdImageWidths.length; i++) {
+            int curRes = mediaManager.stdImageWidths[i];
+            if (curRes == newRes)
+               return;
+            else if (!added && curRes > newRes) {
+               newWidths[d++] = newRes;
+               added = true;
+            }
+            newWidths[d++] = curRes;
+         }
+         if (!added)
+            newWidths[d++] = newRes;
+         mediaManager.stdImageWidths = newWidths;
+      }
+      catch (NumberFormatException exc) {
+         resError = "Must be an integer: " + exc;
+      }
+   }
+
+   void updateDefaultDisplaySize(String str) {
+      try {
+         int newSize = Integer.parseInt(str);
+         if (newSize <= mediaManager.minDisplaySize || newSize > mediaManager.maxDisplaySize)
+            resError = "Invalid display size - must be between " + mediaManager.minDisplaySize + " and " + mediaManager.maxDisplaySize;
+         else {
+            resError = null;
+            mediaManager.defaultDisplaySize = newSize;
+         }
+      }
+      catch (NumberFormatException exc) {
+         resError = "Must be an integer: " + exc;
+      }
+   }
+
+   void updateMinDisplaySize(String str) {
+      try {
+         int newSize = Integer.parseInt(str);
+         if (newSize <= 0 || newSize > mediaManager.maxDisplaySize)
+            resError = "Invalid min display size - must be between " + 0 + " and " + mediaManager.maxDisplaySize;
+         else {
+            resError = null;
+            mediaManager.minDisplaySize = newSize;
+         }
+      }
+      catch (NumberFormatException exc) {
+         resError = "Must be an integer: " + exc;
+      }
+   }
+
+   void updateMaxDisplaySize(String str) {
+      try {
+         int newSize = Integer.parseInt(str);
+         if (newSize <= mediaManager.minDisplaySize || newSize > mediaManager.systemMaxDisplaySize)
+            resError = "Invalid max display size - must be between " + 0 + " and " + mediaManager.systemMaxDisplaySize;
+         else {
+            resError = null;
+            mediaManager.maxDisplaySize = newSize;
+         }
+      }
+      catch (NumberFormatException exc) {
+         resError = "Must be an integer: " + exc;
+      }
+   }
 }

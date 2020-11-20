@@ -1,16 +1,25 @@
 <%@ @CompilerSettings(constructorProperties="sitePathName") %>
 <html extends="PageLayout" abstract="true" pageVisitCount="=: siteView.pageVisited()">
    <%!
-      scope<appSession>
+      object siteViewInst extends SiteView {
+         pathName := sitePathName;
+      }
+      BaseBlogPage(String sitePathName) {
+         super(sitePathName);
+         siteView = siteViewInst;
+      }
+
+      /*
       object siteViewInst extends SiteView {
          pathName := BaseBlogPage.this.sitePathName;
       }
+         */
       // TODO: we should be able to just define 'object siteView' and avoid this
       // extra assignment since the object should override the inherited 'siteView'
       // property but right now in the code-generated for the JS version, it's using
       // the private field as part of the getObjChildren method instead of expanding it
       // to the getX method. Might be triggered by the fact that appSession=global in
       // JS?
-      siteView = siteViewInst;
+      //siteView = siteViewInst;
    %>
 </html>

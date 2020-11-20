@@ -10,17 +10,24 @@
       String pagePathName;
 
       @Sync(initDefault=true)
-      scope<appSession>
       object pageView extends PageView {
          siteView := SitePage.this.siteView;
          pagePathName := SitePage.this.pagePathName;
       }
 
+      @Sync(initDefault=true)
+      object siteViewInst extends SiteView {
+         pathName := SitePage.this.sitePathName;
+      }
+
       SitePage(String sitePathName, String pagePathName) {
          super(sitePathName);
-         siteView = new SiteView(sitePathName);
+         siteView = siteViewInst;
          this.pagePathName = pagePathName;
       }
+
+      sitePathName =: siteView.pathName = sitePathName;
+
       /*
       object siteViewDef extends SiteView {
          pathName := SitePage.this.sitePathName;

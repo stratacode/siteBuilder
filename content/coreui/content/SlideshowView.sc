@@ -1,5 +1,4 @@
 @Sync(onDemand=true)
-scope<appSession>
 class SlideshowView extends ParentView {
    @Sync(initDefault=true)
    PageView pageView;

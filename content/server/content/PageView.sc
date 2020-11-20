@@ -17,6 +17,10 @@ PageView {
       if (oldPageDef != null && pageDef == oldPageDef && DynUtil.equalObjects(oldPagePathName, pagePathName))
          return;
 
+      if (oldPageDef != null) {
+         oldPageDef.dispose();
+      }
+
       List<PageDef> pageDefs;
       if (pagePathName == null)
          pageDefs = PageDef.findByHomePage(true, siteView.siteContext);
@@ -31,20 +35,24 @@ PageView {
          else
             errorMessage = "No page found with path name: " + pagePathName + " for site: " + siteView.siteContext.siteName;
 
+         pageDef = null;
+         pageType = null;
          oldPageDef = null;
          oldPagePathName = null;
-         return;
       }
-      PageDef newPageDef = pageDefs.get(0);
+      else {
+         PageDef newPageDef = pageDefs.get(0);
 
-      pageDef = pageDefs.get(0);
-      pageType = PageManager.findPageType(pageDef.pageTypePathName);
-      if (pageType == null)
-         errorMessage = "No page type found: " + pageDef.pageTypePathName;
+         pageDef = pageDefs.get(0);
+         pageType = PageManager.findPageType(pageDef.pageTypePathName);
+         if (pageType == null)
+            errorMessage = "No page type found: " + pageDef.pageTypePathName;
+         else
+            errorMessage = null;
 
-      oldPageDef = pageDef;
-      oldPagePathName = pagePathName;
-
+         oldPageDef = pageDef;
+         oldPagePathName = pagePathName;
+      }
       validateChildViews();
    }
 
@@ -56,9 +64,10 @@ PageView {
          newChildViews = new BArrayList<IView>();
          newList = true;
       }
-      pageDef.updateChildViews(this, newChildViews, this, oldViewDefs);
+      if (pageDef != null)
+         pageDef.updateChildViews(this, newChildViews, this, oldViewDefs);
       if (newList)
          childViews = newChildViews;
-      oldViewDefs = new ArrayList<ViewDef>(pageDef.childViewDefs);
+      oldViewDefs = pageDef == null ? null : new ArrayList<ViewDef>(pageDef.childViewDefs);
    }
 }

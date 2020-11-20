@@ -1,4 +1,3 @@
-scope<appSession>
 class PageNavMenu extends NavMenu {
    @Sync(initDefault=true)
    SiteView siteView;

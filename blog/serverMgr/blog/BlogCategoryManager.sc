@@ -40,6 +40,7 @@ BlogCategoryManager {
             showCategoryView = false;
             categoryEditable = false;
             parentCategoryPathName = "";
+            longDescHtml = null;
          }
          else {
             element = toSel;
@@ -52,6 +53,7 @@ BlogCategoryManager {
                categoryEditable = false;
             parentCategoryPathName = category.parentCategory != null ? category.parentCategory.pathName : "";
             category.validateAllPosts();
+            longDescHtml = category.longDesc;
          }
       }
    }

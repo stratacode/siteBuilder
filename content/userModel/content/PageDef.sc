@@ -39,4 +39,26 @@ class PageDef extends ParentDef {
    String validatePagePathName(String pagePathName) {
       return ManagedResource.validatePathName("page path name", pagePathName);
    }
+
+   @sc.obj.ManualGetSet
+   boolean equals(Object other) {
+      if (!super.equals(other))
+         return false;
+      PageDef otherPage = (PageDef) other;
+      if (!DynUtil.equalObjects(otherPage.pageName, pageName))
+         return false;
+      if (!DynUtil.equalObjects(otherPage.homePage, homePage))
+         return false;
+      if (!DynUtil.equalObjects(otherPage.useAsTemplate, useAsTemplate))
+         return false;
+      if (!DynUtil.equalObjects(otherPage.lastModified, lastModified))
+         return false;
+      return true;
+   }
+
+   @sc.obj.ManualGetSet
+   int hashCode() {
+      return pageName == null ? 0 : pageName.hashCode();
+   }
+
 }

@@ -5,6 +5,7 @@ ParentDef {
 
       int sz = childViewDefs.size();
       ArrayList<IView> res = new ArrayList<IView>(sz);
+      ArrayList<IView> toRem = new ArrayList<IView>();
 
       boolean changed = false;
       for (int i = 0 ; i < sz; i++) {
@@ -19,6 +20,11 @@ ParentDef {
       if (changed) {
          oldViewDefs.clear();
          oldViewDefs.addAll(childViewDefs);
+         for (int i = 0; i < childViews.size(); i++) {
+            IView oldChild = childViews.get(i);
+            if (!res.contains(oldChild))
+               DynUtil.dispose(oldChild, true);
+         }
          childViews.clear();
          childViews.addAll(res);
       }

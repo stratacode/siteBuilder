@@ -15,4 +15,14 @@ class BlogCategoryViewDef extends ViewDef {
          return err;
       return null;
    }
+
+   @sc.obj.ManualGetSet
+   boolean equals(Object other) {
+      return other instanceof BlogCategoryViewDef && DynUtil.equalObjects(categoryPathName, ((BlogCategoryViewDef) other).categoryPathName);
+   }
+
+   @sc.obj.ManualGetSet
+   int hashCode() {
+      return categoryPathName == null ? 0 : categoryPathName.hashCode();
+   }
 }

@@ -96,13 +96,13 @@
 
             <div id="postContentView" class="multiFormField formField">
                <label for="postContentText">Post content</label>
-               <div id="postContentText" class="postContentText" extends="HtmlTextEditor" placeholder="enter blog post content" content=":= post.postContent"
+               <div id="postContentText" class="postContentText" extends="HtmlTextEditor" placeholder="enter blog post content" content=":= postContentHtml"
                     content="=: postContentHtml = content"/>
             </div>
 
             <div id="visibleView" class="formField">
-               <label for="visibleField">Post is visible</label>
-               <input id="visibleField" type="checkbox" checked=":=: post.visible"/>
+               <label for="visibleField">Post is featured</label>
+               <input id="visibleField" type="checkbox" checked=":=: post.featured"/>
             </div>
 
             <div id="keywordsView" class="formField">

@@ -9,4 +9,8 @@ abstract class ViewDef implements IPropValidator {
    transient @Bindable
    @DBPropertySettings(persist=false)
    Map<String,String> propErrors = null;
+
+   void dispose() {
+      DynUtil.dispose(this, false);
+   }
 }

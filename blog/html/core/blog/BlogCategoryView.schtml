@@ -13,13 +13,13 @@
       <div id="categoryInfoView" visible=":= viewDef == null || !viewDef.showContentsOnly">
          <div id="categoryNameView" class="categoryNameView"><%= category.name %></div>
          <div id="categoryViewImage" class="categoryViewImage" visible=":= currentMedia != null">
-            <img class="viewImage" id="categoryImage" src=":= currentMedia.url" srcset=":= currentMedia.srcSet"/>
+            <img class="categoryViewImage" id="categoryImage" src=":= currentMedia.url" srcset=":= currentMedia.srcSet"/>
          </div>
       </div>
       <div id="subCategoriesView" class="subCategoriesView" visible=":= category.subCategories != null && category.subCategories.size() > 0">
          <div id="subCategoryView" repeat=":= category.subCategories" repeatVarName="subCategory" class="thumbView">
             <a href=':= subCategory.pageUrl' class="thumbNavLink">
-               <div class="thumImageBox"><img class="thumbImage" src=":= subCategory.mainMedia.thumbUrl"/></div>
+               <div class="thumImageBox"><img id="subCatThumbImage" class="thumbImage" src=":= subCategory.mainMedia.thumbUrl"/></div>
                <span><%= subCategory.name %></span>
             </a>
          </div>
@@ -27,7 +27,7 @@
       <div id="postsView" class="postsView" visible=":= category.allPosts != null && category.allPosts.size() > 0">
          <div id="postView" repeat=":= category.allPosts" repeatVarName="post" class="thumbView">
             <a href=':= post.pageUrl' class="thumbNavLink">
-               <div class="thumbImageBox"><img class="thumbImage" src=":= post.mainMedia.thumbUrl"/></div>
+               <div class="thumbImageBox"><img id="postThumbImage" class="thumbImage" src=":= post.mainMedia.thumbUrl"/></div>
                <span><%= post.name %></span>
             </a>
          </div>

@@ -19,4 +19,15 @@ class CategoryViewDef extends ViewDef {
          return err;
       return null;
    }
+
+   boolean equals(Object other) {
+      if (!(other instanceof CategoryViewDef))
+         return false;
+      CategoryViewDef otherCat = (CategoryViewDef) other;
+      return DynUtil.equalObjects(categoryPathName, otherCat.categoryPathName) && showContentsOnly == otherCat.showContentsOnly;
+   }
+
+   int hashCode() {
+      return categoryPathName == null ? 0 : categoryPathName.hashCode();
+   }
 }

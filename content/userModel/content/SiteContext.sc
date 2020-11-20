@@ -1,9 +1,10 @@
 @DBTypeSettings(typeId=1)
 @Sync(onDemand=true)
 class SiteContext implements IPropValidator {
-   @Sync(syncMode=SyncMode.ServerToClient)
+   @Sync(syncMode=SyncMode.ServerToClient,initDefault=true)
    List<UserProfile> siteAdmins;
-   @Sync(syncMode=SyncMode.ServerToClient)
+
+   @Sync(syncMode=SyncMode.Disabled)
    Userbase userbase;
 
    // Inner class used without DBTypeSettings with FindBy. Generates a findBy method that will create

@@ -9,12 +9,15 @@ class MediaManager {
    String mediaBaseUrl;
    String genBaseUrl;
 
-   int displaySize = 640;
+   int defaultDisplaySize = 640;
    int minDisplaySize = 320;
-   int maxDisplaySize = 640;
+   int maxDisplaySize = 1024;
    int thumbSize = 100;
    int zoomSize = 2048;
    int[] stdImageWidths = {100, 200, 320, 512, 640, 768, 1024, 2048};
+
+   @Sync(syncMode=SyncMode.Disabled)
+   static int systemMaxDisplaySize = 2048;
 
    String getOrigFileName(String fileName, String revision, String ext) {
       return fileName + (revision == null ? "" : RevisionSep + revision) + "." + ext;
@@ -29,7 +32,7 @@ class MediaManager {
    }
 
    String getDisplayUrl(String fileName, String revision, String ext) {
-      return getUrl(fileName, revision, ext, displaySize);
+      return getUrl(fileName, revision, ext, defaultDisplaySize);
    }
 
    String getDisplaySrcSet(String fileName, String revision, String ext, int nativeRes) {
