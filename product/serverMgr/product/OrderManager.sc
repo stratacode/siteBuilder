@@ -42,6 +42,10 @@ OrderManager {
 
    void doSearch() {
       orderList = orderSearch(searchText);
+      if (orderList == null || orderList.size() == 0)
+         searchStatusMessage = "No orders found";
+      else
+         searchStatusMessage = null;
    }
 
    void doSearchAll() {
@@ -62,6 +66,10 @@ OrderManager {
          }
       }
       orderList = res;
+      if (orderList == null || orderList.size() == 0)
+         searchStatusMessage = "No orders in the last " + recentDays + " days";
+      else
+         searchStatusMessage = null;
    }
 
    void doSelectOrder(Order toSel) {

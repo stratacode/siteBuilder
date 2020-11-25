@@ -49,7 +49,7 @@ BlogPostManager {
             element = null;
             postSaved = false;
             parentCategoryPathName = "";
-            longDescHtml = null;
+            postContentHtml = null;
          }
          else {
             element = toSel;
@@ -63,7 +63,7 @@ BlogPostManager {
                categoryEditable = false;
 
             parentCategoryPathName = category == null ? "" : category.pathName;
-            longDescHtml = post.postContent;
+            postContentHtml = post.postContent;
          }
       }
    }

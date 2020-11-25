@@ -80,4 +80,8 @@ class UserView {
    String getUserNameDisplay() {
       return !userbase.useEmailForUserName ? "user name" : "email address";
    }
+
+   void changeLastSite(SiteContext site) {
+      lastSite = site;
+   }
 }

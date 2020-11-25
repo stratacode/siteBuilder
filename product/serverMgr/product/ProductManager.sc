@@ -427,7 +427,15 @@ ProductManager {
       if (psku == null)
          return;
       if (enable) {
-         psku.inventory = new ProductInventory();
+         if (psku.inventory == null)
+            psku.inventory = new ProductInventory();
+         if (psku.skuOptions != null) {
+            for (Sku skuOption:psku.skuOptions) {
+               PhysicalSku pskuOption = (PhysicalSku) skuOption;
+               if (pskuOption.inventory == null)
+                  pskuOption.inventory = new ProductInventory();
+            }
+         }
       }
       else
          psku.inventory = null;

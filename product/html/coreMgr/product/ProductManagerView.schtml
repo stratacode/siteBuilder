@@ -5,13 +5,18 @@
    <div id="findProductsView" visible=":= !addInProgress">
       <div id="showProductsForm" class="formField">
          <label for="showAllButton">Show products</label>
-         <input type="button" value="All" id="showAllButton" class="showAllButton" clickEvent="=: doSearchAll()"/>
-         <input type="button" value="Recent" id="showRecentButton" class="showRecentButton rightButton" clickEvent="=: doSearchRecent()"/>
+         <input type="button" value="All" id="showAllButton" class="showAllButton"
+                clickEvent="=: doSearchAll()"/>
+         <input type="button" value="Recent" id="showRecentButton" class="showRecentButton rightButton"
+                clickEvent="=: doSearchRecent()"/>
       </div>
       <div id="findProductsForm" class="formField">
-         <label for="searchTextField">Find products</label><input type="text" value=":=: searchText" changeEvent="=: doSearch()"/>
-         <input type="image" id="findProductButton" class="findProductButton" src="/icons/search.svg" clickEvent="=: doSearch()"/>
-         <input type="image" id="clearProductButton" class="clearProductButton" src="/icons/x-square.svg" clickEvent="=: resetForm()"/>
+         <label for="searchTextField">Find products</label><input type="text" value=":=: searchText"
+                changeEvent="=: doSearch()"/>
+         <input type="image" id="findProductButton" class="findProductButton" src="/icons/search.svg"
+                clickEvent="=: doSearch()"/>
+         <input type="image" id="clearProductButton" class="clearProductButton" src="/icons/x-square.svg"
+                clickEvent="=: resetForm()"/>
       </div>
    </div>
 
@@ -19,27 +24,32 @@
       <div id="startAddView">
          <div visible=":= !addInProgress" class="formField confirmButtons">
             <input type="button" value="Add product" clickEvent="=: startAddProduct(false)" />
-            <input type="button" class="rightButton" visible=":= product != null" value="Copy product" clickEvent="=: startAddProduct(true)"/>
+            <input type="button" class="rightButton" visible=":= product != null" value="Copy product"
+                   clickEvent="=: startAddProduct(true)"/>
          </div>
       </div>
 
       <div id="detailFormView" class="formContainer" visible=':= product != null'>
          <div class="formTitle">
             <%= addInProgress ? "Unsaved product" : "Update product" %>
-            <span class="titleDetailLink" visible=":= !addInProgress"><a target="previewView" href=':= product.pageUrl'>(view product in new tab)</a></span>
+            <span class="titleDetailLink" visible=":= !addInProgress"><a target="previewView"
+                  href=':= product.pageUrl'>(view product in new tab)</a></span>
          </div>
 
          <div id="productInfoView" class="subFormView">
             <span class="subFormTitle">Product info</span>
             <div id="nameFieldView" class="formField">
                <label for="nameField">Product name</label>
-               <input id="nameField" type="text" value=":= product.name" changeEvent="=: updateProductName(value)"
-                      class=':= product.propErrors.get("name") == null ? "fieldInput" : "fieldInputError"' placeholder="display name"/>
+               <input id="nameField" type="text" value=":= product.name"
+                      changeEvent="=: updateProductName(value)"
+                      class=':= product.propErrors.get("name") == null ? "fieldInput" : "fieldInputError"'
+                      placeholder="display name"/>
             </div>
             <div id="nameErrorView" class="formError"><%= product.propErrors.get("name") %></div>
             <div id="pathNameView" class="formField">
                <label for="pathNameField">Path name</label>
-               <input id="pathNameField" type="text" value=":= product.pathName" changeEvent="=: updatePathName(value)"
+               <input id="pathNameField" type="text" value=":= product.pathName"
+                      changeEvent="=: updatePathName(value)"
                       class=':= product.propErrors.get("pathName") == null ? "fieldInput" : "fieldInputError"'
                       placeholder="browser location name (no spaces)"/>
             </div>
@@ -231,9 +241,9 @@
             <span class="smallHeaderColumn">Visible</span>
             <span class="headerColumn">Last modified</span>
             <span class="smallHeaderColumn"></span>
-            <div id="alt" class="formStatus">
-               <%= searchStatusMessage %>
-            </div>
+         </div>
+         <div id="alt" class="formStatus">
+            <%= searchStatusMessage %>
          </div>
       </div>
       <div id="productElemView" repeat=":= productList" repeatVarName="productElem"

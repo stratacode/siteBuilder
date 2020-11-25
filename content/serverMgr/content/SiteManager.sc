@@ -3,6 +3,8 @@ SiteManager {
 
    pathName =: validatePathName();
 
+   newSitePathName =: validateNewPathName(newSitePathName);
+
    void updateCreateView() {
       if (showCreateView) {
          validSite = false;
@@ -49,14 +51,18 @@ SiteManager {
       updateSiteSelectList();
    }
 
-   void updateNewPathName(String pathName) {
-      validateNewPathName(pathName);
+   void validateNewPathName(String pathName) {
+      super.validateNewPathName(pathName);
       if (newSiteError == null) {
          SiteContext existingSite = SiteContext.findBySitePathName(pathName);
          if (existingSite != null) {
             newSiteError = "Site path name in use by site: " + existingSite.siteName;
          }
       }
+   }
+
+   void updateNewPathName(String pathName) {
+      validateNewPathName(pathName);
    }
 
    void changeSiteWithIndex(int ix) {
@@ -91,8 +97,9 @@ SiteManager {
          pathName = null;
       }
       UserView uv = currentUserView;
-      if (uv != null)
-         uv.lastSite = newSite;
+      if (uv != null) {
+         uv.changeLastSite(newSite);
+      }
       updateSiteSelectList();
    }
 
@@ -123,7 +130,7 @@ SiteManager {
       newSiteError = SiteContext.validateSiteName(newSiteName);
       if (newSiteError != null)
          return;
-      newSiteError = SiteContext.validateSitePathName(newSitePathName);
+      updateNewPathName(newSitePathName);
       if (newSiteError != null)
          return;
 

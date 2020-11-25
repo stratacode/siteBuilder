@@ -3,8 +3,9 @@
 <body>
    <div id="appFrame">
       <div id="pageBody">
-         <div class="profileView">
-         You have been signed out. <a href="/login">Login</a>
+         <div class="profileView" visible=":= !navbar.navMenu.loginVisible">
+         You have signed out successfully.
+         <a href="/">Continue as guest</a> or <a href="/login">Login</a>
          </div>
       </div>
    </div>

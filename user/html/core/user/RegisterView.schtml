@@ -1,5 +1,10 @@
 <div visible=":= currentUserView.loginStatus==LoginStatus.NotLoggedIn" class="profileView">
-   <%! String cancelURL = "/"; %>
+   <%!
+      String cancelURL = "/";
+      String successURL = "/";
+
+      boolean registered = false;
+   %>
    <div class="formTitle">Create an account</div>
    <div class="formField">
       <label for="emailField">Email address</label>
@@ -18,14 +23,18 @@
       <input id="lastNameField" type="text" value=":=: currentUserView.user.lastName"/>
    </div>
    <div class="formField">
-      <input type="submit" value="Register" clickEvent="=: currentUserView.register()" class="confirmButtons"/>
+      <input type="submit" value="Register" clickEvent="=: registered = currentUserView.register()" class="confirmButtons"/>
       <input type="submit" value="Cancel" clickEvent='=: Window.window.location.href = cancelURL' class="rightButton"/>
    </div>
    <div class="formError"><%= currentUserView.userViewError %></div>
    <div id="alt" class="profileView">
       <div class="formField">
-         <div class="formStatus">Logged in as <%= currentUserView.user.emailAddress %></div>
-         <input type="submit" value="Sign out" clickEvent="=: currentUserView.logout()" class="confirmButtons">
+         <div class="formStatus" visible=":= registered">
+            Successfully created an account with email <%= currentUserView.user.emailAddress %>
+            <div id="alt" class="formStatus">Logged in as <%= currentUserView.user.emailAddress %></div>
+         </div>
+         <input type="button" value="Continue" clickEvent="=: Window.window.location.href = successURL" class="confirmButtons">
+         <input type="button" value="Sign out" clickEvent="=: currentUserView.logout()" class="rightButton">
       </div>
    </div>
 </div>

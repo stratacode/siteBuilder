@@ -21,10 +21,10 @@ PageManager extends BaseManager {
    @Sync(initDefault=true)
    ParentDef currentParentDef;
 
-   @Sync(syncMode=SyncMode.Disabled)
+   @Sync(initDefault=true)
    ViewType viewType = contentViewType;
 
-   @Sync(syncMode=SyncMode.Disabled)
+   @Sync(initDefault=true)
    List<PageType> pageTypes = contentPageTypes;
 
    @Sync(resetState=true, initDefault=true)

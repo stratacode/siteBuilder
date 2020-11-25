@@ -28,8 +28,10 @@ class Sku implements IPropValidator {
    @DBPropertySettings(columnType="jsonb")
    List<Sku> skuOptions;
 
-   /** False for a skuOption */
-   boolean mainSku = true;
+   /** Only set for a skuOption */
+   Sku parentSku;
+
+   boolean mainSku := parentSku == null;
 
    /* Set for a skuOption only */
    @Sync(initDefault=true)
@@ -50,7 +52,7 @@ class Sku implements IPropValidator {
 
    Sku createOptionSku() {
       Sku res = new Sku();
-      res.mainSku = false;
+      res.parentSku = this;
       copyInto(res);
       return res;
    }
@@ -106,6 +108,12 @@ class Sku implements IPropValidator {
          removePropError("price");
          invalidPriceStr = null;
          checkDiscount();
+
+         if (skuOptions != null && getPropError("price") == null) {
+            for (Sku option:skuOptions) {
+               option.updatePrice(priceStr);
+            }
+         }
       }
       catch (NumberFormatException exc) {
          invalidPriceStr = priceStr;
@@ -166,6 +174,12 @@ class Sku implements IPropValidator {
          removePropError("discountPrice");
          invalidDiscountPriceStr = null;
          checkDiscount();
+
+         if (skuOptions != null && getPropError("discountPrice") == null) {
+            for (Sku option:skuOptions) {
+               option.updateDiscount(priceStr);
+            }
+         }
       }
       catch (NumberFormatException exc) {
          addPropError("discountPrice", "Invalid discountPrice");
@@ -234,5 +248,9 @@ class Sku implements IPropValidator {
    void updateInventory() {
       Bind.sendChangedEvent(this, "inventoryDisplayStr");
       Bind.sendChangedEvent(this, "inStock");
+      if (parentSku != null && parentSku.inventory != null) {
+         Bind.sendChangedEvent(parentSku.inventory, null);
+         parentSku.updateInventory();
+      }
    }
 }

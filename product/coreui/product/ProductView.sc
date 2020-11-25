@@ -31,6 +31,9 @@ class ProductView extends CatalogElementView {
    @Sync(initDefault=true)
    List<OptionView> optionViews;
 
+   @Sync(initDefault=true)
+   int optionsChangedCt = 0;
+
    // This method runs on both client and server so the inputs are synchronized, but not the outputs
    void validateProduct() {
       optionScheme = product.sku == null ? null : product.sku.optionScheme;

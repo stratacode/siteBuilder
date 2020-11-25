@@ -20,6 +20,7 @@ input[type=button], input[type=submit] {
    background: #296ecc;
    color: #f3f3f3;
    border-radius: 2px;
+   cursor:pointer;
 }
 
 input[type=file]::file-selector-button {
@@ -31,6 +32,7 @@ input[type=file]::file-selector-button {
    background: #296ecc;
    color: #f3f3f3;
    border-radius: 2px;
+   cursor:pointer;
 }
 
 input[type=file]::-webkit-file-upload-button {
@@ -42,10 +44,13 @@ input[type=file]::-webkit-file-upload-button {
    background: #296ecc;
    color: #f3f3f3;
    border-radius: 2px;
+   cursor:pointer;
 }
 
 input[type=button]:hover {
    color: #fff;
+   border: solid 0px #0d65ef;
+   background: #195dcc;
 }
 
 .findMediaButton, .clearMediaButton, .clearOptionButton, .findProductButton, .clearProductButton, .findCategoryButton, .clearCategoryButton,

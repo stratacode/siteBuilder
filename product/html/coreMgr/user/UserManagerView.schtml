@@ -11,7 +11,9 @@
    <div id="findUserView">
       <div id="userTypeForm">
          <span id="extraSearchOptions">
-            <label for="showOrdersCheckbox">Show orders</label><input type="checkbox" id="showOrdersCheckbox" checked=":=: userMgr.showOrders"/>
+            <span visible=":= siteMgr.validStore">
+               <label for="showOrdersCheckbox">Show orders</label><input type="checkbox" id="showOrdersCheckbox" checked=":=: userMgr.showOrders"/>
+            </span>
          </span>
       </div>
    </div>
@@ -33,7 +35,7 @@
    <div id="userDetailView">
       <%! List<Order> userOrders := userMgr.getOrdersForUser(currentUser); %>
 
-      <div id="userOrderView" visible=":= userMgr.showOrders">
+      <div id="userOrderView" visible=":= siteMgr.validStore && userMgr.showOrders">
          <div id="userOrderHeader" class="headerRow">
             <span class="wideHeaderColumn">Order #</span>
             <span class="headerColumn">Total price</span>

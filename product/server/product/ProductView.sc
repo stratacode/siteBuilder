@@ -9,7 +9,9 @@ ProductView {
 
    @Sync(syncMode=SyncMode.Disabled)
    ProductInventory inventory := currentSku.inventory;
-   inventory =: validateInStock();
+
+   ProductInventory prodInventory := product.sku.inventory;
+   prodInventory =: validateInStock();
 
    void init() {
       if (storeView.store == null)
@@ -89,6 +91,8 @@ ProductView {
          inStock = false;
          numInCart = 0;
       }
+
+      validateOptionEnabled();
    }
 
    void initOptions() {
@@ -206,25 +210,7 @@ ProductView {
             return;
          }
 
-         for (int i = 0; i < numOptions; i++) {
-            ProductOption opt = optionScheme.options.get(i);
-            OptionView optionView = optionViews.get(i);
-            if (optionView.option != opt) {
-               System.err.println("*** Mismatching option");
-               return;
-            }
-            List<OptionValue> optValues = optionView.option.optionValues;
-            int selIndex = optionView.getSelectedIndex();
-            for (int j = 0; j < optValues.size(); j++) {
-               OptionValue optValue = optValues.get(j);
-               boolean enabled = true;;
-               if (product.sku.skuOptions != null) {
-                  Sku optionSku = product.sku.getSkuForOptionsWith(selectedOptions, i, optValue);
-                  enabled = optionSku != null && optionSku.inStock;
-               }
-               optionView.enabled.set(j, enabled);
-            }
-         }
+         validateOptionEnabled();
 
          List<OptionValue> selectedOptions = getSelectedOptions();
          if (product.sku.skuOptions != null) {
@@ -236,6 +222,37 @@ ProductView {
       }
       optionsValid = true;
       mediaChanged();
+   }
+
+   void validateOptionEnabled() {
+      if (optionViews == null || optionScheme == null)
+         return;
+      boolean optionsChanged = false;
+      int numOptions = optionScheme.options.size();
+      for (int i = 0; i < numOptions; i++) {
+         ProductOption opt = optionScheme.options.get(i);
+         OptionView optionView = optionViews.get(i);
+         if (optionView.option != opt) {
+            System.err.println("*** Mismatching option");
+            return;
+         }
+         List<OptionValue> optValues = optionView.option.optionValues;
+         int selIndex = optionView.getSelectedIndex();
+         for (int j = 0; j < optValues.size(); j++) {
+            OptionValue optValue = optValues.get(j);
+            boolean enabled = true;;
+            if (product.sku.skuOptions != null) {
+               Sku optionSku = product.sku.getSkuForOptionsWith(selectedOptions, i, optValue);
+               enabled = optionSku != null && optionSku.inStock;
+            }
+            if (enabled != optionView.enabled.get(j)) {
+               optionView.enabled.set(j, enabled);
+               optionsChanged = true;
+            }
+         }
+      }
+      if (optionsChanged)
+         optionsChangedCt++;
    }
 
    void addToCart() {

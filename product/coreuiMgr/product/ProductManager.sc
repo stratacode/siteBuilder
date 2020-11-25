@@ -73,6 +73,7 @@ class ProductManager extends BaseProductManager {
    @Sync(initDefault=true)
    List<Sku> invalidSkuOptions;
 
+   @Sync(initDefault=true)
    String searchStatusMessage = "";
 
    void resetForm() {

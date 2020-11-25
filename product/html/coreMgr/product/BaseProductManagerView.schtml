@@ -69,12 +69,14 @@
             <%= sku.propErrors.get("length") %>
          </div>
          <div class="checkFormView">
-            <input type="checkbox" id="inventoryCheckbox" checked=":= psku.inventory != null" changeEvent="=: updateManageInventory(checked)"/>
+            <input type="checkbox" id="inventoryCheckbox" checked=":= psku.inventory != null"
+                   changeEvent="=: updateManageInventory(checked)"/>
             <label for="inventoryCheckbox">Manage inventory?</label>
          </div>
-         <div id="inventoryView" visible=":= psku.inventory != null" class="formField" visible=":= psku.skuOptions == null">
+         <div id="inventoryView" visible=":= psku.inventory != null && psku.skuOptions == null" class="formField">
             <label for="quantityField">Quantity</label>
-            <input type="number" min="0" id="quantityField" value=":= String.valueOf(psku.inventory.quantity)" changeEvent="=: psku.inventory.updateQuantityStr(value)"/>
+            <input id="quantityField" type="number" min="0" value=":= String.valueOf(psku.inventory.quantity)"
+                   changeEvent="=: psku.inventory.updateQuantityStr(value)"/>
             <div id="alt" class="formStatus">See sku options for inventory</div>
          </div>
          <div id="nextAvailView" class="formField" visible=":= psku.inventory != null">
@@ -87,7 +89,9 @@
       </div>
       <div id="optionsWrapperView">
          <div class="checkFormView">
-            <input id="hasOptionCheckbox" type="checkbox" checked=":= sku.optionScheme != null || showOptionsView" changeEvent="=: updateHasOptions(checked)"/>
+            <input id="hasOptionCheckbox" type="checkbox"
+                   checked=":= sku.optionScheme != null || showOptionsView"
+                   changeEvent="=: updateHasOptions(checked)"/>
             <label for="hasOptionCheckbox">Has options?</label>
          </div>
          <div id="optionsView" visible=':= showOptionsView'>
@@ -173,28 +177,37 @@
                         %>
                         <div id="newValueView" class="newValueView" repeat=":= productOption.optionValues" repeatVarName="optionValue">
                            <label for="optionValueNameField">Value #<%= newValueView.this.repeatIndex+1 %></label>
-                           <input type="text" id="optionValueNameField" value=":=: optionValue.optionValue"
+                           <input id="optionValueNameField" type="text" value=":=: optionValue.optionValue"
                                   changeEvent="=: refreshOptionScheme()"
                                   placeholder="e.g. Small, Blue"/>
                            <label for="optionValueNameField">sku symbol</label>
-                           <input type="text" id="optionValueSkuField" value=":=: optionValue.skuSymbol"
+                           <input id="optionValueSkuField" type="text" value=":=: optionValue.skuSymbol"
                                   placeholder="e.g. sm, blu"/>
                            <label for="defaultOptionCheckbox">Default</label>
-                           <input tabindex="-1" id="defaultOptionCheckbox" type="checkbox" checked=":= optionValue == productOption.defaultValue" changeEvent="=: productOption.defaultValue = optionValue"/>
-                           <input tabindex="-1" visible=":= productOption.optionValues.size() > 1" type="image" class="clearOptionButton" src="/icons/x-square.svg"
+                           <input id="defaultOptionCheckbox" type="checkbox" tabindex="-1"
+                                  checked=":= optionValue == productOption.defaultValue"
+                                  changeEvent="=: productOption.defaultValue = optionValue"/>
+                           <input type="image" tabindex="-1" visible=":= productOption.optionValues.size() > 1"
+                                  class="clearOptionButton" src="/icons/x-square.svg"
                                   clickEvent="=: removeOptionValue(productOption, optionValue)"/>
                         </div>
-                        <input type="button" class="endListButton" value="Add another value" clickEvent="=: addNewOptionValue(productOption, true)"/>
+                        <input id="addValueButton" type="button" class="endListButton" value="Add another value"
+                               clickEvent="=: addNewOptionValue(productOption, true)"/>
                      </div>
                   </div>
-                  <input type="button" class="endListButton" value="Add another option" clickEvent="=: addNewOption()"/>
-                  <input type="button" class="rightButton" value="Done editing option scheme" clickEvent="=: doneEditingOptionScheme()"
+                  <input id="addOptionButton" type="button" class="endListButton" value="Add another option"
+                         clickEvent="=: addNewOption()"/>
+                  <input id="doneEditingOptionButton" type="button" class="rightButton"
+                         value="Done editing option scheme"
+                         clickEvent="=: doneEditingOptionScheme()"
                          visible=":= editableOptionScheme"/>
                </div>
                <div class="formError"><%= optionErrorMessage %></div>
                <div class="formField confirmButtons" visible=":= !editableOptionScheme">
-                  <input type="button" value="Save option scheme" clickEvent="=: completeNewOptionScheme()"/>
-                  <input type="button" class="rightButton" value="Cancel" clickEvent="=: cancelNewOptionScheme()"/>
+                  <input id="saveOptionSchemeButton" type="button" value="Save option scheme"
+                         clickEvent="=: completeNewOptionScheme()"/>
+                  <input id="cancelOptionSchemeButton" type="button" class="rightButton" value="Cancel"
+                         clickEvent="=: cancelNewOptionScheme()"/>
                </div>
             </div>
             <div id="skuOptionsView" visible=":= showSkuOptions">
@@ -207,8 +220,12 @@
                      </div>
                      <div id="invalidOptionView" repeat=":= invalidSkuOptions" repeatVarName="invalidSku" class="skuRowView">
                         <span class="wideSkuColumn"><%= invalidSku.skuCode %></span>
-                        <span class="wideSkuColumn"><span class=':= "optionValueCell" + repeatIndex' repeat=":= invalidSku.options" repeatVarName="optVal"><%= optVal.optionValue %></span></span>
-                        <input type="image" class="removeSkuButton" src="/icons/x-square.svg" clickEvent="=: removeInvalidSku(invalidSku)"/>
+                        <span class="wideSkuColumn">
+                           <span class=':= "optionValueCell" + repeatIndex' repeat=":= invalidSku.options"
+                                 repeatVarName="optVal"><%= optVal.optionValue %></span>
+                        </span>
+                        <input id="removeSkuButton" type="image" class="removeSkuButton" src="/icons/x-square.svg"
+                               clickEvent="=: removeInvalidSku(invalidSku)"/>
                      </div>
                   </div>
                </div>
@@ -221,7 +238,8 @@
                      </div>
                      <div id="missingOptionView" repeat=":= missingSkuOptions" repeatVarName="missingSku" class="skuRowView">
                         <span class="wideSkuColumn"><%= missingSku.skuCode %></span>
-                        <span class="wideSkuColumn"><span class=':= "optionValueCell" + repeatIndex' repeat=":= missingSku.options" repeatVarName="optVal"><%= optVal.optionValue %></span></span>
+                        <span class="wideSkuColumn"><span class=':= "optionValueCell" + repeatIndex' repeat=":= missingSku.options"
+                              repeatVarName="optVal"><%= optVal.optionValue %></span></span>
                         <input class="rightButton" type="button" value="Add" clickEvent="=: addMissingSku(missingSku)"/>
                      </div>
                   </div>
@@ -239,15 +257,16 @@
                      </div>
                      <div id="validOptionView" repeat=":= validSkuOptions" repeatVarName="validSku" class="skuRowView">
                         <span class="wideSkuColumn"><%= validSku.skuCode %></span>
-                        <span class="wideSkuColumn"><span class=':= "optionValueCell" + repeatIndex' repeat=":= validSku.options" repeatVarName="optVal"><%= optVal.optionValue %></span></span>
+                        <span class="wideSkuColumn"><span class=':= "optionValueCell" + repeatIndex' repeat=":= validSku.options"
+                              repeatVarName="optVal"><%= optVal.optionValue %></span></span>
                         <span visible=":= psku.inventory != null" bodyOnly="true">
                            <span class="skuColumn">
-                              <input type="number"
+                              <input id="skuQuantity" type="number"
                                      min="0" class="quantityCell"
                                      value=":= String.valueOf(validSku.inventory.quantity)"
                                      changeEvent="=: validSku.inventory.updateQuantityStr(value)"/>
                            </span>
-                           <input disabled=":= validSku.inventory.quantity != 0" type="date" id="nextAvailField"
+                           <input id="nextAvailField" type="date" disabled=":= validSku.inventory.quantity != 0"
                                   min="= ProductInventory.minNextAvailDateStr"
                                   changeEvent="=: validSku.inventory.updateNextAvailStr(value)"/>
                         </span>

@@ -32,6 +32,7 @@ PageManager {
          throw new IllegalArgumentException("No pageClassName: " + pageType.pageDefClassName);
       currentPage = (PageDef) DynUtil.newInnerInstance(pageClass, null, null);
       currentPage.pageTypePathName = pageType.pageTypePathName;
+      currentPage.pageType = pageType;
       currentPage.site = site;
       currentParentDef = currentPage;
       pagePathName = "";

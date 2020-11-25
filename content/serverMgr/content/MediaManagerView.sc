@@ -10,6 +10,8 @@ MediaManagerView {
       return new ArrayList<ManagedMedia>((List<ManagedMedia>)ManagedMedia.getDBTypeDescriptor().searchQuery(text, searchProps, Arrays.asList(manager), null, searchOrderBy, 0, 20));
    }
 
+   mediaManagerId := String.valueOf(mediaManager.id);
+
    void doSearch() {
       String txt = searchText == null ? "" : searchText;
       currentMedia = searchForText(txt, mediaManager);

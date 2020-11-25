@@ -3,6 +3,6 @@
 // around in the URL and rewrite all of the links to include the current
 // site name. That would avoid the 'browser wide' setting of the current
 // site if you have multiple tabs going to different stores.
-scope<session>
+scope<window>
 object currentSiteManager extends SiteManager {
 }

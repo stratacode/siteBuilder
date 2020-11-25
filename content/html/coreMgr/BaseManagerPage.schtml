@@ -44,7 +44,9 @@
                <span id="loginMenu" visible=":= loginMenuVisible">
                   <a href="/logout">Sign out</a>
                </span>
-               <a clickEvent="=: loginMenuVisible = !loginMenuVisible"><img class="logoutIcon" src="/icons/user-minus20.svg"/><%= siteMgr.userView.user.userName %></a>
+               <a clickEvent="=: loginMenuVisible = !loginMenuVisible">
+                  <img class="logoutIcon" src="/icons/user-minus20.svg"/><%= siteMgr.userView.user.userName %>
+               </a>
             </span>
          </div>
          <div class="formError"><%= siteMgr.errorMessage %></div>
@@ -85,7 +87,8 @@
                   <input id="loginPasswordField" type="password" placeholder="password" value=":=: siteMgr.userView.password"/>
                </div>
                <input id="loginButton" type="submit" value="Log in" clickEvent="=: siteMgr.login()" class="confirmButtons"/>
-               <input id="registerButton" type="submit" value="Register" clickEvent='=: Window.window.location.href = "/Register.html"' class="rightButtons"/>
+               <input id="registerButton" type="submit" value="Register"
+                      clickEvent='=: Window.window.location.href = "/Register.html"' class="rightButtons"/>
             </div>
             <div class="formError"><%= siteMgr.userView.userViewError %></div>
          </div>

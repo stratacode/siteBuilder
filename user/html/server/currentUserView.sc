@@ -3,7 +3,6 @@ import javax.servlet.http.Cookie;
 
 // TODO: this should be per-user manager where we pull the user manager out of a
 // a global Site object (broken out of Storefront)
-scope<session>
 currentUserView {
    void init() {
       Context ctx = Context.getCurrentContext();
@@ -41,7 +40,13 @@ currentUserView {
             locale = req.getLocale();
             user.localeTag = locale.toLanguageTag();
          }
+
+         initFromContext(ctx);
       }
+   }
+
+   // Hook for other cookies or request state initialization
+   void initFromContext(Context ctx) {
    }
 
    void refresh() {
@@ -82,23 +87,29 @@ currentUserView {
       loginStatus = LoginStatus.NotLoggedIn;
    }
 
-   void persistAuthToken(String token) {
+   void addUserCookie(String cookieName, String value) {
       Context ctx = Context.getCurrentContext();
       HttpServletResponse resp = ctx.response;
-      if (resp == null)
+      if (resp == null || resp.isCommitted()) {
+         System.err.println("*** Warning - failed to add request cookie: " + cookieName);
          return;
-      Cookie cookie = new Cookie(userbase.cookieName, token);
+      }
+      Cookie cookie = new Cookie(cookieName, value);
       if (userbase.secureCookie)
          cookie.setSecure(true);
       if (userbase.cookieDomain != null)
          cookie.setDomain(userbase.cookieDomain);
       if (userbase.cookiePath != null)
          cookie.setPath(userbase.cookiePath);
-      if (token.length() == 0)
+      if (value.length() == 0)
          cookie.setMaxAge(0);
       else
          cookie.setMaxAge(userbase.cookieDurationSeconds);
       resp.addCookie(cookie);
+   }
+
+   void persistAuthToken(String token) {
+      addUserCookie(userbase.cookieName, token);
    }
    void clearAuthToken() {
       persistAuthToken(""); // Clear our cookie

@@ -29,7 +29,6 @@ class PageDef extends ParentDef {
    @Sync(initDefault=true)
    Date lastModified;
 
-   @Sync(initDefault=true)
    String pageUrl := "/" + site.sitePathTypeName + "/" + site.sitePathName + "/page/" + pagePathName;
 
    String validatePageName(String pageName) {

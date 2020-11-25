@@ -177,14 +177,17 @@
    </div>
 
    <div id="listView">
-      <div class="headerRow" visible=":= categoryList != null && categoryList.size() > 0">
-         <span class="wideHeaderColumn">Name</span>
-         <span class="headerColumn">Media</span>
-         <span class="headerColumn">Pathname</span>
-         <span class="headerColumn">Category</span>
-         <span class="headerColumn">Visible</span>
-         <span class="headerColumn">Last modified</span>
-         <span class="headerColumn">Remove</span>
+      <div id="resultsHeaderView" visible=":= categoryList != null && categoryList.size() > 0">
+         <div class="leftFormStatus">Search results</div>
+         <div class="headerRow">
+            <span class="wideHeaderColumn">Name</span>
+            <span class="headerColumn">Media</span>
+            <span class="headerColumn">Pathname</span>
+            <span class="headerColumn">Category</span>
+            <span class="headerColumn">Visible</span>
+            <span class="headerColumn">Last modified</span>
+            <span class="headerColumn">Remove</span>
+         </div>
          <div id="alt" class="formStatus">
             <%= searchStatusMessage %>
          </div>

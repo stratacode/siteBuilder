@@ -47,7 +47,7 @@ MediaManager {
                if (!(new File(nextFile)).canRead()) {
                   nextFile = getGenFileName(fileName, media.revision, width, origSuffix);
                   if (!(new File(nextFile)).canRead()) {
-                     System.out.println("*** Missing generated file for: " + width + ":" + nextFile);;
+                     System.out.println("*** Refresh media: regenerating " + nextFile);
                      mediaChanged = true;
                   }
                }

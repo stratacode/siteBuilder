@@ -78,8 +78,9 @@ class SiteManager {
    void updateNewSiteName(String val) {
       newSiteName = val;
       newSiteError = newSiteStatus = null;
-      if (autoUpdatePath && (val != null && val.length() > 0))
+      if (autoUpdatePath && (val != null && val.length() > 0)) {
          newSitePathName = ManagedResource.convertToPathName(val);
+      }
       newSiteError = SiteContext.validateSiteName(val);
    }
 

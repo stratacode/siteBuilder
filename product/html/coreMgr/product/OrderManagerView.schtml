@@ -33,12 +33,18 @@
    </div>
 
    <div id="listView">
-      <div class="headerRow" visible=":= orderList != null && orderList.size() > 0">
-         <span class="wideHeaderColumn">Order #</span>
-         <span class="wideHeaderColumn">Customer email</span>
-         <span class="headerColumn">Total price</span>
-         <span class="wideHeaderColumn">Submitted</span>
-         <span class="wideHeaderColumn">Actions</span>
+      <div id="resultsHeaderView" visible=":= orderList != null && orderList.size() > 0">
+         <div class="leftFormStatus">Search results</div>
+         <div class="headerRow">
+            <span class="wideHeaderColumn">Order #</span>
+            <span class="wideHeaderColumn">Customer email</span>
+            <span class="headerColumn">Total price</span>
+            <span class="wideHeaderColumn">Submitted</span>
+            <span class="wideHeaderColumn">Actions</span>
+         </div>
+         <div id="alt" class="formStatus">
+            <%= searchStatusMessage %>
+         </div>
       </div>
       <div id="orderElemView" repeat=":= orderList" repeatVarName="orderElem" class="orderElemView">
         <div id="orderElemRow" class=':= orderElem == order ? "selectedOrderRow" : "orderRow"'>
