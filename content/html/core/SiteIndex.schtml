@@ -34,7 +34,9 @@ import java.util.Arrays;
             <div id="welcomeRegistered" visible=":= currentUserView.loginStatus == LoginStatus.LoggedIn" class="welcomeDetail">
                <select id="manageSiteSelect" visible=":= userSiteList.size() > 0"
                        optionDataSource=":= userSiteList" selectedIndex="0"/>
-               <input id="manageSiteButton" type="button" disabled=":= userSiteList.size() == 0" value="Manage site" clickEvent="=: Window.window.location.href = getManageSiteURL(userSiteList.get(manageSiteSelect.selectedIndex))"/>
+               <input id="manageSiteButton" type="button" value="Manage site"
+                      disabled=":= userSiteList == null || userSiteList.size() == 0"
+                      clickEvent="=: Window.window.location.href = getManageSiteURL(userSiteList.get(manageSiteSelect.selectedIndex))"/>
 
                <input id="createSiteButton" type="button" value="Create site" clickEvent='=: Window.window.location.href = "/manage/site?createSite=true"'/>
             </div>

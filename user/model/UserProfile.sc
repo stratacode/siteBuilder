@@ -21,7 +21,7 @@ class UserProfile {
    @DBPropertySettings(indexed=true)
    String userName;
 
-   @Sync(syncMode=SyncMode.ClientToServer)
+   @Sync(syncMode=SyncMode.Disabled)
    String password;
 
    @Sync(syncMode=SyncMode.Disabled)
