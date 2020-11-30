@@ -197,6 +197,14 @@ ProductView {
       }
    }
 
+   void addToCart() {
+      storeView.orderView.addLineItem(product, currentSku, currentQuantity);
+      UserSession us = storeView.getUserSession();
+      if (us != null)
+         us.addAddToCartEvent(product);
+      validateInStock();
+   }
+
    void validateOptions() {
       if (optionsValid || optionScheme == null)
          return;
@@ -253,14 +261,6 @@ ProductView {
       }
       if (optionsChanged)
          optionsChangedCt++;
-   }
-
-   void addToCart() {
-      storeView.orderView.addLineItem(product, currentSku, currentQuantity);
-      UserSession us = storeView.getUserSession();
-      if (us != null)
-         us.addAddToCartEvent(product);
-      validateInStock();
    }
 
    void startProductSync() {

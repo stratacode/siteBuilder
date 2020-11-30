@@ -22,6 +22,7 @@ currentUserView {
 
    void changeLastSite(SiteContext newSite) {
       super.changeLastSite(newSite);
-      addUserCookie(cookieName, newSite.sitePathName);
+      if (newSite != null)
+         addUserCookie(cookieName, newSite.sitePathName);
    }
 }

@@ -45,7 +45,10 @@ OrderView {
                      SyncManager.startSync(lineItem.product, "options");
                   }
                }
+               numLineItems = lineItems.size();
             }
+            else
+               numLineItems = 0;
 
             Address billingAddress = order.paymentInfo.billingAddress;
             Address shippingAddress = order.shippingAddress;
@@ -81,6 +84,7 @@ OrderView {
             validPayment = false;
             editAddress = true;
             editPayment = true;
+            numLineItems = 0;
          }
 
          saveOrderPaymentInfo = user.savePaymentInfo;
@@ -132,6 +136,7 @@ OrderView {
             }
          }
       }
+      numLineItems = order.lineItems.size();
    }
 
    void changeQuantity(LineItem lineItem, String quantityStr) {

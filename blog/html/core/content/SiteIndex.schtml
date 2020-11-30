@@ -8,7 +8,6 @@
          return "/manage/blogCategory/" + category.site.sitePathName + "/" + category.pathName;
       }
 
-
       @sc.obj.HTMLSettings(returnsHTML=true)
       @Exec(serverOnly=true)
       StringBuilder outputSiteInfo(SiteContext site) {

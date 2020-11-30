@@ -48,6 +48,7 @@ UserView {
    }
 
    void resetUser() {
+      UserProfile oldUser = user;
       user = new UserProfile();
       user.userbase = userbase;
       user.initDefaultFields();
@@ -58,19 +59,26 @@ UserView {
       user.dbInsert(false);
 
       DBUtil.addTestIdInstance(user, "new-anon-profile");
+
+      if (oldUser != null)
+         DynUtil.dispose(oldUser, true);
    }
+
+   final static String loginError = "No account with that user name and password";
 
    boolean login() {
       loginStatus = LoginStatus.NotLoggedIn;
 
+      UserProfile anonUser = user;
+
       clearErrors();
       String userNameError = user.validateUserName(userName);
       if (userNameError != null) {
-         error("userName", userNameError, 10);
+         error("userName", loginError, 10);
       }
       String passwordError = user.validatePassword(password);
       if (passwordError != null) {
-         error("password", passwordError, 9);
+         error("password", loginError, 9);
       }
 
       if (userViewError == null) {
@@ -94,14 +102,20 @@ UserView {
                   persistAuthToken(userAuthToken);
                   user.loginSuccess(remoteIp);
 
+                  password = "";
+
                   DBUtil.addTestIdInstance(user, "logged-in-as-" + user.userName);
+
+                  if (anonUser != null)
+                     DynUtil.dispose(anonUser, true);
+
                   return true;
                }
                else
                   loginUser.loginFailed(remoteIp);
             }
          }
-         error(null, "No user found with that userName/password", 8);
+         error(null, loginError, 8);
       }
       return false;
    }
@@ -110,9 +124,13 @@ UserView {
       loginStatus = LoginStatus.NotLoggedIn;
       clearAuthToken();
       userAuthToken = null;
-      //if (user != null)
-      //   DynUtil.dispose(user);
-      resetUser();
+      if (user != null) {
+         DynUtil.disposeLater(user, true);
+         user = null;
+      }
+      // We don't want to create a new user at the end of this request since we are not setting a new cookie
+      // and will just create another new one on the start of the next request
+      //resetUser();
       emailAddress = "";
       userName = "";
       password = "";

@@ -3,8 +3,8 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
+scope<window>
 @DBTypeSettings
-@FindBy(name="userNamePassword", with="userbase,userName,password", findOne=true)
 @FindBy(name="userName", with="userbase,userName", findOne=true)
 @Sync(onDemand=true)
 class UserProfile {
@@ -23,11 +23,13 @@ class UserProfile {
 
    @Sync(syncMode=SyncMode.ClientToServer)
    String password;
+
    @Sync(syncMode=SyncMode.Disabled)
    String salt;
 
    @Sync(initDefault=true)
    String firstName, lastName, salutation;
+
    @Sync(syncMode=SyncMode.ServerToClient, initDefault=true)
    boolean emailVerified;
 

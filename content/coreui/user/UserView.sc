@@ -15,7 +15,6 @@ class UserView {
    @Sync(initDefault=true)
    String userName = "";
 
-   @Sync(syncMode=SyncMode.ClientToServer)
    String password = "";
 
    @Sync(syncMode=SyncMode.Disabled)

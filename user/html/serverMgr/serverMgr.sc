@@ -11,7 +11,7 @@ public user.html.serverMgr extends user.html.server, user.html.coreMgr, jetty.sc
    hidden = true;
 
    void init() {
-   // Split this layer and it's sublayers out into a new process using the default 'java' runtime
-      includeProcess("server");
+      // Split this layer and it's sublayers out into a new process using the default 'java' runtime
+      addProcess(sc.layer.ProcessDefinition.create("Server", "java", true));
    }
 }

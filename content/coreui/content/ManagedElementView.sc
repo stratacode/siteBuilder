@@ -31,7 +31,7 @@ abstract class ManagedElementView implements IView {
    @Sync
    int altMediaIndex;
 
-   altMediaIndex =: mediaChanged();
+   altMediaIndex =: validateCurrentMedia();
 
    int pageVisitCount := siteView.pageVisitCount;
 

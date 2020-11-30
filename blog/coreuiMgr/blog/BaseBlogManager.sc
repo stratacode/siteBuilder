@@ -1,5 +1,12 @@
 @Sync
-abstract class BaseBlogManager extends BlogElementManager {
+abstract class BaseBlogManager extends BaseElementManager {
+   @Sync(resetState=true, initDefault=true)
+   String parentCategoryPathName;
+
+   BlogElement getBlogElement() {
+      return (BlogElement) element;
+   }
+
    @Sync(resetState=true, initDefault=true)
    String searchText;
 
@@ -25,9 +32,6 @@ abstract class BaseBlogManager extends BlogElementManager {
 
    @Sync(resetState=true, initDefault=true)
    String longDescHtml;
-
-   @Sync(resetState=true, initDefault=true)
-   String parentCategoryPathName;
 
    void resetForm() {
       searchText = "";

@@ -5,7 +5,7 @@ class OrderView {
    UserView userView;
 
    @Sync(initDefault=true)
-   int numLineItems := order == null ? 0 : order.numLineItems;
+   int numLineItems;
 
    @Sync(initDefault=true)
    Order order = null;
