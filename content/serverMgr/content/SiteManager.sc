@@ -1,7 +1,7 @@
 SiteManager {
    showCreateView =: updateCreateView();
 
-   pathName =: validatePathName();
+   pathNameInURL =: validatePathName();
 
    newSitePathName =: validateNewPathName(newSitePathName);
 
@@ -39,6 +39,10 @@ SiteManager {
          newSite = SiteContext.findBySitePathName(pathName);
          if (newSite == null) {
             errorMessage = "No site with path name: " + pathName;
+         }
+         else {
+            if (!DynUtil.equalObjects(pathNameInURL, pathName))
+               pathNameInURL = pathName;
          }
       }
       else {
@@ -78,6 +82,9 @@ SiteManager {
          if (!siteList.contains(newSite)) {
             errorMessage = "Not an admin of site: " + newSite.siteName;
             validSite = false;
+            site = null;
+            pathName = null;
+            pathNameInURL = null;
          }
          else {
             if (showCreateView)
@@ -86,6 +93,7 @@ SiteManager {
                validSite = true;
             site = newSite;
             pathName = newSite.sitePathName;
+            pathNameInURL = pathName;
 
             validateSite();
          }
@@ -95,6 +103,7 @@ SiteManager {
          errorMessage = null;
          validSite = false;
          pathName = null;
+         pathNameInURL = null;
       }
       UserView uv = currentUserView;
       if (uv != null) {
@@ -360,10 +369,17 @@ SiteManager {
    }
 
    void validatePathName() {
-      if (pathName == null && site == null)
+      // Ignore the null or empty pathNameInURL since links to the manager page do not always include the
+      // original site name
+      if (pathNameInURL == null || pathNameInURL.length() == 0) {
+         if (site != null && site.sitePathName != null)
+            pathNameInURL = site.sitePathName;
          return;
+      }
 
-      if (pathName != null)
+      pathName = pathNameInURL;
+
+      if (pathNameInURL != null && (site == null || !DynUtil.equalObjects(pathNameInURL, site.sitePathName)))
          refreshSiteForUser();
       //else TODO - do we need this?
       //   changeSite(null);

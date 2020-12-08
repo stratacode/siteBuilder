@@ -195,6 +195,12 @@ UserView {
          userViewError = propErrors.toString();
       }
 
+      if (userViewError != null)
+         return false;
+
+      // We sync this in both directions so make sure we clear it out
+      password = "";
+
       try {
          if (insert)
             user.dbInsert(false);
@@ -302,6 +308,7 @@ UserView {
 
       user.password = UserProfile.getHashedPassword(user, password);
       updatePasswordStatus = "Password changed";
+      password = "";
    }
 }
 

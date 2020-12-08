@@ -86,4 +86,8 @@ class OptionScheme implements IPropValidator {
          }
       }
    }
+
+   String toString() {
+      return schemeName;
+   }
 }

@@ -132,6 +132,11 @@ body {
    width: 100%;
    border-bottom: solid 1px #ccc;
    justify-content: center;
+   align-items: center;
+}
+
+.closeButton {
+   width: 24px;
 }
 
 .editFormView {
@@ -534,6 +539,11 @@ input[type=button]:hover {
    color: #fff;
    border: solid 0px #0d65ef;
    background: #195dcc;
+}
+
+input[type=button]:disabled:hover {
+   background: #aaa;
+   cursor: default;
 }
 
 .bannerBlock, .bannerImage {

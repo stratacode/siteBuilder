@@ -14,7 +14,7 @@
    <div class="formError"><%= currentUserView.userViewError %></div>
    <div id="alt" class="loginView">
       <div>
-         <label for="logoutButton">Logged in as <%= currentUserView.userName %></label>
+         <label for="logoutButton">Logged in as <%= currentUserView.user.userName %></label>
          <input id="logoutButton" type="submit" value="Log out" clickEvent="=: currentUserView.logout()">
       </div>
    </div>

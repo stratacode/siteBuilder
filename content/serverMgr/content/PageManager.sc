@@ -8,13 +8,16 @@ PageManager {
    pagePathName =: validatePagePathName();
 
    void doSearch() {
-      List<PageDef> pageDefs = (List<PageDef>) PageDef.getDBTypeDescriptor().searchQuery(searchText, searchPropNames, getSearchSiteValues(), null, null, 0, 20);
+      List<PageDef> pageDefs = (List<PageDef>)
+           PageDef.getDBTypeDescriptor().searchQuery(searchText, searchPropNames,
+                                                     getSearchSiteValues(), null, null, 0, 20);
       currentPages = pageDefs;
       currentPage = null;
       currentParentDef = null;
       pagePathName = null;
       if (pageDefs.size() == 0) {
-         int numPages = PageDef.getDBTypeDescriptor().searchCountQuery("", searchPropNames, getSearchSiteValues());
+         int numPages = PageDef.getDBTypeDescriptor().searchCountQuery("", searchPropNames,
+                                                                       getSearchSiteValues());
          if (numPages == 0)
             searchStatusMessage = "There are no pages defined yet for this site";
          else

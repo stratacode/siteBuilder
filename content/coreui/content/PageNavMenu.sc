@@ -19,56 +19,6 @@ class PageNavMenu extends NavMenu {
       orderValue = 0;
    }
 
-   void validateSiteView() {
-      //siteContext = siteView == null ? null : siteView.siteContext;
-   }
-
-   void menuItemsChanged() {
-      Bind.sendChangedEvent(this, "menuItems");
-   }
-
-   @Bindable(manual=true)
-   List<BaseMenuItem> getMenuItems() {
-      List<BaseMenuItem> ores = super.getMenuItems();
-      if (siteContext == null)
-         return ores;
-      List<BaseMenuItem> dres = customMenuItems;
-      ArrayList<BaseMenuItem> res = new ArrayList<BaseMenuItem>();
-      if (ores != null)
-         res.addAll(ores);
-      if (dres != null) {
-         res.addAll(dres);
-      }
-      for (int i = 0; i < res.size(); i++) {
-         BaseMenuItem elem = res.get(i);
-         elem.listPos = i;
-         elem.setParentMenu(this);
-      }
-      res.sort(new java.util.Comparator<BaseMenuItem>() {
-         public int compare(BaseMenuItem lhs, BaseMenuItem rhs) {
-            // First use the configured order value, or if they are equal
-            // fall back to sorting by the position in the original list
-            if (lhs.orderValue == rhs.orderValue) {
-               if (lhs.listPos == rhs.listPos)
-                  return 0;
-               return lhs.listPos > rhs.listPos ? 1 : -1;
-            }
-            return lhs.orderValue > rhs.orderValue ? 1 : -1;
-         }
-      });
-      boolean breakFound = false;
-      for (int i = 0; i < res.size(); i++) {
-         BaseMenuItem elem = res.get(i);
-         if (!breakFound && breakOrderValue != null && elem.orderValue > breakOrderValue) {
-            elem.breakMenuItem = true;
-            breakFound = true;
-         }
-         else
-            elem.breakMenuItem = false;
-      }
-      return res;
-   }
-
    object searchMenuItem extends NavMenuItem {
       name = "";
       icon = "/icons/search.svg";
@@ -115,6 +65,58 @@ class PageNavMenu extends NavMenu {
       icon := "/icons/settings.svg";
       url := "/manage/site" + (siteContext == null ? "" : "/" + siteContext.sitePathName);
       orderValue = 11;
+   }
+
+   void validateSiteView() {
+   //siteContext = siteView == null ? null : siteView.siteContext;
+   }
+
+   void menuItemsChanged() {
+      Bind.sendChangedEvent(this, "menuItems");
+   }
+
+   @Bindable(manual=true)
+   List<BaseMenuItem> getMenuItems() {
+      List<BaseMenuItem> ores = super.getMenuItems();
+      if (siteContext == null)
+         return ores;
+      List<BaseMenuItem> dres = customMenuItems;
+      ArrayList<BaseMenuItem> res = new ArrayList<BaseMenuItem>();
+      if (ores != null)
+         res.addAll(ores);
+      if (dres != null) {
+         res.addAll(dres);
+      }
+      for (int i = 0; i < res.size(); i++) {
+         BaseMenuItem elem = res.get(i);
+         elem.listPos = i;
+         elem.setParentMenu(this);
+      }
+
+      res.sort(new java.util.Comparator<BaseMenuItem>() {
+         public int compare(BaseMenuItem lhs, BaseMenuItem rhs) {
+         // First use the configured order value, or if they are equal
+         // fall back to sorting by the position in the original list
+            if (lhs.orderValue == rhs.orderValue) {
+               if (lhs.listPos == rhs.listPos)
+                  return 0;
+               return lhs.listPos > rhs.listPos ? 1 : -1;
+            }
+            return lhs.orderValue > rhs.orderValue ? 1 : -1;
+         }
+      });
+
+      boolean breakFound = false;
+      for (int i = 0; i < res.size(); i++) {
+         BaseMenuItem elem = res.get(i);
+         if (!breakFound && breakOrderValue != null && elem.orderValue > breakOrderValue) {
+            elem.breakMenuItem = true;
+            breakFound = true;
+         }
+         else
+            elem.breakMenuItem = false;
+      }
+      return res;
    }
 
 }

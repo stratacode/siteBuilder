@@ -3,6 +3,9 @@ class SiteManager {
    @Sync(resetState=true,initDefault=true)
    String pathName;
 
+   @Sync(resetState=true,initDefault=true)
+   String pathNameInURL;
+
    @Sync(initDefault=true)
    List<SiteContext> siteList;
    @Sync(initDefault=true)

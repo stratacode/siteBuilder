@@ -8,7 +8,7 @@
       }
       boolean loginMenuVisible = false;
 
-      String sitePathName :=: siteMgr.pathName;
+      String sitePathName :=: siteMgr.pathNameInURL;
 
       String managerPage = "";
 
@@ -35,7 +35,7 @@
                       clickEvent="=: siteMgr.startAddSite()" class="rightButton"/>
             </span>
             <span id="mgrNav" visible=":= siteMgr.validSite">
-               <a id="userLink" class=':= managerPage.equals("site") ? "selectedLink" : ""' href="/manage/site">Site</a>
+               <a id="siteLink" class=':= managerPage.equals("site") ? "selectedLink" : ""' href="/manage/site">Site</a>
                <a id="pageLink" class=':= managerPage.equals("page") ? "selectedLink" : ""' href="/manage/page">Page</a>
                <a id="mediaLink" class=':= managerPage.equals("media") ? "selectedLink" : ""' href="/manage/media">Media</a>
                <a id="userLink" class=':= managerPage.equals("user") ? "selectedLink" : ""' href="/manage/user">User</a>
