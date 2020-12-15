@@ -89,6 +89,8 @@ currentUserView {
 
    void addUserCookie(String cookieName, String value) {
       Context ctx = Context.getCurrentContext();
+      if (ctx == null) // Might be from a test script
+         return;
       HttpServletResponse resp = ctx.response;
       if (resp == null || resp.isCommitted()) {
          System.err.println("*** Warning - failed to add request cookie: " + cookieName);

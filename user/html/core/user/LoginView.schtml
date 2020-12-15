@@ -9,7 +9,7 @@
       <input id="passwordField" class="wideTextField" type="password" placeholder="password" value=":=: currentUserView.password">
    </div>
    <div class="formField confirmButtons">
-      <input type="submit" value="Log in" clickEvent="=: currentUserView.login()">
+      <input id="loginButton" type="submit" value="Log in" clickEvent="=: currentUserView.login()">
    </div>
    <div class="formError"><%= currentUserView.userViewError %></div>
    <div id="alt" class="loginView">

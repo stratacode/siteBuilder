@@ -1,0 +1,105 @@
+cmd.include("testInit.scr");
+
+pageLoader.loadPageAndWait("product/ProductPage", "storeUser1", "http://localhost:8080/stores/wiley-cycles/product/Kahooey");
+
+cmd.pauseTime = 100;
+cmd.targetRuntime = "java_Server";
+
+product.ProductPage {
+
+   body {
+      appFrame {
+         //navbar.navMenu.profileMenu.signoutMenuItem.itemSelected();
+
+         pageBody {
+            productView {
+               productDetailView {
+                  productInfoView {
+                     addToCartForm {
+                        addToCartButton.click();
+                     }
+                     optionsTagView {
+                        optionViewList_Repeat {
+                           {
+                              Object[] options = getObjChildren(false); 
+
+                              optionViewList firstOption = (optionViewList) options[0];
+                              firstOption.optionSelect.selectedIndex = 1;
+                           }
+                        }
+                     }
+                     addToCartForm {
+                        addToCartButton.click();
+                     }
+                  }
+               }
+            }
+         }
+         navbar {
+            navMenu {
+               cartMenu.itemSelected();
+            }
+         }
+      }
+   }
+}
+
+product.CartPage {
+   body {
+      appFrame {
+         pageBody {
+            cartView {
+               cartContentsView {
+                  cartWrapper {
+                     cartContents {
+                        submitOrderView {
+                           {
+                              if (!order.checkoutStarted) {
+                                 System.out.println("*** Starting checkout");
+                                 actionButtonBox.actionButton.click();
+                              }
+                              else
+                                 System.out.println("*** Checkout already started");
+                           }
+                        }
+                     }
+                     checkoutView {
+                        System.out.println("*** Num items in cart before (2): " + order.numLineItems);
+                        guestCheckoutBox {
+                           emailFieldBox.emailAddrField.changeValue("foo@bar.com");
+                        }
+                        addressView {
+                           shippingAddressView {
+                              addrNameFieldBox.addressNameField.changeValue("Foo Bar");
+                              addressFieldBox.address1Field.changeValue("123 Fake st.");
+
+                              formFieldRow {
+                                 postalCodeFieldBox.postalCodeField.changeValue("94110");
+                                 System.out.println("*** City is: " + cityBox.cityField.value);
+                                 System.out.println("*** State is: " + stateFieldBox.stateField.value);
+                              }
+                           }
+                        }
+                        paymentView {
+                           cardHolderFieldBox.cardHolderField.changeValue("Foo Bar");
+                           cardNumberFieldBox.cardNumberField.changeValue("4111111111111111");
+                           expDateFieldBox.expDateField.changeValue("12/34");
+                           cvvFieldBox.cvvField.changeValue("123");
+                        }
+                     }
+                     cartContents {
+                        submitOrderView {
+                           actionButtonBox.actionButton.click();
+
+                           System.out.println("*** Completed order: " + orderView.completedOrder);
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+   pageLoader.savePage("product/CartPage", serverTag ? pageLoader.getClientBodyHTML("storeUser1") : output_c().toString());
+   pageLoader.savePage("product/CartPage", output().toString());
+}

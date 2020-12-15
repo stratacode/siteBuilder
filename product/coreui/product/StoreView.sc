@@ -14,5 +14,7 @@ class StoreView extends SiteView {
    */
 
    @Sync(initDefault=true)
-   OrderView orderView; 
+   OrderView orderView;
+
+   String checkoutUrl := "/stores/" + store.sitePathName + "/cart";
 }

@@ -53,7 +53,6 @@
             <input type="button" value="Add to cart" id="addToCartButton"
                    disabled=":= currentSku == null || !inStock" clickEvent="=: addToCart()"/>
             <input type="number" id="quantityField" min="1" max=":= Storefront.MaxQuantity" class="quantityField" value=":=: currentQuantityStr"/>
-            <span visible=":= numInCart > 0">(<%= numInCart %> in cart)</span>
             <div id="notAvailView" visible=":= !inStock">
                <div id="notAvailableContents" visible=":= currentSku != null">
                   <div id="outOfStockView" visible=":= !currentSku.inStock">
@@ -69,6 +68,8 @@
                   </div>
                </div>
             </div>
+            <input type="button" value=':= numInCart + " in cart"' visible=":= numInCart > 0"
+                   clickEvent="=: Window.window.location.href = storeView.checkoutUrl"/>
          </div>
       </div>
    </div>

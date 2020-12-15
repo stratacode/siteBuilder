@@ -119,4 +119,9 @@ UserView {
       }
       return true;
    }
+
+   void logout() {
+      super.logout();
+      orderView.refresh();
+   }
 }

@@ -42,7 +42,7 @@ OrderView {
                      if (syncCtx == null) {
                         SyncManager.addSyncInst(lineItem.product, false, false, false, "appSession", null);
                      }
-                     SyncManager.startSync(lineItem.product, "options");
+                     //SyncManager.startSync(lineItem.product, "options");
                   }
                }
                numLineItems = lineItems.size();
@@ -80,15 +80,22 @@ OrderView {
                editPayment = false;
          }
          else {
-            validAddress = false;
-            validPayment = false;
-            editAddress = true;
-            editPayment = true;
-            numLineItems = 0;
+            resetOrderView();
          }
 
          saveOrderPaymentInfo = user.savePaymentInfo;
       }
+      else {
+         resetOrderView();
+      }
+   }
+
+   void resetOrderView() {
+      validAddress = false;
+      validPayment = false;
+      editAddress = true;
+      editPayment = true;
+      numLineItems = 0;
    }
 
    void addLineItem(Product product, Sku sku, int quantity) {
@@ -102,6 +109,13 @@ OrderView {
       }
 
       UserProfile user = currentUserView.user;
+      if (user == null) {
+         currentUserView.resetUser();
+         user = currentUserView.user;
+         if (user == null) {
+            System.err.println("*** No user for addLineItem!");
+         }
+      }
       if (order == null) {
          order = Order.createDraft(store, user);
       }
@@ -114,29 +128,33 @@ OrderView {
    void refreshLineItems() {
       order.refreshLineItems();
       Map<String,Integer> reservedItems = new java.util.HashMap<String,Integer>();
-      for (int i = 0; i < order.lineItems.size(); i++) {
-         LineItem lineItem = order.lineItems.get(i);
-         Sku sku = lineItem.sku;
-         if (sku instanceof PhysicalSku) {
-            PhysicalSku psku = (PhysicalSku) sku;
-            if (psku.inventory != null) {
-               int numLeft = psku.inventory.quantity;
-               int numNeeded = lineItem.quantity;
-               Integer cartQ = reservedItems.get(sku.skuCode);
-               if (cartQ != null) {
-                  numNeeded += cartQ;
+      if (order.lineItems == null)
+         numLineItems = 0;
+      else {
+         for (int i = 0; i < order.lineItems.size(); i++) {
+            LineItem lineItem = order.lineItems.get(i);
+            Sku sku = lineItem.sku;
+            if (sku instanceof PhysicalSku) {
+               PhysicalSku psku = (PhysicalSku) sku;
+               if (psku.inventory != null) {
+                  int numLeft = psku.inventory.quantity;
+                  int numNeeded = lineItem.quantity;
+                  Integer cartQ = reservedItems.get(sku.skuCode);
+                  if (cartQ != null) {
+                     numNeeded += cartQ;
+                  }
+                  if (numNeeded > numLeft) {
+                     if (numLeft == 0)
+                        orderError = "Item is now out of stock";
+                     else
+                        orderError = "Only " + numLeft + " and cart has " + numNeeded;
+                  }
+                  reservedItems.put(sku.skuCode, numNeeded);
                }
-               if (numNeeded > numLeft) {
-                  if (numLeft == 0)
-                     orderError = "Item is now out of stock";
-                  else
-                     orderError = "Only " + numLeft + " and cart has " + numNeeded;
-               }
-               reservedItems.put(sku.skuCode, numNeeded);
             }
          }
+         numLineItems = order.lineItems.size();
       }
-      numLineItems = order.lineItems.size();
    }
 
    void changeQuantity(LineItem lineItem, String quantityStr) {
@@ -318,6 +336,7 @@ OrderView {
             user.orderSubmitted(order);
 
             order = Order.createDraft(store, user);
+            refreshLineItems();
          }
          catch (RuntimeException exc) {
             orderError = "Software error submitting order - please try again or contact us";

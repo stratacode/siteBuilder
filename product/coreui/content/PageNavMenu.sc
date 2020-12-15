@@ -13,7 +13,7 @@ PageNavMenu {
       visible := storeView != null;
       name := "cart(" + storeView.orderView.numLineItems + ")";
       icon = "/icons/shopping-cart20.svg";
-      url := "/stores/" + storeView.store.sitePathName + "/cart";
+      url := storeView.checkoutUrl;
 
       orderValue = 10;
    }

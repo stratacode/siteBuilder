@@ -73,7 +73,7 @@
                <div id="cardNumberFieldBox" class="fieldBox">
                   <%! boolean hasError := TextUtil.hasMapEntry(order.paymentInfo.propErrors, "cardNumber"); %>
                   <label for="cardNumberField" class="fieldLabel">Card number</label>
-                  <input type="text" class=':= hasError ? "fieldInputError" : "fieldInput"'
+                  <input id="cardNumberField" type="text" class=':= hasError ? "fieldInputError" : "fieldInput"'
                          value=":= order.paymentInfo.cardNumberDisplay"
                          value="=: order.paymentInfo.updateCardNumber(value)"/>
                   <div class="fieldError" visible=':= hasError'>
@@ -126,7 +126,7 @@
             </div>
          </div>
          <div id="cartContents" class="cartContents">
-            <div id="lineItemRepeat" repeat=":= order.lineItems" repeatVarName="lineItem" class="cartLineItem">
+            <div id="lineItemRepeat" repeat=":= order.lineItems" repeatVarName="lineItem" class="cartLineItem" repeatSync="true">
                <img class="cartProductThumb" src="= lineItem.product.getMediaForSku(lineItem.sku).thumbUrl"/>
                <div class="cartProductInfo">
                   <div id="productName"><%= lineItem.product.name %> - <%= lineItem.product.shortDesc %></div>
@@ -137,14 +137,14 @@
                      </div>
                   </div>
                </div>
-               <input type="number" class="cartLineItemQuantity" min="0"
+               <input id="cartLineItemQuantity" type="number" class="cartLineItemQuantity" min="0"
                       value=":= quantityConverter.intToString(lineItem.quantity)"
                       changeEvent="=: orderView.changeQuantity(lineItem, value)"/>
                <div id="cartStatus" class="cartStatus"><%= lineItem.sku.inStock ? "in stock" : "backordered" %></div>
                <div id="price" class="cartPrice"><%= lineItem.totalPrice %></div>
                <img class="cartDeleteItem" id="deleteIcon" src="/icons/x-square.svg" clickEvent="=: orderView.deleteLineItem(lineItem)"/>
             </div>
-            <div id="totalPrice" class="cartTotalPrice">
+            <div id="submitOrderView" class="cartTotalPrice">
                Total:
                <span id="cartPrice">
                    <%= order.currency.symbol %><%= order.totalPrice %>

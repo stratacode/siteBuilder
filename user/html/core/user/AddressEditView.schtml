@@ -25,8 +25,8 @@
       <input type="text" value=":=: address.address2" class=':= hasError ? "fieldInputError" : "fieldInput"' liveEdit="change"/>
       <div class="fieldError" visible=':= hasError'><%= address.propErrors.get("address2") %></div>
    </div>
-   <div class="formFieldRow" class="fieldBox">
-      <div id="zipFieldBox" class="fieldBox">
+   <div id="formFieldRow" class="formFieldRow" class="fieldBox">
+      <div id="postalCodeFieldBox" class="fieldBox">
          <%! boolean hasError := TextUtil.hasMapEntry(address.propErrors, "postalCode"); %>
          <label for="postalCodeField">Postal code</label>
          <input id="postalCodeField" type="text" class=':= hasError ? "fieldInputError" : "fieldInput"'

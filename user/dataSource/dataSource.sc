@@ -8,7 +8,7 @@ public user.dataSource extends db.model {
 
    object userDataSource extends DBDataSource {
       jndiName = "jdbc/scecom";
-      dbName = "scecom";
+      dbName = "scprod";
       userName = "sctest";
       password = "sctest";
       serverName = "localhost";

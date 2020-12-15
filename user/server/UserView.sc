@@ -60,8 +60,15 @@ UserView {
 
       DBUtil.addTestIdInstance(user, "new-anon-profile");
 
-      if (oldUser != null)
-         DynUtil.dispose(oldUser, true);
+      if (oldUser != null) {
+         disposeUser(oldUser);
+      }
+   }
+
+   void disposeUser(UserProfile oldUser) {
+      if (oldUser.userProfileStats != null)
+         DynUtil.dispose(oldUser.userProfileStats, true);
+      DynUtil.dispose(oldUser, true);
    }
 
    final static String loginError = "No account with that user name and password";
@@ -107,7 +114,7 @@ UserView {
                   DBUtil.addTestIdInstance(user, "logged-in-as-" + user.userName);
 
                   if (anonUser != null)
-                     DynUtil.dispose(anonUser, true);
+                     disposeUser(anonUser);
 
                   return true;
                }
@@ -125,6 +132,8 @@ UserView {
       clearAuthToken();
       userAuthToken = null;
       if (user != null) {
+         if (user.userProfileStats != null)
+            DynUtil.disposeLater(user.userProfileStats, true);
          DynUtil.disposeLater(user, true);
          user = null;
       }
@@ -135,6 +144,8 @@ UserView {
       userName = "";
       password = "";
       clearErrors();
+      if (userSessions != null)
+         userSessions = null;
    }
 
    boolean register() {
