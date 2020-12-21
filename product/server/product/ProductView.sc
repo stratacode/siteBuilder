@@ -2,6 +2,9 @@ ProductView {
    @Sync(syncMode=SyncMode.Disabled)
    boolean optionsValid = false;
 
+   int orderChangeCt := storeView.orderView.orderChangeCt;
+   orderChangeCt =: validateInStock();
+
    // Here so we only run it once and sync the results
    pathName =: validateProductPath();
 
@@ -76,11 +79,14 @@ ProductView {
             if (inStock) {
                OrderView orderView = storeView.orderView;
                Order cart = orderView.order;
+               PhysicalSku psku = (PhysicalSku)currentSku;
                if (cart != null) {
-                  PhysicalSku psku = (PhysicalSku)currentSku;
                   numInCart = cart.getReservedInventory(psku);
 
                   inStock = psku.inventory.quantity >= (numInCart + currentQuantity);
+               }
+               else {
+                  numInCart = 0;
                }
             }
             else

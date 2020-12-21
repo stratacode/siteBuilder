@@ -39,6 +39,8 @@ class OrderView {
 
    boolean showLoginView = false;
 
+   int orderChangeCt;
+
    OrderView(Storefront store, UserView userView) {
       this.store = store;
       this.userView = userView;

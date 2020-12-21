@@ -122,6 +122,7 @@ UserView {
 
    void logout() {
       super.logout();
-      orderView.refresh();
+      if (orderView != null)
+         orderView.refresh();
    }
 }

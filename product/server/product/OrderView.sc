@@ -27,24 +27,26 @@ OrderView {
    void refresh() {
       UserProfile user = currentUserView.user;
       orderError = null;
+      boolean changed = false;
       if (user != null && !user.getDBObject().isTransient()) {
          Order newOrder = getPendingOrderForUser(user, store);
          if (newOrder != order) {
             order = newOrder;
+            changed = true;
          }
 
          if (order != null) {
             List<LineItem> lineItems = order.lineItems;
             if (lineItems != null) {
-               for (LineItem lineItem:order.lineItems) {
-                  if (lineItem.product != null) {
-                     SyncContext syncCtx = SyncManager.getSyncContextForInst(lineItem.product);
-                     if (syncCtx == null) {
-                        SyncManager.addSyncInst(lineItem.product, false, false, false, "appSession", null);
-                     }
+               //for (LineItem lineItem:order.lineItems) {
+                  //if (lineItem.product != null) {
+                  //   SyncContext syncCtx = SyncManager.getSyncContextForInst(lineItem.product);
+                  //   if (syncCtx == null) {
+                        //SyncManager.addSyncInst(lineItem.product, false, false, false, "appSession", null);
+                  //   }
                      //SyncManager.startSync(lineItem.product, "options");
-                  }
-               }
+                  //}
+               //}
                numLineItems = lineItems.size();
             }
             else
@@ -81,14 +83,20 @@ OrderView {
          }
          else {
             resetOrderView();
+            changed = true;
          }
 
          saveOrderPaymentInfo = user.savePaymentInfo;
       }
       else {
+         order = null;
          resetOrderView();
+         changed = true;
       }
+      if (changed)
+         orderChangeCt++;
    }
+
 
    void resetOrderView() {
       validAddress = false;
@@ -204,6 +212,7 @@ OrderView {
       if (order == null || !order.lineItems.contains(lineItem))
          orderError = "Line item not found for delete";
       order.lineItems.remove(lineItem);
+      lineItem.dbDelete(true);
       refreshLineItems();
    }
 

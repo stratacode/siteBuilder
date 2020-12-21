@@ -1,5 +1,6 @@
 import java.util.Locale;
 import javax.servlet.http.Cookie;
+import sc.lang.html.WebCookie;
 
 // TODO: this should be per-user manager where we pull the user manager out of a
 // a global Site object (broken out of Storefront)
@@ -88,26 +89,21 @@ currentUserView {
    }
 
    void addUserCookie(String cookieName, String value) {
-      Context ctx = Context.getCurrentContext();
-      if (ctx == null) // Might be from a test script
+      Window window = Window.window;
+      if (window == null) // There's no window available in the current context.
          return;
-      HttpServletResponse resp = ctx.response;
-      if (resp == null || resp.isCommitted()) {
-         System.err.println("*** Warning - failed to add request cookie: " + cookieName);
-         return;
-      }
-      Cookie cookie = new Cookie(cookieName, value);
+      WebCookie cookie = new WebCookie(cookieName, value);
       if (userbase.secureCookie)
-         cookie.setSecure(true);
+         cookie.secure = true;
       if (userbase.cookieDomain != null)
-         cookie.setDomain(userbase.cookieDomain);
+         cookie.domain = userbase.cookieDomain;
       if (userbase.cookiePath != null)
-         cookie.setPath(userbase.cookiePath);
+         cookie.path = userbase.cookiePath;
       if (value.length() == 0)
-         cookie.setMaxAge(0);
+         cookie.maxAgeSecs = 0;
       else
-         cookie.setMaxAge(userbase.cookieDurationSeconds);
-      resp.addCookie(cookie);
+         cookie.maxAgeSecs = userbase.cookieDurationSeconds;
+      window.addCookie(cookie);
    }
 
    void persistAuthToken(String token) {
@@ -115,8 +111,8 @@ currentUserView {
    }
    void clearAuthToken() {
       persistAuthToken(""); // Clear our cookie
-      Context ctx = Context.getCurrentContext();
-      if (ctx != null)
-         ctx.markSessionInvalid();
+      Window win = Window.getWindow();
+      if (win != null) // Clear the session on the next chance
+         win.invalidateSession();
    }
 }

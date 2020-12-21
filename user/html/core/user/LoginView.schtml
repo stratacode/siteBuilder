@@ -2,11 +2,14 @@
    <div class="formTitle">Login</div>
    <div class="formField">
       <label for="userNameField">User name</label>
-      <input id="userNameField" class="wideTextField" type="text" placeholder="user name" value=":=: currentUserView.userName">
+      <input id="userNameField" type="text" value=":=: currentUserView.userName"
+             class="wideTextField" placeholder="user name" >
    </div>
    <div class="formField">
       <label for="passwordField">Password</label>
-      <input id="passwordField" class="wideTextField" type="password" placeholder="password" value=":=: currentUserView.password">
+      <input id="passwordField" type="password" value=":=: currentUserView.password"
+             keyUpEvent="=: keyUpEvent.key.equals("Enter") ? currentUserView.login() : null"
+             class="wideTextField" placeholder="password" >
    </div>
    <div class="formField confirmButtons">
       <input id="loginButton" type="submit" value="Log in" clickEvent="=: currentUserView.login()">
