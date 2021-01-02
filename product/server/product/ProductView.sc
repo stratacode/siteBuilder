@@ -65,32 +65,28 @@ ProductView {
       if (product != null) {
          available = product.available;
       }
-      // Note: numInCart here only should be set to > 0 when we are tracking inventory
+      OrderView orderView = storeView.orderView;
+      Order cart = orderView.order;
+      if (cart != null)
+         numInCart = cart.getReservedInventory(currentSku);
+      else
+         numInCart = 0;
+
       if (available) {
          if (!(currentSku instanceof PhysicalSku)) {
             if (currentSku == null)
                inStock = false;
             else
                inStock = true;
-            numInCart = 0;
          }
          else {
             inStock = currentSku.inStock;
             if (inStock) {
-               OrderView orderView = storeView.orderView;
-               Order cart = orderView.order;
                PhysicalSku psku = (PhysicalSku)currentSku;
                if (cart != null) {
-                  numInCart = cart.getReservedInventory(psku);
-
                   inStock = psku.inventory.quantity >= (numInCart + currentQuantity);
                }
-               else {
-                  numInCart = 0;
-               }
             }
-            else
-               numInCart = 0;
          }
       }
       else {

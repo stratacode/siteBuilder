@@ -1,6 +1,12 @@
 import java.util.HashMap;
+import sc.lang.html.UserAgentInfo;
+import sc.lang.html.IWindowEventListener;
+import sc.lang.html.Window;
 
-UserView {
+UserView implements IWindowEventListener {
+   @Sync(syncMode=SyncMode.Disabled)
+   UserAgentInfo userAgentInfo;
+
    @Sync(syncMode=SyncMode.Disabled)
    Map<Long,UserSession> userSessions;
 
@@ -20,6 +26,9 @@ UserView {
       if (user != null && user.registered) {
          loginStatus = LoginStatus.LoggedIn;
       }
+      Window win = Window.window;
+      if (win != null)
+         win.addEventListener(this);
    }
 
    void refresh() {
@@ -40,10 +49,12 @@ UserView {
    }
 
    void initNewUser() {
-      if (user == null && userbase != null && userbase.createAnonymousUser) {
+      if (user == null && userbase != null && userbase.createAnonUser) {
          resetUser();
-         userAuthToken = user.createAuthToken();
-         persistAuthToken(userAuthToken);
+         if (userbase.setAnonUserCookie) {
+            userAuthToken = user.createAuthToken();
+            persistAuthToken(userAuthToken);
+         }
       }
    }
 
@@ -197,7 +208,7 @@ UserView {
          user.registered = true;
          user.emailAddress = emailAddress;
          user.userName = newUserName;
-         user.salt = DBUtil.createSalt();
+         user.salt = DBUtil.createSalt64();
          user.password = UserProfile.getHashedPassword(user, password);
 
          user.registerSuccess(remoteIp);
@@ -273,21 +284,52 @@ UserView {
    }
 
    synchronized UserSession getUserSession(SiteContext site) {
-      if (sessionMarker == null || site == null)
+      if (sessionMarker == null || site == null || (userAgentInfo != null && userAgentInfo.isRobot))
          return null;
-      if (userSessions == null) {
-         userSessions = new HashMap<Long,UserSession>();
+
+      if (user == null) {
+         if (userbase.createAnonUser)
+            initNewUser();
       }
-      UserSession session = userSessions.get(site.id);
-      if (session == null) {
-         session = new UserSession();
-         session.user = user;
+
+      String userMarker = DBUtil.hashString(userbase.salt, site.sitePathName + ":" + remoteIp + ":" + userAgentInfo.userAgent, true);
+
+      UserSession session = userSessionCache.getOrCreateUserSession(userbase, user, userMarker, site);
+      if (session == null)
+         return null;
+      if (userSessions == null)
+         userSessions = new TreeMap<Long,UserSession>();
+      userSessions.put(site.id, session);
+      if (session.createTime == null) {
          session.createTime = new Date();
          session.sessionMarker = sessionMarker;
-         session.site = site;
-         session.remoteIp = remoteIp;
+         if (userbase.trackAnonIp || (user != null && user.registered))
+            session.remoteIp = remoteIp;
+         if (userAgentInfo != null) {
+            session.browser = userAgentInfo.browser;
+            session.browserVersion = userAgentInfo.browserVersion;
+            session.osName = userAgentInfo.osName;
+         }
+         if (remoteIp != null) {
+            GeoIpInfo geoInfo = GeoIpInfo.lookup(remoteIp);
+            if (geoInfo != null) {
+               CityInfo cityInfo = geoInfo.getCityInfo();
+               if (cityInfo != null) {
+                  session.countryCode = cityInfo.countryCode;
+                  session.cityName = cityInfo.cityName;
+                  session.timezone = cityInfo.timezone;
+               }
+               // TODO Do we need this postalCodeInfo. Also there's a countryId in the record that could get us country if we don't
+               // find the city
+               //PostalCodeInfo postalCodeInfo = geoInfo.getPostalCodeInfo();
+               if (geoInfo.postalCode != null) {
+                  session.postalCode = geoInfo.postalCode;
+               }
+            }
+         }
+         session.userMarker = userMarker;
+
          user.getOrCreateStats().numUserSessions++;
-         userSessions.put(site.id, session);
 
          DBUtil.addTestToken(sessionMarker, "session-marker");
       }
@@ -321,5 +363,63 @@ UserView {
       updatePasswordStatus = "Password changed";
       password = "";
    }
-}
 
+   void screenSizeChanged(Window win) {
+      if (userSessions != null) {
+         for (UserSession session:userSessions.values()) {
+            boolean anyChanged = false;
+            if (session.sessionEvents != null) {
+               for (SessionEvent ev:session.sessionEvents) {
+                  if (ev instanceof WindowEvent) {
+                     WindowEvent wev = (WindowEvent) ev;
+                     if (wev.window == win) {
+                        session.screenWidth = win.screen.getWidth();
+                        session.screenHeight = win.screen.getHeight();
+                        break;
+                     }
+                  }
+               }
+            }
+            if (anyChanged) {
+               // This gets inserted by a scheduled thread so we don't keep resaving the same UserSession and so we can
+               // save a bunch of them at a time in a batch update. If we happen to have one here that's been inserted
+               // we need to update it.
+               if (!session.getDBObject().isTransient()) {
+                  // We will have updated the duration property in the event and so need the sessionEvents to be recomputed
+                  session.dbUpdate();
+               }
+            }
+         }
+      }
+   }
+
+   void windowClosed(Window win) {
+      if (userSessions != null) {
+         for (UserSession session:userSessions.values()) {
+            boolean anyChanged = false;
+            if (session.sessionEvents != null) {
+               for (SessionEvent ev:session.sessionEvents) {
+                  if (ev instanceof WindowEvent) {
+                     WindowEvent wev = (WindowEvent) ev;
+                     if (wev.window == win) {
+                        ev.windowClosed();
+                        anyChanged = true;
+                     }
+                  }
+               }
+            }
+            if (anyChanged) {
+               // This gets inserted by a scheduled thread so we don't keep resaving the same UserSession and so we can
+               // save a bunch of them at a time in a batch update. If we happen to have one here that's been inserted
+               // we need to update it.
+               if (!session.getDBObject().isTransient()) {
+                  // We will have updated the duration property in the event and so need the sessionEvents to be recomputed
+                  session.sessionEvents = session.sessionEvents;
+                  session.dbUpdate();
+               }
+            }
+         }
+         userSessions = null;
+      }
+   }
+}

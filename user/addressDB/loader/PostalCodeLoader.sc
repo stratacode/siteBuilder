@@ -23,7 +23,7 @@ object PostalCodeLoader {
             System.err.println("*** Unable to find addressDB csv file: " + postalCodeFileName);
          else {
             try {
-               int res = DBUtil.importCSVFile(postalCodeFileName, PostalCodeInfo.class, "\t", PostalCodeInfo.csvProperties);
+               int res = DBUtil.importCSVFile(postalCodeFileName, PostalCodeInfo.class, "\t", false, PostalCodeInfo.csvProperties);
                System.out.println("*** Imported: " + res + " postalCode entries");
             }
             catch (IllegalArgumentException exc) {
@@ -41,7 +41,7 @@ object PostalCodeLoader {
             System.err.println("*** Unable to find countryDB csv file: " + countryDBFileName);
          else {
             try {
-               int res = DBUtil.importCSVFile(countryDBFileName, CountryInfo.class, "\t", CountryInfo.csvProperties);
+               int res = DBUtil.importCSVFile(countryDBFileName, CountryInfo.class, "\t", false, CountryInfo.csvProperties);
                System.out.println("*** Imported: " + res + " country entries");
             }
             catch (IllegalArgumentException exc) {

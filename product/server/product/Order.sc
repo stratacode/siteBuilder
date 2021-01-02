@@ -117,7 +117,7 @@ Order {
       return null;
    }
 
-   int getReservedInventory(PhysicalSku sku) {
+   int getReservedInventory(Sku sku) {
       if (lineItems == null)
          return 0;
       int ct = 0;

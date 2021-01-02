@@ -7,7 +7,7 @@ public user.dataSource extends db.model {
    compiledOnly = true;
 
    object userDataSource extends DBDataSource {
-      jndiName = "jdbc/scecom";
+      jndiName = "jdbc/scprod";
       dbName = "scprod";
       userName = "sctest";
       password = "sctest";

@@ -760,6 +760,11 @@ input[type=button]:disabled:hover {
    align-items: center;
 }
 
+.clickableView {
+   cursor: pointer;
+}
+
+
 .thumbViewSelected {
    border: solid 3px #dc4f44;
 }

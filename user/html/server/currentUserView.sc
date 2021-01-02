@@ -14,15 +14,16 @@ currentUserView {
          clearSession();
       }
       else {
-         String remoteIp = req.getHeader("X-Forwarded-For");
-         if (remoteIp == null)
-            remoteIp = req.getRemoteAddr();
+         String remoteIp = ctx.getRemoteIp();
          this.remoteIp = remoteIp;
          this.acceptLanguage = req.getHeader("Accept-Language");
          this.userAgent = req.getHeader("User-agent");
          Cookie cookie = ctx.getCookie(userbase.cookieName);
          if (cookie != null)
             this.userAuthToken = cookie.getValue();
+
+         Window window = ctx.windowCtx.window;
+         this.userAgentInfo = window.userAgentInfo;
 
          HttpSession session = req.getSession(false);
          if (session != null) {
@@ -58,9 +59,7 @@ currentUserView {
          clearSession();
       }
       else {
-         String remoteIp = req.getHeader("X-Forwarded-For");
-         if (remoteIp == null)
-            remoteIp = req.getRemoteAddr();
+         String remoteIp = ctx.getRemoteIp();
          if (this.remoteIp == null || !this.remoteIp.equals(remoteIp)) {
             System.err.println("*** Ip address changed for UserView");
             clearSession();

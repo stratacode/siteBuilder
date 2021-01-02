@@ -1,5 +1,5 @@
 @Sync(onDemand=true)
-class PageEvent extends SessionEvent {
+class PageEvent extends WindowEvent {
    String pathName;
 
    String getEventName() {

@@ -127,13 +127,15 @@
          </div>
          <div id="cartContents" class="cartContents">
             <div id="lineItemRepeat" repeat=":= order.lineItems" repeatVarName="lineItem" class="cartLineItem" repeatSync="true">
-               <img class="cartProductThumb" src="= lineItem.product.getMediaForSku(lineItem.sku).thumbUrl"/>
-               <div class="cartProductInfo">
-                  <div id="productName"><%= lineItem.product.name %> - <%= lineItem.product.shortDesc %></div>
-                  <div id="cartOptions" class="cartOptions">
-                     <div id="cartOption" repeat=":= lineItem.product.sku.optionScheme.options" repeatVarName="option" class="cartOption">
-                        <span><%= option.optionName %>: </span>
-                        <span><%= lineItem.sku.options.get(cartOption.this.repeatIndex).optionValue %></span>
+               <div id="lineItemRef" clickEvent="=: Window.window.location.href = lineItem.product.pageUrl" class="clickableView">
+                  <img class="cartProductThumb" src="= lineItem.product.getMediaForSku(lineItem.sku).thumbUrl"/>
+                  <div class="cartProductInfo">
+                     <div id="productName"><%= lineItem.product.name %> - <%= lineItem.product.shortDesc %></div>
+                     <div id="cartOptions" class="cartOptions">
+                        <div id="cartOption" repeat=":= lineItem.product.sku.optionScheme.options" repeatVarName="option" class="cartOption">
+                           <span><%= option.optionName %>: </span>
+                           <span><%= lineItem.sku.options.get(cartOption.this.repeatIndex).optionValue %></span>
+                        </div>
                      </div>
                   </div>
                </div>

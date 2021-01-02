@@ -1,6 +1,2 @@
-public ec.demo.core extends blog.html.core, product.html.core {
-   userDataSource {
-      jndiName = "jdbc/scecom";
-      dbName = "scecom";
-   }
+public ec.demo.core extends ec.demo.dataSource, blog.html.core, product.html.core {
 }

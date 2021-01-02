@@ -1,0 +1,14 @@
+<%!
+@DBTypeSettings
+@SchemaSQL(value=%>
+
+create index on geo_ip_info_v4 using gist (network inet_ops);
+
+create function query_for_ipv4(remote_ip text)
+returns setof geo_ip_info_v4 as $$
+  select geo_ip_info_v4.* from geo_ip_info_v4 where geo_ip_info_v4.network >>= remote_ip::inet
+$$ language sql stable;
+   <%)
+class GeoIpInfoV4 extends GeoIpInfo {
+}
+%>

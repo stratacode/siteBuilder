@@ -19,4 +19,6 @@ abstract class SessionEvent {
    String toString() {
       return getEventName() + " " + getEventDetail();
    }
+
+   void windowClosed() {}
 }

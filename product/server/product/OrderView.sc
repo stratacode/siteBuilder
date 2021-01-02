@@ -212,7 +212,7 @@ OrderView {
       if (order == null || !order.lineItems.contains(lineItem))
          orderError = "Line item not found for delete";
       order.lineItems.remove(lineItem);
-      lineItem.dbDelete(true);
+      //lineItem.dbDelete(true);
       refreshLineItems();
    }
 

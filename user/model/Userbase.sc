@@ -15,6 +15,7 @@ class Userbase {
    boolean recordEvents = true;
    boolean useEmailForUserName = true;
    boolean storeAnonymousProfiles = true;
+   boolean trackAnonIp = true; // Track the remoteIp of anonymous users
    int maxProfileEvents = 20; // login/logout etc
    int maxSessionEvents = 100; // number of page view and application events for each UserSession
    // 30 days
@@ -26,9 +27,18 @@ class Userbase {
    boolean passwordRequireLetterAndDigit = false;
    String passwordIllegalChars = "";
 
-   boolean createAnonymousUser = true;
+   /**
+    * Should we create a UserProfile for a non-robot website user that has not registered. Currently a UserProfile
+    * is required for event tracking
+    */
+   boolean createAnonUser = true;
+   /** Should we set a cookie to track an anonymous user. If createAnonUser is true, userMarker is used to track them */
+   boolean setAnonUserCookie = true;
 
    boolean secureCookie = false;
    String cookieDomain = null;
    String cookiePath = "/";
+
+   // Used for userbase-wide salting of hashed values to avoid possible rainbow attach to deanonymize users
+   byte[] salt;
 }

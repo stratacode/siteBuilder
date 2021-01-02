@@ -1,4 +1,13 @@
+import sc.lang.html.Window;
+
 UserSession {
+   // TODO: these next two values are on the low-side for easier testing
+   // Because we are caching these in memory, if the server dies we'll lose this history
+   final static long idleSaveTime = 10*1000;
+
+   // After how much inactivity do we consider it a new session?
+   final static long expireTime = 10*60*1000;
+
    void addPageEvent(String pathName) {
       PageEvent event = new PageEvent();
       event.pathName = pathName;
@@ -6,18 +15,45 @@ UserSession {
    }
 
    void addSessionEvent(SessionEvent event) {
+      if (event instanceof WindowEvent) {
+         WindowEvent wevent = (WindowEvent) event;
+         wevent.window = Window.window;
+      }
       if (sessionEvents == null)
          sessionEvents = new BArrayList<SessionEvent>();
       if (sessionEvents.size() < user.userbase.maxSessionEvents)
          sessionEvents.add(event);
       user.getOrCreateStats().notifySessionEvent(event);
-
-      // TODO: this can be done offline in a batch rather than immediately for more throughput and to reduce the
-      // number of writes for a given session. Maybe we create a transaction to hold all of these changes and run
-      // it using PTypeUtil.addScheduledJob
-      if (getDBObject().isTransient())
-         dbInsert(true);
-      else
-         dbUpdate();
    }
+
+   boolean needsSave() {
+      if (sessionEvents != null) {
+         long now = System.currentTimeMillis();
+         long mostRecent = getMostRecentTime();
+         if ((now - mostRecent) > idleSaveTime)
+            return true;
+      }
+      return false;
+   }
+
+   boolean isExpired() {
+      if (sessionEvents != null) {
+         long now = System.currentTimeMillis();
+         long mostRecent = getMostRecentTime();
+         if ((now - mostRecent) > expireTime)
+            return true;
+      }
+      return false;
+   }
+
+   long getMostRecentTime() {
+      long mostRecent = -1;
+      for (SessionEvent ev:sessionEvents) {
+         long evTime = ev.eventTime.getTime();
+         if (mostRecent == -1 || evTime > mostRecent)
+            mostRecent = evTime;
+      }
+      return mostRecent;
+   }
+
 }
