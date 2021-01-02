@@ -12,10 +12,20 @@ object PostalCodeLoader {
    void init() {
       DBTypeDescriptor postalCodeType = PostalCodeInfo.getDBTypeDescriptor();
       if (!postalCodeType.getSchemaReady()) {
-         System.out.println("PostalCodeLoader - schema not available. Use the schema commandline to update the schema and rerun the loader ");
+         System.out.println("PostalCodeInfo - schema not ready - waiting to load data");
+         postalCodeType.getDataSource().runWhenReady(new Runnable() {
+            void run() {
+               System.out.println("PostalCodeInfo - schema is now ready - loading data");
+               loadData();
+            }
+          });
          return;
       }
+      loadData();
+   }
 
+   void loadData() {
+      DBTypeDescriptor postalCodeType = PostalCodeInfo.getDBTypeDescriptor();
       int numCodes = postalCodeType.countAll();
       if (numCodes == 0) {
          System.out.println("*** Found no postalCode records - importing postalCode DB file: " + postalCodeFileName);
@@ -52,4 +62,5 @@ object PostalCodeLoader {
       else
          System.out.println("Country DB contains: " + numCountries);
    }
+
 }

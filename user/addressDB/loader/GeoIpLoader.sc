@@ -12,9 +12,20 @@ object GeoIpLoader {
    void init() {
       DBTypeDescriptor geoIpV4Type = GeoIpInfoV4.getDBTypeDescriptor();
       if (!geoIpV4Type.getSchemaReady()) {
-         System.out.println("GeoIpLoader - schema not available. Use the schema commandline to update the schema and rerun the loader ");
+         System.out.println("GeoIpInfo - schema not ready - waiting to load data");
+         geoIpV4Type.getDataSource().runWhenReady(new Runnable() {
+            void run() {
+               System.out.println("GeoIpInfo - schema is now ready - loading data");
+               loadData();
+            }
+          });
          return;
       }
+      loadData();
+   }
+
+   void loadData() {
+      DBTypeDescriptor geoIpV4Type = GeoIpInfoV4.getDBTypeDescriptor();
 
       int numEntries = geoIpV4Type.countAll();
       if (numEntries == 0) {
@@ -32,7 +43,7 @@ object GeoIpLoader {
          }
       }
       else
-         System.out.println("GeoIp DB contains: " + numEntries + " v4 entries");
+         System.out.println("Found: " + numEntries + " geoIPv4 entries - skipping load");
 
       DBTypeDescriptor geoIpV6Type = GeoIpInfoV6.getDBTypeDescriptor();
       if (!geoIpV6Type.getSchemaReady()) {
@@ -56,6 +67,6 @@ object GeoIpLoader {
          }
       }
       else
-         System.out.println("GeoIp DB contains: " + numEntries + " v6 entries");
+         System.out.println("Found: " + numEntries + " geoIp v6 entries - skipping load");
    }
 }

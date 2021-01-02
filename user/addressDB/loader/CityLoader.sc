@@ -9,10 +9,20 @@ object CityLoader {
    void init() {
       DBTypeDescriptor cityInfoType = CityInfo.getDBTypeDescriptor();
       if (!cityInfoType.getSchemaReady()) {
-         System.out.println("CityInfo - schema not available. Use the schema commandline to update the schema and rerun the loader ");
+         System.out.println("CityInfo - schema not ready - waiting to load data");
+         cityInfoType.getDataSource().runWhenReady(new Runnable() {
+            void run() {
+               System.out.println("CityInfo - schema is now ready - loading data");
+               loadData();
+            }
+          });
          return;
       }
+      loadData();
+   }
 
+   void loadData() {
+      DBTypeDescriptor cityInfoType = CityInfo.getDBTypeDescriptor();
       int numCities = cityInfoType.countAll();
       if (numCities == 0) {
          System.out.println("*** Found no city records - importing city DB file: " + cityFileName);
@@ -29,6 +39,6 @@ object CityLoader {
          }
       }
       else
-         System.out.println("City DB contains: " + numCities);
+         System.out.println("Found: " + numCities + " records - skipping load");
    }
 }
