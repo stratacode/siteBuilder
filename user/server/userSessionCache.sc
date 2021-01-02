@@ -123,6 +123,7 @@ object userSessionCache {
             else {
                tx.rollback();
             }
+            tx.close();
          }
       }
       if (needsInvalidate) {

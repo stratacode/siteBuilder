@@ -89,7 +89,6 @@ Order {
             if (curr != null)
                curr.commit();
 
-            DBTransaction itx = DBTransaction.getOrCreate();
             for (Sku invSku:invSkus) {
                Integer quant = skuCodeQuantities.get(invSku.skuCode);
                ProductInventory inv = invSku.inventory;
@@ -98,14 +97,14 @@ Order {
                   invSku.updateInventory();
                }
                else {
-                  itx.rollback();
+                  curr.rollback();
                   String message = "Inventory for product: " + invSku.skuCode + ": " + inv.quantity + " changed! It's now less than the required inventory for order: " + quant;
                   DBUtil.error("Rolling back inventory transaction: " + message);
                   return message;
                }
             }
             try {
-               itx.commit();
+               curr.commit();
                return null;
             }
             catch (Exception exc) {

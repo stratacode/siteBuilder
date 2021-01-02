@@ -24,6 +24,7 @@ object CityLoader {
    void loadData() {
       DBTypeDescriptor cityInfoType = CityInfo.getDBTypeDescriptor();
       int numCities = cityInfoType.countAll();
+      long startTime = System.currentTimeMillis();
       if (numCities == 0) {
          System.out.println("*** Found no city records - importing city DB file: " + cityFileName);
          if (!new File(cityFileName).canRead())
@@ -31,7 +32,7 @@ object CityLoader {
          else {
             try {
                int res = DBUtil.importCSVFile(cityFileName, CityInfo.class, "\t", false, CityInfo.csvProperties);
-               System.out.println("*** Imported: " + res + " city entries");
+               System.out.println("*** Imported: " + res + " city entries in " + sc.util.PerfMon.getTimeDelta(startTime));
             }
             catch (IllegalArgumentException exc) {
                System.err.println("*** Error importing city csv file: " + exc);

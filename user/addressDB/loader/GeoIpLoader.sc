@@ -28,6 +28,7 @@ object GeoIpLoader {
       DBTypeDescriptor geoIpV4Type = GeoIpInfoV4.getDBTypeDescriptor();
 
       int numEntries = geoIpV4Type.countAll();
+      long startTime = System.currentTimeMillis();
       if (numEntries == 0) {
          System.out.println("*** Found no geoIp v4 records - importing geoIp DB file: " + geoIpV4FileName);
          if (!new File(geoIpV4FileName).canRead())
@@ -35,7 +36,7 @@ object GeoIpLoader {
          else {
             try {
                int res = DBUtil.importCSVFile(geoIpV4FileName, GeoIpInfoV4.class, ",", true, GeoIpInfo.csvProperties);
-               System.out.println("*** Imported: " + res + " geoIp entries - v4");
+               System.out.println("*** Imported: " + res + " geoIp entries - v4 in: " + sc.util.PerfMon.getTimeDelta(startTime));
             }
             catch (IllegalArgumentException exc) {
                System.err.println("*** Error importing geoIp v4 csv file: " + exc);
@@ -52,6 +53,7 @@ object GeoIpLoader {
       }
 
       numEntries = geoIpV6Type.countAll();
+      startTime = System.currentTimeMillis();
       if (numEntries == 0) {
          System.out.println("*** Found no geoIp v6 records - importing geoIp DB file: " + geoIpV6FileName);
          if (!new File(geoIpV6FileName).canRead())
@@ -59,7 +61,7 @@ object GeoIpLoader {
          else {
             try {
                int res = DBUtil.importCSVFile(geoIpV6FileName, GeoIpInfoV6.class, ",", true, GeoIpInfo.csvProperties);
-               System.out.println("*** Imported: " + res + " geoIp entries - v6");
+               System.out.println("*** Imported: " + res + " geoIp entries - v6 in: " + sc.util.PerfMon.getTimeDelta(startTime));
             }
             catch (IllegalArgumentException exc) {
                System.err.println("*** Error importing geoIp v6 csv file: " + exc);
