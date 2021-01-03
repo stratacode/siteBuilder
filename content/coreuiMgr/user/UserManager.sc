@@ -31,6 +31,9 @@ class UserManager extends BaseManager {
    @Sync(initDefault=true)
    HashMap<String, List<UserSession>> sessionsByUserId;
 
+   @Sync(initDefault=true)
+   String emailEditError;
+
    void siteChanged() {
       clearSearch();
    }
@@ -40,12 +43,5 @@ class UserManager extends BaseManager {
       currentUsers = null;
       currentUser = null;
       searchStatusMessage = null;
-   }
-
-   void updateCurrentUser(UserProfile newUser) {
-      if (newUser == currentUser)
-         currentUser = null;
-      else
-         currentUser = newUser;
    }
 }

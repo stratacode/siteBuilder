@@ -7,7 +7,6 @@
          site := UserManagerView.this.site;
          siteMgr := UserManagerView.this.siteMgr;
       }
-      UserProfile currentUser := userMgr.currentUser;
    %>
    <div class="pageTitle">
       Manage users
@@ -46,69 +45,103 @@
             <%= userMgr.searchStatusMessage %>
          </div>
       </div>
-      <div id="userRepeat" repeat=":= userMgr.currentUsers" repeatVarName="curRowUser"
-           class=':= curRowUser == currentUser ? "selectedUserRow" : "userRow"' >
-         <span class="userColumn" clickEvent="=: userMgr.updateCurrentUser(curRowUser)">
-            <input type="checkbox" checked=":= currentUser == curRowUser"/>
-            <%= curRowUser.id %>
-         </span>
-         <span class="wideUserColumn"> <%= curRowUser.emailAddress %> </span>
-         <span class="smallUserColumn"> <%= curRowUser.userProfileStats.numUserSessions %> </span>
-         <span class="smallUserColumn"> <%= curRowUser.userProfileStats.numSessionEvents %> </span>
-         <span id="extraColumns" bodyOnly="true"/>
-         <span class="smallUserColumn"><input type="checkbox" checked=":= curRowUser.locked" changeEvent="=: userMgr.updateLocked(curRowUser, checked)" disabled=":= !isAdmin"/></span>
-         <span class="smallUserColumn"><input type="checkbox" checked=":=: curRowUser.limitExceeded"/></span>
-         <span class="userColumn"> <%= TextUtil.formatUserDate(curRowUser.userProfileStats.registered, true) %> </span>
-         <span class="userColumn"> <%= TextUtil.formatUserDate(curRowUser.userProfileStats.lastActivity, true) %> </span>
-      </div>
-   </div>
-
-   <div id="userDetailView" visible=":= currentUser != null">
-      <%! List<UserSession> userSessions := userMgr.sessionsByUserId.get(String.valueOf(currentUser.id)); %>
-      <div id="userDetailTitle" class="subFormTitle">User: <%= currentUser.emailAddress == null ? "guest" : currentUser.emailAddress %> (id: <%= currentUser.id %>)</div>
-      <div id="privsView">
-         <span>Super admin: <input type="checkbox" checked=":=: currentUser.superAdmin" disabled=":= !isAdmin"/></span>
-         <span>Site admin: <input type="checkbox" checked=":= siteMgr.isSiteAdmin(currentUser)" changeEvent="=: siteMgr.updateSiteAdmin(currentUser, checked)"/></span>
-      </div>
-
-      <div id="userSessionView" visible=":= userMgr.showSessions">
-         <div id="userSessionHeader" class="headerRow">
-            <span class="smallHeaderColumn">#</span>
-            <span class="headerColumn">Created</span>
-            <span class="headerColumn">Duration</span>
-            <span class="headerColumn">Num events</span>
-            <span class="headerColumn">Remote ip</span>
-            <span class="headerColumn">City name</span>
-            <span class="headerColumn">Device</span>
-            <span class="headerColumn">Browser</span>
-            <span class="headerColumn">Os</span>
+      <div id="userRepeat" repeat=":= userMgr.currentUsers" repeatVarName="curRowUser" class="userRowBlock">
+         <%!
+            boolean userVisible = false;
+            void userSelected() {
+               if (userVisible)
+                  userVisible = false;
+               else
+                  userVisible = true;
+            }
+         %>
+         <div id="userRowView" class=':= userVisible ? "selectedUserRow" : "userRow"'>
+            <span class="userColumn" clickEvent="=: userSelected()">
+               <input type="checkbox" checked=":= userVisible"/>
+               <%= curRowUser.id %>
+            </span>
+            <span class="wideUserColumn"> <%= curRowUser.emailAddress %> </span>
+            <span class="smallUserColumn"> <%= curRowUser.userProfileStats.numUserSessions %> </span>
+            <span class="smallUserColumn"> <%= curRowUser.userProfileStats.numSessionEvents %> </span>
+            <span id="extraColumns" bodyOnly="true"/>
+            <span class="smallUserColumn"><input type="checkbox" checked=":= curRowUser.locked" changeEvent="=: userMgr.updateLocked(curRowUser, checked)" disabled=":= !isAdmin"/></span>
+            <span class="smallUserColumn"><input type="checkbox" checked=":=: curRowUser.limitExceeded"/></span>
+            <span class="userColumn"> <%= TextUtil.formatUserDate(curRowUser.userProfileStats.registered, true) %> </span>
+            <span class="userColumn"> <%= TextUtil.formatUserDate(curRowUser.userProfileStats.lastActivity, true) %> </span>
          </div>
-         <div id="userSessionRepeat" repeat=":= userSessions" repeatVarName="userSession" >
-            <%! boolean openPageViews = false; %>
 
-            <div class="sessionRow">
-               <span class="smallSessionColumn"><input type="checkbox" id="openCheck" checked=":=: openPageViews"/> <%= userSessionRepeat.this.repeatIndex %></span>
-               <span class="sessionColumn"><%= TextUtil.formatUserDate(userSession.createTime, true) %></span>
-               <span class="sessionColumn"><%= PTypeUtil.getTimeDelta(userSession.createTime.getTime(), userSession.lastModified.getTime()) %></span>
-               <span class="sessionColumn"><%= userSession.sessionEvents.size() %></span>
-               <span class="sessionColumn"><%= userSession.remoteIp %></span>
-               <span class="sessionColumn"><%= userSession.cityName %></span>
-               <span class="sessionColumn"><%= userSession.deviceType %></span>
-               <span class="sessionColumn"><%= userSession.browser %></span>
-               <span class="sessionColumn"><%= userSession.osName %></span>
+         <div id="userDetailView" visible=":= userVisible">
+            <%! List<UserSession> userSessions := userMgr.sessionsByUserId.get(String.valueOf(curRowUser.id)); %>
+            <div id="userDetailTitle" class="subFormTitle"><%= curRowUser.emailAddress == null ? "Guest user " + curRowUser.id : "Email " + curRowUser.emailAddress %></div>
+            <div id="privsView" class="privsView">
+               <span>Super admin: <input type="checkbox" checked=":=: curRowUser.superAdmin" disabled=":= !isAdmin"/></span>
+               <span>Site admin: <input type="checkbox" checked=":= siteMgr.isSiteAdmin(curRowUser)" changeEvent="=: siteMgr.updateSiteAdmin(curRowUser, checked)"/></span>
             </div>
-            <div id="sessionEventBox" class="sessionEventBox" visible=":= openPageViews">
-               <div id="sessionEventsHeader" class="headerRow sessionEventsHeader">
-                  <span class="headerColumn">Event</span>
-                  <span class="wideHeaderColumn">For</span>
-                  <span class="wideHeaderColumn">When</span>
+            <div id="userEmailFormView" class="formField">
+               <label for="emailField">Email address</label>
+               <input id="emailField" type="text" value=":= curRowUser.emailAddress"
+                      changeEvent="=: userMgr.updateEmailAddress(curRowUser, value)"
+                      class="textField"/>
+               <div class="formError"><%= userMgr.emailEditError %></div>
+            </div>
+            <div id="userFirstNameView" class="formField">
+               <label for="emailField">First name</label>
+               <input id="emailField" type="text" value=":= curRowUser.firstName"
+                      changeEvent="=: curRowUser.firstName = value"
+                      class="textField"/>
+            </div>
+            <div id="userLastNameView" class="formField">
+               <label for="emailField">Last name</label>
+               <input id="emailField" type="text" value=":= curRowUser.lastName"
+                      changeEvent="=: curRowUser.lastName = value"
+                      class="textField"/>
+            </div>
+
+            <div id="userSessionHeader" class="tableHeader">Sessions</div>
+            <div id="userSessionView" visible=":= userMgr.showSessions">
+               <div id="userSessionHeader" class="headerRow">
+                  <span class="smallHeaderColumn">#</span>
+                  <span class="headerColumn">Created</span>
+                  <span class="headerColumn">Duration</span>
+                  <span class="headerColumn">Num events</span>
+                  <span class="headerColumn">Remote ip</span>
+                  <span class="headerColumn">City</span>
+                  <span class="headerColumn">Device</span>
+                  <span class="headerColumn">Browser</span>
+                  <span class="headerColumn">Os</span>
                </div>
-               <div id="sessionEventsRepeat" repeat=":= userSession.sessionEvents" repeatVarName="sessionEvent" class="eventRow">
-                  <span class="eventColumn"><%= sessionEvent.eventName %></span>
-                  <span class="wideEventColumn"><a target="previewView" href='= sessionEvent.getEventTarget(site)' bodyOnly=":= !sessionEvent.hasLink"><%= sessionEvent.eventDetail %></a></span>
-                  <span class="wideEventColumn">
-                     <%= userSession.getEventTimeDisplay(sessionEventsRepeat.this.repeatIndex) %>
-                  </span>
+               <div id="userSessionRepeat" repeat=":= userSessions" repeatVarName="userSession" >
+                  <%! boolean openPageViews = false; %>
+
+                  <div class="sessionRow">
+                     <span class="smallSessionColumn"><input type="checkbox" id="openCheck" checked=":=: openPageViews"/> <%= userSessionRepeat.this.repeatIndex %></span>
+                     <span class="sessionColumn"><%= TextUtil.formatUserDate(userSession.createTime, true) %></span>
+                     <span class="sessionColumn"><%= PTypeUtil.getTimeDelta(userSession.createTime.getTime(), userSession.lastModified.getTime()) %></span>
+                     <span class="sessionColumn"><%= userSession.sessionEvents.size() %></span>
+                     <span class="sessionColumn smallerColumnText"><%= userSession.remoteIp %></span>
+                     <span class="sessionColumn"><%= userSession.cityName %></span>
+                     <span class="sessionColumn"><%= userSession.deviceType %></span>
+                     <span class="sessionColumn"><%= userSession.browser %></span>
+                     <span class="sessionColumn"><%= userSession.osName %></span>
+                  </div>
+                  <div id="sessionEventBox" class="sessionEventBox" visible=":= openPageViews">
+                     <div id="sessionEventsHeader" class="headerRow sessionEventsHeader">
+                        <span class="headerColumn">Event</span>
+                        <span class="wideHeaderColumn">For</span>
+                        <span class="wideHeaderColumn">When</span>
+                        <span class="wideHeaderColumn">Duration</span>
+                     </div>
+                     <div id="sessionEventsRepeat" repeat=":= userSession.sessionEvents" repeatVarName="sessionEvent" class="eventRow">
+                        <span class="eventColumn"><%= sessionEvent.eventName %></span>
+                        <span class="wideEventColumn"><a target="previewView" href='= sessionEvent.getEventTarget(site)' bodyOnly=":= !sessionEvent.hasLink"><%= sessionEvent.eventDetail %></a></span>
+                        <span class="wideEventColumn">
+                           <%= userSession.getEventTimeDisplay(sessionEventsRepeat.this.repeatIndex) %>
+                        </span>
+                        <span class="wideEventColumn">
+                           <%= sessionEvent.durationStr %>
+                        </span>
+                     </div>
+                  </div>
                </div>
             </div>
          </div>

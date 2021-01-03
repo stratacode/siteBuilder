@@ -66,4 +66,13 @@ UserManager {
          profile.locked = newValue;
       }
    }
+
+   void updateEmailAddress(UserProfile user, String emailAddress) {
+      String emailError = user.validateEmailAddress(emailAddress);
+      if (emailError != null) {
+         emailEditError = emailError;
+      }
+      else
+         user.emailAddress = emailAddress;
+   }
 }

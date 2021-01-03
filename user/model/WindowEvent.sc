@@ -17,4 +17,8 @@ abstract class WindowEvent extends SessionEvent {
          }
       }
    }
+
+   String getDurationStr() {
+      return durationMillis == 0 ? "" : TextUtil.formatDuration(durationMillis);
+   }
 }

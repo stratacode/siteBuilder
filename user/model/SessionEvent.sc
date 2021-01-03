@@ -20,5 +20,9 @@ abstract class SessionEvent {
       return getEventName() + " " + getEventDetail();
    }
 
+   String getDurationStr() {
+      return "";
+   }
+
    void windowClosed() {}
 }

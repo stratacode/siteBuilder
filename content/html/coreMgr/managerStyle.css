@@ -483,6 +483,10 @@ input[type=button]:hover {
    font-size: 85%;
 }
 
+.smallerColumnText {
+   font-size: 85%;
+}
+
 .mgrViewStatus {
    margin-top: 10px;
    margin-bottom: 10px;
@@ -563,18 +567,28 @@ input[type=button]:hover {
    outline-style: none;
 }
 
-/* Nesting of tables in UserManager */
-#userDetailView, .sessionEventBox {
-   margin-left: 20px;
-}
-
 .sessionEventBox {
-   background-color: #eef1ff;
+   background-color: #f3f3f3;
+   margin-top: 15px;
+   margin-bottom: 15px;
+   border-top: solid 1px #aaa;
+   border-bottom: solid 1px #ccc;
 }
-
 
 #userNav {
    margin-left: 20px;
+}
+
+.privsView {
+   margin-left: 10%;
+   margin-top: 5px;
+   margin-bottom: 10px;
+}
+
+.tableHeader {
+  margin-top: 10px;
+  background-color: #ccc;
+  font-size: 85%;
 }
 
 .orderDetailForm {
@@ -704,4 +718,9 @@ input[type=button]:hover {
 .mediaResEntry img {
    padding-left: 4px;
    vertical-align: middle;
+}
+
+.userRowBlock {
+   display: flex;
+   flex-direction: column;
 }
