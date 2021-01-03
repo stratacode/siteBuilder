@@ -381,12 +381,11 @@ UserView implements IWindowEventListener {
                }
             }
             if (anyChanged) {
-               // This gets inserted by a scheduled thread so we don't keep resaving the same UserSession and so we can
-               // save a bunch of them at a time in a batch update. If we happen to have one here that's been inserted
-               // we need to update it.
+               // Transient sessions are automatically inserted once they are idle for a certain time period.
+               // If a session is used again after that, we mark it changed and dbUpdate is called in that same scheduled thread
+               // later.
                if (!session.getDBObject().isTransient()) {
-                  // We will have updated the duration property in the event and so need the sessionEvents to be recomputed
-                  session.dbUpdate();
+                  session.changedSession = true;
                }
             }
          }
@@ -415,7 +414,7 @@ UserView implements IWindowEventListener {
                if (!session.getDBObject().isTransient()) {
                   // We will have updated the duration property in the event and so need the sessionEvents to be recomputed
                   session.sessionEvents = session.sessionEvents;
-                  session.dbUpdate();
+                  session.changedSession = true;
                }
             }
          }

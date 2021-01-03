@@ -104,7 +104,7 @@ UserView {
             // Make the registered user the owner of the anonymous cart
                orderView.order.user = regUser;
             }
-            else {
+            else if (orderView.order != null) {
             // Add the anonymous shopping cart to the existing registered user
                regUserOrder.appendOrder(orderView.order);
             }

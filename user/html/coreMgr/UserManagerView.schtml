@@ -73,21 +73,29 @@
 
       <div id="userSessionView" visible=":= userMgr.showSessions">
          <div id="userSessionHeader" class="headerRow">
-            <span class="headerColumn">User sessions</span>
-            <span class="wideHeaderColumn">Created</span>
+            <span class="smallHeaderColumn">#</span>
+            <span class="headerColumn">Created</span>
             <span class="headerColumn">Duration</span>
             <span class="headerColumn">Num events</span>
-            <span class="wideHeaderColumn">Remote ip</span>
+            <span class="headerColumn">Remote ip</span>
+            <span class="headerColumn">City name</span>
+            <span class="headerColumn">Device</span>
+            <span class="headerColumn">Browser</span>
+            <span class="headerColumn">Os</span>
          </div>
          <div id="userSessionRepeat" repeat=":= userSessions" repeatVarName="userSession" >
             <%! boolean openPageViews = false; %>
 
             <div class="sessionRow">
-               <span class="sessionColumn"><input type="checkbox" id="openCheck" checked=":=: openPageViews"/> <%= userSessionRepeat.this.repeatIndex %></span>
-               <span class="wideSessionColumn"><%= TextUtil.formatUserDate(userSession.createTime, true) %></span>
+               <span class="smallSessionColumn"><input type="checkbox" id="openCheck" checked=":=: openPageViews"/> <%= userSessionRepeat.this.repeatIndex %></span>
+               <span class="sessionColumn"><%= TextUtil.formatUserDate(userSession.createTime, true) %></span>
                <span class="sessionColumn"><%= PTypeUtil.getTimeDelta(userSession.createTime.getTime(), userSession.lastModified.getTime()) %></span>
                <span class="sessionColumn"><%= userSession.sessionEvents.size() %></span>
-               <span class="wideSessionColumn"><%= userSession.remoteIp %></span>
+               <span class="sessionColumn"><%= userSession.remoteIp %></span>
+               <span class="sessionColumn"><%= userSession.cityName %></span>
+               <span class="sessionColumn"><%= userSession.deviceType %></span>
+               <span class="sessionColumn"><%= userSession.browser %></span>
+               <span class="sessionColumn"><%= userSession.osName %></span>
             </div>
             <div id="sessionEventBox" class="sessionEventBox" visible=":= openPageViews">
                <div id="sessionEventsHeader" class="headerRow sessionEventsHeader">

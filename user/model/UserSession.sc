@@ -62,4 +62,17 @@ class UserSession {
          return PTypeUtil.getTimeDelta(sessionEvents.get(ix - 1).eventTime.getTime(),
                                        sessionEvents.get(ix). eventTime.getTime());
    }
+
+   String getDeviceType() {
+      if (screenWidth == sc.lang.html.Window.DefaultWidth)
+         return "Unknown";
+      if (screenWidth < 580)
+         return "Mobile";
+      else if (screenWidth < 992)
+         return "Tablet";
+      else if (screenWidth < 1440)
+         return "Laptop";
+      else
+         return "Desktop";
+   }
 }

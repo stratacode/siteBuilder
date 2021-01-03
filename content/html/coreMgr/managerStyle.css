@@ -90,7 +90,7 @@ input[type=button]:hover {
 }
 
 .smallMediaColumn, .smallHeaderColumn, .smallProductColumn, .smallSkuColumn, .smallSiteColumn, .smallPageColumn,
-.smallOrderColumn, .smallUserColumn, .smallSessionRow, .smallEventRow, .smallPostRow {
+.smallOrderColumn, .smallUserColumn, .smallSessionColumn, .smallEventColumn, .smallPostColumn {
    padding: 2px;
    width: 60px;
    flex-grow: 0;

@@ -31,7 +31,7 @@ object userSessionCache {
          for (Map<Long,Map<Long,UserSession>> ubMap:cacheByUserId.values()) {
             for (Map<Long,UserSession> userMap:ubMap.values()) {
                for (UserSession us:userMap.values()) {
-                  if (us.getDBObject().isTransient() && (doAll || us.needsSave())) {
+                  if ((us.getDBObject().isTransient() || us.changedSession) && (doAll || us.needsSave())) {
                      if (needsSave == null)
                         needsSave = new ArrayList<UserSession>();
                      needsSave.add(us);
@@ -49,7 +49,7 @@ object userSessionCache {
          for (Map<String,Map<Long,UserSession>> ubMap:cacheByUserMarker.values()) {
             for (Map<Long,UserSession> userMap:ubMap.values()) {
                for (UserSession us:userMap.values()) {
-                  if (us.getDBObject().isTransient() && (doAll || us.needsSave())) {
+                  if ((us.changedSession || us.getDBObject().isTransient()) && (doAll || us.needsSave())) {
                      if (needsSave == null)
                         needsSave = new ArrayList<UserSession>();
                      needsSave.add(us);
@@ -110,7 +110,13 @@ object userSessionCache {
             tx = DBTransaction.getOrCreate();
             System.out.println("*** Saving: " + needsSave.size() + " userSessions");
             for (UserSession us:needsSave) {
-               us.dbInsert(true);
+               us.changedSession = false;
+               if (us.getDBObject().isTransient())
+                  us.dbInsert(true);
+               else {
+                  us.sessionEvents = us.sessionEvents; // Force this JSON property to be resaved
+                  us.dbUpdate();
+               }
             }
             success = true;
          }

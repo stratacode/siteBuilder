@@ -28,7 +28,7 @@
      <div id="userRepeat">
         <span id="extraColumns">
            <span class="orderColumn"><%= curRowUser.numOrders %></span>
-           <span class="orderColumn"><%= siteMgr.store.defaultCurrency.symbol %><%= curRowUser.totalPurchased %></span>
+           <span class="orderColumn"><%= curRowUser.currencySymbol %><%= curRowUser.totalPurchased %></span>
         </span>
      </div>
    </div>

@@ -8,6 +8,8 @@ UserSession {
    // After how much inactivity do we consider it a new session?
    final static long expireTime = 10*60*1000;
 
+   transient boolean changedSession = false;
+
    void addPageEvent(String pathName) {
       PageEvent event = new PageEvent();
       event.pathName = pathName;
