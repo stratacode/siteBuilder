@@ -24,7 +24,7 @@
       </div>
       <div id="userTypeForm">
          <span visible=":= isAdmin"><label for="allSitesCheckbox">Search all sites</label><input type="checkbox" id="allSitesCheckbox" checked=":=: userMgr.searchAcrossSites"/></span>
-         <label for="showGuestCheckbox">Show guests</label><input type="checkbox" id="showGuestCheckbox" checked=":=: userMgr.showGuests"/>
+         <label for="showGuestCheckbox">Show guests</label><input type="checkbox" id="showGuestCheckbox" checked=":= userMgr.showGuests" changeEvent="=: userMgr.updateShowGuests(checked)"/>
          <label for="showGuestCheckbox">Show sessions</label><input type="checkbox" id="showSessionsCheckbox" checked=":=: userMgr.showSessions"/>
          <span id="extraSearchOptions"/>
       </div>
@@ -70,35 +70,41 @@
             <span class="userColumn"> <%= TextUtil.formatUserDate(curRowUser.userProfileStats.lastActivity, true) %> </span>
          </div>
 
-         <div id="userDetailView" visible=":= userVisible">
+         <div id="userDetailView" visible=":= userVisible" class="userDetailView">
             <%! List<UserSession> userSessions := userMgr.sessionsByUserId.get(String.valueOf(curRowUser.id)); %>
-            <div id="userDetailTitle" class="subFormTitle"><%= curRowUser.emailAddress == null ? "Guest user " + curRowUser.id : "Email " + curRowUser.emailAddress %></div>
-            <div id="privsView" class="privsView">
-               <span>Super admin: <input type="checkbox" checked=":=: curRowUser.superAdmin" disabled=":= !isAdmin"/></span>
-               <span>Site admin: <input type="checkbox" checked=":= siteMgr.isSiteAdmin(curRowUser)" changeEvent="=: siteMgr.updateSiteAdmin(curRowUser, checked)"/></span>
-            </div>
-            <div id="userEmailFormView" class="formField">
-               <label for="emailField">Email address</label>
-               <input id="emailField" type="text" value=":= curRowUser.emailAddress"
-                      changeEvent="=: userMgr.updateEmailAddress(curRowUser, value)"
-                      class="textField"/>
+            <div id="registeredUserView" class="registeredUserView" visible=":= curRowUser.registered">
+               <div id="userDetailTitle" class="subFormTitle"><%= "Registered user " + curRowUser.userName %></div>
+               <div id="privsView" class="privsView">
+                  <span>Super admin: <input type="checkbox" checked=":=: curRowUser.superAdmin" disabled=":= !isAdmin"/></span>
+                  <span>Site admin:
+                     <input type="checkbox" checked=":= siteMgr.isSiteAdmin(curRowUser)" disabled=":= curRowUser == siteMgr.userView.user" changeEvent="=: siteMgr.updateSiteAdmin(curRowUser, checked)"/></span>
+               </div>
+               <div id="userEmailFormView" class="formField">
+                  <label for="emailField">Email address</label>
+                  <input id="emailField" type="text" value=":= curRowUser.emailAddress"
+                         changeEvent="=: userMgr.updateEmailAddress(curRowUser, value)"
+                         class="textField"/>
+               </div>
                <div class="formError"><%= userMgr.emailEditError %></div>
-            </div>
-            <div id="userFirstNameView" class="formField">
-               <label for="emailField">First name</label>
-               <input id="emailField" type="text" value=":= curRowUser.firstName"
-                      changeEvent="=: curRowUser.firstName = value"
-                      class="textField"/>
-            </div>
-            <div id="userLastNameView" class="formField">
-               <label for="emailField">Last name</label>
-               <input id="emailField" type="text" value=":= curRowUser.lastName"
-                      changeEvent="=: curRowUser.lastName = value"
-                      class="textField"/>
+               <div id="userFirstNameView" class="formField">
+                  <label for="emailField">First name</label>
+                  <input id="emailField" type="text" value=":= curRowUser.firstName"
+                         changeEvent="=: curRowUser.firstName = value"
+                         class="textField"/>
+               </div>
+               <div id="userLastNameView" class="formField">
+                  <label for="emailField">Last name</label>
+                  <input id="emailField" type="text" value=":= curRowUser.lastName"
+                         changeEvent="=: curRowUser.lastName = value"
+                         class="textField"/>
+               </div>
+
+               <div id="alt" class="subFormTitle"><%= "Guest user " + curRowUser.id %></div>
             </div>
 
-            <div id="userSessionHeader" class="tableHeader">Sessions</div>
-            <div id="userSessionView" visible=":= userMgr.showSessions">
+
+            <div id="userSessionView" visible=":= userMgr.showSessions" class="userTableView">
+               <div id="userSessionHeader" class="tableHeader">Sessions</div>
                <div id="userSessionHeader" class="headerRow">
                   <span class="smallHeaderColumn">#</span>
                   <span class="headerColumn">Created</span>

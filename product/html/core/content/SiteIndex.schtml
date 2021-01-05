@@ -27,7 +27,9 @@
                      <div class="siteLinkView">
                         <a href=':= category.pageUrl'>
                            <% if (category.mainMedia != null) { %>
-                              <div class="siteLinkThumb"><img src="= category.mainMedia.thumbUrl"/></div>
+                              <div class="siteLinkThumb">
+                                 <img srcset="= category.mainMedia.getSrcSetForSize(320)" src="= category.mainMedia.thumbUrl"/>
+                              </div>
                            <% } %>
                            <div class="siteLinkTitle"><%= category.name %> </div>
                         </a>

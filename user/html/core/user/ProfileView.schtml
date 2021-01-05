@@ -3,7 +3,11 @@
       <div class="formTitle">Update account information</div>
       <div class="formField">
          <label for="emailField">Email address</label>
-         <input id="emailField" type="text" value=":=: currentUserView.user.emailAddress" liveEdit="off"/>
+         <input id="emailField" type="text" value=":= currentUserView.user.emailAddress"
+                changeEvent="=: currentUserView.updateEmailAddress(value)" liveEdit="off"/>
+         <div class="formError">
+            <%= currentUserView.propErrors.get("emailAddress") %>
+         </div>
       </div>
       <div class="formField">
          <label for="firstNameField">First name</label>

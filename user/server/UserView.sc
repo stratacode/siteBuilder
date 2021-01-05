@@ -421,4 +421,23 @@ UserView implements IWindowEventListener {
          userSessions = null;
       }
    }
+
+   void updateEmailAddress(String emailAddress) {
+      String emailError = user.validateEmailAddress(emailAddress);
+      if (emailError != null) {
+         addPropError("emailAddress", emailError);
+      }
+      else {
+         if (user.userbase.useEmailForUserName) {
+            user.userName = user.emailAddress;
+            UserProfile existing = UserProfile.findByUserName(user.userbase, emailAddress);
+            if (existing != null && existing != user) {
+               addPropError("emailAddress", "Account already exists with userName: " + emailAddress);
+               return;
+            }
+         }
+         clearErrors();
+         user.emailAddress = emailAddress;
+     }
+   }
 }

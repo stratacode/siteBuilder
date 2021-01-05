@@ -44,6 +44,8 @@ class UserView {
 
    String updatePasswordStatus;
 
+   String updateEmailError;
+
    String sessionMarker;
 
    SiteContext lastSite;

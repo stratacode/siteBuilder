@@ -6,6 +6,75 @@ html, input, select {
   color: #333;
 }
 
+
+/** Rule for mobile screens */
+@media (min-resolution: 192dpi) and (max-device-width: 1200px), (min-device-pixel-ratio: 2) and (max-device-width: 1200px), (-webkit-min-device-pixel-ratio: 2) and (max-device-width: 1200px) {
+
+   html {
+      font-size: 190%;
+   }
+   input, select {
+      font-size: 100%;
+   }
+   .siteLinkThumb img {
+      width: 200px;
+      height: auto;
+   }
+   .siteLinkView {
+      width: 240px;
+      height: 260px;
+   }
+   .subMenuLink img, .menuItemLink img {
+      width: 36px;
+   }
+
+   .leftSlideArrow {
+      top: -260px;
+      left: 80px;
+   }
+   .rightSlideArrow {
+      top: -260px;
+      left: 600px;
+   }
+
+   .selectDot, .selectedDot {
+      width: 28px;
+      height: 28px;
+   }
+}
+
+/** Rule for desktops screens */
+@media (max-resolution: 191dpi), (max-device-pixel-ratio: 1.99), (-webkit-max-device-pixel-ratio: 1.99)  {
+
+   html, input, select {
+      font-size: 95%;
+   }
+
+   .siteLinkThumb img {
+      width: 100px;
+      height: auto;
+   }
+
+   .siteLinkView {
+      width: 120px;
+      height: 130px;
+   }
+
+   .leftSlideArrow {
+      top: -340px;
+      left: -100px;
+   }
+   .rightSlideArrow {
+      top: -340px;
+      left: 800px;
+   }
+
+   .selectDot, .selectedDot {
+      width: 14px;
+      height: 14px;
+   }
+}
+
 body {
   padding: 0px;
   justify-content: center;
@@ -231,8 +300,6 @@ body {
 }
 
 .selectDot, .selectedDot {
-   width: 14px;
-   height: 14px;
    border-radius: 50%;
    background-color: transparent;
    border: 1px solid #ccc;
@@ -260,14 +327,10 @@ body {
 
 .leftSlideArrow {
    position: relative;
-   top: -340px;
-   left: -100px;
 }
 
 .rightSlideArrow {
    position: relative;
-   top: -340px;
-   left: 800px;
 }
 
 .centerSlideButtons {
@@ -342,8 +405,6 @@ body {
    flex-direction: column;
    align-items: left;
    justify-content: center;
-   width: 120px;
-   height: 130px;
 }
 
 .searchResultView {
@@ -632,13 +693,7 @@ input[type=button]:disabled:hover {
 }
 
 .siteLinkThumb {
-   height: 100px;
    display: flex;
-}
-
-.siteLinkThumb img {
-   width: fit-content;
-   height: fit-content;
 }
 
 .beforePrice, .price {

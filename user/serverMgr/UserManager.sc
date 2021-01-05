@@ -60,6 +60,13 @@ UserManager {
       }
    }
 
+   void updateShowGuests(boolean newVal) {
+      if (newVal != showGuests) {
+         showGuests = newVal;
+         doSearch();
+      }
+   }
+
    void updateLocked(UserProfile profile, boolean newValue) {
       boolean isAdmin = siteMgr.userView.user.superAdmin;
       if (isAdmin) {
@@ -72,7 +79,17 @@ UserManager {
       if (emailError != null) {
          emailEditError = emailError;
       }
-      else
+      else {
+         if (user.userbase.useEmailForUserName) {
+            user.userName = user.emailAddress;
+            UserProfile existing = UserProfile.findByUserName(user.userbase, emailAddress);
+            if (existing != null && existing != user) {
+               emailEditError = "Account already exists with userName: " + emailAddress;
+               return;
+            }
+            emailEditError = null;
+         }
          user.emailAddress = emailAddress;
+      }
    }
 }

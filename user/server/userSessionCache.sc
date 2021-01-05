@@ -66,7 +66,7 @@ object userSessionCache {
          }
 
          if (needsExpire != null) {
-            System.out.println("*** Invalidating: " + needsExpire.size() + " userSessions");
+            //System.out.println("*** Invalidating: " + needsExpire.size() + " userSessions");
             for (UserSession us:needsExpire) {
                Userbase userbase = us.site.userbase;
                if (userbase == null)
@@ -108,7 +108,7 @@ object userSessionCache {
          boolean success = false;
          try {
             tx = DBTransaction.getOrCreate();
-            System.out.println("*** Saving: " + needsSave.size() + " userSessions");
+            //System.out.println("*** Saving: " + needsSave.size() + " userSessions");
             for (UserSession us:needsSave) {
                us.changedSession = false;
                if (us.getDBObject().isTransient())

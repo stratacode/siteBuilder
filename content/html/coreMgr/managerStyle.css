@@ -4,7 +4,23 @@ html, input, select {
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   color: #333;
-  font-size: 95%;
+}
+
+
+/** Rule for mobile screens */
+@media (min-resolution: 192dpi) and (max-device-width: 1200px), (min-device-pixel-ratio: 2) and (max-device-width: 1200px), (-webkit-min-device-pixel-ratio: 2) and (max-device-width: 1200px) {
+
+   html, input, select {
+      font-size: 190%;
+   }
+}
+
+/** Rule for desktops screens */
+@media (max-resolution: 191dpi), (max-device-pixel-ratio: 1.99), (-webkit-max-device-pixel-ratio: 1.99)  {
+
+   html, input, select {
+      font-size: 95%;
+   }
 }
 
 input[type=button]:disabled, input[type=submit]:disabled {
@@ -77,6 +93,7 @@ input[type=button]:hover {
    align-items: center;
    padding-left: 2px;
 }
+
 
 .mediaRow, .selectedMediaRow, .productRow, .selectedProductRow, .categoryRow, .selectedCategoryRow, .mainSkuRow, .selectedSkuRow,
 .pageRow, .selectedPageRow, .orderRow, .selectedOrderRow, .userRow, .selectedUserRow, .sessionRow, .eventRow, .postRow, .selectedPostRow {
@@ -239,6 +256,20 @@ input[type=button]:hover {
    background: #fff;
 }
 
+.userDetailView {
+   margin-bottom: 5px;
+   border-top: solid 1px #aaa;
+   border-bottom: solid 1px #ccc;
+   display: flex;
+   padding-top: 5px;
+   flex-direction: column;
+   background: #fff;
+}
+
+.registeredUserView {
+   margin-bottom: 5px;
+}
+
 .subFormTitle {
    font-size: 105%;
    margin-top: 5px;
@@ -262,6 +293,17 @@ input[type=button]:hover {
    flex-direction: column;
    border-top: solid 1px #aaa;
    background: #eef1ff;
+}
+
+.detailFormView {
+   margin-top: 5px;
+   display: flex;
+   flex-direction: column;
+   background: #f3f3f3;
+   border-top: solid 1px #aaa;
+   border-left: solid 1px #ccc;
+   border-right: solid 1px #ccc;
+   border-bottom: solid 1px #ccc;
 }
 
 .rightButton {
@@ -483,7 +525,7 @@ input[type=button]:hover {
    font-size: 85%;
 }
 
-.smallerColumnText {
+.smallerColumnText, .sessionRow, .selectedUserRow, .userRow {
    font-size: 85%;
 }
 
@@ -569,10 +611,10 @@ input[type=button]:hover {
 
 .sessionEventBox {
    background-color: #f3f3f3;
-   margin-top: 15px;
-   margin-bottom: 15px;
    border-top: solid 1px #aaa;
    border-bottom: solid 1px #ccc;
+   border-left: solid 1px #ccc;
+   border-right: solid 1px #ccc;
 }
 
 #userNav {
@@ -586,13 +628,9 @@ input[type=button]:hover {
 }
 
 .tableHeader {
-  margin-top: 10px;
   background-color: #ccc;
   font-size: 85%;
-}
-
-.orderDetailForm {
-   margin-left: 20px;
+  padding-left: 5px;
 }
 
 #loginMenu {
@@ -723,4 +761,12 @@ input[type=button]:hover {
 .userRowBlock {
    display: flex;
    flex-direction: column;
+}
+
+.userTableView {
+  margin-bottom: 10px;
+  border-top: solid 1px #aaa;
+  border-bottom: solid 1px #ccc;
+  border-left: solid 1px #ccc;
+  border-right: solid 1px #ccc;
 }

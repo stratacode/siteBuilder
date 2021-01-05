@@ -200,7 +200,6 @@ class PaymentInfo {
    }
 
    void updateExpireDate(String value) {
-      System.out.println("*** In updateExpireDate: " + value);
       if (value == null) {
          expMonth = "";
          expYear = "";

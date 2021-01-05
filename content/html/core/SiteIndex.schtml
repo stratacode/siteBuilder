@@ -97,7 +97,7 @@ import java.util.Arrays;
                                  <div class="siteLinkBox">
                                     <div class="siteLinkView">
                                        <a href=':= page.pageUrl'>
-                                          <div class="siteLinkThumb"><img src="/icons/file-text40.svg"/></div>
+                                          <div class="siteLinkThumb"><img src="/icons/file100x100.png"/></div>
                                           <div class="siteLinkTitle"><%= page.pageName + (page.homePage ? " (home)" : "") %> </div>
                                        </a>
                                        <div class="siteLinkType">Page

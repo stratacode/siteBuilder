@@ -78,7 +78,7 @@ OrderView {
 
             order.emailAddress = user.emailAddress;
 
-            if (user.paymentInfo != null)
+            if (user.paymentInfo != null && user.paymentInfo == order.paymentInfo)
                editPayment = false;
          }
          else {

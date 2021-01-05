@@ -32,10 +32,10 @@
               <span class="orderColumn"><%= curRowUser.currencySymbol %><%= curRowUser.totalPurchased %></span>
            </span>
         </div>
-        <div id="userDetailView" class="subFormView">
+        <div id="userDetailView">
            <%! List<Order> userOrders := userMgr.getOrdersForUser(curRowUser); %>
 
-           <div id="userOrderView" visible=":= siteMgr.validStore && userMgr.showOrders">
+           <div id="userOrderView" visible=":= siteMgr.validStore && userMgr.showOrders" class="userTableView">
               <div id="userOrderHeader" class="tableHeader">Orders</div>
               <div id="userOrderHeader" visible=":= userOrders.size() > 0">
                  <div id="userOrderHeaderRow" class="headerRow" >
@@ -67,7 +67,7 @@
                     </span>
                  </div>
                  <div id="extraFormView" class="orderDetailForm">
-                    <div id="detailFormView" class="subFormContainer" visible=':= orderMgr.order == orderElem'>
+                    <div id="detailFormView" class="detailFormView" visible=':= orderMgr.order == orderElem'>
                        <div class="subFormTitle">Order <span visible=":= orderElem.orderNumber != null">#<%= orderElem.orderNumber %> status:</span><span><%= orderElem.displayStatus %></span></div>
                        <div class="headerRow" visible=":= orderElem.lineItems != null && orderElem.lineItems.size() > 0">
                           <span class="wideHeaderColumn">Sku code</span>
