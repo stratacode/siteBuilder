@@ -1,6 +1,6 @@
 package sc;
 
-public user.html.serverMgr extends user.html.server, user.html.coreMgr, jetty.schtml {
+public user.html.serverMgr extends user.html.core, user.html.coreMgr, jetty.schtml {
    // But don't export the server only constraint here
    exportRuntime = false;
    exportProcess = false;

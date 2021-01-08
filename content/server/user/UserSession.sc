@@ -52,10 +52,28 @@ UserSession {
       long mostRecent = -1;
       for (SessionEvent ev:sessionEvents) {
          long evTime = ev.eventTime.getTime();
+         if (ev instanceof WindowEvent) {
+            int duration = ((WindowEvent) ev).durationMillis;
+            evTime += duration;
+         }
          if (mostRecent == -1 || evTime > mostRecent)
             mostRecent = evTime;
       }
       return mostRecent;
+   }
+
+   void updateScrollDepth(int windowId, int sd) {
+      if (sessionEvents == null)
+         return;
+      for (SessionEvent ev:sessionEvents) {
+         if (ev instanceof PageEvent) {
+            PageEvent pv = (PageEvent) ev;
+            if (pv.window.windowId == windowId) {
+               pv.durationMillis = (int) (System.currentTimeMillis() - ev.eventTime.getTime());
+               pv.scrollDepth = sd;
+            }
+         }
+      }
    }
 
 }

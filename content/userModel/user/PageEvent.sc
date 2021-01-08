@@ -2,6 +2,10 @@
 class PageEvent extends WindowEvent {
    String pathName;
 
+   @Sync(initDefault=true)
+   /** 0-100 % of the window that the user scrolled to */
+   int scrollDepth;
+
    String getEventName() {
       return "page view";
    }

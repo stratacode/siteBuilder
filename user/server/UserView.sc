@@ -58,6 +58,18 @@ UserView implements IWindowEventListener {
       }
    }
 
+   UserProfile initUserForUserName(String userName) {
+      UserProfile res = UserProfile.findByUserName(userbase, userName);
+      if (res == null) {
+         if (user == null || (user.userName != null && !StringUtil.equalStrings(user.userName, userName)))
+            resetUser();
+         user.userName = userName;
+         if (userbase.useEmailForUserName)
+            user.emailAddress = userName;
+      }
+      return user;
+   }
+
    void resetUser() {
       UserProfile oldUser = user;
       user = new UserProfile();
@@ -381,18 +393,17 @@ UserView implements IWindowEventListener {
                }
             }
             if (anyChanged) {
-               // Transient sessions are automatically inserted once they are idle for a certain time period.
-               // If a session is used again after that, we mark it changed and dbUpdate is called in that same scheduled thread
-               // later.
-               if (!session.getDBObject().isTransient()) {
-                  session.changedSession = true;
-               }
+               sessionChanged(session);
             }
          }
       }
    }
 
    void windowClosed(Window win) {
+      windowClosed(win.windowId);
+   }
+
+   void windowClosed(int winId) {
       if (userSessions != null) {
          for (UserSession session:userSessions.values()) {
             boolean anyChanged = false;
@@ -400,7 +411,7 @@ UserView implements IWindowEventListener {
                for (SessionEvent ev:session.sessionEvents) {
                   if (ev instanceof WindowEvent) {
                      WindowEvent wev = (WindowEvent) ev;
-                     if (wev.window == win) {
+                     if (wev.window.windowId == winId) {
                         ev.windowClosed();
                         anyChanged = true;
                      }
@@ -408,17 +419,21 @@ UserView implements IWindowEventListener {
                }
             }
             if (anyChanged) {
-               // This gets inserted by a scheduled thread so we don't keep resaving the same UserSession and so we can
-               // save a bunch of them at a time in a batch update. If we happen to have one here that's been inserted
-               // we need to update it.
-               if (!session.getDBObject().isTransient()) {
-                  // We will have updated the duration property in the event and so need the sessionEvents to be recomputed
-                  session.sessionEvents = session.sessionEvents;
-                  session.changedSession = true;
-               }
+               sessionChanged(session);
             }
          }
          userSessions = null;
+      }
+   }
+
+   void sessionChanged(UserSession session) {
+      // This gets inserted by a scheduled thread so we don't keep resaving the same UserSession and so we can
+      // save a bunch of them at a time in a batch update. If we happen to have one here that's been inserted
+      // we need to update it.
+      if (!session.getDBObject().isTransient()) {
+         // We will have updated the duration property in the event and so need the sessionEvents to be recomputed
+         session.sessionEvents = session.sessionEvents;
+         session.changedSession = true;
       }
    }
 

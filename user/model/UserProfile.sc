@@ -50,6 +50,10 @@ class UserProfile {
    @Sync(initDefault=true)
    List<Address> addresses;
 
+   ContactType contactType;
+
+   boolean acceptedLicense;
+
    final static int PRIV_SUPER_ADMIN = 1;
    final static int PRIV_SITE_ADMIN = 2;
    final static int PRIV_REGISTERED = 4;
