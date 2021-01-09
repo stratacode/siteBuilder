@@ -5,7 +5,7 @@ import sc.content.BaseViewEditor;
 
 import sc.content.BaseElementManagerView;
 
-public content.html.coreMgr extends content.html.core, content.coreuiMgr, content.serverMgr {
+public content.html.coreMgr extends content.html.server, content.coreuiMgr, content.serverMgr, summernote.core {
    inheritProcess = false;
    inheritRuntime = false;
 }

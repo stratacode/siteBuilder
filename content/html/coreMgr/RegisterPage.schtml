@@ -1,0 +1,49 @@
+<%@ @URL(pattern="/manage/register") %>
+<html extends="MgrPageLayout">
+<body>
+   <div id="appFrame">
+      <div id="pageBody">
+         <div visible=":= currentUserView.loginStatus==LoginStatus.NotLoggedIn" class="profileView">
+            <%!
+               String cancelURL = "/";
+               String successURL = "/manage/site";
+
+               boolean registered = false;
+            %>
+            <div class="formTitle">Create an account</div>
+            <div class="formField">
+               <label for="emailField">Email address</label>
+               <input id="emailField" type="text" value=":=: currentUserView.emailAddress"/>
+            </div>
+            <div class="formField">
+               <label for="passwordField">Password</label>
+               <input id="passwordField" type="password" value=":=: currentUserView.password"/>
+            </div>
+            <div class="formField">
+               <label for="firstNameField">First name</label>
+               <input id="firstNameField" type="text" value=":=: currentUserView.user.firstName"/>
+            </div>
+            <div class="formField">
+               <label for="lastNameField">Last name</label>
+               <input id="lastNameField" type="text" value=":=: currentUserView.user.lastName"/>
+            </div>
+            <div class="formField">
+               <input type="submit" value="Register" clickEvent="=: registered = currentUserView.register()" class="confirmButtons"/>
+               <input type="submit" value="Cancel" clickEvent='=: Window.window.location.href = cancelURL' class="rightButton"/>
+            </div>
+            <div class="formError"><%= currentUserView.userViewError %></div>
+            <div id="alt" class="profileView">
+               <div class="formField">
+                  <div class="formStatus" visible=":= registered">
+                     Successfully created an account with email <%= currentUserView.user.emailAddress %>
+                     <div id="alt" class="formStatus">Logged in as <%= currentUserView.user.emailAddress %></div>
+                  </div>
+                  <input type="button" value="Continue" clickEvent="=: Window.window.location.href = successURL" class="confirmButtons">
+                  <input type="button" value="Sign out" clickEvent="=: currentUserView.logout()" class="rightButton">
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<%@ @URL(pattern="/manage/logout", realTime=false) %>
+<html extends="MgrPageLayout" pageVisitCount="=: currentUserView.logout()">
+<body>
+   <div id="appFrame">
+      <div id="pageBody">
+         <div class="profileView">
+         You have signed out successfully.
+         <a href="/">Continue as guest</a> or <a href="/manage/site">Login</a>
+         </div>
+      </div>
+   </div>
+</body>
+</html>

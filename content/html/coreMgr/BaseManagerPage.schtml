@@ -1,4 +1,4 @@
-<html abstract="true" pageVisitCount="=: pageVisited()">
+<html extends="MgrPageLayout" abstract="true" pageVisitCount="=: pageVisited()">
    <%!
       SiteManager siteMgr = currentSiteManager;
 
@@ -16,11 +16,6 @@
       boolean showCreateView :=: siteMgr.showCreateView;
    %>
 
-   <head exec="server">
-      <div id="libScripts" bodyOnly="true">
-      </div>
-      <link id="docStyle" rel="stylesheet" href="/managerStyle.css" type="text/css"/>
-   </head>
 
    <body>
       <div id="mgrFrame" visible=":= siteMgr.userView.loginStatus == LoginStatus.LoggedIn">
@@ -42,7 +37,7 @@
             </span>
             <span id="userNav">
                <span id="loginMenu" visible=":= loginMenuVisible">
-                  <a href="/logout">Sign out</a>
+                  <a href="/manage/logout">Sign out</a>
                </span>
                <a clickEvent="=: loginMenuVisible = !loginMenuVisible">
                   <img class="logoutIcon" src="/icons/user-minus20.svg"/><%= siteMgr.userView.user.userName %>
@@ -88,7 +83,7 @@
                </div>
                <input id="loginButton" type="submit" value="Log in" clickEvent="=: siteMgr.login()" class="confirmButtons"/>
                <input id="registerButton" type="submit" value="Register"
-                      clickEvent='=: Window.window.location.href = "/Register.html"' class="rightButtons"/>
+                      clickEvent='=: Window.window.location.href = "/manage/register"' class="rightButtons"/>
             </div>
             <div class="formError"><%= siteMgr.userView.userViewError %></div>
          </div>

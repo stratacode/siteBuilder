@@ -183,6 +183,8 @@ object userSessionCache {
          if (!invalidateScheduled)
             scheduleInvalidate();
       }
+      else
+         session.user = user; // In case the user was removed from the cache due to a logout and log back in
       return session;
    }
 
