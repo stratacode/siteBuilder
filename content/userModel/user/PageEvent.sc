@@ -3,7 +3,7 @@ class PageEvent extends WindowEvent {
    String pathName;
 
    @Sync(initDefault=true)
-   /** 0-100 % of the window that the user scrolled to */
+   /** 0 - not set. 1-100 % of the window that the user scrolled to */
    int scrollDepth;
 
    String getEventName() {
@@ -16,5 +16,13 @@ class PageEvent extends WindowEvent {
 
    String getEventTarget(SiteContext site) {
       return "/" + site.sitePathTypeName + "/" + site.sitePathName + "/page/" + pathName;
+   }
+
+   public String getScrollDepthStr() {
+      if (scrollDepth == 0) {
+         return "?";
+      }
+      else
+         return scrollDepth + "%";
    }
 }

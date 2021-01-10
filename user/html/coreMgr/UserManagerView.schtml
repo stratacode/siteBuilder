@@ -136,6 +136,7 @@
                         <span class="wideHeaderColumn">For</span>
                         <span class="wideHeaderColumn">When</span>
                         <span class="wideHeaderColumn">Duration</span>
+                        <span class="wideHeaderColumn">Scroll depth</span>
                      </div>
                      <div id="sessionEventsRepeat" repeat=":= userSession.sessionEvents" repeatVarName="sessionEvent" class="eventRow">
                         <span class="eventColumn"><%= sessionEvent.eventName %></span>
@@ -145,6 +146,9 @@
                         </span>
                         <span class="wideEventColumn">
                            <%= sessionEvent.durationStr %>
+                        </span>
+                        <span class="eventColumn">
+                           <%= sessionEvent.scrollDepthStr %>
                         </span>
                      </div>
                   </div>

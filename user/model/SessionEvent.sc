@@ -24,5 +24,9 @@ abstract class SessionEvent {
       return "";
    }
 
+   String getScrollDepthStr() {
+      return "";
+   }
+
    void windowClosed() {}
 }
