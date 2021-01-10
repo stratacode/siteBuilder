@@ -9,8 +9,7 @@
  *  - extract that and rename to data/allCountries.csv, and data/cities500.csv 
  *
  * TODO: put the install steps into a command line wizard to help users set this up
- * For the GeoIp database, this product includes GeoLite2 data created by MaxMind, available from
- * <a href="https://www.maxmind.com">https://www.maxmind.com</a>.
+ * For the GeoIp database, this product includes GeoLite2 data created by MaxMind, available from www.maxmind.com
  *
  * Sign up for an account there and download either the free GeoLite2-City-Blocks-IPv4 and v6 files and put them into the
  * data directory, or (I believe) the paid versions use the same format and so should also work.
