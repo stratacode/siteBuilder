@@ -69,7 +69,7 @@ UserSession {
          if (ev instanceof PageEvent) {
             PageEvent pv = (PageEvent) ev;
             Window evWin = pv.window;
-            if (evWin != null & evWin.windowId == windowId) {
+            if (evWin != null && evWin.windowId == windowId) {
                pv.durationMillis = (int) (System.currentTimeMillis() - ev.eventTime.getTime());
                pv.scrollDepth = sd;
             }

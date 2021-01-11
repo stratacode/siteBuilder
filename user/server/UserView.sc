@@ -400,7 +400,8 @@ UserView implements IWindowEventListener {
    }
 
    void windowClosed(Window win) {
-      windowClosed(win.windowId);
+      if (win != null)
+         windowClosed(win.windowId);
    }
 
    void windowClosed(int winId) {
@@ -411,7 +412,8 @@ UserView implements IWindowEventListener {
                for (SessionEvent ev:session.sessionEvents) {
                   if (ev instanceof WindowEvent) {
                      WindowEvent wev = (WindowEvent) ev;
-                     if (wev.window.windowId == winId) {
+                     Window win = wev.window;
+                     if (win != null && win.windowId == winId) {
                         ev.windowClosed();
                         anyChanged = true;
                      }
