@@ -2,12 +2,13 @@ import sc.lang.html.Window;
 
 abstract class WindowEvent extends SessionEvent {
    int durationMillis;
+   boolean expired;
 
    transient Window window;
 
-   void windowClosed() {
+   void windowClosed(boolean sessionExpired) {
       long now = System.currentTimeMillis();
-      if (eventTime != null) {
+      if (eventTime != null && !sessionExpired) {
          long dur = now - eventTime.getTime();
          if (dur < Integer.MAX_VALUE && dur > 0) {
             durationMillis = (int) dur;
@@ -16,6 +17,7 @@ abstract class WindowEvent extends SessionEvent {
             System.err.println("*** Invalid duration for window event: " + dur);
          }
       }
+      expired = sessionExpired;
    }
 
    String getDurationStr() {

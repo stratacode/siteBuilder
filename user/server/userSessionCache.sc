@@ -132,6 +132,16 @@ object userSessionCache {
             tx.close();
          }
       }
+      else {
+         DBTransaction tx = null;
+         boolean success = false;
+         tx = DBTransaction.getCurrent();
+         if (tx != null) {
+            if (tx.getNumOps() > 0)
+               System.err.println("*** Transaction with operations after cache check");
+            tx.close();
+         }
+      }
       if (needsInvalidate) {
          scheduleInvalidate();
       }

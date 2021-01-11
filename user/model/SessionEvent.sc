@@ -28,5 +28,5 @@ abstract class SessionEvent {
       return "";
    }
 
-   void windowClosed() {}
+   void windowClosed(boolean sessionExpired) {}
 }

@@ -399,12 +399,12 @@ UserView implements IWindowEventListener {
       }
    }
 
-   void windowClosed(Window win) {
+   void windowClosed(Window win, boolean sessionExpired) {
       if (win != null)
-         windowClosed(win.windowId);
+         windowClosed(win.windowId, sessionExpired);
    }
 
-   void windowClosed(int winId) {
+   void windowClosed(int winId, boolean sessionExpired) {
       if (userSessions != null) {
          for (UserSession session:userSessions.values()) {
             boolean anyChanged = false;
@@ -414,7 +414,7 @@ UserView implements IWindowEventListener {
                      WindowEvent wev = (WindowEvent) ev;
                      Window win = wev.window;
                      if (win != null && win.windowId == winId) {
-                        ev.windowClosed();
+                        ev.windowClosed(sessionExpired);
                         anyChanged = true;
                      }
                   }
@@ -434,7 +434,6 @@ UserView implements IWindowEventListener {
       // we need to update it.
       if (!session.getDBObject().isTransient()) {
          // We will have updated the duration property in the event and so need the sessionEvents to be recomputed
-         session.sessionEvents = session.sessionEvents;
          session.changedSession = true;
       }
    }
