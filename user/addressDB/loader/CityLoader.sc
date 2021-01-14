@@ -31,7 +31,7 @@ object CityLoader {
             System.err.println("*** Unable to find city csv file: " + cityFileName);
          else {
             try {
-               int res = DBUtil.importCSVFile(cityFileName, CityInfo.class, "\t", false, CityInfo.csvProperties);
+               int res = DBUtil.importCSVFile(cityFileName, CityInfo.class, "\t", false, null, CityInfo.csvProperties);
                System.out.println("*** Imported: " + res + " city entries in " + sc.util.PerfMon.getTimeDelta(startTime));
             }
             catch (IllegalArgumentException exc) {

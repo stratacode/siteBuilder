@@ -35,7 +35,7 @@ object GeoIpLoader {
             System.err.println("*** Unable to find geoIp csv file: " + geoIpV4FileName);
          else {
             try {
-               int res = DBUtil.importCSVFile(geoIpV4FileName, GeoIpInfoV4.class, ",", true, GeoIpInfo.csvProperties);
+               int res = DBUtil.importCSVFile(geoIpV4FileName, GeoIpInfoV4.class, ",", true, null, GeoIpInfo.csvProperties);
                System.out.println("*** Imported: " + res + " geoIp entries - v4 in: " + sc.util.PerfMon.getTimeDelta(startTime));
             }
             catch (IllegalArgumentException exc) {
@@ -60,7 +60,7 @@ object GeoIpLoader {
             System.err.println("*** Unable to find geoIp csv file: " + geoIpV6FileName);
          else {
             try {
-               int res = DBUtil.importCSVFile(geoIpV6FileName, GeoIpInfoV6.class, ",", true, GeoIpInfo.csvProperties);
+               int res = DBUtil.importCSVFile(geoIpV6FileName, GeoIpInfoV6.class, ",", true, null, GeoIpInfo.csvProperties);
                System.out.println("*** Imported: " + res + " geoIp entries - v6 in: " + sc.util.PerfMon.getTimeDelta(startTime));
             }
             catch (IllegalArgumentException exc) {

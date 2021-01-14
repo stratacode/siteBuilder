@@ -14,11 +14,8 @@
  * Sign up for an account there and download either the free GeoLite2-City-Blocks-IPv4 and v6 files and put them into the
  * data directory, or (I believe) the paid versions use the same format and so should also work.
  *
- * The countries.csv file is in source control. It was generated from a standard countries.csv file with name, abbrev
- * where we added a postal_code_len column computed from the above allCountries.txt file.  Create the schema and import
- * the raw file leaving the column blank. Then run the psql command:
- *    update country_info set postal_code_len = length(postal_code_info.postal_code) from postal_code_info where postal_code_info.country = country_info.country_code;
- * Then turn the countries table back into csv use the psql command: copy country_info(country_name,country_code,postal_code_len) to stdout delimiter E'\t';
+ * The countryInfo.csv file also comes from the geoNames site but is small enough 
+ * it's just added to the source control.
  */
 public user.addressDB.loader extends user.addressDB.server, jdbc.pgsql, jdbc.schemaManager,
                                  sys.basicMain, hikari.dataSource {
@@ -34,7 +31,7 @@ public user.addressDB.loader extends user.addressDB.server, jdbc.pgsql, jdbc.sch
 */
 
    String postalCodePath = getRelativeFile("data/allCountries.csv");
-   String countryDBPath = getRelativeFile("data/countries.csv");
+   String countryDBPath = getRelativeFile("data/countryInfo.csv");
    String cityPath = getRelativeFile("data/cities500.csv");
    String geoIpV4Path = getRelativeFile("data/GeoLite2-City-Blocks-IPv4.csv");
    String geoIpV6Path = getRelativeFile("data/GeoLite2-City-Blocks-IPv6.csv");
