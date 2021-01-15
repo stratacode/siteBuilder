@@ -27,6 +27,9 @@ class UserView {
    @Sync(syncMode=SyncMode.Disabled)
    String userAgent;
 
+   @Sync(syncMode=SyncMode.Disabled)
+   String referrer;
+
    // Stores the current user profile associated with this view. For anonymous users
    // it will get auto-created to represent the anonymous profile, and source of properties for
    // the register form.

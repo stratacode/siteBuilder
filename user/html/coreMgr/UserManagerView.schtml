@@ -121,6 +121,7 @@
                   <span class="headerColumn">Num events</span>
                   <span class="headerColumn">Remote ip</span>
                   <span class="headerColumn">City</span>
+                  <span class="headerColumn">Country</span>
                   <span class="headerColumn">Device</span>
                   <span class="headerColumn">Browser</span>
                   <span class="headerColumn">Os</span>
@@ -135,11 +136,19 @@
                      <span class="sessionColumn"><%= userSession.sessionEvents.size() %></span>
                      <span class="sessionColumn smallerColumnText"><%= userSession.remoteIp %></span>
                      <span class="sessionColumn"><%= userSession.cityName %></span>
+                     <span class="sessionColumn"><%= userSession.countryCode %></span>
                      <span class="sessionColumn"><%= userSession.deviceType %></span>
                      <span class="sessionColumn"><%= userSession.browser %></span>
                      <span class="sessionColumn"><%= userSession.osName %></span>
                   </div>
                   <div id="sessionEventBox" class="sessionEventBox" visible=":= openPageViews">
+                     <div id="sessionDetailView">
+                        <div visible=":= userSession.referrer != null">Referrer: <%= userSession.referrer %></div>
+                        <div visible=":= userSession.screenWidth != 0">
+                           Screen size: <%= userSession.screenWidth %>x<%= userSession.screenHeight %>
+                        </div>
+                        <div visible=":= userSession.postalCode != null">Postal code: <%= userSession.postalCode %></div>
+                     </div>
                      <div id="sessionEventsHeader" class="headerRow sessionEventsHeader">
                         <span class="headerColumn">Event</span>
                         <span class="wideHeaderColumn">For</span>

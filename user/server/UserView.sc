@@ -315,6 +315,7 @@ UserView implements IWindowEventListener {
       if (session.createTime == null) {
          session.createTime = new Date();
          session.sessionMarker = sessionMarker;
+         session.referrer = referrer;
          if (userbase.trackAnonIp || (user != null && user.registered))
             session.remoteIp = remoteIp;
          if (userAgentInfo != null) {
