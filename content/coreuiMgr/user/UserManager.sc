@@ -20,16 +20,21 @@ class UserManager extends BaseManager {
    @Sync(initDefault=true, resetState=true)
    boolean showSessions = true;
 
-   @Sync(initDefault=true, resetState=true)
+   @Sync(initDefault=true)
    int numUsersPerPage = 20;
+
+   @Sync(initDefault=true)
+   int numSessionsPerPage = 10;
+
    @Sync(initDefault=true, resetState=true)
-   int startIndex = 0;
+   int currentPage = 0;
+   int numPages;
+
+   int searchResultCount;
+   boolean searchRecent;
 
    @Sync(initDefault=true)
    String searchStatusMessage = null;
-
-   @Sync(initDefault=true)
-   HashMap<String, List<UserSession>> sessionsByUserId;
 
    @Sync(initDefault=true)
    String emailEditError;

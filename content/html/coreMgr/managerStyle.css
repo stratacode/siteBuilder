@@ -770,3 +770,17 @@ input[type=button]:hover {
   border-left: solid 1px #ccc;
   border-right: solid 1px #ccc;
 }
+
+.leftPageArrow, .rightPageArrow {
+   cursor:pointer;
+   user-select: none;
+}
+
+.searchPageControl {
+   font-style: normal;
+   padding-left: 15px;
+}
+
+.searchPageView {
+   font-style: italic;
+}

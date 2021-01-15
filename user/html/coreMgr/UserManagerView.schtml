@@ -14,12 +14,12 @@
    <div id="findUserView" class="findUserView">
       <div id="showProductsForm" class="formField">
          <label for="showAllButton">Show users</label>
-         <input type="button" value="All" id="showAllButton" class="showAllButton" clickEvent="=: userMgr.doSearch()"/>
-         <input type="button" value="Recent" id="showRecentButton" class="showRecentButton rightButton" clickEvent="=: userMgr.doSearch()"/>
+         <input type="button" value="All" id="showAllButton" class="showAllButton" clickEvent="=: userMgr.doSearch(false)"/>
+         <input type="button" value="Recent" id="showRecentButton" class="showRecentButton rightButton" clickEvent="=: userMgr.doSearch(true)"/>
       </div>
       <div id="findUserForm" class="formField">
-         <label for="searchUserField">Find user:</label><input id="searchUserField" type="text" value=":=: userMgr.searchText" changeEvent="=: userMgr.doSearch()"/>
-         <input id="findUserButton" type="image" class="findUserButton" src="/icons/search.svg" clickEvent="=: userMgr.doSearch()"/>
+         <label for="searchUserField">Find user:</label><input id="searchUserField" type="text" value=":=: userMgr.searchText" changeEvent="=: userMgr.doSearch(false)"/>
+         <input id="findUserButton" type="image" class="findUserButton" src="/icons/search.svg" clickEvent="=: userMgr.doSearch(false)"/>
          <input id="clearUserButton" type="image" class="clearUserButton" src="/icons/x-square.svg" clickEvent="=: userMgr.clearSearch()"/>
       </div>
       <div id="userTypeForm">
@@ -30,8 +30,17 @@
       </div>
    </div>
 
-   <div id="currentUsersView">
-      <div id="headerRow" class="headerRow" visible=":= userMgr.currentUsers != null && userMgr.currentUsers.size() > 0">
+   <div id="currentUsersView" visible=":= userMgr.currentUsers != null && userMgr.currentUsers.size() > 0">
+      <div id="searchPageView" class="searchPageView">
+         Found: <%= userMgr.searchResultCount %> users.
+         <span visible=":= userMgr.numPages > 1" class="searchPageControl">
+            Page
+            <span clickEvent="=: userMgr.gotoPrevPage()" class="leftPageArrow"> ❮ </span>
+            <%= userMgr.currentPage %> of <%= userMgr.numPages %>
+            <span clickEvent="=: userMgr.gotoNextPage()" class="rightPageArrow"> ❯ </span>
+         </span>
+      </div>
+      <div id="headerRow" class="headerRow" >
          <span class="headerColumn">User id</span>
          <span class="wideHeaderColumn">Email address</span>
          <span class="smallHeaderColumn">Visits</span>
@@ -41,9 +50,6 @@
          <span class="smallHeaderColumn">Limited</span>
          <span class="headerColumn">Registered</span>
          <span class="headerColumn">Last activity</span>
-         <div id="alt" class="formStatus">
-            <%= userMgr.searchStatusMessage %>
-         </div>
       </div>
       <div id="userRepeat" repeat=":= userMgr.currentUsers" repeatVarName="curRowUser" class="userRowBlock">
          <%!
@@ -71,7 +77,10 @@
          </div>
 
          <div id="userDetailView" visible=":= userVisible" class="userDetailView">
-            <%! List<UserSession> userSessions := userMgr.sessionsByUserId.get(String.valueOf(curRowUser.id)); %>
+            <%!
+               int curSessionPage = 0;
+               List<UserSession> userSessions := userMgr.getUserSessions(curRowUser, curSessionPage);
+            %>
             <div id="registeredUserView" class="registeredUserView" visible=":= curRowUser.registered">
                <div id="userDetailTitle" class="subFormTitle"><%= "Registered user " + curRowUser.userName %></div>
                <div id="privsView" class="privsView">
@@ -155,6 +164,9 @@
                </div>
             </div>
          </div>
+      </div>
+      <div id="alt" class="formStatus">
+         <%= userMgr.searchStatusMessage %>
       </div>
    </div>
 </div>

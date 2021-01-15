@@ -331,8 +331,15 @@ UserView implements IWindowEventListener {
                   session.cityName = cityInfo.cityName;
                   session.timezone = cityInfo.timezone;
                }
-               // TODO Do we need this postalCodeInfo. Also there's a countryId in the record that could get us country if we don't
-               // find the city
+               else {
+                  CountryInfo countryInfo = CountryInfo.findByGeoNameId(geoInfo.geoNameId);
+                  if (countryInfo != null) {
+                     session.countryCode = countryInfo.countryCode;
+                  }
+                  else
+                     DBUtil.error("No country or city found for geoNameId: " + geoInfo.geoNameId);
+               }
+               // TODO Do we need this postalCodeInfo?
                //PostalCodeInfo postalCodeInfo = geoInfo.getPostalCodeInfo();
                if (geoInfo.postalCode != null) {
                   session.postalCode = geoInfo.postalCode;

@@ -1,5 +1,6 @@
 <%!
 @DBTypeSettings
+// This will create a Java static method with the signature: GeoIpV4 geoIpInfoV4(String remoteIp)
 @SchemaSQL(value=%>
 
 create index on geo_ip_info_v4 using gist (network inet_ops);

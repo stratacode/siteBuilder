@@ -2,10 +2,14 @@ import java.util.Arrays;
 import sc.db.Query;
 
 UserManager {
-   void doSearch() {
-      boolean isAdmin = siteMgr.userView.user.superAdmin;
+   void doSearch(boolean recentOnly) {
+      currentPage = 0;
+      this.searchRecent = recentOnly;
+      runSearchQuery();
+   }
 
-      HashMap<String,List<UserSession>> newSessionsById = new HashMap<String,List<UserSession>>();
+   void runSearchQuery() {
+      boolean isAdmin = siteMgr.userView.user.superAdmin;
 
       List<UserProfile> newUsers;
       if (searchAcrossSites && isAdmin) {
@@ -15,40 +19,43 @@ UserManager {
             propNames.add("registered");
             propValues.add(Boolean.TRUE);
          }
+         // TODO: need to support recent here - switch to using query to add the extra clause
          newUsers = (List<UserProfile>) UserProfile.getDBTypeDescriptor().searchQuery(searchText, propNames, propValues, null, Arrays.asList("-userProfileStats.lastActivity"),
-                     startIndex, numUsersPerPage);
-         if (showSessions) {
-            for (UserProfile user:newUsers) {
-               newSessionsById.put(String.valueOf(user.id), UserSession.findByUser(user));
-            }
+                     currentPage*numUsersPerPage, numUsersPerPage);
+
+         if (currentPage == 0) {
+            if (newUsers.size() == numUsersPerPage)
+               searchResultCount = UserProfile.getDBTypeDescriptor().searchCountQuery(searchText, propNames, propValues);
+            else
+               searchResultCount = newUsers.size();
          }
       }
       else {
-         newUsers = new ArrayList<UserProfile>();
-      }
+         Date toDate = new Date();
+         Date fromDate = searchRecent ? new Date(System.currentTimeMillis() - 7*TextUtil.dayMillis) : new Date(1000);
 
-      //List<UserSession> sessions = (List<UserSession>) UserSession.findBySite(site, startIndex, numUsersPerPage);
-      List<UserSession> sessions = (List<UserSession>) UserSession.getDBTypeDescriptor().query(
-          Query.and(Query.eq("site", site),
-                    Query.or(Query.match("user.emailAddress", searchText),
-                             Query.match("user.firstName", searchText))), null, Arrays.asList("-lastModified"), startIndex, numUsersPerPage);
+         // Here we need to find all users that have had sessions on this site, ordered by the most recent session on the site
+         /*
+         Query findUsersQuery = Query.and(
+                Query.includesItem("userSessions", Query.and(Query.eq("site", site), Query.lt("lastModified", toDate), Query.gt("lastModified", fromDate))),
+                Query.or(Query.match("emailAddress", searchText), Query.match("firstName", searchText)));
 
-      if (sessions != null) {
-         for (int i = 0; i < sessions.size(); i++) {
-            UserSession session = sessions.get(i);
-            UserProfile user = session.user;
-            if (!showGuests && !user.registered)
-               continue;
-            List<UserSession> userSessions = newSessionsById.get(String.valueOf(user.id));
-            if (userSessions == null) {
-               userSessions = new ArrayList<UserSession>();
-               newSessionsById.put(String.valueOf(user.id), userSessions);
-               newUsers.add(user);
-            }
-            userSessions.add(session);
+         newUsers = (List<UserProfile>)
+            UserProfile.getDBTypeDescriptor().query(findUsersQuery, null, Arrays.asList("userSessions.lastModified"),
+                                                    currentPage*numUsersPerPage, numUsersPerPage);
+         */
+         if (showGuests)
+            newUsers = (List<UserProfile>) UserProfile.findUsersForSite(site.id, fromDate, toDate, currentPage*numUsersPerPage, numUsersPerPage);
+         else
+            newUsers = (List<UserProfile>) UserProfile.findRegUsersForSite(site.id, fromDate, toDate, currentPage*numUsersPerPage, numUsersPerPage);
+
+         if (currentPage == 0) {
+            if (newUsers.size() == numUsersPerPage)
+               searchResultCount = (int) UserProfile.countUsersForSite(site.id, fromDate, toDate);
+            else
+               searchResultCount = newUsers.size();
          }
       }
-      sessionsByUserId = newSessionsById;
 
       currentUsers = newUsers;
       if (currentUsers.size() == 0) {
@@ -57,13 +64,44 @@ UserManager {
             searchStatusMessage = "No users have have visited this site";
          else
             searchStatusMessage = "No sessions found out of: " + numUsers + " sessions for this site";
+
+         currentPage = 0;
+         numPages = 0;
       }
+      else {
+         if (currentPage * numUsersPerPage >= searchResultCount)
+            currentPage = 0;
+         numPages = (searchResultCount + numUsersPerPage - 1) / numUsersPerPage;
+      }
+
+   }
+
+   List<UserSession> getUserSessions(UserProfile user, int curPage) {
+      List<UserSession> res = (List<UserSession>) UserSession.findByUser(user, curPage*numSessionsPerPage, numSessionsPerPage);
+      return res;
+   }
+
+   void gotoPrevPage() {
+      if (currentPage == 0) {
+         return;
+      }
+      currentPage = currentPage - 1;
+      runSearchQuery();
+   }
+
+   void gotoNextPage() {
+      if (currentPage >= numPages - 1) {
+         return;
+      }
+      currentPage = currentPage + 1;
+      runSearchQuery();
    }
 
    void updateShowGuests(boolean newVal) {
       if (newVal != showGuests) {
          showGuests = newVal;
-         doSearch();
+         currentPage = 0;
+         runSearchQuery();
       }
    }
 

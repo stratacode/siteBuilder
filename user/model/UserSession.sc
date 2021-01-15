@@ -1,7 +1,7 @@
 @Sync(onDemand=true)
 @DBTypeSettings
 class UserSession {
-   @FindBy
+   @FindBy(orderBy="-lastModified", paged=true)
    UserProfile user;     // when tracking anonymous users with cookies, points back to the user-id
 
    @Sync(syncMode=SyncMode.Disabled)

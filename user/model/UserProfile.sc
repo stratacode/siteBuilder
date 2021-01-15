@@ -7,6 +7,8 @@ scope<window>
 @DBTypeSettings
 @FindBy(name="userName", with="userbase,userName", findOne=true)
 @Sync(onDemand=true)
+// Adds a stored procedure that will generate a static method List<UserProfile> findUsersForSite(long siteId, Date fromTime, Date toTime)
+@SchemaSQL(file="userProfileProcs.ddl")
 class UserProfile {
    @Sync(syncMode=SyncMode.Disabled)
    @DBPropertySettings(required=true)
