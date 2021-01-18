@@ -17,7 +17,7 @@ currentUserView {
          String remoteIp = ctx.getRemoteIp();
          this.remoteIp = remoteIp;
          this.acceptLanguage = req.getHeader("Accept-Language");
-         this.userAgent = req.getHeader("User-agent");
+         this.userAgent = ctx.getUserAgent();
          this.referrer = req.getHeader("Referer"); // note: the header is misspelled
          Cookie cookie = ctx.getCookie(userbase.cookieName);
          if (cookie != null)

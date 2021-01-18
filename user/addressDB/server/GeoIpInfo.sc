@@ -1,10 +1,14 @@
 GeoIpInfo {
    CityInfo cityInfo;
 
+   transient boolean cityInfoChecked = false;
+
    @DBPropertySettings(persist=false)
    CityInfo getCityInfo() {
-      if (cityInfo == null)
+      if (cityInfo == null && !cityInfoChecked) {
          cityInfo = (CityInfo) CityInfo.getDBTypeDescriptor().findById(geoNameId);
+         cityInfoChecked = true;
+      }
       return cityInfo;
    }
 

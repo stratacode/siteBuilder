@@ -1,4 +1,4 @@
 UserSession {
-   @FindBy(paged=true, orderBy="-lastModified")
+   @FindBy(paged=true, orderBy="-lastEventTime")
    SiteContext site;
 }

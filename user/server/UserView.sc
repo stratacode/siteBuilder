@@ -314,6 +314,7 @@ UserView implements IWindowEventListener {
       userSessions.put(site.id, session);
       if (session.createTime == null) {
          session.createTime = new Date();
+         session.lastEventTime = session.createTime;
          session.sessionMarker = sessionMarker;
          session.referrer = referrer;
          if (userbase.trackAnonIp || (user != null && user.registered))
@@ -323,6 +324,8 @@ UserView implements IWindowEventListener {
             session.browserVersion = userAgentInfo.browserVersion;
             session.osName = userAgentInfo.osName;
          }
+         else
+            DBUtil.error("No userAgentInfo for user");
          if (remoteIp != null) {
             GeoIpInfo geoInfo = GeoIpInfo.lookup(remoteIp);
             if (geoInfo != null) {
@@ -331,11 +334,15 @@ UserView implements IWindowEventListener {
                   session.countryCode = cityInfo.countryCode;
                   session.cityName = cityInfo.cityName;
                   session.timezone = cityInfo.timezone;
+                  if (session.countryCode == null)
+                     DBUtil.error("No country found for cityInfo: " + geoInfo.geoNameId);
                }
                else {
                   CountryInfo countryInfo = CountryInfo.findByGeoNameId(geoInfo.geoNameId);
                   if (countryInfo != null) {
                      session.countryCode = countryInfo.countryCode;
+                     if (session.countryCode == null)
+                        DBUtil.error("No country found for countryInfo: " + geoInfo.geoNameId);
                   }
                   else
                      DBUtil.error("No country or city found for geoNameId: " + geoInfo.geoNameId);
@@ -347,7 +354,10 @@ UserView implements IWindowEventListener {
                }
             }
          }
+         else if (session.countryCode == null)
+            DBUtil.error("No remoteIp for user");
          session.userMarker = userMarker;
+
 
          user.getOrCreateStats().numUserSessions++;
 

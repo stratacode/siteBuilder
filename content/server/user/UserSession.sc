@@ -26,6 +26,9 @@ UserSession {
       if (sessionEvents.size() < user.userbase.maxSessionEvents)
          sessionEvents.add(event);
       user.getOrCreateStats().notifySessionEvent(event);
+      Date eventTime = event.eventTime;
+      if (lastEventTime == null || eventTime.getTime() > lastEventTime.getTime())
+         lastEventTime = eventTime;
    }
 
    boolean needsSave() {

@@ -1,7 +1,7 @@
 @Sync(onDemand=true)
 @DBTypeSettings
 class UserSession {
-   @FindBy(orderBy="-lastModified", paged=true)
+   @FindBy(orderBy="-lastEventTime", paged=true)
    UserProfile user;     // when tracking anonymous users with cookies, points back to the user-id
 
    @Sync(syncMode=SyncMode.Disabled)
@@ -14,7 +14,7 @@ class UserSession {
    Date createTime;
 
    @Sync(initDefault=true)
-   Date lastModified;
+   Date lastEventTime;
 
    @DBPropertySettings(columnType="jsonb")
    @Sync(initDefault=true)

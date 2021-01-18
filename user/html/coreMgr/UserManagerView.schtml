@@ -132,7 +132,7 @@
                   <div class="sessionRow">
                      <span class="smallSessionColumn"><input type="checkbox" id="openCheck" checked=":=: openPageViews"/> <%= userSessionRepeat.this.repeatIndex %></span>
                      <span class="sessionColumn"><%= TextUtil.formatUserDate(userSession.createTime, true) %></span>
-                     <span class="sessionColumn"><%= PTypeUtil.getTimeDelta(userSession.createTime.getTime(), userSession.lastModified.getTime()) %></span>
+                     <span class="sessionColumn"><%= PTypeUtil.getTimeDelta(userSession.createTime.getTime(), userSession.lastEventTime.getTime()) %></span>
                      <span class="sessionColumn"><%= userSession.sessionEvents.size() %></span>
                      <span class="sessionColumn smallerColumnText"><%= userSession.remoteIp %></span>
                      <span class="sessionColumn"><%= userSession.cityName %></span>
