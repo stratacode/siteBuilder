@@ -91,7 +91,7 @@ product.CartPage {
                         submitOrderView {
                            actionButtonBox.actionButton.click();
 
-                           System.out.println("*** Completed order: " + orderView.completedOrder);
+                           System.out.println("*** Completed order: " + orderView.completedOrder.orderNumber);
                         }
                      }
                   }
