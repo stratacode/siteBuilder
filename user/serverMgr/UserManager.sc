@@ -2,10 +2,27 @@ import java.util.Arrays;
 import sc.db.Query;
 
 UserManager {
+   @Sync(resetState=true)
+   void setSearchActive(boolean na) {
+      searchActive = na;
+      // Normally we don't run the query until the user presses a button, but if the session is being reset this can be true
+      // at this time and we need to refresh the results
+      if (na && searchResultCount == 0) {
+         DynUtil.invokeLater(new Runnable() {
+            void run() {
+               if (searchResultCount == 0 && searchActive)
+                  runSearchQuery();
+            }
+         }, 0);
+
+      }
+   }
+
    void doSearch(boolean recentOnly) {
       currentPage = 0;
       this.searchRecent = recentOnly;
       runSearchQuery();
+      this.searchActive = true;
    }
 
    void runSearchQuery() {

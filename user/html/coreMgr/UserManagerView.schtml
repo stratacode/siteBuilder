@@ -62,8 +62,8 @@
             }
          %>
          <div id="userRowView" class=':= userVisible ? "selectedUserRow" : "userRow"'>
-            <span class="userColumn" clickEvent="=: userSelected()">
-               <input type="checkbox" checked=":= userVisible"/>
+            <span id="userSelectView" class="userColumn" clickEvent="=: userSelected()">
+               <input id="userVisCheck" type="checkbox" checked=":= userVisible"/>
                <%= curRowUser.id %>
             </span>
             <span class="wideUserColumn"> <%= curRowUser.emailAddress %> </span>

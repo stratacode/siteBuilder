@@ -335,9 +335,9 @@ UserView implements IWindowEventListener {
                   session.cityName = cityInfo.cityName;
                   session.timezone = cityInfo.timezone;
                   if (session.countryCode == null)
-                     DBUtil.error("No country found for cityInfo: " + geoInfo.geoNameId);
+                     DBUtil.error("No country found for cityInfo: " + geoInfo.geoNameId + " cityInfoId=" + cityInfo.geoNameId + " city: " + cityInfo.cityName);
                }
-               else {
+               if (session.countryCode == null) {
                   CountryInfo countryInfo = CountryInfo.findByGeoNameId(geoInfo.geoNameId);
                   if (countryInfo != null) {
                      session.countryCode = countryInfo.countryCode;

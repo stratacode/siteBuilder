@@ -7,12 +7,16 @@ class BaseManager {
 
    SiteContext site;
 
+   SiteContext oldSite = null;
+
    SiteManager siteMgr;
 
    site =: siteChanged();
 
    void siteChanged() {
-      clearSearch();
+      if (oldSite != null && oldSite != site)
+         clearSearch();
+      oldSite = site;
    }
 
    void clearSearch() {
