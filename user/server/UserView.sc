@@ -426,7 +426,7 @@ UserView implements IWindowEventListener {
       if (userSessions != null) {
          for (UserSession session:userSessions.values()) {
             boolean anyChanged = false;
-            if (session.sessionEvents != null) {
+            if (session.getDBObject().isActive() && session.sessionEvents != null) {
                for (SessionEvent ev:session.sessionEvents) {
                   if (ev instanceof WindowEvent) {
                      WindowEvent wev = (WindowEvent) ev;
