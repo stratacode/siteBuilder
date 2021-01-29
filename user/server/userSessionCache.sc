@@ -12,9 +12,12 @@ object userSessionCache {
    int invalidateTimerDelay = 5000;
 
    synchronized void scheduleInvalidate() {
+      if (invalidateScheduled)
+         return;
       invalidateScheduled = true;
       PTypeUtil.addScheduledJob(new Runnable() {
          public void run() {
+            invalidateScheduled = false;
             invalidateUserSessions(false);
          }
       }, invalidateTimerDelay, false);
@@ -145,8 +148,6 @@ object userSessionCache {
       if (needsInvalidate) {
          scheduleInvalidate();
       }
-      else
-         invalidateScheduled = false;
    }
 
    synchronized UserSession getOrCreateUserSession(Userbase userbase, UserProfile user, String userMarker, SiteContext site) {
@@ -221,6 +222,5 @@ object userSessionCache {
 
    void stop() {
       invalidateUserSessions(true);
-
    }
 }
