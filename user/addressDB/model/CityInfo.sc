@@ -25,4 +25,6 @@ class CityInfo {
        Arrays.asList("geoNameId", "cityName", null /* ascii name */, null /* alternate names */, "latitude", "longitude",
                      null /* feature class */, null /* feature code */, "countryCode", null /* cc2 */, null /* admin1 */, null, null, null /* admin4 */,
                      "population",  "elevation", null, "timezone", "modificationDate" /* mod date - yyyy-MM-dd */);
+
+   static final String idProperty = "geoNameId";
 }

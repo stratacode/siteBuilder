@@ -18,12 +18,12 @@ object userSessionCache {
       PTypeUtil.addScheduledJob(new Runnable() {
          public void run() {
             invalidateScheduled = false;
-            invalidateUserSessions(false);
+            invalidateUserSessions(false, false);
          }
       }, invalidateTimerDelay, false);
    }
 
-   void invalidateUserSessions(boolean doAll) {
+   void invalidateUserSessions(boolean saveAll, boolean invalidateAll) {
       boolean needsInvalidate = false;
 
       List<UserSession> needsSave = null;
@@ -34,12 +34,12 @@ object userSessionCache {
          for (Map<Long,Map<Long,UserSession>> ubMap:cacheByUserId.values()) {
             for (Map<Long,UserSession> userMap:ubMap.values()) {
                for (UserSession us:userMap.values()) {
-                  if ((us.getDBObject().isTransient() || us.changedSession) && (doAll || us.needsSave())) {
+                  if ((us.getDBObject().isTransient() || us.changedSession) && (saveAll || us.needsSave())) {
                      if (needsSave == null)
                         needsSave = new ArrayList<UserSession>();
                      needsSave.add(us);
                   }
-                  if (doAll || us.isExpired()) {
+                  if (invalidateAll || us.isExpired()) {
                      if (needsExpire == null)
                         needsExpire = new ArrayList<UserSession>();
                      needsExpire.add(us);
@@ -52,12 +52,12 @@ object userSessionCache {
          for (Map<String,Map<Long,UserSession>> ubMap:cacheByUserMarker.values()) {
             for (Map<Long,UserSession> userMap:ubMap.values()) {
                for (UserSession us:userMap.values()) {
-                  if ((us.changedSession || us.getDBObject().isTransient()) && (doAll || us.needsSave())) {
+                  if ((us.changedSession || us.getDBObject().isTransient()) && (saveAll || us.needsSave())) {
                      if (needsSave == null)
                         needsSave = new ArrayList<UserSession>();
                      needsSave.add(us);
                   }
-                  if (doAll || us.isExpired()) {
+                  if (invalidateAll || us.isExpired()) {
                      if (needsMarkerExpire == null)
                         needsMarkerExpire = new ArrayList<UserSession>();
                      needsMarkerExpire.add(us);
@@ -221,6 +221,6 @@ object userSessionCache {
    }
 
    void stop() {
-      invalidateUserSessions(true);
+      invalidateUserSessions(true, true);
    }
 }

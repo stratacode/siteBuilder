@@ -28,6 +28,8 @@ UserManager {
    void runSearchQuery() {
       boolean isAdmin = siteMgr.userView.user.superAdmin;
 
+      userSessionCache.invalidateUserSessions(true, false);
+
       List<UserProfile> newUsers;
       if (searchAcrossSites && isAdmin) {
          List<String> propNames = null;
@@ -93,7 +95,13 @@ UserManager {
 
    }
 
-   List<UserSession> getUserSessions(UserProfile user, int curPage) {
+   List<UserSession> getUserSessions(UserProfile user, int curPage, boolean visible) {
+      if (!visible)
+         return null;
+      // Make sure the cache of userSessions changed in memory is flushed before we run the query. It's ok if some new
+      // sessions come in after this because the query can overwrite some changes made in memory
+      userSessionCache.invalidateUserSessions(true, false);
+
       List<UserSession> res = (List<UserSession>) UserSession.findByUser(user, curPage*numSessionsPerPage, numSessionsPerPage);
       return res;
    }

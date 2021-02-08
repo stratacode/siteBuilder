@@ -18,6 +18,14 @@ class PageEvent extends WindowEvent {
       return "/" + site.sitePathTypeName + "/" + site.sitePathName + "/page/" + pathName;
    }
 
+   void setScrollDepth(int val) {
+      if (val == scrollDepth)
+         return;
+      scrollDepth = val;
+      Bind.sendChangedEvent(this, "scrollDepthStr");
+   }
+
+   @Bindable(manual=true)
    public String getScrollDepthStr() {
       if (scrollDepth == 0) {
          return "?";

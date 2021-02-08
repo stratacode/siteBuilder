@@ -303,10 +303,16 @@ UserView implements IWindowEventListener {
          if (userbase.createAnonUser)
             initNewUser();
       }
+      UserSession session;
+      if (userSessions != null) {
+         session = userSessions.get(site.id);
+         if (session != null)
+            return session;
+      }
 
       String userMarker = DBUtil.hashString(userbase.salt, site.sitePathName + ":" + remoteIp + ":" + userAgentInfo.userAgent, true);
 
-      UserSession session = userSessionCache.getOrCreateUserSession(userbase, user, userMarker, site);
+      session = userSessionCache.getOrCreateUserSession(userbase, user, userMarker, site);
       if (session == null)
          return null;
       if (userSessions == null)
@@ -369,7 +375,7 @@ UserView implements IWindowEventListener {
    void addPageEvent(SiteContext site, String pathName) {
       UserSession session = getUserSession(site);
       if (session != null)
-         session.addPageEvent(pathName);
+         session.addPageEvent(pathName, 0);
    }
 
    void updateProfile() {
@@ -402,7 +408,7 @@ UserView implements IWindowEventListener {
                for (SessionEvent ev:session.sessionEvents) {
                   if (ev instanceof WindowEvent) {
                      WindowEvent wev = (WindowEvent) ev;
-                     if (wev.window == win) {
+                     if (wev.windowId == win.windowId) {
                         session.screenWidth = win.screen.getWidth();
                         session.screenHeight = win.screen.getHeight();
                         break;
@@ -430,8 +436,8 @@ UserView implements IWindowEventListener {
                for (SessionEvent ev:session.sessionEvents) {
                   if (ev instanceof WindowEvent) {
                      WindowEvent wev = (WindowEvent) ev;
-                     Window win = wev.window;
-                     if (win != null && win.windowId == winId) {
+                     int evWinId = wev.windowId;
+                     if (evWinId != -1 && evWinId == winId) {
                         ev.windowClosed(sessionExpired);
                         anyChanged = true;
                      }

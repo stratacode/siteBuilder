@@ -22,7 +22,7 @@ abstract class GeoIpInfo {
    double latitude, longitude;
    int accuracyRadius;
 
-   static List<String> csvProperties =
+   static final List<String> csvProperties =
         Arrays.asList("network", "geoNameId", "registeredCountryGeonameId",
                       "representedCountryGeonameId", null, null, "postalCode", "latitude", "longitude", "accuracyRadius");
 

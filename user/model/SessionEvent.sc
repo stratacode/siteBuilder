@@ -20,10 +20,12 @@ abstract class SessionEvent {
       return getEventName() + " " + getEventDetail();
    }
 
+   @Bindable(manual=true)
    String getDurationStr() {
       return "";
    }
 
+   @Bindable(manual=true)
    String getScrollDepthStr() {
       return "";
    }

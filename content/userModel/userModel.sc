@@ -6,6 +6,7 @@ import sc.content.ViewDef;
 import sc.content.ParentDef;
 
 import sc.user.UserSession;
+import sc.user.PageEvent;
 
 // TODO: merge this layer into content.coreui?
 public content.userModel extends content.model, user.model {

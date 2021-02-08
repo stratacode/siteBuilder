@@ -79,7 +79,7 @@
          <div id="userDetailView" visible=":= userVisible" class="userDetailView">
             <%!
                int curSessionPage = 0;
-               List<UserSession> userSessions := userMgr.getUserSessions(curRowUser, curSessionPage);
+               List<UserSession> userSessions := userMgr.getUserSessions(curRowUser, curSessionPage, userVisible);
             %>
             <div id="registeredUserView" class="registeredUserView" visible=":= curRowUser.registered">
                <div id="userDetailTitle" class="subFormTitle"><%= "Registered user " + curRowUser.userName %></div>
