@@ -19,9 +19,11 @@ currentUserView {
          this.acceptLanguage = req.getHeader("Accept-Language");
          this.userAgent = ctx.getUserAgent();
          this.referrer = ctx.getReferrer();
-         Cookie cookie = ctx.getCookie(userbase.cookieName);
-         if (cookie != null)
-            this.userAuthToken = cookie.getValue();
+         if (userbase != null) {
+            Cookie cookie = ctx.getCookie(userbase.cookieName);
+            if (cookie != null)
+               this.userAuthToken = cookie.getValue();
+         }
 
          Window window = ctx.windowCtx.window;
          this.userAgentInfo = window.userAgentInfo;
@@ -66,12 +68,14 @@ currentUserView {
             clearSession();
             return;
          }
-         Cookie cookie = ctx.getCookie(userbase.cookieName);
-         if (cookie != null) {
-            String newToken = cookie.getValue();
-            if (this.userAuthToken == null || !newToken.equals(this.userAuthToken)) {
-               this.userAuthToken = newToken;
-               super.refresh();
+         if (userbase != null) {
+            Cookie cookie = ctx.getCookie(userbase.cookieName);
+            if (cookie != null) {
+               String newToken = cookie.getValue();
+               if (this.userAuthToken == null || !newToken.equals(this.userAuthToken)) {
+                  this.userAuthToken = newToken;
+                  super.refresh();
+               }
             }
          }
       }
@@ -90,7 +94,7 @@ currentUserView {
 
    void addUserCookie(String cookieName, String value) {
       Window window = Window.window;
-      if (window == null) // There's no window available in the current context.
+      if (window == null || userbase == null) // There's no window available in the current context.
          return;
       WebCookie cookie = new WebCookie(cookieName, value);
       if (userbase.secureCookie)

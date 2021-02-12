@@ -67,60 +67,65 @@ import java.util.Arrays;
                   </span>
                </div>
                <%
-               List<SiteContext> allSites = (List<SiteContext>) SiteContext.getDBTypeDescriptor().findAll(Arrays.asList("-lastModified"), 0, 20);
-               boolean hasVisibleSites = false;
-               for (int i = 0 ; i < allSites.size(); i++) {
-                  SiteContext site = allSites.get(i);
-                  if (!site.visible)
-                     continue;
-                  if (mySitesOnly &&
-                      (userSiteList == null || !userSiteList.contains(site)))
-                     continue;
-                  hasVisibleSites = true;
-                  %>
-                     <div class="siteBox">
-                        <div class="siteTypeName"> <%= site.siteTypeName %> <a visible="= isManageable(site)" href='= "/manage/site/" + site.sitePathName'><img src="/icons/settings.svg"/></a></div>
-                        <div class="siteContents">
-                           <div class="siteNavBox">
-                              <a href='= "/" + site.sitePathTypeName + "/" + site.sitePathName'>
-                                 <img visible="= site.icon != null" src="= site.icon"/>
-                                 <div class="siteTitle"><%= site.siteName %></div>
-                              </a>
-                           </div>
-                           <div class="siteLinksBox">
-                              <%
-                              List<PageDef> allPages = (List<PageDef>) PageDef.getDBTypeDescriptor().findBy(Arrays.asList("site"), Arrays.asList(site), null, Arrays.asList("-lastModified"), 0, 20);
-                              for (int j = 0; j < allPages.size(); j++) {
-                                 PageDef page = allPages.get(j);
-                                 String pageTypePath = page.pageTypePathName;
-                                 %>
-                                 <div class="siteLinkBox">
-                                    <div class="siteLinkView">
-                                       <a href=':= page.pageUrl'>
-                                          <div class="siteLinkThumb"><img src="/icons/file100x100.png"/></div>
-                                          <div class="siteLinkTitle"><%= page.pageName + (page.homePage ? " (home)" : "") %> </div>
-                                       </a>
-                                       <div class="siteLinkType">Page
-                                          <a visible="= isManageable(site)" href='= "/manage/page/" + site.sitePathName + "/" + page.pagePathName'>
-                                             <img src="/icons/settings.svg"/>
+               try {
+                  List<SiteContext> allSites = (List<SiteContext>) SiteContext.getDBTypeDescriptor().findAll(Arrays.asList("-lastModified"), 0, 20);
+                  boolean hasVisibleSites = false;
+                  for (int i = 0 ; i < allSites.size(); i++) {
+                     SiteContext site = allSites.get(i);
+                     if (!site.visible)
+                        continue;
+                     if (mySitesOnly &&
+                         (userSiteList == null || !userSiteList.contains(site)))
+                        continue;
+                     hasVisibleSites = true;
+                     %>
+                        <div class="siteBox">
+                           <div class="siteTypeName"> <%= site.siteTypeName %> <a visible="= isManageable(site)" href='= "/manage/site/" + site.sitePathName'><img src="/icons/settings.svg"/></a></div>
+                           <div class="siteContents">
+                              <div class="siteNavBox">
+                                 <a href='= "/" + site.sitePathTypeName + "/" + site.sitePathName'>
+                                    <img visible="= site.icon != null" src="= site.icon"/>
+                                    <div class="siteTitle"><%= site.siteName %></div>
+                                 </a>
+                              </div>
+                              <div class="siteLinksBox">
+                                 <%
+                                 List<PageDef> allPages = (List<PageDef>) PageDef.getDBTypeDescriptor().findBy(Arrays.asList("site"), Arrays.asList(site), null, Arrays.asList("-lastModified"), 0, 20);
+                                 for (int j = 0; j < allPages.size(); j++) {
+                                    PageDef page = allPages.get(j);
+                                    String pageTypePath = page.pageTypePathName;
+                                    %>
+                                    <div class="siteLinkBox">
+                                       <div class="siteLinkView">
+                                          <a href=':= page.pageUrl'>
+                                             <div class="siteLinkThumb"><img src="/icons/file100x100.png"/></div>
+                                             <div class="siteLinkTitle"><%= page.pageName + (page.homePage ? " (home)" : "") %> </div>
                                           </a>
+                                          <div class="siteLinkType">Page
+                                             <a visible="= isManageable(site)" href='= "/manage/page/" + site.sitePathName + "/" + page.pagePathName'>
+                                                <img src="/icons/settings.svg"/>
+                                             </a>
+                                          </div>
                                        </div>
                                     </div>
-                                 </div>
-                                 <%
-                              }
-                              %>
+                                    <%
+                                 }
+                                 %>
 
-                              <%= outputSiteInfo(site) %>
+                                 <%= outputSiteInfo(site) %>
+                              </div>
                            </div>
                         </div>
-                     </div>
-                  <%
+                     <%
+                  }
+                  if (allSites.size() == 0) { %> <div class="centeredFormStatus">No sites have been created yet.</div> <% }
+                  else if (!hasVisibleSites) {
+                     if (mySitesOnly) { %><div class="centeredFormStatus">No sites available for user</div><% }
+                     else { %><div class="centeredFormStatus">No visible sites in the system </div> <% }
+                  }
                }
-               if (allSites.size() == 0) { %> <div class="centeredFormStatus">No sites have been created yet.</div> <% }
-               else if (!hasVisibleSites) {
-                  if (mySitesOnly) { %><div class="centeredFormStatus">No sites available for user</div><% }
-                  else { %><div class="centeredFormStatus">No visible sites in the system </div> <% }
+               catch (IllegalArgumentException exc) {
+                  %> <div class="centeredFormStatus">Error - database not available</div> <%
                }
                %>
             </div>
