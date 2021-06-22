@@ -12,6 +12,6 @@ public user.html.serverMgr extends user.html.server, user.serverMgr, user.html.c
 
    void init() {
       // Split this layer and it's sublayers out into a new process using the default 'java' runtime
-      addProcess(sc.layer.ProcessDefinition.create("Server", "java", true));
+      addProcess(ProcessDefinition.create(layeredSystem, "Server", "java", true));
    }
 }
